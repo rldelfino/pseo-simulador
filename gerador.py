@@ -36,6 +36,7 @@ def gerar_paginas_pseo():
             slug = linha['slug']
             
             valor_amigavel = f"R$ {valor_imovel:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+            entrada_padrao = valor_imovel * 0.20 
             
             if banco not in links_por_banco:
                 links_por_banco[banco] = []
@@ -44,241 +45,512 @@ def gerar_paginas_pseo():
                 "texto": f"Imóvel de {valor_amigavel} em {prazo} meses"
             })
 
-            entrada_padrao = valor_imovel * 0.20 
-
             html_content = f'''<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Financiamento e Amortização {banco} | ImobSimula</title>
-    <meta name="description" content="Simule o financiamento imobiliário e amortização extraordinária pela {banco} para imóveis de {valor_amigavel}. Descubra quantas parcelas você reduz adiantando valores.">
+    <title>Simule o Financiamento e Amortização | {banco} | ImobSimula</title>
+    <meta name="description" content="Simule seu financiamento imobiliário pela {banco} e descubra quanto economiza adiantando parcelas.">
     <link rel="canonical" href="{dominio}/{slug}.html" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>body {{ font-family: 'Inter', sans-serif; }} input[type="radio"]:checked + div {{ border-color: #f97316; background-color: #fff7ed; }}</style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {{ font-family: 'Inter', sans-serif; background-color: #f8fafc; }}
+        
+        input[type=range] {{
+            -webkit-appearance: none; appearance: none; width: 100%; height: 6px; background: #cbd5e1; border-radius: 9999px; outline: none;
+        }}
+        input[type=range]::-webkit-slider-thumb {{
+            -webkit-appearance: none; appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #f97316; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.15); border: 2px solid #ffffff; transition: transform 0.1s ease;
+        }}
+        input[type=range]::-webkit-slider-thumb:hover {{ transform: scale(1.15); }}
+        
+        input[type="radio"]:checked + div {{ background-color: #0f172a; color: white; border-color: #0f172a; }}
+        input[type="radio"]:not(:checked) + div {{ background-color: #f1f5f9; color: #475569; border-color: #e2e8f0; }}
+        input[type="radio"]:not(:checked) + div:hover {{ border-color: #cbd5e1; background-color: #ffffff; }}
+        
+        .currency-input {{ font-variant-numeric: tabular-nums; }}
+    </style>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased">
-    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+<body class="text-slate-800 antialiased min-h-screen flex flex-col">
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-20 items-center">
-                <a href="index.html" class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-orange-500 rounded-2xl flex items-center justify-center text-white font-bold text-xl shadow-md">
-                        <i class="fa-solid fa-calculator"></i>
-                    </div>
-                    <span class="text-2xl font-black tracking-tight text-slate-900">Imob<span class="text-orange-500">Simula</span></span>
+            <div class="flex justify-between h-16 items-center">
+                <a href="index.html" class="flex items-center space-x-2.5">
+                    <div class="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center text-white font-bold text-sm"><i class="fa-solid fa-calculator"></i></div>
+                    <span class="text-xl font-black tracking-tight text-slate-900">Imob<span class="text-orange-500">Simula</span></span>
                 </a>
-                <div class="hidden lg:flex space-x-8 text-sm font-semibold text-slate-600">
-                    <a href="index.html" class="hover:text-orange-500 transition-colors">Início</a>
-                    <a href="#" class="hover:text-orange-500 transition-colors">Simulador de Amortização</a>
-                    <a href="#" class="hover:text-orange-500 transition-colors">Contato</a>
-                </div>
-                <div class="hidden md:flex items-center space-x-4">
-                    <button class="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2.5 rounded-full font-bold shadow-md transition-all text-sm flex items-center">
-                        <i class="fa-brands fa-whatsapp mr-2 text-base"></i> Falar com Especialista
-                    </button>
+                <div class="hidden md:flex items-center space-x-3">
+                    <a id="btn_wa_nav" href="#" target="_blank" class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2 rounded-full font-bold transition-all text-xs flex items-center shadow-sm">
+                        <i class="fa-brands fa-whatsapp mr-2 text-sm text-emerald-400"></i> Falar com Especialista
+                    </a>
                 </div>
             </div>
         </div>
     </nav>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-            <div class="text-xs font-semibold text-slate-500 flex items-center space-x-2">
-                <a href="index.html" class="hover:text-orange-500">Home</a> <span>/</span>
-                <span class="text-slate-400">Calculadoras</span> <span>/</span>
-                <span class="text-slate-800">Amortização {banco}</span>
+    <header class="bg-white border-b border-slate-200 py-8 md:py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="inline-flex items-center bg-orange-50 border border-orange-100 text-orange-600 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider mb-3">
+                <i class="fa-solid fa-bolt mr-1.5"></i> Simulação em Tempo Real
             </div>
+            <h1 class="text-3xl md:text-5xl font-black text-slate-900 mb-3 tracking-tight max-w-3xl mx-auto">
+                Quanto você quer financiar?
+            </h1>
+            <p class="text-slate-500 text-sm md:text-base font-medium max-w-2xl mx-auto">
+                Ajuste os parâmetros do seu financiamento pela <b class="text-slate-800">{banco}</b> e veja o impacto de adiantar parcelas.
+            </p>
         </div>
+    </header>
 
-        <div class="flex flex-col lg:flex-row gap-8 items-start">
-            <div class="w-full lg:w-2/3 space-y-6">
-                <div>
-                    <h1 class="text-3xl md:text-4xl font-black text-slate-900 mb-3 tracking-tight">Financiamento & Amortização <span class="text-orange-500">{banco}</span></h1>
-                    <p class="text-slate-500 text-base font-medium">Calcule as parcelas iniciais e veja o impacto exato ao amortizar valores extras no seu contrato.</p>
-                </div>
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-grow w-full">
+        <div class="flex flex-col lg:flex-row gap-10 items-start">
+            
+            <!-- PAINEL ESQUERDO: CONTROLES -->
+            <div class="w-full lg:w-5/12 space-y-6">
+                
+                <!-- Bloco 1: Financiamento -->
+                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                        <span class="text-xs font-black text-slate-500 uppercase tracking-widest">Parâmetros do Financiamento</span>
+                        <span class="text-[10px] bg-slate-100 text-slate-500 font-bold px-2 py-0.5 rounded-md">Etapa 1 de 2</span>
+                    </div>
 
-                <!-- Painel 1: Dados do Financiamento -->
-                <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm">
-                    <h2 class="text-xl font-bold text-slate-800 mb-6 flex items-center"><i class="fa-solid fa-house-circle-check text-orange-500 mr-3"></i> 1. Dados do Contrato</h2>
-                    <div class="space-y-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div><label class="block text-sm font-semibold text-slate-700 mb-2">Valor do Imóvel (R$)</label><input type="number" id="valor_imovel" value="{valor_imovel}" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3.5 focus:bg-white focus:ring-2 focus:ring-orange-500 font-bold text-slate-900 text-lg outline-none"></div>
-                            <div><label class="block text-sm font-semibold text-slate-700 mb-2">Entrada (R$)</label><input type="number" id="entrada" value="{int(entrada_padrao)}" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3.5 focus:bg-white focus:ring-2 focus:ring-orange-500 font-bold text-slate-900 text-lg outline-none"></div>
+                    <div>
+                        <div class="flex justify-between items-end mb-1">
+                            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Valor do Imóvel</label>
+                            <input type="text" id="input_imovel" class="currency-input w-32 text-right bg-transparent font-black text-slate-900 text-lg outline-none border-b border-dashed border-slate-300 focus:border-orange-500 transition-colors" value="">
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div><label class="block text-sm font-semibold text-slate-700 mb-2">Prazo Total (Meses)</label><input type="number" id="prazo" value="{prazo}" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3.5 focus:bg-white focus:ring-2 focus:ring-orange-500 font-bold text-slate-900 text-lg outline-none"></div>
-                            <div><label class="block text-sm font-semibold text-slate-700 mb-2">Taxa de Juros (% a.m.)</label><input type="number" id="taxa" value="{taxa}" step="0.01" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3.5 focus:bg-white focus:ring-2 focus:ring-orange-500 font-bold text-slate-900 text-lg outline-none"></div>
+                        <input type="range" id="slider_imovel" min="100000" max="2000000" step="10000" value="{valor_imovel}" class="w-full mt-2">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between items-end mb-1">
+                            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Entrada</label>
+                            <input type="text" id="input_entrada" class="currency-input w-32 text-right bg-transparent font-black text-slate-900 text-lg outline-none border-b border-dashed border-slate-300 focus:border-orange-500 transition-colors" value="">
+                        </div>
+                        <input type="range" id="slider_entrada" min="0" max="1000000" step="5000" value="{int(entrada_padrao)}" class="w-full mt-2">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1 block">Prazo Total</label>
+                            <div class="flex items-center border-b border-slate-300 pb-1">
+                                <input type="number" id="input_prazo" class="w-full bg-transparent font-bold text-slate-900 text-sm outline-none" value="{prazo}">
+                                <span class="text-xs text-slate-400 font-medium ml-1">meses</span>
+                            </div>
                         </div>
                         <div>
-                            <label class="block text-sm font-semibold text-slate-700 mb-3">Sistema de Amortização</label>
-                            <div class="grid grid-cols-2 gap-4">
-                                <label class="relative cursor-pointer"><input type="radio" name="sistema" value="SAC" class="sr-only" checked><div class="border-2 border-slate-200 rounded-2xl p-4 transition-all duration-200"><div class="flex items-center justify-between mb-1"><span class="font-bold text-slate-900">Tabela SAC</span><i class="fa-solid fa-circle-check text-orange-500 hidden check-icon"></i></div><p class="text-xs text-slate-500 font-medium">Parcelas decrescentes</p></div></label>
-                                <label class="relative cursor-pointer"><input type="radio" name="sistema" value="PRICE" class="sr-only"><div class="border-2 border-slate-200 rounded-2xl p-4 transition-all duration-200"><div class="flex items-center justify-between mb-1"><span class="font-bold text-slate-900">Tabela PRICE</span><i class="fa-solid fa-circle-check text-orange-500 hidden check-icon"></i></div><p class="text-xs text-slate-500 font-medium">Parcelas fixas</p></div></label>
+                            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1 block">Taxa Estimada</label>
+                            <div class="flex items-center border-b border-slate-300 pb-1">
+                                <input type="number" id="input_taxa" step="0.01" class="w-full bg-transparent font-bold text-slate-900 text-sm outline-none" value="{taxa}">
+                                <span class="text-xs text-slate-400 font-medium ml-1">% a.m.</span>
                             </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2 block">Sistema de Amortização</label>
+                        <div class="flex bg-slate-100 p-1 rounded-xl">
+                            <label class="flex-1 text-center relative cursor-pointer">
+                                <input type="radio" name="sistema" value="SAC" class="peer sr-only" checked>
+                                <div class="py-2 rounded-lg text-xs font-bold transition-all border border-transparent">SAC</div>
+                            </label>
+                            <label class="flex-1 text-center relative cursor-pointer">
+                                <input type="radio" name="sistema" value="PRICE" class="peer sr-only">
+                                <div class="py-2 rounded-lg text-xs font-bold transition-all border border-transparent">PRICE</div>
+                            </label>
                         </div>
                     </div>
                 </div>
 
-                <!-- Painel 2: Amortização Extraordinária -->
-                <div class="bg-orange-50/50 p-8 rounded-3xl border border-orange-100 shadow-sm">
-                    <h2 class="text-xl font-bold text-slate-800 mb-6 flex items-center"><i class="fa-solid fa-bolt text-orange-500 mr-3"></i> 2. Simulação de Amortização Extra</h2>
-                    <div class="space-y-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-sm font-semibold text-slate-700 mb-2">Parcelas Já Pagas</label>
-                                <input type="number" id="parcelas_pagas" value="14" class="w-full bg-white border border-slate-200 rounded-2xl px-4 py-3.5 focus:ring-2 focus:ring-orange-500 font-bold text-slate-900 text-lg outline-none">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-semibold text-slate-700 mb-2">Valor Extra para Adiantar (R$)</label>
-                                <input type="number" id="valor_amortizar" value="10000" class="w-full bg-white border border-slate-200 rounded-2xl px-4 py-3.5 focus:ring-2 focus:ring-orange-500 font-bold text-slate-900 text-lg outline-none">
-                            </div>
+                <!-- Bloco 2: Amortização Extraordinária -->
+                <div class="bg-orange-50/40 p-6 rounded-3xl border border-orange-200/60 shadow-sm space-y-6">
+                    <div class="flex justify-between items-center border-b border-orange-200/60 pb-3">
+                        <span class="text-xs font-black text-orange-600/80 uppercase tracking-widest">Controle de Amortização</span>
+                        <span class="text-[10px] bg-orange-100 text-orange-600 font-bold px-2 py-0.5 rounded-md">Etapa 2 de 2</span>
+                    </div>
+
+                    <div>
+                        <label class="text-[10px] font-bold text-slate-600 uppercase tracking-wider block mb-2">Valor extra para adiantar</label>
+                        <div class="relative mb-3">
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-slate-400 text-lg">R$</span>
+                            <input type="text" id="input_amortizar" class="currency-input w-full bg-white border border-slate-200 rounded-2xl pl-12 pr-4 py-3 focus:bg-white focus:ring-2 focus:ring-orange-500 font-black text-slate-900 text-xl outline-none transition-all" value="10.000,00">
                         </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-slate-700 mb-2">Objetivo da Amortização</label>
-                            <select id="tipo_amortizacao" class="w-full bg-white border border-slate-200 rounded-2xl px-4 py-3.5 focus:ring-2 focus:ring-orange-500 font-bold text-slate-900 text-base outline-none">
-                                <option value="prazo">Reduzir Número de Parcelas (Reduzir Prazo)</option>
-                                <option value="parcela">Reduzir Valor da Parcela Mensal</option>
-                            </select>
+                        <input type="range" id="slider_amortizar" min="1000" max="100000" step="1000" value="10000" class="w-full">
+                        
+                        <div class="flex gap-2 mt-4">
+                            <button class="btn-atalho flex-1 bg-white border border-slate-200 text-slate-600 font-bold text-[11px] py-1.5 rounded-lg hover:border-orange-500 hover:text-orange-500 transition-colors" data-val="5000">R$ 5k</button>
+                            <button class="btn-atalho flex-1 bg-white border border-slate-200 text-slate-600 font-bold text-[11px] py-1.5 rounded-lg hover:border-orange-500 hover:text-orange-500 transition-colors" data-val="10000">R$ 10k</button>
+                            <button class="btn-atalho flex-1 bg-white border border-slate-200 text-slate-600 font-bold text-[11px] py-1.5 rounded-lg hover:border-orange-500 hover:text-orange-500 transition-colors" data-val="20000">R$ 20k</button>
+                            <button class="btn-atalho flex-1 bg-white border border-slate-200 text-slate-600 font-bold text-[11px] py-1.5 rounded-lg hover:border-orange-500 hover:text-orange-500 transition-colors" data-val="50000">R$ 50k</button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between items-end mb-1.5">
+                            <label class="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Parcelas já pagas</label>
+                            <span class="text-xs font-black text-slate-900" id="display_pagas">14 de {prazo} parcelas</span>
+                        </div>
+                        <input type="range" id="slider_pagas" min="1" max="{prazo-1}" step="1" value="14" class="w-full mt-1">
+                    </div>
+
+                    <div>
+                        <label class="text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-2 block">Objetivo da Amortização</label>
+                        <div class="flex bg-white/60 p-1 rounded-xl border border-slate-200/50">
+                            <label class="flex-1 text-center relative cursor-pointer">
+                                <input type="radio" name="objetivo" value="prazo" class="peer sr-only" checked>
+                                <div class="py-2 rounded-lg text-xs font-bold transition-all border border-transparent">Reduzir prazo</div>
+                            </label>
+                            <label class="flex-1 text-center relative cursor-pointer">
+                                <input type="radio" name="objetivo" value="parcela" class="peer sr-only">
+                                <div class="py-2 rounded-lg text-xs font-bold transition-all border border-transparent">Reduzir parcela</div>
+                            </label>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Resumo e Impacto Financeiro -->
-            <div class="w-full lg:w-1/3 lg:sticky lg:top-28">
-                <div class="bg-white p-7 rounded-3xl border border-slate-200 shadow-xl shadow-slate-200/50 space-y-6">
-                    <h3 class="text-lg font-bold text-slate-900 border-b border-slate-100 pb-4">Resultado do Financiamento</h3>
+            <!-- PAINEL DIREITO: RESULTADO ÚNICO -->
+            <div class="w-full lg:w-7/12 lg:sticky lg:top-24 space-y-6">
+                
+                <div class="bg-white border border-slate-200 rounded-3xl p-8 lg:p-10 shadow-xl shadow-slate-200/50 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1.5 bg-slate-800"></div>
+
+                    <!-- Seção 1: Resultado do Financiamento -->
+                    <h2 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-6 flex items-center">
+                        <i class="fa-solid fa-file-contract text-slate-800 mr-2 text-sm"></i> 1. Resumo do Financiamento
+                    </h2>
                     
-                    <div>
-                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Primeira Parcela Original</p>
-                        <p id="res_primeira" class="text-3xl font-black text-slate-800 tracking-tight">R$ 0,00</p>
+                    <div class="space-y-5 mb-8">
+                        <div class="grid grid-cols-2 gap-6">
+                            <div>
+                                <p class="text-slate-500 text-[10px] font-bold uppercase tracking-wider mb-1">Primeira Parcela</p>
+                                <p class="text-slate-900 text-3xl md:text-4xl font-black tracking-tight" id="res_p1_orig">R$ 0,00</p>
+                            </div>
+                            <div>
+                                <p class="text-slate-500 text-[10px] font-bold uppercase tracking-wider mb-1">Última Parcela</p>
+                                <p class="text-slate-600 text-2xl md:text-3xl font-bold tracking-tight mt-1" id="res_ultima_orig">R$ 0,00</p>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-6 pt-5 border-t border-slate-100">
+                            <div>
+                                <p class="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-0.5">Total de Juros</p>
+                                <p class="font-bold text-slate-800 text-base" id="res_juros_orig">R$ 0,00</p>
+                            </div>
+                            <div>
+                                <p class="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-0.5">Custo Total (Dívida + Juros)</p>
+                                <p class="font-black text-slate-900 text-base" id="res_total_orig">R$ 0,00</p>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="bg-emerald-50 border border-emerald-200 p-5 rounded-2xl space-y-3">
-                        <h4 class="text-xs font-bold text-emerald-800 uppercase tracking-wider flex items-center">
-                            <i class="fa-solid fa-piggy-bank mr-2 text-base text-emerald-600"></i> Impacto da Amortização
-                        </h4>
-                        <div>
-                            <p id="label_impacto" class="text-xs text-emerald-700 font-semibold mb-1">Parcelas Eliminadas</p>
-                            <p id="res_impacto" class="text-3xl font-black text-emerald-600 tracking-tight">0 parcelas</p>
+                    <!-- Divisor Visual da Amortização -->
+                    <div class="relative py-6">
+                        <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                            <div class="w-full border-t border-dashed border-slate-200"></div>
                         </div>
-                        <div class="pt-2 border-t border-emerald-200/60">
-                            <p class="text-xs text-emerald-700 font-semibold mb-1">Economia Estimada de Juros</p>
-                            <p id="res_economia" class="text-xl font-extrabold text-emerald-700">R$ 0,00</p>
+                        <div class="relative flex justify-center">
+                            <span class="bg-emerald-50 text-emerald-600 text-[10px] font-bold uppercase tracking-wider px-4 py-1.5 rounded-full border border-emerald-100 flex items-center shadow-sm">
+                                <i class="fa-solid fa-arrow-down mr-2"></i> Aplicando Amortização Extra
+                            </span>
                         </div>
                     </div>
 
-                    <div class="pt-2 space-y-3">
-                        <button id="btn_calcular" class="w-full bg-slate-900 text-white font-bold py-4 rounded-2xl hover:bg-slate-800 transition-colors shadow-md">Recalcular Amortização</button>
-                        <button class="w-full bg-emerald-500 text-white font-bold py-4 rounded-2xl hover:bg-emerald-600 transition-colors shadow-md flex items-center justify-center"><i class="fa-brands fa-whatsapp mr-2 text-lg"></i> Receber Estratégia</button>
+                    <!-- Seção 2: Impacto da Amortização -->
+                    <div class="bg-emerald-500/5 rounded-2xl p-6 md:p-8 border border-emerald-100/50 mt-2">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-xs font-black text-emerald-600 uppercase tracking-widest flex items-center">
+                                <i class="fa-solid fa-bolt text-emerald-500 mr-2 text-sm"></i> 2. Impacto Financeiro
+                            </h2>
+                            <span id="badge_pct" class="text-[10px] bg-emerald-100/80 text-emerald-700 font-bold px-2.5 py-1 rounded-md">
+                                -0.0% do custo
+                            </span>
+                        </div>
+
+                        <div class="space-y-4 mb-6">
+                            <div>
+                                <p class="text-emerald-500 text-4xl font-black tracking-tight" id="res_economia">R$ 0,00</p>
+                                <p class="text-emerald-700/80 text-[11px] font-bold mt-1 uppercase tracking-wider">Economia estimada em juros</p>
+                            </div>
+                            
+                            <div class="flex items-baseline space-x-2 pt-2">
+                                <p class="text-slate-900 text-2xl font-black tracking-tight" id="res_impacto">0 parcelas</p>
+                                <span class="text-slate-500 text-xs font-medium" id="sub_impacto">eliminadas do contrato</span>
+                            </div>
+
+                            <div class="bg-white border border-emerald-100/60 p-4 rounded-xl mt-5 shadow-sm">
+                                <p id="frase_humana" class="text-[11px] font-semibold text-slate-700 leading-relaxed">
+                                    Acelerando o pagamento, você reduz o saldo devedor e evita cobranças de juros futuros.
+                                </p>
+                                <p id="retorno_multiplo" class="text-[11px] font-bold text-emerald-600 mt-1.5">
+                                    Cada R$ 1,00 amortizado gera R$ 0,00 de economia em juros.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Evolução do Prazo -->
+                        <div class="mt-6 pt-6 border-t border-emerald-100/60">
+                            <p class="text-[10px] font-bold text-emerald-700/80 uppercase tracking-wider mb-2.5">Evolução do Prazo de Pagamento</p>
+                            <div class="w-full h-3 bg-slate-200/80 rounded-full flex overflow-hidden relative">
+                                <div class="h-full bg-slate-300/50 w-full absolute top-0 left-0"></div>
+                                <div id="bar_restante" class="h-full bg-emerald-400 absolute top-0 left-0 transition-all duration-500" style="width: 100%;"></div>
+                                <div id="bar_pagas" class="h-full bg-slate-900 absolute top-0 left-0 transition-all duration-500 border-r-2 border-white" style="width: 5%;"></div>
+                            </div>
+                            <div class="flex justify-between mt-2 text-[10px] font-bold text-slate-400">
+                                <span>Hoje</span>
+                                <span id="label_grafico_novo" class="text-emerald-600">Novo Final</span>
+                                <span id="label_grafico_orig" class="line-through">Fim Original</span>
+                            </div>
+                        </div>
                     </div>
+                </div>
+
+                <!-- CTA Comercial -->
+                <div class="bg-slate-900 rounded-3xl p-6 md:p-8 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between shadow-xl">
+                    <div class="mb-4 sm:mb-0 sm:pr-6">
+                        <h4 class="text-white font-bold text-sm mb-1">Quer confirmar esse cenário?</h4>
+                        <p class="text-slate-400 text-xs">Nossa simulação é uma estimativa. Consulte as condições oficiais disponíveis para o seu contrato.</p>
+                    </div>
+                    <a id="btn_wa_cta" href="#" target="_blank" class="shrink-0 bg-white hover:bg-slate-100 text-slate-900 font-extrabold px-6 py-3 rounded-xl transition-colors shadow-sm text-sm whitespace-nowrap w-full sm:w-auto text-center">
+                        Solicitar análise &rarr;
+                    </a>
                 </div>
             </div>
         </div>
     </main>
 
     <script>
-        document.querySelectorAll('input[type="radio"]').forEach(radio => {{ radio.addEventListener('change', function() {{ document.querySelectorAll('.check-icon').forEach(i => i.classList.add('hidden')); if(this.checked) this.nextElementSibling.querySelector('.check-icon').classList.remove('hidden'); }}); }});
-        document.querySelector('input[name="sistema"]:checked').nextElementSibling.querySelector('.check-icon').classList.remove('hidden');
-        
-        window.onload = function() {{ document.getElementById('btn_calcular').click(); }};
-        
-        document.getElementById('btn_calcular').addEventListener('click', function() {{
-            const vImovel = parseFloat(document.getElementById('valor_imovel').value) || 0;
-            const entrada = parseFloat(document.getElementById('entrada').value) || 0;
-            const taxa = (parseFloat(document.getElementById('taxa').value) || 0) / 100;
-            const prazo = parseInt(document.getElementById('prazo').value) || 0;
+        const bancoNome = "{banco}";
+        const SEU_WHATSAPP = "5527995051571";
+        const totalPrazoContrato = {prazo};
+
+        function unformatCurrency(val) {{
+            if (typeof val === 'number') return val;
+            return Number(val.replace(/\D/g, '')) / 100;
+        }}
+
+        function formatCurrency(val) {{
+            return (val).toLocaleString('pt-BR', {{ minimumFractionDigits: 2, maximumFractionDigits: 2 }});
+        }}
+
+        function initMask(inputId) {{
+            const input = document.getElementById(inputId);
+            let rawVal = unformatCurrency(input.value);
+            if(rawVal > 0) input.value = formatCurrency(rawVal);
+
+            input.addEventListener('input', function(e) {{
+                let raw = unformatCurrency(e.target.value);
+                e.target.value = formatCurrency(raw);
+            }});
+        }}
+
+        initMask('input_imovel');
+        initMask('input_entrada');
+        initMask('input_amortizar');
+
+        function syncSliderInput(sliderId, inputId, isCurrency = true) {{
+            const slider = document.getElementById(sliderId);
+            const input = document.getElementById(inputId);
+
+            slider.addEventListener('input', function() {{
+                if(isCurrency) {{
+                    input.value = formatCurrency(Number(this.value));
+                }} else {{
+                    input.value = this.value;
+                }}
+                if(sliderId === 'slider_pagas') {{
+                    document.getElementById('display_pagas').innerText = this.value + " de " + document.getElementById('input_prazo').value + " parcelas";
+                }}
+                calcularTudo();
+            }});
+
+            input.addEventListener('blur', function() {{
+                let val = isCurrency ? unformatCurrency(this.value) : Number(this.value);
+                slider.value = val;
+                calcularTudo();
+            }});
+        }}
+
+        syncSliderInput('slider_imovel', 'input_imovel', true);
+        syncSliderInput('slider_entrada', 'input_entrada', true);
+        syncSliderInput('slider_amortizar', 'input_amortizar', true);
+
+        const sliderPagas = document.getElementById('slider_pagas');
+        const displayPagas = document.getElementById('display_pagas');
+        sliderPagas.addEventListener('input', function() {{
+            displayPagas.innerText = this.value + " de " + document.getElementById('input_prazo').value + " parcelas";
+            calcularTudo();
+        }});
+
+        function atualizaMaxPagas() {{
+            const prazoAtual = parseInt(document.getElementById('input_prazo').value) || 0;
+            const pagas = document.getElementById('slider_pagas');
+            pagas.max = Math.max(1, prazoAtual - 1);
+            if (parseInt(pagas.value) > parseInt(pagas.max)) {{
+                pagas.value = pagas.max;
+            }}
+            document.getElementById('display_pagas').innerText = pagas.value + " de " + prazoAtual + " parcelas";
+            calcularTudo();
+        }}
+
+        document.getElementById('input_prazo').addEventListener('input', atualizaMaxPagas);
+        document.getElementById('input_taxa').addEventListener('input', calcularTudo);
+        document.querySelectorAll('input[name="sistema"]').forEach(r => r.addEventListener('change', calcularTudo));
+        document.querySelectorAll('input[name="objetivo"]').forEach(r => r.addEventListener('change', calcularTudo));
+
+        document.querySelectorAll('.btn-atalho').forEach(btn => {{
+            btn.addEventListener('click', function() {{
+                let val = parseFloat(this.getAttribute('data-val'));
+                document.getElementById('slider_amortizar').value = val;
+                document.getElementById('input_amortizar').value = formatCurrency(val);
+                calcularTudo();
+            }});
+        }});
+
+        function atualizarLinksWhatsapp(vImovel, entrada, valorAmortizar, economiaJuros) {{
+            const textoNav = `Olá! Estava navegando no ImobSimula na página do ${{bancoNome}} e gostaria de tirar algumas dúvidas com um especialista sobre financiamento e amortização.`;
+
+            const textoCta = `Olá! Fiz uma simulação de financiamento e amortização no ImobSimula:\n\n` +
+                `• Banco: ${{bancoNome}}\n` +
+                `• Valor do Imóvel: R$ ${{formatCurrency(vImovel)}}\n` +
+                `• Entrada: R$ ${{formatCurrency(entrada)}}\n` +
+                `• Valor para Amortizar: R$ ${{formatCurrency(valorAmortizar)}}\n` +
+                `• Economia Estimada: R$ ${{formatCurrency(economiaJuros)}}\n\n` +
+                `Gostaria de solicitar uma análise oficial do meu cenário!`;
+
+            document.getElementById('btn_wa_nav').href = `https://wa.me/${{SEU_WHATSAPP}}?text=${{encodeURIComponent(textoNav)}}`;
+            document.getElementById('btn_wa_cta').href = `https://wa.me/${{SEU_WHATSAPP}}?text=${{encodeURIComponent(textoCta)}}`;
+        }}
+
+        function calcularTudo() {{
+            const vImovel = unformatCurrency(document.getElementById('input_imovel').value);
+            const entrada = unformatCurrency(document.getElementById('input_entrada').value);
+            const taxa = (parseFloat(document.getElementById('input_taxa').value) || 0) / 100;
+            const prazo = parseInt(document.getElementById('input_prazo').value) || 0;
             const sistema = document.querySelector('input[name="sistema"]:checked').value;
-            
-            const parcelasPagas = parseInt(document.getElementById('parcelas_pagas').value) || 0;
-            const valorAmortizar = parseFloat(document.getElementById('valor_amortizar').value) || 0;
-            const tipoAmortizacao = document.getElementById('tipo_amortizacao').value;
+            const parcelasPagas = parseInt(document.getElementById('slider_pagas').value) || 0;
+            const valorAmortizar = unformatCurrency(document.getElementById('input_amortizar').value);
+            const objetivo = document.querySelector('input[name="objetivo"]:checked').value;
 
             const vFinanciado = vImovel - entrada;
             if (vFinanciado <= 0 || prazo <= 0) return;
 
-            // 1. Cálculo do Financiamento Base
-            let p1 = 0;
-            let amortizacaoMensalOrig = 0;
-            let pmtOrig = 0;
-
+            // 1. CÁLCULO ORIGINAL
+            let p1Orig = 0, pUOrig = 0, jurosOrig = 0, amortMensal = 0, pmtOrig = 0;
+            
             if (sistema === 'SAC') {{
-                amortizacaoMensalOrig = vFinanciado / prazo;
-                p1 = amortizacaoMensalOrig + (vFinanciado * taxa);
+                amortMensal = vFinanciado / prazo;
+                p1Orig = amortMensal + (vFinanciado * taxa);
+                pUOrig = amortMensal + (amortMensal * taxa);
+                jurosOrig = (((vFinanciado * taxa) + (amortMensal * taxa)) * prazo) / 2;
             }} else {{
                 pmtOrig = vFinanciado * (taxa * Math.pow(1 + taxa, prazo)) / (Math.pow(1 + taxa, prazo) - 1);
-                p1 = pmtOrig;
+                p1Orig = pmtOrig;
+                pUOrig = pmtOrig;
+                jurosOrig = (pmtOrig * prazo) - vFinanciado;
             }}
+            
+            const totalPagoOrig = vFinanciado + jurosOrig;
 
-            // 2. Saldo Devedor Atual após parcelas pagas
+            // 2. STATUS ATUAL
             let saldoDevedorAtual = 0;
             if (sistema === 'SAC') {{
-                saldoDevedorAtual = Math.max(0, vFinanciado - (parcelasPagas * amortizacaoMensalOrig));
+                saldoDevedorAtual = Math.max(0, vFinanciado - (parcelasPagas * amortMensal));
             }} else {{
                 saldoDevedorAtual = Math.max(0, vFinanciado * Math.pow(1 + taxa, parcelasPagas) - pmtOrig * (Math.pow(1 + taxa, parcelasPagas) - 1) / taxa);
             }}
 
-            // 3. Aplicação da Amortização Extra
             let saldoAposAmort = Math.max(0, saldoDevedorAtual - valorAmortizar);
             let parcelasRestantesOrig = Math.max(0, prazo - parcelasPagas);
-            let impactoTexto = "";
+            
+            // 3. CÁLCULO DA AMORTIZAÇÃO
             let economiaJuros = 0;
+            let novasParcelasRestantes = parcelasRestantesOrig;
+            let parcelasEliminadas = 0;
 
-            if (valorAmortizar > 0 && parcelasRestantesOrig > 0) {{
-                if (tipoAmortizacao === 'prazo') {{
+            if (valorAmortizar > 0 && parcelasRestantesOrig > 0 && saldoAposAmort > 0) {{
+                if (objetivo === 'prazo') {{
                     if (sistema === 'SAC') {{
-                        let novasParcelasRestantes = Math.ceil(saldoAposAmort / amortizacaoMensalOrig);
-                        let eliminadas = parcelasRestantesOrig - novasParcelasRestantes;
-                        impactoTexto = `${{Math.max(0, eliminadas)}} parcelas a menos`;
-
-                        // Juros sem amortizar vs com amortizar
+                        novasParcelasRestantes = Math.ceil(saldoAposAmort / amortMensal);
+                        parcelasEliminadas = parcelasRestantesOrig - novasParcelasRestantes;
                         let jurosSem = (saldoDevedorAtual * taxa * (parcelasRestantesOrig + 1)) / 2;
                         let jurosCom = (saldoAposAmort * taxa * (novasParcelasRestantes + 1)) / 2;
                         economiaJuros = Math.max(0, jurosSem - jurosCom);
                     }} else {{
                         let num = pmtOrig / (pmtOrig - taxa * saldoAposAmort);
-                        let novasParcelasRestantes = (num > 0) ? Math.ceil(Math.log(num) / Math.log(1 + taxa)) : 0;
-                        let eliminadas = parcelasRestantesOrig - novasParcelasRestantes;
-                        impactoTexto = `${{Math.max(0, eliminadas)}} parcelas a menos`;
-                        
+                        novasParcelasRestantes = (num > 0) ? Math.ceil(Math.log(num) / Math.log(1 + taxa)) : 0;
+                        parcelasEliminadas = parcelasRestantesOrig - novasParcelasRestantes;
                         let jurosSem = (pmtOrig * parcelasRestantesOrig) - saldoDevedorAtual;
                         let jurosCom = (pmtOrig * novasParcelasRestantes) - saldoAposAmort;
                         economiaJuros = Math.max(0, jurosSem - jurosCom);
                     }}
-                    document.getElementById('label_impacto').innerText = "Prazo Eliminado";
                 }} else {{
-                    // Redução do valor da parcela
                     if (sistema === 'SAC') {{
-                        let novaAmortizacao = saldoAposAmort / parcelasRestantesOrig;
-                        let novaP1 = novaAmortizacao + (saldoAposAmort * taxa);
-                        let diff = p1 - novaP1;
-                        impactoTexto = `Redução de R$ ${{diff.toFixed(2)}}/mês`;
-                        
+                        let novaAmort = saldoAposAmort / parcelasRestantesOrig;
+                        let novaP1 = novaAmort + (saldoAposAmort * taxa);
                         let jurosSem = (saldoDevedorAtual * taxa * (parcelasRestantesOrig + 1)) / 2;
                         let jurosCom = (saldoAposAmort * taxa * (parcelasRestantesOrig + 1)) / 2;
                         economiaJuros = Math.max(0, jurosSem - jurosCom);
                     }} else {{
                         let novaPmt = saldoAposAmort * (taxa * Math.pow(1 + taxa, parcelasRestantesOrig)) / (Math.pow(1 + taxa, parcelasRestantesOrig) - 1);
-                        let diff = pmtOrig - novaPmt;
-                        impactoTexto = `Redução de R$ ${{diff.toFixed(2)}}/mês`;
-                        
                         let jurosSem = (pmtOrig * parcelasRestantesOrig) - saldoDevedorAtual;
                         let jurosCom = (novaPmt * parcelasRestantesOrig) - saldoAposAmort;
                         economiaJuros = Math.max(0, jurosSem - jurosCom);
                     }}
-                    document.getElementById('label_impacto').innerText = "Nova Parcela Reduzida";
                 }}
-            }} else {{
-                impactoTexto = "0 parcelas";
             }}
 
-            const config = {{style:'currency',currency:'BRL'}};
-            document.getElementById('res_primeira').innerText = p1.toLocaleString('pt-BR', config);
-            document.getElementById('res_impacto').innerText = impactoTexto;
-            document.getElementById('res_economia').innerText = economiaJuros.toLocaleString('pt-BR', config);
-        }});
+            const pctReducaoCusto = ((economiaJuros / totalPagoOrig) * 100).toFixed(1);
+            const retornoMultiplo = valorAmortizar > 0 ? (economiaJuros / valorAmortizar).toFixed(2) : "0.00";
+
+            const cfg = {{style:'currency',currency:'BRL'}};
+            
+            // Originais
+            document.getElementById('res_p1_orig').innerText = p1Orig.toLocaleString('pt-BR', cfg);
+            document.getElementById('res_ultima_orig').innerText = pUOrig.toLocaleString('pt-BR', cfg);
+            document.getElementById('res_juros_orig').innerText = jurosOrig.toLocaleString('pt-BR', cfg);
+            document.getElementById('res_total_orig').innerText = totalPagoOrig.toLocaleString('pt-BR', cfg);
+            
+            // Amortização
+            document.getElementById('res_economia').innerText = economiaJuros.toLocaleString('pt-BR', cfg);
+            document.getElementById('badge_pct').innerText = `-${{pctReducaoCusto}}% do custo total`;
+
+            if(objetivo === 'prazo') {{
+                document.getElementById('res_impacto').innerText = parcelasEliminadas + " parcelas";
+                document.getElementById('sub_impacto').innerText = "eliminadas do contrato";
+                document.getElementById('frase_humana').innerText = `Você encurta seu financiamento em ${{parcelasEliminadas}} meses mantendo a parcela atual.`;
+            }} else {{
+                document.getElementById('res_impacto').innerText = "Redução na parcela";
+                document.getElementById('sub_impacto').innerText = "mantendo o prazo final";
+                document.getElementById('frase_humana').innerText = `Você diminui o valor mensal de todas as suas parcelas até o final do prazo.`;
+            }}
+
+            document.getElementById('retorno_multiplo').innerText = `Cada R$ 1,00 amortizado gera R$ ${{retornoMultiplo.replace('.', ',')}} de economia em juros.`;
+
+            // Gráfico
+            let pctPagas = (parcelasPagas / prazo) * 100;
+            let pctRestante = (novasParcelasRestantes / prazo) * 100;
+            
+            document.getElementById('bar_pagas').style.width = pctPagas + "%";
+            document.getElementById('bar_restante').style.left = pctPagas + "%";
+            document.getElementById('bar_restante').style.width = pctRestante + "%";
+
+            // Atualiza os links dinâmicos do WhatsApp
+            atualizarLinksWhatsapp(vImovel, entrada, valorAmortizar, economiaJuros);
+        }}
+
+        window.onload = function() {{
+            document.getElementById('slider_imovel').value = {valor_imovel};
+            document.getElementById('input_imovel').value = formatCurrency({valor_imovel});
+            document.getElementById('slider_entrada').value = {int(entrada_padrao)};
+            document.getElementById('input_entrada').value = formatCurrency({int(entrada_padrao)});
+            document.getElementById('display_pagas').innerText = "14 de " + document.getElementById('input_prazo').value + " parcelas";
+            calcularTudo();
+        }};
     </script>
 </body>
 </html>'''
@@ -291,22 +563,21 @@ def gerar_paginas_pseo():
 
     gerar_index_home(pasta_saida, links_por_banco)
     gerar_sitemap(urls_sitemap, pasta_saida)
-    print(f"\n🚀 Sucesso! {paginas_geradas} simuladores com amortização extra foram gerados.")
 
 def gerar_index_home(pasta_saida, links_por_banco):
     blocos_html = ""
     for banco, links in links_por_banco.items():
-        links_html = "".join([f'<li><a href="{item["slug"]}.html" class="text-slate-600 hover:text-orange-500 font-medium text-xs block py-1 transition-colors border-b border-slate-50"><i class="fa-solid fa-angle-right text-[10px] text-orange-400 mr-1.5"></i> {item["texto"]}</a></li>' for item in links])
+        links_html = "".join([f'<li><a href="{item["slug"]}.html" class="text-slate-600 hover:text-orange-500 font-medium text-xs block py-1.5 transition-colors border-b border-slate-50"><i class="fa-solid fa-angle-right text-[10px] text-slate-300 mr-2"></i> {item["texto"]}</a></li>' for item in links])
         
         blocos_html += f'''
-        <div class="banco-card bg-white p-6 rounded-3xl shadow-sm border border-slate-200 hover:shadow-md transition-all">
-            <div class="flex items-center space-x-3 mb-4 border-b border-slate-100 pb-3">
-                <div class="w-8 h-8 bg-orange-100 rounded-xl flex items-center justify-center text-orange-600 font-bold text-sm">
+        <div class="banco-card bg-white p-7 rounded-3xl shadow-sm border border-slate-200 hover:shadow-lg transition-all duration-300">
+            <div class="flex items-center space-x-4 mb-5 border-b border-slate-100 pb-4">
+                <div class="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-slate-700 font-bold text-base border border-slate-200">
                     <i class="fa-solid fa-building-columns"></i>
                 </div>
-                <h2 class="text-lg font-extrabold text-slate-800">{banco}</h2>
+                <h2 class="text-xl font-black text-slate-900">{banco}</h2>
             </div>
-            <ul class="space-y-1 h-56 overflow-y-auto pr-2 custom-scrollbar">
+            <ul class="space-y-1 h-60 overflow-y-auto pr-3 custom-scrollbar">
                 {links_html}
             </ul>
         </div>
@@ -320,25 +591,26 @@ def gerar_index_home(pasta_saida, links_por_banco):
     <title>ImobSimula | Portal de Financiamento e Amortização Imobiliária</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased">
     <nav class="bg-white border-b border-slate-200 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-20 items-center">
-                <a href="index.html" class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-orange-500 rounded-2xl flex items-center justify-center text-white font-bold text-xl shadow-md"><i class="fa-solid fa-calculator"></i></div>
-                    <span class="text-2xl font-black tracking-tight text-slate-900">Imob<span class="text-orange-500">Simula</span></span>
+            <div class="flex justify-between h-16 items-center">
+                <a href="index.html" class="flex items-center space-x-2.5">
+                    <div class="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center text-white font-bold text-sm"><i class="fa-solid fa-calculator"></i></div>
+                    <span class="text-xl font-black tracking-tight text-slate-900">Imob<span class="text-orange-500">Simula</span></span>
                 </a>
             </div>
         </div>
     </nav>
-    <div class="bg-slate-900 py-16 text-center px-4">
-        <h1 class="text-3xl md:text-5xl font-black text-white mb-4">Simulador de Amortização Extraordinária</h1>
-        <p class="text-slate-400 text-base max-w-2xl mx-auto mb-8">Descubra quanto você economiza de juros ao adiantar parcelas no seu banco.</p>
+    <div class="bg-slate-900 py-20 text-center px-4 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-500"></div>
+        <h1 class="text-4xl md:text-5xl font-black text-white mb-4 tracking-tight max-w-4xl mx-auto">Calcule o impacto da sua amortização.</h1>
+        <p class="text-slate-400 text-base md:text-lg max-w-2xl mx-auto mb-8 font-medium">Selecione seu banco abaixo para descobrir quanto você economiza adiantando parcelas do financiamento.</p>
     </div>
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div id="grid_bancos" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+        <div id="grid_bancos" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {blocos_html}
         </div>
     </main>
