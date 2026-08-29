@@ -168,7 +168,7 @@ def gerar_paginas_pseo():
         <!-- ZONA A: O FINANCIAMENTO (A DÍVIDA) -->
         <div class="glass-panel p-8 md:p-10 rounded-3xl">
             <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-8 border-b border-white/10 pb-4 flex items-center">
-                <i class="fa-solid fa-file-invoice-dollar mr-3"></i> 1. Estratégia de Financiamento (Cenário Base)
+                <i class="fa-solid fa-file-invoice-dollar mr-3"></i> 1. Estratégia de Financiamento
             </h2>
             
             <div class="flex flex-col lg:flex-row gap-10">
@@ -176,18 +176,18 @@ def gerar_paginas_pseo():
                 <div class="w-full lg:w-1/2 space-y-6">
                     <div>
                         <div class="flex justify-between items-end mb-2">
-                            <label class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">Total Financiado</label>
-                            <input type="text" id="input_imovel" class="currency-input w-40 text-right bg-transparent font-medium text-white text-2xl outline-none border-b border-white/20 focus:border-emerald-500 transition-colors" value="">
+                            <label class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">Valor do Imóvel</label>
+                            <input type="text" id="input_imovel" class="currency-input w-40 text-right bg-transparent font-medium text-white text-2xl outline-none border-b border-transparent focus:border-emerald-500 transition-colors" value="">
                         </div>
-                        <input type="range" id="slider_imovel" min="100000" max="2000000" step="10000" value="{valor_imovel}" class="w-full mt-2">
+                        <input type="range" id="slider_imovel" min="100000" max="2000000" step="10000" value="{valor_imovel}" class="w-full mt-4">
                     </div>
 
                     <div>
                         <div class="flex justify-between items-end mb-2">
                             <label class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">Entrada do Financiamento</label>
-                            <input type="text" id="input_entrada" class="currency-input w-40 text-right bg-transparent font-medium text-white text-2xl outline-none border-b border-white/20 focus:border-emerald-500 transition-colors" value="">
+                            <input type="text" id="input_entrada" class="currency-input w-40 text-right bg-transparent font-medium text-white text-2xl outline-none border-b border-transparent focus:border-emerald-500 transition-colors" value="">
                         </div>
-                        <input type="range" id="slider_entrada" min="0" max="1000000" step="5000" value="{int(entrada_padrao)}" class="w-full mt-2">
+                        <input type="range" id="slider_entrada" min="0" max="1000000" step="5000" value="{int(entrada_padrao)}" class="w-full mt-4">
                     </div>
 
                     <div class="grid grid-cols-2 gap-6">
@@ -212,11 +212,11 @@ def gerar_paginas_pseo():
                         <div class="flex bg-black/40 p-1 rounded-xl border border-white/5">
                             <label class="flex-1 text-center relative cursor-pointer">
                                 <input type="radio" name="sistema" value="SAC" class="peer sr-only" checked>
-                                <div class="py-2 rounded-lg text-xs font-bold transition-all border border-transparent tracking-widest">SAC</div>
+                                <div class="py-2.5 rounded-lg text-xs font-bold transition-all border border-transparent tracking-widest">SAC</div>
                             </label>
                             <label class="flex-1 text-center relative cursor-pointer">
                                 <input type="radio" name="sistema" value="PRICE" class="peer sr-only">
-                                <div class="py-2 rounded-lg text-xs font-bold transition-all border border-transparent tracking-widest">PRICE</div>
+                                <div class="py-2.5 rounded-lg text-xs font-bold transition-all border border-transparent tracking-widest">PRICE</div>
                             </label>
                         </div>
                     </div>
@@ -237,7 +237,7 @@ def gerar_paginas_pseo():
                     
                     <div class="pt-6 border-t border-white/5 grid grid-cols-1 gap-6">
                         <div>
-                            <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1.5">Total da Dívida (Sem Juros)</p>
+                            <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1.5">Total Financiado (Sem Juros)</p>
                             <p class="text-white font-medium text-lg" id="res_capital">R$ 0,00</p>
                         </div>
                         <div>
@@ -263,14 +263,14 @@ def gerar_paginas_pseo():
                 <!-- Input de Ação -->
                 <div class="w-full lg:w-1/2 flex flex-col justify-center">
                     <label class="text-[10px] font-bold text-slate-300 uppercase tracking-widest block mb-4">
-                        Amortização Extra Mensal
+                        Amortização Extra (Pagamento Único)
                     </label>
                     <div class="relative mb-6">
                         <span class="absolute left-4 top-1/2 -translate-y-1/2 font-light text-emerald-500/50 text-3xl">R$</span>
-                        <input type="text" id="input_amortizar" class="currency-input w-full bg-black/50 border border-emerald-500/30 rounded-2xl pl-16 pr-4 py-5 focus:border-emerald-400 font-medium text-emerald-400 text-4xl outline-none transition-all shadow-[inset_0_2px_10px_rgba(0,0,0,0.5)]" value="1.000,00">
+                        <input type="text" id="input_amortizar" class="currency-input w-full bg-black/50 border border-emerald-500/30 rounded-2xl pl-16 pr-4 py-5 focus:border-emerald-400 font-medium text-emerald-400 text-4xl outline-none transition-all shadow-[inset_0_2px_10px_rgba(0,0,0,0.5)]" value="20.000,00">
                     </div>
-                    <input type="range" id="slider_amortizar" min="0" max="20000" step="100" value="1000" class="w-full">
-                    <p class="text-[10px] text-slate-500 mt-4 text-center tracking-wide">Deslize para ver o impacto no seu futuro</p>
+                    <input type="range" id="slider_amortizar" min="0" max="500000" step="5000" value="20000" class="w-full">
+                    <p class="text-[10px] text-slate-500 mt-4 text-center tracking-wide">Deslize para simular o aporte único</p>
                 </div>
 
                 <!-- Outputs de Ganho (Aura) -->
@@ -369,13 +369,12 @@ def gerar_paginas_pseo():
             }});
         }}
 
-        function atualizarLinksWhatsapp(vImovel, entrada, valorAmortizarMensal, economiaJuros, anosLivre) {{
+        function atualizarLinksWhatsapp(vImovel, entrada, aporteUnico, economiaJuros, anosLivre) {{
             const textoNav = `Olá! Gostaria de tirar dúvidas sobre financiamento de imóveis pela ${{bancoNome}}.`;
             const textoCta = `Olá! Fiz uma simulação no Simulador Datalab e gostaria de uma análise:\n\n` +
                 `• Banco: ${{bancoNome}}\n` +
-                `• Total Financiado: R$ ${{formatCurrency(vImovel)}}\n` +
-                `• Entrada: R$ ${{formatCurrency(entrada)}}\n` +
-                `• Amortização Extra: R$ ${{formatCurrency(valorAmortizarMensal)}}/mês\n` +
+                `• Total Financiado: R$ ${{formatCurrency(vImovel - entrada)}}\n` +
+                `• Amortização Única: R$ ${{formatCurrency(aporteUnico)}}\n` +
                 `• Economia Gerada: R$ ${{formatCurrency(economiaJuros)}}\n` +
                 `• Tempo Reduzido: ${{anosLivre}}\n\n` +
                 `Podemos conversar?`;
@@ -391,9 +390,9 @@ def gerar_paginas_pseo():
             const prazoOrig = parseInt(document.getElementById('input_prazo').value) || 0;
             const sistema = document.querySelector('input[name="sistema"]:checked').value;
             
-            const aporteMensal = unformatCurrency(document.getElementById('input_amortizar').value);
+            const aporteUnico = unformatCurrency(document.getElementById('input_amortizar').value);
             
-            // Total financiado (Matematicamente)
+            // Total financiado original
             const vFinanciado = vImovel - entrada;
             
             if (vFinanciado <= 0 || prazoOrig <= 0) return;
@@ -422,27 +421,35 @@ def gerar_paginas_pseo():
                 saldoTrad -= amortizacaoBase;
             }}
 
-            // CENÁRIO 2: COM AMORTIZAÇÃO EXTRA MENSAL
-            let saldoNovo = vFinanciado;
+            // CENÁRIO 2: COM AMORTIZAÇÃO ÚNICA (Abate no inicio do contrato)
+            let saldoNovo = vFinanciado - aporteUnico;
             let jurosTotalNovo = 0;
             let mesesNovo = 0;
 
-            while (saldoNovo > 0 && mesesNovo < prazoOrig) {{
-                let juros = saldoNovo * taxa;
-                jurosTotalNovo += juros;
-                
-                let amortizacaoBase = 0;
-                if (sistema === 'SAC') {{
-                    amortizacaoBase = vFinanciado / prazoOrig;
-                }} else {{
-                    amortizacaoBase = pmtPriceTrad - juros;
+            if (saldoNovo > 0) {{
+                while (saldoNovo > 0 && mesesNovo < prazoOrig) {{
+                    let juros = saldoNovo * taxa;
+                    jurosTotalNovo += juros;
+                    
+                    let amortizacaoBase = 0;
+                    if (sistema === 'SAC') {{
+                        // No SAC, abatendo no prazo, a parcela de amortização continua a mesma original
+                        amortizacaoBase = vFinanciado / prazoOrig;
+                    }} else {{
+                        // Na PRICE, abatendo no prazo, o valor da prestação continua o mesmo original
+                        amortizacaoBase = pmtPriceTrad - juros;
+                    }}
+
+                    let abatimentoTotal = amortizacaoBase;
+                    if (abatimentoTotal > saldoNovo) abatimentoTotal = saldoNovo;
+
+                    saldoNovo -= abatimentoTotal;
+                    mesesNovo++;
                 }}
-
-                let abatimentoTotal = amortizacaoBase + aporteMensal;
-                if (abatimentoTotal > saldoNovo) abatimentoTotal = saldoNovo;
-
-                saldoNovo -= abatimentoTotal;
-                mesesNovo++;
+            }} else {{
+                // Se o aporte for maior ou igual a dívida, quita na hora.
+                mesesNovo = 0;
+                jurosTotalNovo = 0;
             }}
 
             // RESULTADOS FINAIS
@@ -479,7 +486,7 @@ def gerar_paginas_pseo():
                 cardAmortizacao.classList.remove('aura-active');
             }}
 
-            atualizarLinksWhatsapp(vImovel, entrada, aporteMensal, economiaJuros, textoTempo);
+            atualizarLinksWhatsapp(vImovel, entrada, aporteUnico, economiaJuros, textoTempo);
         }}
 
         window.onload = function() {{
