@@ -565,8 +565,28 @@ def gerar_paginas_pseo():
     gerar_sitemap(urls_sitemap, pasta_saida)
 
 def gerar_index_home(pasta_saida, links_por_banco):
+    # Dicionário com os domínios oficiais para puxar as logos automaticamente
+    dominios_bancos = {
+        "Caixa": "caixa.gov.br",
+        "Banco do Brasil": "bb.com.br",
+        "Itau": "itau.com.br",
+        "Bradesco": "bradesco.com.br",
+        "Santander": "santander.com.br",
+        "Banco Inter": "bancointer.com.br",
+        "Banrisul": "banrisul.com.br",
+        "BRB": "brb.com.br",
+        "Sicredi": "sicredi.com.br",
+        "Sicoob": "sicoob.com.br",
+        "C6 Bank": "c6bank.com.br",
+        "Poupex": "poupex.com.br"
+    }
+
     blocos_html = ""
     for banco, links in links_por_banco.items():
+        # Busca o domínio no dicionário. Se não achar, usa um genérico de fallback
+        dominio_banco = dominios_bancos.get(banco, "google.com")
+        url_logo = f"https://www.google.com/s2/favicons?domain={dominio_banco}&sz=128"
+
         links_html = "".join([f'''
             <li>
                 <a href="{item["slug"]}.html" class="group flex items-center justify-between p-3 rounded-lg hover:bg-teal-50 transition-colors border border-transparent hover:border-teal-100">
@@ -583,7 +603,7 @@ def gerar_index_home(pasta_saida, links_por_banco):
         <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-shadow duration-300 border border-slate-100 overflow-hidden">
             <!-- Cabeçalho do Card -->
             <div class="bg-slate-50 border-b border-slate-100 px-6 py-4 flex items-center gap-3">
-                <svg class="w-6 h-6 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path></svg>
+                <img src="{url_logo}" alt="Logo {banco}" class="w-6 h-6 rounded-md object-contain">
                 <h2 class="text-xl font-bold text-slate-800">{banco}</h2>
             </div>
 
