@@ -1,0 +1,32 @@
+name: ETL Mensal de Taxas de Juros
+
+on:
+  schedule:
+    - cron: '0 8 1 * *' # Roda todo dia 1º do mês às 08:00
+  workflow_dispatch: # Permite rodar manualmente no GitHub
+
+jobs:
+  atualiza-dados:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do Repositório
+        uses: actions/checkout@v3
+
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Instalar Dependências
+        run: pip install requests beautifulsoup4 pandas
+
+      - name: Rodar Extrator (Scraping)
+        run: python etl_taxas.py
+
+      - name: Atualizar Site (Commit e Push)
+        run: |
+          git config --global user.name "Robô Datalab"
+          git config --global user.email "bot@datalabglobal.com"
+          git add dados.csv
+          git commit -m "auto: atualização mensal das taxas de juros" || echo "Sem mudanças"
+          git push
