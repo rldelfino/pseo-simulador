@@ -1,77 +1,30 @@
-import os
-import csv
-
-def criar_csv_exemplo(caminho_csv):
-    cabecalho = ['banco', 'valor_imovel', 'taxa', 'prazo', 'slug']
-    dados = [
-        ['Caixa', '300000', '0.80', '360', 'simulador-caixa-300-mil-360-meses'],
-        ['Itau', '500000', '0.85', '360', 'simulador-itau-500-mil-360-meses']
-    ]
-    with open(caminho_csv, mode='w', newline='', encoding='utf-8') as arquivo:
-        writer = csv.writer(arquivo, delimiter=';')
-        writer.writerow(cabecalho)
-        writer.writerows(dados)
-
-def gerar_paginas_pseo():
-    caminho_csv = 'dados.csv'
-    pasta_saida = 'paginas_seo'
-    dominio = 'https://datalabglobal.com' 
-    
-    os.makedirs(pasta_saida, exist_ok=True)
-    if not os.path.exists(caminho_csv):
-        criar_csv_exemplo(caminho_csv)
-
-    urls_sitemap = []
-    links_por_banco = {}
-
-    with open(caminho_csv, mode='r', encoding='utf-8') as arquivo:
-        leitor_csv = csv.DictReader(arquivo, delimiter=';')
-        
-        paginas_geradas = 0
-        for linha in leitor_csv:
-            banco = linha['banco']
-            valor_imovel = float(linha['valor_imovel'])
-            taxa = float(linha['taxa'])
-            prazo = int(linha['prazo'])
-            slug = linha['slug']
-            
-            valor_amigavel = f"R$ {valor_imovel:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
-            entrada_padrao = valor_imovel * 0.20 
-            
-            if banco not in links_por_banco:
-                links_por_banco[banco] = []
-            links_por_banco[banco].append({
-                "slug": slug,
-                "texto": f"Imóvel de {valor_amigavel} em {prazo} meses"
-            })
-
-            html_content = f'''<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simule o Financiamento e Amortização | {banco} | Simulador Datalab</title>
-    <meta name="description" content="Simule seu financiamento imobiliário pela {banco} e descubra quanto economiza adiantando parcelas.">
-    <link rel="canonical" href="{dominio}/{slug}.html" />
+    <title>Simule o Financiamento e Amortização | Santander | ImobSimula</title>
+    <meta name="description" content="Simule seu financiamento imobiliário pela Santander e descubra quanto economiza adiantando parcelas.">
+    <link rel="canonical" href="https://datalabglobal.com/simulador-santander-1450-mil-420-meses.html" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        body {{ font-family: 'Inter', sans-serif; background-color: #f8fafc; }}
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
         
-        input[type=range] {{
+        input[type=range] {
             -webkit-appearance: none; appearance: none; width: 100%; height: 6px; background: #cbd5e1; border-radius: 9999px; outline: none;
-        }}
-        input[type=range]::-webkit-slider-thumb {{
+        }
+        input[type=range]::-webkit-slider-thumb {
             -webkit-appearance: none; appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #f97316; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.15); border: 2px solid #ffffff; transition: transform 0.1s ease;
-        }}
-        input[type=range]::-webkit-slider-thumb:hover {{ transform: scale(1.15); }}
+        }
+        input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.15); }
         
-        input[type="radio"]:checked + div {{ background-color: #0f172a; color: white; border-color: #0f172a; }}
-        input[type="radio"]:not(:checked) + div {{ background-color: #f1f5f9; color: #475569; border-color: #e2e8f0; }}
-        input[type="radio"]:not(:checked) + div:hover {{ border-color: #cbd5e1; background-color: #ffffff; }}
+        input[type="radio"]:checked + div { background-color: #0f172a; color: white; border-color: #0f172a; }
+        input[type="radio"]:not(:checked) + div { background-color: #f1f5f9; color: #475569; border-color: #e2e8f0; }
+        input[type="radio"]:not(:checked) + div:hover { border-color: #cbd5e1; background-color: #ffffff; }
         
-        .currency-input {{ font-variant-numeric: tabular-nums; }}
+        .currency-input { font-variant-numeric: tabular-nums; }
     </style>
 </head>
 <body class="text-slate-800 antialiased min-h-screen flex flex-col">
@@ -80,7 +33,7 @@ def gerar_paginas_pseo():
             <div class="flex justify-between h-16 items-center">
                 <a href="index.html" class="flex items-center space-x-2.5">
                     <div class="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center text-white font-bold text-sm"><i class="fa-solid fa-calculator"></i></div>
-                    <span class="font-bold text-xl tracking-tight text-teal-600">Simulador Datalab</span>
+                    <span class="text-xl font-black tracking-tight text-slate-900">Imob<span class="text-orange-500">Simula</span></span>
                 </a>
                 <div class="hidden md:flex items-center space-x-3">
                     <a id="btn_wa_nav" href="#" target="_blank" class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2 rounded-full font-bold transition-all text-xs flex items-center shadow-sm">
@@ -100,7 +53,7 @@ def gerar_paginas_pseo():
                 Quanto você quer financiar?
             </h1>
             <p class="text-slate-500 text-sm md:text-base font-medium max-w-2xl mx-auto">
-                Ajuste os parâmetros do seu financiamento pela <b class="text-slate-800">{banco}</b> e veja o impacto de adiantar parcelas.
+                Ajuste os parâmetros do seu financiamento pela <b class="text-slate-800">Santander</b> e veja o impacto de adiantar parcelas.
             </p>
         </div>
     </header>
@@ -123,7 +76,7 @@ def gerar_paginas_pseo():
                             <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Valor do Imóvel</label>
                             <input type="text" id="input_imovel" class="currency-input w-32 text-right bg-transparent font-black text-slate-900 text-lg outline-none border-b border-dashed border-slate-300 focus:border-orange-500 transition-colors" value="">
                         </div>
-                        <input type="range" id="slider_imovel" min="100000" max="2000000" step="10000" value="{valor_imovel}" class="w-full mt-2">
+                        <input type="range" id="slider_imovel" min="100000" max="2000000" step="10000" value="1450000.0" class="w-full mt-2">
                     </div>
 
                     <div>
@@ -131,21 +84,21 @@ def gerar_paginas_pseo():
                             <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Entrada</label>
                             <input type="text" id="input_entrada" class="currency-input w-32 text-right bg-transparent font-black text-slate-900 text-lg outline-none border-b border-dashed border-slate-300 focus:border-orange-500 transition-colors" value="">
                         </div>
-                        <input type="range" id="slider_entrada" min="0" max="1000000" step="5000" value="{int(entrada_padrao)}" class="w-full mt-2">
+                        <input type="range" id="slider_entrada" min="0" max="1000000" step="5000" value="290000" class="w-full mt-2">
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1 block">Prazo Total</label>
                             <div class="flex items-center border-b border-slate-300 pb-1">
-                                <input type="number" id="input_prazo" class="w-full bg-transparent font-bold text-slate-900 text-sm outline-none" value="{prazo}">
+                                <input type="number" id="input_prazo" class="w-full bg-transparent font-bold text-slate-900 text-sm outline-none" value="420">
                                 <span class="text-xs text-slate-400 font-medium ml-1">meses</span>
                             </div>
                         </div>
                         <div>
                             <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1 block">Taxa Estimada</label>
                             <div class="flex items-center border-b border-slate-300 pb-1">
-                                <input type="number" id="input_taxa" step="0.01" class="w-full bg-transparent font-bold text-slate-900 text-sm outline-none" value="{taxa}">
+                                <input type="number" id="input_taxa" step="0.01" class="w-full bg-transparent font-bold text-slate-900 text-sm outline-none" value="0.89">
                                 <span class="text-xs text-slate-400 font-medium ml-1">% a.m.</span>
                             </div>
                         </div>
@@ -192,9 +145,9 @@ def gerar_paginas_pseo():
                     <div>
                         <div class="flex justify-between items-end mb-1.5">
                             <label class="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Parcelas já pagas</label>
-                            <span class="text-xs font-black text-slate-900" id="display_pagas">14 de {prazo} parcelas</span>
+                            <span class="text-xs font-black text-slate-900" id="display_pagas">14 de 420 parcelas</span>
                         </div>
-                        <input type="range" id="slider_pagas" min="1" max="{prazo-1}" step="1" value="14" class="w-full mt-1">
+                        <input type="range" id="slider_pagas" min="1" max="419" step="1" value="14" class="w-full mt-1">
                     </div>
 
                     <div>
@@ -324,56 +277,56 @@ def gerar_paginas_pseo():
     </main>
 
     <script>
-        const bancoNome = "{banco}";
+        const bancoNome = "Santander";
         const SEU_WHATSAPP = "5527995051571";
-        const totalPrazoContrato = {prazo};
+        const totalPrazoContrato = 420;
 
-        function unformatCurrency(val) {{
+        function unformatCurrency(val) {
             if (typeof val === 'number') return val;
             return Number(val.replace(/\D/g, '')) / 100;
-        }}
+        }
 
-        function formatCurrency(val) {{
-            return (val).toLocaleString('pt-BR', {{ minimumFractionDigits: 2, maximumFractionDigits: 2 }});
-        }}
+        function formatCurrency(val) {
+            return (val).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
 
-        function initMask(inputId) {{
+        function initMask(inputId) {
             const input = document.getElementById(inputId);
             let rawVal = unformatCurrency(input.value);
             if(rawVal > 0) input.value = formatCurrency(rawVal);
 
-            input.addEventListener('input', function(e) {{
+            input.addEventListener('input', function(e) {
                 let raw = unformatCurrency(e.target.value);
                 e.target.value = formatCurrency(raw);
-            }});
-        }}
+            });
+        }
 
         initMask('input_imovel');
         initMask('input_entrada');
         initMask('input_amortizar');
 
-        function syncSliderInput(sliderId, inputId, isCurrency = true) {{
+        function syncSliderInput(sliderId, inputId, isCurrency = true) {
             const slider = document.getElementById(sliderId);
             const input = document.getElementById(inputId);
 
-            slider.addEventListener('input', function() {{
-                if(isCurrency) {{
+            slider.addEventListener('input', function() {
+                if(isCurrency) {
                     input.value = formatCurrency(Number(this.value));
-                }} else {{
+                } else {
                     input.value = this.value;
-                }}
-                if(sliderId === 'slider_pagas') {{
+                }
+                if(sliderId === 'slider_pagas') {
                     document.getElementById('display_pagas').innerText = this.value + " de " + document.getElementById('input_prazo').value + " parcelas";
-                }}
+                }
                 calcularTudo();
-            }});
+            });
 
-            input.addEventListener('blur', function() {{
+            input.addEventListener('blur', function() {
                 let val = isCurrency ? unformatCurrency(this.value) : Number(this.value);
                 slider.value = val;
                 calcularTudo();
-            }});
-        }}
+            });
+        }
 
         syncSliderInput('slider_imovel', 'input_imovel', true);
         syncSliderInput('slider_entrada', 'input_entrada', true);
@@ -381,52 +334,60 @@ def gerar_paginas_pseo():
 
         const sliderPagas = document.getElementById('slider_pagas');
         const displayPagas = document.getElementById('display_pagas');
-        sliderPagas.addEventListener('input', function() {{
+        sliderPagas.addEventListener('input', function() {
             displayPagas.innerText = this.value + " de " + document.getElementById('input_prazo').value + " parcelas";
             calcularTudo();
-        }});
+        });
 
-        function atualizaMaxPagas() {{
+        function atualizaMaxPagas() {
             const prazoAtual = parseInt(document.getElementById('input_prazo').value) || 0;
             const pagas = document.getElementById('slider_pagas');
             pagas.max = Math.max(1, prazoAtual - 1);
-            if (parseInt(pagas.value) > parseInt(pagas.max)) {{
+            if (parseInt(pagas.value) > parseInt(pagas.max)) {
                 pagas.value = pagas.max;
-            }}
+            }
             document.getElementById('display_pagas').innerText = pagas.value + " de " + prazoAtual + " parcelas";
             calcularTudo();
-        }}
+        }
 
         document.getElementById('input_prazo').addEventListener('input', atualizaMaxPagas);
         document.getElementById('input_taxa').addEventListener('input', calcularTudo);
         document.querySelectorAll('input[name="sistema"]').forEach(r => r.addEventListener('change', calcularTudo));
         document.querySelectorAll('input[name="objetivo"]').forEach(r => r.addEventListener('change', calcularTudo));
 
-        document.querySelectorAll('.btn-atalho').forEach(btn => {{
-            btn.addEventListener('click', function() {{
+        document.querySelectorAll('.btn-atalho').forEach(btn => {
+            btn.addEventListener('click', function() {
                 let val = parseFloat(this.getAttribute('data-val'));
                 document.getElementById('slider_amortizar').value = val;
                 document.getElementById('input_amortizar').value = formatCurrency(val);
                 calcularTudo();
-            }});
-        }});
+            });
+        });
 
-        function atualizarLinksWhatsapp(vImovel, entrada, valorAmortizar, economiaJuros) {{
-            const textoNav = `Olá! Estava navegando no ImobSimula na página do ${{bancoNome}} e gostaria de tirar algumas dúvidas com um especialista sobre financiamento e amortização.`;
+        function atualizarLinksWhatsapp(vImovel, entrada, valorAmortizar, economiaJuros) {
+            const textoNav = `Olá! Estava navegando no ImobSimula na página do ${bancoNome} e gostaria de tirar algumas dúvidas com um especialista sobre financiamento e amortização.`;
 
-            const textoCta = `Olá! Fiz uma simulação de financiamento e amortização no Simulador Datalab:\n\n` +
-                `• Banco: ${{bancoNome}}\n` +
-                `• Valor do Imóvel: R$ ${{formatCurrency(vImovel)}}\n` +
-                `• Entrada: R$ ${{formatCurrency(entrada)}}\n` +
-                `• Valor para Amortizar: R$ ${{formatCurrency(valorAmortizar)}}\n` +
-                `• Economia Estimada: R$ ${{formatCurrency(economiaJuros)}}\n\n` +
+            const textoCta = `Olá! Fiz uma simulação de financiamento e amortização no ImobSimula:
+
+` +
+                `• Banco: ${bancoNome}
+` +
+                `• Valor do Imóvel: R$ ${formatCurrency(vImovel)}
+` +
+                `• Entrada: R$ ${formatCurrency(entrada)}
+` +
+                `• Valor para Amortizar: R$ ${formatCurrency(valorAmortizar)}
+` +
+                `• Economia Estimada: R$ ${formatCurrency(economiaJuros)}
+
+` +
                 `Gostaria de solicitar uma análise oficial do meu cenário!`;
 
-            document.getElementById('btn_wa_nav').href = `https://wa.me/${{SEU_WHATSAPP}}?text=${{encodeURIComponent(textoNav)}}`;
-            document.getElementById('btn_wa_cta').href = `https://wa.me/${{SEU_WHATSAPP}}?text=${{encodeURIComponent(textoCta)}}`;
-        }}
+            document.getElementById('btn_wa_nav').href = `https://wa.me/${SEU_WHATSAPP}?text=${encodeURIComponent(textoNav)}`;
+            document.getElementById('btn_wa_cta').href = `https://wa.me/${SEU_WHATSAPP}?text=${encodeURIComponent(textoCta)}`;
+        }
 
-        function calcularTudo() {{
+        function calcularTudo() {
             const vImovel = unformatCurrency(document.getElementById('input_imovel').value);
             const entrada = unformatCurrency(document.getElementById('input_entrada').value);
             const taxa = (parseFloat(document.getElementById('input_taxa').value) || 0) / 100;
@@ -442,27 +403,27 @@ def gerar_paginas_pseo():
             // 1. CÁLCULO ORIGINAL
             let p1Orig = 0, pUOrig = 0, jurosOrig = 0, amortMensal = 0, pmtOrig = 0;
             
-            if (sistema === 'SAC') {{
+            if (sistema === 'SAC') {
                 amortMensal = vFinanciado / prazo;
                 p1Orig = amortMensal + (vFinanciado * taxa);
                 pUOrig = amortMensal + (amortMensal * taxa);
                 jurosOrig = (((vFinanciado * taxa) + (amortMensal * taxa)) * prazo) / 2;
-            }} else {{
+            } else {
                 pmtOrig = vFinanciado * (taxa * Math.pow(1 + taxa, prazo)) / (Math.pow(1 + taxa, prazo) - 1);
                 p1Orig = pmtOrig;
                 pUOrig = pmtOrig;
                 jurosOrig = (pmtOrig * prazo) - vFinanciado;
-            }}
+            }
             
             const totalPagoOrig = vFinanciado + jurosOrig;
 
             // 2. STATUS ATUAL
             let saldoDevedorAtual = 0;
-            if (sistema === 'SAC') {{
+            if (sistema === 'SAC') {
                 saldoDevedorAtual = Math.max(0, vFinanciado - (parcelasPagas * amortMensal));
-            }} else {{
+            } else {
                 saldoDevedorAtual = Math.max(0, vFinanciado * Math.pow(1 + taxa, parcelasPagas) - pmtOrig * (Math.pow(1 + taxa, parcelasPagas) - 1) / taxa);
-            }}
+            }
 
             let saldoAposAmort = Math.max(0, saldoDevedorAtual - valorAmortizar);
             let parcelasRestantesOrig = Math.max(0, prazo - parcelasPagas);
@@ -472,42 +433,42 @@ def gerar_paginas_pseo():
             let novasParcelasRestantes = parcelasRestantesOrig;
             let parcelasEliminadas = 0;
 
-            if (valorAmortizar > 0 && parcelasRestantesOrig > 0 && saldoAposAmort > 0) {{
-                if (objetivo === 'prazo') {{
-                    if (sistema === 'SAC') {{
+            if (valorAmortizar > 0 && parcelasRestantesOrig > 0 && saldoAposAmort > 0) {
+                if (objetivo === 'prazo') {
+                    if (sistema === 'SAC') {
                         novasParcelasRestantes = Math.ceil(saldoAposAmort / amortMensal);
                         parcelasEliminadas = parcelasRestantesOrig - novasParcelasRestantes;
                         let jurosSem = (saldoDevedorAtual * taxa * (parcelasRestantesOrig + 1)) / 2;
                         let jurosCom = (saldoAposAmort * taxa * (novasParcelasRestantes + 1)) / 2;
                         economiaJuros = Math.max(0, jurosSem - jurosCom);
-                    }} else {{
+                    } else {
                         let num = pmtOrig / (pmtOrig - taxa * saldoAposAmort);
                         novasParcelasRestantes = (num > 0) ? Math.ceil(Math.log(num) / Math.log(1 + taxa)) : 0;
                         parcelasEliminadas = parcelasRestantesOrig - novasParcelasRestantes;
                         let jurosSem = (pmtOrig * parcelasRestantesOrig) - saldoDevedorAtual;
                         let jurosCom = (pmtOrig * novasParcelasRestantes) - saldoAposAmort;
                         economiaJuros = Math.max(0, jurosSem - jurosCom);
-                    }}
-                }} else {{
-                    if (sistema === 'SAC') {{
+                    }
+                } else {
+                    if (sistema === 'SAC') {
                         let novaAmort = saldoAposAmort / parcelasRestantesOrig;
                         let novaP1 = novaAmort + (saldoAposAmort * taxa);
                         let jurosSem = (saldoDevedorAtual * taxa * (parcelasRestantesOrig + 1)) / 2;
                         let jurosCom = (saldoAposAmort * taxa * (parcelasRestantesOrig + 1)) / 2;
                         economiaJuros = Math.max(0, jurosSem - jurosCom);
-                    }} else {{
+                    } else {
                         let novaPmt = saldoAposAmort * (taxa * Math.pow(1 + taxa, parcelasRestantesOrig)) / (Math.pow(1 + taxa, parcelasRestantesOrig) - 1);
                         let jurosSem = (pmtOrig * parcelasRestantesOrig) - saldoDevedorAtual;
                         let jurosCom = (novaPmt * parcelasRestantesOrig) - saldoAposAmort;
                         economiaJuros = Math.max(0, jurosSem - jurosCom);
-                    }}
-                }}
-            }}
+                    }
+                }
+            }
 
             const pctReducaoCusto = ((economiaJuros / totalPagoOrig) * 100).toFixed(1);
             const retornoMultiplo = valorAmortizar > 0 ? (economiaJuros / valorAmortizar).toFixed(2) : "0.00";
 
-            const cfg = {{style:'currency',currency:'BRL'}};
+            const cfg = {style:'currency',currency:'BRL'};
             
             // Originais
             document.getElementById('res_p1_orig').innerText = p1Orig.toLocaleString('pt-BR', cfg);
@@ -517,19 +478,19 @@ def gerar_paginas_pseo():
             
             // Amortização
             document.getElementById('res_economia').innerText = economiaJuros.toLocaleString('pt-BR', cfg);
-            document.getElementById('badge_pct').innerText = `-${{pctReducaoCusto}}% do custo total`;
+            document.getElementById('badge_pct').innerText = `-${pctReducaoCusto}% do custo total`;
 
-            if(objetivo === 'prazo') {{
+            if(objetivo === 'prazo') {
                 document.getElementById('res_impacto').innerText = parcelasEliminadas + " parcelas";
                 document.getElementById('sub_impacto').innerText = "eliminadas do contrato";
-                document.getElementById('frase_humana').innerText = `Você encurta seu financiamento em ${{parcelasEliminadas}} meses mantendo a parcela atual.`;
-            }} else {{
+                document.getElementById('frase_humana').innerText = `Você encurta seu financiamento em ${parcelasEliminadas} meses mantendo a parcela atual.`;
+            } else {
                 document.getElementById('res_impacto').innerText = "Redução na parcela";
                 document.getElementById('sub_impacto').innerText = "mantendo o prazo final";
                 document.getElementById('frase_humana').innerText = `Você diminui o valor mensal de todas as suas parcelas até o final do prazo.`;
-            }}
+            }
 
-            document.getElementById('retorno_multiplo').innerText = `Cada R$ 1,00 amortizado gera R$ ${{retornoMultiplo.replace('.', ',')}} de economia em juros.`;
+            document.getElementById('retorno_multiplo').innerText = `Cada R$ 1,00 amortizado gera R$ ${retornoMultiplo.replace('.', ',')} de economia em juros.`;
 
             // Gráfico
             let pctPagas = (parcelasPagas / prazo) * 100;
@@ -541,105 +502,16 @@ def gerar_paginas_pseo():
 
             // Atualiza os links dinâmicos do WhatsApp
             atualizarLinksWhatsapp(vImovel, entrada, valorAmortizar, economiaJuros);
-        }}
+        }
 
-        window.onload = function() {{
-            document.getElementById('slider_imovel').value = {valor_imovel};
-            document.getElementById('input_imovel').value = formatCurrency({valor_imovel});
-            document.getElementById('slider_entrada').value = {int(entrada_padrao)};
-            document.getElementById('input_entrada').value = formatCurrency({int(entrada_padrao)});
+        window.onload = function() {
+            document.getElementById('slider_imovel').value = 1450000.0;
+            document.getElementById('input_imovel').value = formatCurrency(1450000.0);
+            document.getElementById('slider_entrada').value = 290000;
+            document.getElementById('input_entrada').value = formatCurrency(290000);
             document.getElementById('display_pagas').innerText = "14 de " + document.getElementById('input_prazo').value + " parcelas";
             calcularTudo();
-        }};
+        };
     </script>
 </body>
-</html>'''
-            caminho_arquivo = os.path.join(pasta_saida, f"{slug}.html")
-            with open(caminho_arquivo, "w", encoding="utf-8") as f:
-                f.write(html_content)
-            
-            urls_sitemap.append(f"{dominio}/{slug}.html")
-            paginas_geradas += 1
-
-    gerar_index_home(pasta_saida, links_por_banco)
-    gerar_sitemap(urls_sitemap, pasta_saida)
-
-def gerar_index_home(pasta_saida, links_por_banco):
-    blocos_html = ""
-    for banco, links in links_por_banco.items():
-        links_html = "".join([f'''
-            <li>
-                <a href="{item["slug"]}.html" class="group flex items-center justify-between p-3 rounded-lg hover:bg-teal-50 transition-colors border border-transparent hover:border-teal-100">
-                    <span class="text-sm font-medium text-slate-600 group-hover:text-teal-700">
-                        {item["texto"]}
-                    </span>
-                    <svg class="w-4 h-4 text-slate-300 group-hover:text-teal-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                </a>
-            </li>
-        ''' for item in links])
-        
-        blocos_html += f'''
-        <!-- Card do Banco -->
-        <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-shadow duration-300 border border-slate-100 overflow-hidden">
-            <!-- Cabeçalho do Card -->
-            <div class="bg-slate-50 border-b border-slate-100 px-6 py-4 flex items-center gap-3">
-                <svg class="w-6 h-6 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path></svg>
-                <h2 class="text-xl font-bold text-slate-800">{banco}</h2>
-            </div>
-
-            <!-- Lista de Links -->
-            <div class="p-4">
-                <ul class="space-y-2 h-60 overflow-y-auto pr-2 custom-scrollbar">
-                    {links_html}
-                </ul>
-            </div>
-        </div>
-        '''
-
-    html_home = f'''<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador Datalab | Portal de Financiamento e Amortização Imobiliária</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-</head>
-<body class="bg-slate-50 text-slate-800 antialiased">
-    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
-                <a href="index.html" class="flex items-center space-x-2.5">
-                    <div class="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center text-white font-bold text-sm"><i class="fa-solid fa-calculator"></i></div>
-                    <span class="font-bold text-xl tracking-tight text-teal-600">Simulador Datalab</span>
-                </a>
-            </div>
-        </div>
-    </nav>
-    <div class="bg-slate-900 py-20 text-center px-4 relative overflow-hidden">
-        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-500"></div>
-        <h1 class="text-4xl md:text-5xl font-black text-white mb-4 tracking-tight max-w-4xl mx-auto">Calcule seu financiamento e o impacto das amortizações</h1>
-        <p class="text-slate-400 text-base md:text-lg max-w-2xl mx-auto mb-8 font-medium">Selecione seu banco abaixo para descobrir quanto você economiza adiantando parcelas do financiamento.</p>
-    </div>
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-        <div id="grid_bancos" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {blocos_html}
-        </div>
-    </main>
-</body>
-</html>'''
-
-    with open(os.path.join(pasta_saida, 'index.html'), "w", encoding="utf-8") as f:
-        f.write(html_home)
-
-def gerar_sitemap(urls, pasta_saida):
-    xml_content = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-    for url in urls:
-        xml_content += f"  <url>\n    <loc>{url}</loc>\n    <changefreq>monthly</changefreq>\n    <priority>0.8</priority>\n  </url>\n"
-    xml_content += '</urlset>'
-    with open(os.path.join(pasta_saida, 'sitemap.xml'), "w", encoding="utf-8") as f:
-        f.write(xml_content)
-
-if __name__ == "__main__":
-    gerar_paginas_pseo()
+</html>

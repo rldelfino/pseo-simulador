@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financiamento Santander | Crédito Imobiliário</title>
+    <meta name="description" content="Simule seu financiamento imobiliário pela Santander para imóveis de R$ 400.000,00. Taxas atualizadas e comparação SAC vs PRICE.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        input[type="radio"]:checked + div {
+            border-color: #f97316; 
+            background-color: #fff7ed; 
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased">
+    
+    <nav class="bg-white border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-sm">
+                        <i class="fa-solid fa-building"></i>
+                    </div>
+                    <span class="text-2xl font-bold tracking-tight text-gray-900">Imob<span class="text-orange-500">Simula</span></span>
+                </div>
+                <div class="hidden md:flex space-x-8 text-sm font-medium text-gray-500">
+                    <a href="#" class="hover:text-orange-500 transition-colors border-b-2 border-transparent hover:border-orange-500 pb-1">Início</a>
+                    <a href="#" class="text-orange-500 border-b-2 border-orange-500 pb-1">Simulador</a>
+                    <a href="#" class="hover:text-orange-500 transition-colors border-b-2 border-transparent hover:border-orange-500 pb-1">Mais Calculadoras</a>
+                </div>
+                <div class="hidden md:block">
+                    <button class="bg-gray-900 hover:bg-gray-800 text-white px-5 py-2.5 rounded-full font-semibold transition-colors text-sm">
+                        <i class="fa-brands fa-whatsapp mr-1"></i> Falar com Corretor
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="flex flex-col lg:flex-row gap-8 items-start">
+            
+            <div class="w-full lg:w-2/3 space-y-6">
+                <div class="mb-8">
+                    <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 tracking-tight">
+                        Financiamento Imobiliário <span class="text-orange-500">Santander</span>
+                    </h1>
+                    <p class="text-gray-500 text-lg">Simule as melhores taxas para o seu imóvel de R$ 400.000,00 e descubra o custo real do crédito.</p>
+                </div>
+
+                <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
+                    <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                        <i class="fa-solid fa-sliders text-orange-500 mr-3"></i> Ajuste sua simulação
+                    </h2>
+                    
+                    <div class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Valor de Compra (R$)</label>
+                                <input type="number" id="valor_imovel" value="400000.0" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3.5 focus:bg-white focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all font-semibold text-gray-900 text-lg outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Valor da Entrada (R$)</label>
+                                <input type="number" id="entrada" value="80000" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3.5 focus:bg-white focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all font-semibold text-gray-900 text-lg outline-none">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Prazo (Meses)</label>
+                                <input type="number" id="prazo" value="240" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3.5 focus:bg-white focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all font-semibold text-gray-900 text-lg outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Taxa de Juros (% a.m.)</label>
+                                <input type="number" id="taxa" value="0.89" step="0.01" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3.5 focus:bg-white focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all font-semibold text-gray-900 text-lg outline-none">
+                            </div>
+                        </div>
+
+                        <div class="pt-2">
+                            <label class="block text-sm font-semibold text-gray-700 mb-3">Sistema de Amortização</label>
+                            <div class="grid grid-cols-2 gap-4">
+                                <label class="relative cursor-pointer">
+                                    <input type="radio" name="sistema" value="SAC" class="sr-only" checked>
+                                    <div class="border-2 border-gray-100 rounded-2xl p-4 transition-all duration-200">
+                                        <div class="flex items-center justify-between mb-1">
+                                            <span class="font-bold text-gray-900">Tabela SAC</span>
+                                            <i class="fa-solid fa-circle-check text-orange-500 hidden check-icon"></i>
+                                        </div>
+                                        <p class="text-xs text-gray-500 font-medium">Parcelas que diminuem</p>
+                                    </div>
+                                </label>
+                                <label class="relative cursor-pointer">
+                                    <input type="radio" name="sistema" value="PRICE" class="sr-only">
+                                    <div class="border-2 border-gray-100 rounded-2xl p-4 transition-all duration-200">
+                                        <div class="flex items-center justify-between mb-1">
+                                            <span class="font-bold text-gray-900">Tabela PRICE</span>
+                                            <i class="fa-solid fa-circle-check text-orange-500 hidden check-icon"></i>
+                                        </div>
+                                        <p class="text-xs text-gray-500 font-medium">Parcelas fixas até o fim</p>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-full lg:w-1/3 lg:sticky lg:top-24">
+                <div class="bg-white p-7 rounded-3xl border border-gray-100 shadow-xl shadow-gray-200/50">
+                    <h3 class="text-lg font-bold text-gray-900 mb-6 border-b border-gray-100 pb-4">Resumo da Proposta</h3>
+                    
+                    <div class="space-y-5">
+                        <div>
+                            <p class="text-sm font-semibold text-gray-500 mb-1">Primeira Parcela</p>
+                            <p id="res_primeira" class="text-4xl font-extrabold text-orange-500 tracking-tight">R$ 0,00</p>
+                        </div>
+                        
+                        <div>
+                            <p class="text-sm font-semibold text-gray-500 mb-1">Última Parcela</p>
+                            <p id="res_ultima" class="text-2xl font-bold text-gray-800">R$ 0,00</p>
+                        </div>
+                        
+                        <div class="h-px bg-gray-100 w-full my-4"></div>
+
+                        <div>
+                            <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Custo Total de Juros</p>
+                            <p id="res_juros" class="text-xl font-bold text-gray-600">R$ 0,00</p>
+                        </div>
+
+                        <div class="pt-6 space-y-3">
+                            <button id="btn_calcular" class="w-full bg-gray-900 text-white font-bold py-4 rounded-2xl hover:bg-gray-800 transition-colors shadow-sm">
+                                Recalcular Valores
+                            </button>
+                            <button class="w-full bg-green-500 text-white font-bold py-4 rounded-2xl hover:bg-green-600 transition-colors shadow-sm flex items-center justify-center">
+                                <i class="fa-brands fa-whatsapp mr-2 text-lg"></i> Falar com Especialista
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.querySelectorAll('.check-icon').forEach(i => i.classList.add('hidden'));
+                if(this.checked) {
+                    this.nextElementSibling.querySelector('.check-icon').classList.remove('hidden');
+                }
+            });
+        });
+
+        document.querySelector('input[name="sistema"]:checked').nextElementSibling.querySelector('.check-icon').classList.remove('hidden');
+
+        window.onload = function() {
+            document.getElementById('btn_calcular').click();
+        };
+
+        document.getElementById('btn_calcular').addEventListener('click', function() {
+            const valorImovel = parseFloat(document.getElementById('valor_imovel').value);
+            const entrada = parseFloat(document.getElementById('entrada').value);
+            const taxa = parseFloat(document.getElementById('taxa').value) / 100;
+            const prazo = parseInt(document.getElementById('prazo').value);
+            const sistema = document.querySelector('input[name="sistema"]:checked').value;
+            
+            const valorFinanciado = valorImovel - entrada;
+            
+            if (valorFinanciado <= 0) {
+                alert("A entrada não pode ser maior ou igual ao valor do imóvel.");
+                return;
+            }
+
+            let primeiraParcela = 0;
+            let ultimaParcela = 0;
+            let totalJuros = 0;
+
+            if (sistema === 'SAC') {
+                const amortizacao = valorFinanciado / prazo;
+                primeiraParcela = amortizacao + (valorFinanciado * taxa);
+                ultimaParcela = amortizacao + (amortizacao * taxa); 
+                
+                const juros1 = valorFinanciado * taxa;
+                const jurosN = amortizacao * taxa;
+                totalJuros = ((juros1 + jurosN) * prazo) / 2;
+
+            } else if (sistema === 'PRICE') {
+                const parcela = valorFinanciado * (taxa * Math.pow(1 + taxa, prazo)) / (Math.pow(1 + taxa, prazo) - 1);
+                primeiraParcela = parcela;
+                ultimaParcela = parcela;
+                totalJuros = (parcela * prazo) - valorFinanciado;
+            }
+
+            const configBRL = { style: 'currency', currency: 'BRL' };
+            document.getElementById('res_primeira').innerText = primeiraParcela.toLocaleString('pt-BR', configBRL);
+            document.getElementById('res_ultima').innerText = ultimaParcela.toLocaleString('pt-BR', configBRL);
+            document.getElementById('res_juros').innerText = totalJuros.toLocaleString('pt-BR', configBRL);
+        });
+    </script>
+</body>
+</html>
