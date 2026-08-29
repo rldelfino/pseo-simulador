@@ -42,7 +42,7 @@ def gerar_paginas_pseo():
                 links_por_banco[banco] = []
             links_por_banco[banco].append({
                 "slug": slug,
-                "texto": f"Imóvel de {valor_amigavel} em {prazo} meses"
+                "texto": f"Simular {valor_amigavel} em {prazo} meses"
             })
 
             html_content = f'''<!DOCTYPE html>
@@ -50,60 +50,103 @@ def gerar_paginas_pseo():
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simule Financiamento e Amortização | {banco} | Simulador Datalab</title>
-    <meta name="description" content="Simule seu financiamento pela {banco}. Planeje o futuro e descubra o impacto da amortização.">
+    <title>Simulador de Financiamento | {banco} | Simulador Datalab</title>
+    <meta name="description" content="Simule seu financiamento imobiliário pela {banco}. Planeje o futuro e descubra quanto economiza adiantando parcelas.">
     <link rel="canonical" href="{dominio}/{slug}.html" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {{ 
             font-family: 'Inter', sans-serif; 
-            background: #0f172a;
+            background: #020617;
+            background-image: radial-gradient(at 80% 0%, #1e293b 0px, transparent 50%), radial-gradient(at 0% 100%, #0f172a 0px, transparent 50%);
             color: #f8fafc;
             min-height: 100vh;
+            overflow-x: hidden;
         }}
         
+        h1, h2, .font-serif {{ font-family: 'Playfair Display', serif; }}
+        
+        /* Glass Panels */
         .glass-panel {{
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }}
+        
+        .glass-panel-emerald {{
+            background: rgba(4, 47, 46, 0.4);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(16, 185, 129, 0.2);
         }}
 
+        .text-gold {{
+            background: linear-gradient(135deg, #fef08a 0%, #d97706 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }}
+        
+        /* Machined Aluminum Knobs */
         input[type=range] {{
             -webkit-appearance: none; appearance: none; width: 100%; height: 6px; 
-            background: rgba(255,255,255,0.1); border-radius: 9999px; outline: none;
+            background: rgba(255,255,255,0.05); border-radius: 9999px; outline: none;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
         }}
         input[type=range]::-webkit-slider-thumb {{
-            -webkit-appearance: none; appearance: none; width: 22px; height: 22px; border-radius: 50%; 
-            background: #10b981;
+            -webkit-appearance: none; appearance: none; width: 26px; height: 26px; border-radius: 50%; 
+            background: radial-gradient(circle at 50% 0%, #cbd5e1, #64748b);
             cursor: pointer; 
-            border: 2px solid #ffffff; transition: transform 0.1s ease;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.5), inset 0 2px 2px rgba(255,255,255,0.9), inset 0 -2px 5px rgba(0,0,0,0.3);
+            border: 1px solid #334155; transition: transform 0.1s ease;
         }}
         input[type=range]::-webkit-slider-thumb:active {{ transform: scale(0.95); }}
         
-        input[type="radio"]:checked + div {{ background: #10b981; color: white; border-color: transparent; }}
-        input[type="radio"]:not(:checked) + div {{ background-color: rgba(255,255,255,0.05); color: #94a3b8; border-color: rgba(255,255,255,0.1); }}
-        input[type="radio"]:not(:checked) + div:hover {{ background-color: rgba(255,255,255,0.1); color: white; }}
+        /* Elegant Radios */
+        input[type="radio"]:checked + div {{ background: linear-gradient(145deg, #10b981, #047857); color: white; border-color: transparent; box-shadow: 0 0 20px rgba(16,185,129,0.2); }}
+        input[type="radio"]:not(:checked) + div {{ background-color: transparent; color: #64748b; border-color: transparent; }}
+        input[type="radio"]:not(:checked) + div:hover {{ color: white; }}
         
         .currency-input {{ font-variant-numeric: tabular-nums; }}
+        
+        /* Emerald Particles */
+        .particle {{
+            position: fixed; width: 4px; height: 4px; background-color: #10b981; border-radius: 50%;
+            box-shadow: 0 0 10px #10b981, 0 0 20px #34d399; pointer-events: none; z-index: 9999;
+            animation: floatParticle 1s ease-out forwards;
+        }}
+        @keyframes floatParticle {{
+            0% {{ transform: translate(0, 0) scale(1); opacity: 1; }}
+            100% {{ transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }}
+        }}
+
+        /* Aura Glow for the Results */
+        .aura-glow {{ position: relative; }}
+        .aura-glow::before {{
+            content: ''; position: absolute; top: -1px; left: -1px; right: -1px; bottom: -1px;
+            background: linear-gradient(45deg, rgba(16,185,129,0.1), rgba(16,185,129,0.5), rgba(16,185,129,0.1));
+            z-index: -1; border-radius: inherit; filter: blur(10px); opacity: 0; transition: opacity 0.5s ease;
+        }}
+        .aura-active::before {{ opacity: 1; }}
     </style>
 </head>
 <body class="antialiased flex flex-col">
-    <!-- Navbar -->
-    <nav class="border-b border-white/10 sticky top-0 z-50 backdrop-blur-xl bg-slate-900/80">
+    <!-- Navbar Premium -->
+    <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
+            <div class="flex justify-between h-20 items-center">
                 <a href="index.html" class="flex items-center space-x-3">
-                    <div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center text-white font-bold text-sm">
+                    <div class="w-10 h-10 rounded-full flex items-center justify-center border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.2)] text-emerald-500">
                         <i class="fa-solid fa-calculator"></i>
                     </div>
-                    <span class="font-bold text-xl tracking-tight text-white">Simulador <span class="text-emerald-400">Datalab</span></span>
+                    <span class="font-serif text-2xl tracking-wide text-white">Simulador <span class="text-emerald-400">Datalab</span></span>
                 </a>
                 <div class="hidden md:flex items-center space-x-3">
-                    <a id="btn_wa_nav" href="#" target="_blank" class="bg-white hover:bg-slate-200 text-slate-900 px-5 py-2 rounded-lg font-bold transition-all text-sm flex items-center">
+                    <a id="btn_wa_nav" href="#" target="_blank" class="bg-white hover:bg-slate-200 text-slate-900 px-6 py-2.5 rounded-full font-bold transition-all text-sm flex items-center shadow-lg">
                         <i class="fa-brands fa-whatsapp mr-2 text-lg text-emerald-500"></i> Falar com Especialista
                     </a>
                 </div>
@@ -111,146 +154,166 @@ def gerar_paginas_pseo():
         </div>
     </nav>
 
-    <header class="py-12 relative z-10 text-center">
-        <h1 class="text-3xl md:text-5xl font-black text-white mb-4 tracking-tight">
+    <header class="py-12 md:py-16 relative z-10 text-center">
+        <h1 class="text-4xl md:text-5xl font-serif text-white mb-4 leading-tight">
             Simulador de Financiamento
         </h1>
-        <p class="text-slate-400 text-base md:text-lg max-w-2xl mx-auto">
-            Ajuste os valores para o banco <strong class="text-white">{banco}</strong> e descubra quanto você economiza ao fazer amortizações.
+        <p class="text-slate-400 text-base md:text-lg font-light tracking-wide max-w-3xl mx-auto">
+            Ajuste os valores para o banco <strong class="text-white font-medium">{banco}</strong> e descubra quanto você economiza ao fazer amortizações.
         </p>
     </header>
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 flex-grow w-full relative z-10">
         <div class="flex flex-col lg:flex-row gap-8 items-start">
             
-            <!-- PAINEL ESQUERDO: CONTROLES -->
+            <!-- PAINEL ESQUERDO: CONTROLES TÁTEIS -->
             <div class="w-full lg:w-5/12 space-y-6">
                 
-                <!-- Bloco 1: Financiamento -->
-                <div class="glass-panel p-6 md:p-8 rounded-2xl space-y-6">
-                    <div class="flex justify-between items-center border-b border-white/10 pb-4">
-                        <span class="text-sm font-bold text-slate-300 uppercase tracking-wider">Estratégia de Financiamento</span>
+                <!-- Bloco 1: Estratégia de Financiamento -->
+                <div class="glass-panel p-8 rounded-3xl space-y-8">
+                    <div class="flex justify-between items-center border-b border-white/5 pb-4">
+                        <span class="text-[10px] font-bold text-slate-300 uppercase tracking-widest">Estratégia de Financiamento</span>
                     </div>
 
                     <div>
                         <div class="flex justify-between items-end mb-2">
-                            <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Valor do Imóvel</label>
-                            <input type="text" id="input_imovel" class="currency-input w-40 text-right bg-transparent font-bold text-white text-xl outline-none border-b border-white/20 focus:border-emerald-500 transition-colors" value="">
+                            <label class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">Valor do Imóvel</label>
+                            <input type="text" id="input_imovel" class="currency-input w-40 text-right bg-transparent font-medium text-white text-2xl outline-none border-b border-transparent focus:border-emerald-500 transition-colors" value="">
                         </div>
-                        <input type="range" id="slider_imovel" min="100000" max="2000000" step="10000" value="{valor_imovel}" class="w-full mt-2">
+                        <input type="range" id="slider_imovel" min="100000" max="2000000" step="10000" value="{valor_imovel}" class="w-full mt-4">
                     </div>
 
                     <div>
                         <div class="flex justify-between items-end mb-2">
-                            <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Entrada do Financiamento</label>
-                            <input type="text" id="input_entrada" class="currency-input w-40 text-right bg-transparent font-bold text-white text-xl outline-none border-b border-white/20 focus:border-emerald-500 transition-colors" value="">
+                            <label class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">Entrada do Financiamento</label>
+                            <input type="text" id="input_entrada" class="currency-input w-40 text-right bg-transparent font-medium text-white text-2xl outline-none border-b border-transparent focus:border-emerald-500 transition-colors" value="">
                         </div>
-                        <input type="range" id="slider_entrada" min="0" max="1000000" step="5000" value="{int(entrada_padrao)}" class="w-full mt-2">
+                        <input type="range" id="slider_entrada" min="0" max="1000000" step="5000" value="{int(entrada_padrao)}" class="w-full mt-4">
                     </div>
 
                     <div class="grid grid-cols-2 gap-6">
                         <div>
-                            <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1 block">Prazo</label>
-                            <div class="flex items-center border-b border-white/20 pb-1">
-                                <input type="number" id="input_prazo" class="w-full bg-transparent font-bold text-white text-lg outline-none" value="{prazo}">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 block">Prazo</label>
+                            <div class="flex items-center border-b border-white/10 pb-1">
+                                <input type="number" id="input_prazo" class="w-full bg-transparent font-medium text-white text-lg outline-none" value="{prazo}">
                                 <span class="text-xs text-slate-500 ml-2">meses</span>
                             </div>
                         </div>
                         <div>
-                            <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1 block">Taxa Estimada</label>
-                            <div class="flex items-center border-b border-white/20 pb-1">
-                                <input type="number" id="input_taxa" step="0.01" class="w-full bg-transparent font-bold text-white text-lg outline-none" value="{taxa}">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 block">Taxa Estimada</label>
+                            <div class="flex items-center border-b border-white/10 pb-1">
+                                <input type="number" id="input_taxa" step="0.01" class="w-full bg-transparent font-medium text-white text-lg outline-none" value="{taxa}">
                                 <span class="text-xs text-slate-500 ml-2">% a.m.</span>
                             </div>
                         </div>
                     </div>
                     
                     <div>
-                        <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3 block">Sistema de Amortização</label>
-                        <div class="flex bg-slate-900/50 p-1 rounded-lg border border-white/10">
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 block">Sistema de Amortização</label>
+                        <div class="flex bg-black/40 p-1 rounded-xl border border-white/5">
                             <label class="flex-1 text-center relative cursor-pointer">
                                 <input type="radio" name="sistema" value="SAC" class="peer sr-only" checked>
-                                <div class="py-2 rounded-md text-sm font-bold transition-all">SAC</div>
+                                <div class="py-2.5 rounded-lg text-xs font-bold transition-all border border-transparent tracking-widest">SAC</div>
                             </label>
                             <label class="flex-1 text-center relative cursor-pointer">
                                 <input type="radio" name="sistema" value="PRICE" class="peer sr-only">
-                                <div class="py-2 rounded-md text-sm font-bold transition-all">PRICE</div>
+                                <div class="py-2.5 rounded-lg text-xs font-bold transition-all border border-transparent tracking-widest">PRICE</div>
                             </label>
                         </div>
                     </div>
                 </div>
 
-                <!-- Bloco 2: Amortização -->
-                <div class="glass-panel p-6 md:p-8 rounded-2xl space-y-6 border-emerald-500/30 bg-emerald-900/10">
-                    <div class="flex justify-between items-center border-b border-emerald-500/20 pb-4">
-                        <span class="text-sm font-bold text-emerald-400 uppercase tracking-wider">Valor a Amortizar</span>
+                <!-- Bloco 2: Valor a Amortizar -->
+                <div class="glass-panel p-8 rounded-3xl space-y-8 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent pointer-events-none"></div>
+                    
+                    <div class="flex justify-between items-center border-b border-emerald-500/20 pb-4 relative z-10">
+                        <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">Valor a Amortizar</span>
                     </div>
 
-                    <div>
-                        <label class="text-xs font-semibold text-slate-300 uppercase tracking-wider block mb-3">Amortização Extra Mensal</label>
-                        <div class="relative mb-4">
-                            <span class="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-emerald-500/50 text-xl">R$</span>
-                            <input type="text" id="input_amortizar" class="currency-input w-full bg-slate-900/80 border border-emerald-500/30 rounded-xl pl-12 pr-4 py-3 focus:border-emerald-400 font-bold text-emerald-400 text-2xl outline-none transition-all" value="1.000,00">
+                    <div class="relative z-10">
+                        <label class="text-[10px] font-bold text-slate-300 uppercase tracking-widest block mb-4 flex items-center">
+                            Amortização Extra Mensal
+                        </label>
+                        <div class="relative mb-6">
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 font-light text-emerald-500/50 text-2xl">R$</span>
+                            <input type="text" id="input_amortizar" class="currency-input w-full bg-black/50 border border-emerald-500/30 rounded-2xl pl-14 pr-4 py-4 focus:border-emerald-400 font-medium text-emerald-400 text-3xl outline-none transition-all shadow-[inset_0_2px_10px_rgba(0,0,0,0.5)]" value="1.000,00">
                         </div>
                         <input type="range" id="slider_amortizar" min="0" max="20000" step="100" value="1000" class="w-full">
                     </div>
                 </div>
             </div>
 
-            <!-- PAINEL DIREITO: RESULTADOS CLAROS -->
+            <!-- PAINEL DIREITO: NÚMEROS DIVIDIDOS -->
             <div class="w-full lg:w-7/12 space-y-6">
                 
-                <!-- Card 1: Financiamento -->
-                <div class="glass-panel rounded-2xl p-6 md:p-8">
-                    <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6 border-b border-white/10 pb-3">
+                <!-- Card 1: Números do Financiamento -->
+                <div class="glass-panel rounded-3xl p-8 lg:p-10">
+                    <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-8 border-b border-white/10 pb-4">
                         Números do Financiamento
                     </h2>
                     
-                    <div class="grid grid-cols-2 gap-6 mb-6">
+                    <div class="grid grid-cols-2 gap-8 mb-8">
                         <div>
-                            <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">Primeira Parcela</p>
-                            <p class="text-white text-3xl font-bold tracking-tight" id="res_p1">R$ 0,00</p>
+                            <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-2">Primeira Parcela</p>
+                            <p class="text-white text-3xl font-light tracking-tight" id="res_p1">R$ 0,00</p>
                         </div>
                         <div>
-                            <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">Última Parcela</p>
-                            <p class="text-slate-300 text-2xl font-semibold tracking-tight mt-1" id="res_pU">R$ 0,00</p>
+                            <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-2">Última Parcela</p>
+                            <p class="text-slate-300 text-2xl font-light tracking-tight mt-1" id="res_pU">R$ 0,00</p>
                         </div>
                     </div>
                     
-                    <div class="bg-slate-800/50 rounded-xl p-4 border border-white/5 grid grid-cols-2 gap-4">
+                    <div class="bg-black/30 rounded-2xl p-6 border border-white/5 grid grid-cols-2 gap-6">
                         <div>
-                            <p class="text-slate-500 text-[10px] font-bold uppercase tracking-wider mb-1">Total Financiado (Sem Juros)</p>
-                            <p class="text-white font-semibold" id="res_capital">R$ 0,00</p>
+                            <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1.5">Total Financiado (Sem Juros)</p>
+                            <p class="text-white font-medium text-lg" id="res_capital">R$ 0,00</p>
                         </div>
                         <div>
-                            <p class="text-slate-500 text-[10px] font-bold uppercase tracking-wider mb-1">Custo Total (Capital + Juros)</p>
-                            <p class="text-white font-bold" id="res_total_pago">R$ 0,00</p>
+                            <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1.5">Custo Total (Capital + Juros)</p>
+                            <p class="text-white font-medium text-lg" id="res_total_pago">R$ 0,00</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Card 2: Amortização -->
-                <div class="bg-emerald-950/40 backdrop-blur-md border border-emerald-500/30 rounded-2xl p-6 md:p-8">
-                    <h2 class="text-xs font-bold text-emerald-500 uppercase tracking-widest mb-6 border-b border-emerald-500/20 pb-3">
+                <!-- Card 2: Resultado da Amortização -->
+                <div class="glass-panel-emerald rounded-3xl p-8 lg:p-10 aura-glow relative overflow-hidden" id="card_amortizacao">
+                    <div class="absolute right-0 top-0 w-64 h-64 bg-emerald-500/20 rounded-full blur-[80px] pointer-events-none"></div>
+                    
+                    <h2 class="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-8 border-b border-emerald-500/20 pb-4 relative z-10">
                         Resultado da Amortização
                     </h2>
                     
-                    <div class="text-center mb-8">
-                        <p class="text-emerald-500/80 text-xs font-bold uppercase tracking-wider mb-2">Economia Total de Juros</p>
-                        <p class="text-5xl md:text-6xl font-black text-emerald-400 tracking-tight" id="res_economia">R$ 0,00</p>
+                    <div class="text-center relative z-10 mb-10">
+                        <p class="text-emerald-500/80 text-[10px] font-bold uppercase tracking-widest mb-3">Economia Total de Juros</p>
+                        <p class="text-6xl md:text-7xl font-serif text-emerald-400 drop-shadow-[0_0_15px_rgba(16,185,129,0.3)]" id="res_economia">R$ 0,00</p>
                     </div>
 
-                    <div class="bg-emerald-900/40 rounded-xl p-5 border border-emerald-500/20 text-center">
-                        <p class="text-emerald-500 text-[10px] font-bold uppercase tracking-wider mb-1">Tempo de Financiamento Reduzido Em</p>
-                        <p class="text-3xl font-bold text-white tracking-tight" id="res_impacto">0 Anos e 0 Meses</p>
-                        <p id="retorno_multiplo" class="text-emerald-400 text-xs font-semibold mt-3">Cada R$ 1,00 extra amortizado gera R$ 0,00 de economia.</p>
+                    <div class="bg-black/40 border border-emerald-500/30 rounded-2xl p-8 relative z-10 backdrop-blur-sm shadow-[inset_0_0_20px_rgba(16,185,129,0.1)] text-center">
+                        <p class="text-emerald-500 text-[10px] font-bold uppercase tracking-widest mb-2">Tempo de Financiamento Reduzido Em</p>
+                        <p class="text-4xl md:text-5xl font-light text-white tracking-tight" id="res_impacto">0 Anos e 0 Meses</p>
+                        
+                        <!-- Mini Timeline Visual -->
+                        <div class="mt-6 w-full h-2 bg-slate-800 rounded-full relative overflow-hidden">
+                            <div class="absolute left-0 top-0 h-full bg-slate-600 w-full"></div>
+                            <div id="bar_novo_prazo" class="absolute left-0 top-0 h-full bg-emerald-500 transition-all duration-700" style="width: 100%;"></div>
+                        </div>
+                        <div class="flex justify-between mt-2 text-[9px] font-bold text-slate-500 uppercase tracking-widest">
+                            <span>Hoje</span>
+                            <span class="text-emerald-500" id="label_novo_prazo">Novo Fim</span>
+                            <span>Fim Original</span>
+                        </div>
+
+                        <p id="retorno_multiplo" class="text-emerald-400 text-xs font-semibold mt-6 tracking-wide">
+                            Cada R$ 1,00 extra amortizado gera R$ 0,00 de economia.
+                        </p>
                     </div>
                 </div>
 
                 <!-- CTA -->
-                <div class="mt-6">
-                    <a id="btn_wa_cta" href="#" target="_blank" class="w-full flex items-center justify-center bg-white hover:bg-slate-200 text-slate-900 font-bold px-6 py-4 rounded-xl transition-all text-base">
-                        Solicitar Análise Gratuita no WhatsApp
+                <div class="mt-6 text-center">
+                    <a id="btn_wa_cta" href="#" target="_blank" class="inline-flex items-center justify-center bg-white text-slate-900 hover:bg-slate-200 font-bold px-10 py-5 rounded-2xl transition-all shadow-[0_10px_30px_rgba(255,255,255,0.1)] text-sm tracking-wide w-full md:w-auto">
+                        Solicitar Análise Gratuita no WhatsApp <i class="fa-solid fa-arrow-right ml-3"></i>
                     </a>
                 </div>
 
@@ -281,12 +344,35 @@ def gerar_paginas_pseo():
             }});
         }}
 
+        // Particle Effect Engine
+        function spawnParticle() {{
+            const btn = document.getElementById('slider_amortizar');
+            const rect = btn.getBoundingClientRect();
+            
+            const p = document.createElement('div');
+            p.className = 'particle';
+            
+            const startX = rect.left + (rect.width * (btn.value / btn.max));
+            const startY = rect.top + (rect.height / 2);
+            p.style.left = startX + 'px';
+            p.style.top = startY + 'px';
+            
+            const tx = (Math.random() * 200) + 100 + 'px';
+            const ty = (Math.random() * -100) - 50 + 'px';
+            p.style.setProperty('--tx', tx);
+            p.style.setProperty('--ty', ty);
+            
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 1000);
+        }}
+
         function syncSliderInput(sliderId, inputId) {{
             const slider = document.getElementById(sliderId);
             const input = document.getElementById(inputId);
 
             slider.addEventListener('input', function() {{
                 input.value = formatCurrency(Number(this.value));
+                if(sliderId === 'slider_amortizar') spawnParticle();
                 calcularTudo();
             }});
 
@@ -299,7 +385,7 @@ def gerar_paginas_pseo():
 
         function atualizarLinksWhatsapp(vImovel, entrada, valorAmortizarMensal, economiaJuros, anosLivre) {{
             const textoNav = `Olá! Gostaria de tirar dúvidas sobre financiamento de imóveis pela ${{bancoNome}}.`;
-            const textoCta = `Olá! Fiz uma simulação no site e gostaria de uma análise:\n\n` +
+            const textoCta = `Olá! Fiz uma simulação no Simulador Datalab e gostaria de uma análise:\n\n` +
                 `• Banco: ${{bancoNome}}\n` +
                 `• Valor do Imóvel: R$ ${{formatCurrency(vImovel)}}\n` +
                 `• Entrada: R$ ${{formatCurrency(entrada)}}\n` +
@@ -393,8 +479,21 @@ def gerar_paginas_pseo():
             
             document.getElementById('res_impacto').innerText = textoTempo;
 
+            // Barra de Tempo
+            let pctNovoPrazo = (mesesNovo / prazoOrig) * 100;
+            document.getElementById('bar_novo_prazo').style.width = pctNovoPrazo + '%';
+
+            // Retorno Múltiplo
             const retornoMultiplo = aporteMensal > 0 ? (economiaJuros / (aporteMensal * mesesNovo)).toFixed(2) : "0,00";
             document.getElementById('retorno_multiplo').innerText = `Cada R$ 1,00 extra amortizado gera R$ ${{retornoMultiplo.replace('.', ',')}} de economia.`;
+
+            // Ativa o Glow
+            const cardAmortizacao = document.getElementById('card_amortizacao');
+            if (economiaJuros > 0) {{
+                cardAmortizacao.classList.add('aura-active');
+            }} else {{
+                cardAmortizacao.classList.remove('aura-active');
+            }}
 
             atualizarLinksWhatsapp(vImovel, entrada, aporteMensal, economiaJuros, textoTempo);
         }}
@@ -457,12 +556,12 @@ def gerar_index_home(pasta_saida, links_por_banco):
         ''' for item in links])
         
         blocos_html += f'''
-        <div class="bg-slate-800/50 rounded-xl shadow-lg border border-slate-700 overflow-hidden transition-all duration-300 hover:border-emerald-500/50">
-            <div class="border-b border-slate-700 px-6 py-4 flex items-center gap-4 bg-slate-900/50">
-                <img src="{url_logo}" alt="Logo {banco}" class="w-6 h-6 rounded bg-white p-0.5 object-contain">
-                <h2 class="text-lg font-bold text-white">{banco}</h2>
+        <div class="bg-slate-900/40 backdrop-blur-md rounded-2xl shadow-2xl border border-white/5 overflow-hidden transition-all duration-300 hover:border-emerald-500/30 hover:shadow-[0_0_30px_rgba(16,185,129,0.1)]">
+            <div class="border-b border-white/5 px-6 py-5 flex items-center gap-4 bg-black/40">
+                <img src="{url_logo}" alt="Logo {banco}" class="w-7 h-7 rounded object-contain">
+                <h2 class="text-xl font-serif text-white tracking-wide">{banco}</h2>
             </div>
-            <div class="p-3">
+            <div class="p-4">
                 <ul class="space-y-1 h-64 overflow-y-auto pr-2 custom-scrollbar">
                     {links_html}
                 </ul>
@@ -475,40 +574,43 @@ def gerar_index_home(pasta_saida, links_por_banco):
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador Datalab | Financiamento Imobiliário</title>
+    <title>Simulador de Financiamento | Simulador Datalab</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {{ font-family: 'Inter', sans-serif; background: #0f172a; color: #f8fafc; }}
-        .custom-scrollbar::-webkit-scrollbar {{ width: 6px; }}
+        body {{ font-family: 'Inter', sans-serif; background: #020617; background-image: radial-gradient(at 80% 0%, #1e293b 0px, transparent 50%), radial-gradient(at 0% 100%, #0f172a 0px, transparent 50%); color: #f8fafc; }}
+        h1, h2, .font-serif {{ font-family: 'Playfair Display', serif; }}
+        .text-gold {{ background: linear-gradient(135deg, #fef08a 0%, #d97706 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }}
+        .custom-scrollbar::-webkit-scrollbar {{ width: 4px; }}
         .custom-scrollbar::-webkit-scrollbar-track {{ background: rgba(255,255,255,0.05); border-radius: 4px; }}
         .custom-scrollbar::-webkit-scrollbar-thumb {{ background: rgba(255,255,255,0.2); border-radius: 4px; }}
     </style>
 </head>
 <body class="antialiased min-h-screen">
-    <nav class="border-b border-white/10 sticky top-0 z-50 bg-slate-900/80 backdrop-blur-xl">
+    <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
+            <div class="flex justify-between h-20 items-center">
                 <a href="index.html" class="flex items-center space-x-3">
-                    <div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center text-white font-bold text-sm">
+                    <div class="w-10 h-10 rounded-full flex items-center justify-center border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.2)] text-emerald-500">
                         <i class="fa-solid fa-calculator"></i>
                     </div>
-                    <span class="font-bold text-xl tracking-tight text-white">Simulador <span class="text-emerald-400">Datalab</span></span>
+                    <span class="font-serif text-2xl tracking-wide text-white">Simulador <span class="text-emerald-400">Datalab</span></span>
                 </a>
             </div>
         </div>
     </nav>
-    <div class="py-20 text-center px-4 relative">
-        <h1 class="text-4xl md:text-5xl font-black text-white mb-4">
+    <div class="py-24 md:py-32 text-center px-4 relative overflow-hidden">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-emerald-500/10 rounded-full blur-[100px] -z-10 pointer-events-none"></div>
+        <h1 class="text-4xl md:text-6xl font-serif text-white mb-6 leading-tight max-w-4xl mx-auto">
             Simulador de Financiamento
         </h1>
-        <p class="text-slate-400 text-lg max-w-2xl mx-auto">
-            Selecione o banco desejado e descubra o impacto real das amortizações no seu financiamento.
+        <p class="text-slate-400 text-lg md:text-xl font-light tracking-wide max-w-2xl mx-auto">
+            Selecione a instituição financeira abaixo e descubra quanto você economiza ao fazer amortizações.
         </p>
     </div>
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-32">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-32 relative z-10">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {blocos_html}
         </div>
     </main>
