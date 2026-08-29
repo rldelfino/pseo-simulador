@@ -124,7 +124,7 @@ def gerar_paginas_pseo():
             100% {{ transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }}
         }}
 
-        /* Aura Glow for the Results */
+        /* Aura Glow */
         .aura-glow {{ position: relative; }}
         .aura-glow::before {{
             content: ''; position: absolute; top: -1px; left: -1px; right: -1px; bottom: -1px;
@@ -163,32 +163,31 @@ def gerar_paginas_pseo():
         </p>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 flex-grow w-full relative z-10">
-        <div class="flex flex-col lg:flex-row gap-8 items-start">
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 flex-grow w-full relative z-10 space-y-8">
+        
+        <!-- ZONA A: O FINANCIAMENTO (A DÍVIDA) -->
+        <div class="glass-panel p-8 md:p-10 rounded-3xl">
+            <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-8 border-b border-white/10 pb-4 flex items-center">
+                <i class="fa-solid fa-file-invoice-dollar mr-3"></i> 1. Estratégia de Financiamento (Cenário Base)
+            </h2>
             
-            <!-- PAINEL ESQUERDO: CONTROLES TÁTEIS -->
-            <div class="w-full lg:w-5/12 space-y-6">
-                
-                <!-- Bloco 1: Estratégia de Financiamento -->
-                <div class="glass-panel p-8 rounded-3xl space-y-8">
-                    <div class="flex justify-between items-center border-b border-white/5 pb-4">
-                        <span class="text-[10px] font-bold text-slate-300 uppercase tracking-widest">Estratégia de Financiamento</span>
-                    </div>
-
+            <div class="flex flex-col lg:flex-row gap-10">
+                <!-- Inputs Frios -->
+                <div class="w-full lg:w-1/2 space-y-6">
                     <div>
                         <div class="flex justify-between items-end mb-2">
-                            <label class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">Valor do Imóvel</label>
-                            <input type="text" id="input_imovel" class="currency-input w-40 text-right bg-transparent font-medium text-white text-2xl outline-none border-b border-transparent focus:border-emerald-500 transition-colors" value="">
+                            <label class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">Total Financiado</label>
+                            <input type="text" id="input_imovel" class="currency-input w-40 text-right bg-transparent font-medium text-white text-2xl outline-none border-b border-white/20 focus:border-emerald-500 transition-colors" value="">
                         </div>
-                        <input type="range" id="slider_imovel" min="100000" max="2000000" step="10000" value="{valor_imovel}" class="w-full mt-4">
+                        <input type="range" id="slider_imovel" min="100000" max="2000000" step="10000" value="{valor_imovel}" class="w-full mt-2">
                     </div>
 
                     <div>
                         <div class="flex justify-between items-end mb-2">
                             <label class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">Entrada do Financiamento</label>
-                            <input type="text" id="input_entrada" class="currency-input w-40 text-right bg-transparent font-medium text-white text-2xl outline-none border-b border-transparent focus:border-emerald-500 transition-colors" value="">
+                            <input type="text" id="input_entrada" class="currency-input w-40 text-right bg-transparent font-medium text-white text-2xl outline-none border-b border-white/20 focus:border-emerald-500 transition-colors" value="">
                         </div>
-                        <input type="range" id="slider_entrada" min="0" max="1000000" step="5000" value="{int(entrada_padrao)}" class="w-full mt-4">
+                        <input type="range" id="slider_entrada" min="0" max="1000000" step="5000" value="{int(entrada_padrao)}" class="w-full mt-2">
                     </div>
 
                     <div class="grid grid-cols-2 gap-6">
@@ -213,47 +212,19 @@ def gerar_paginas_pseo():
                         <div class="flex bg-black/40 p-1 rounded-xl border border-white/5">
                             <label class="flex-1 text-center relative cursor-pointer">
                                 <input type="radio" name="sistema" value="SAC" class="peer sr-only" checked>
-                                <div class="py-2.5 rounded-lg text-xs font-bold transition-all border border-transparent tracking-widest">SAC</div>
+                                <div class="py-2 rounded-lg text-xs font-bold transition-all border border-transparent tracking-widest">SAC</div>
                             </label>
                             <label class="flex-1 text-center relative cursor-pointer">
                                 <input type="radio" name="sistema" value="PRICE" class="peer sr-only">
-                                <div class="py-2.5 rounded-lg text-xs font-bold transition-all border border-transparent tracking-widest">PRICE</div>
+                                <div class="py-2 rounded-lg text-xs font-bold transition-all border border-transparent tracking-widest">PRICE</div>
                             </label>
                         </div>
                     </div>
                 </div>
 
-                <!-- Bloco 2: Valor a Amortizar -->
-                <div class="glass-panel p-8 rounded-3xl space-y-8 relative overflow-hidden">
-                    <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent pointer-events-none"></div>
-                    
-                    <div class="flex justify-between items-center border-b border-emerald-500/20 pb-4 relative z-10">
-                        <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">Valor a Amortizar</span>
-                    </div>
-
-                    <div class="relative z-10">
-                        <label class="text-[10px] font-bold text-slate-300 uppercase tracking-widest block mb-4 flex items-center">
-                            Amortização Extra Mensal
-                        </label>
-                        <div class="relative mb-6">
-                            <span class="absolute left-4 top-1/2 -translate-y-1/2 font-light text-emerald-500/50 text-2xl">R$</span>
-                            <input type="text" id="input_amortizar" class="currency-input w-full bg-black/50 border border-emerald-500/30 rounded-2xl pl-14 pr-4 py-4 focus:border-emerald-400 font-medium text-emerald-400 text-3xl outline-none transition-all shadow-[inset_0_2px_10px_rgba(0,0,0,0.5)]" value="1.000,00">
-                        </div>
-                        <input type="range" id="slider_amortizar" min="0" max="20000" step="100" value="1000" class="w-full">
-                    </div>
-                </div>
-            </div>
-
-            <!-- PAINEL DIREITO: NÚMEROS DIVIDIDOS -->
-            <div class="w-full lg:w-7/12 space-y-6">
-                
-                <!-- Card 1: Números do Financiamento -->
-                <div class="glass-panel rounded-3xl p-8 lg:p-10">
-                    <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-8 border-b border-white/10 pb-4">
-                        Números do Financiamento
-                    </h2>
-                    
-                    <div class="grid grid-cols-2 gap-8 mb-8">
+                <!-- Outputs Analíticos da Dívida -->
+                <div class="w-full lg:w-1/2 bg-black/20 rounded-2xl p-8 border border-white/5 flex flex-col justify-center space-y-8">
+                    <div class="grid grid-cols-2 gap-6">
                         <div>
                             <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-2">Primeira Parcela</p>
                             <p class="text-white text-3xl font-light tracking-tight" id="res_p1">R$ 0,00</p>
@@ -264,37 +235,57 @@ def gerar_paginas_pseo():
                         </div>
                     </div>
                     
-                    <div class="bg-black/30 rounded-2xl p-6 border border-white/5 grid grid-cols-2 gap-6">
+                    <div class="pt-6 border-t border-white/5 grid grid-cols-1 gap-6">
                         <div>
-                            <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1.5">Total Financiado (Sem Juros)</p>
+                            <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1.5">Total da Dívida (Sem Juros)</p>
                             <p class="text-white font-medium text-lg" id="res_capital">R$ 0,00</p>
                         </div>
                         <div>
-                            <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1.5">Custo Total (Capital + Juros)</p>
-                            <p class="text-white font-medium text-lg" id="res_total_pago">R$ 0,00</p>
+                            <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1.5 flex items-center">
+                                Custo Total Final (Capital + Juros) <i class="fa-solid fa-triangle-exclamation text-amber-500/50 ml-2"></i>
+                            </p>
+                            <p class="text-white font-medium text-xl" id="res_total_pago">R$ 0,00</p>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <!-- Card 2: Resultado da Amortização -->
-                <div class="glass-panel-emerald rounded-3xl p-8 lg:p-10 aura-glow relative overflow-hidden" id="card_amortizacao">
-                    <div class="absolute right-0 top-0 w-64 h-64 bg-emerald-500/20 rounded-full blur-[80px] pointer-events-none"></div>
-                    
-                    <h2 class="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-8 border-b border-emerald-500/20 pb-4 relative z-10">
-                        Resultado da Amortização
-                    </h2>
-                    
-                    <div class="text-center relative z-10 mb-10">
+        <!-- ZONA B: A AMORTIZAÇÃO (O REMÉDIO) -->
+        <div class="glass-panel-emerald rounded-3xl p-8 md:p-10 aura-glow relative overflow-hidden" id="card_amortizacao">
+            <div class="absolute right-0 top-0 w-64 h-64 bg-emerald-500/20 rounded-full blur-[80px] pointer-events-none"></div>
+            
+            <h2 class="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-8 border-b border-emerald-500/20 pb-4 relative z-10 flex items-center">
+                <i class="fa-solid fa-bolt mr-3"></i> 2. Valor a Amortizar (A Solução)
+            </h2>
+            
+            <div class="flex flex-col lg:flex-row gap-10 relative z-10">
+                <!-- Input de Ação -->
+                <div class="w-full lg:w-1/2 flex flex-col justify-center">
+                    <label class="text-[10px] font-bold text-slate-300 uppercase tracking-widest block mb-4">
+                        Amortização Extra Mensal
+                    </label>
+                    <div class="relative mb-6">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 font-light text-emerald-500/50 text-3xl">R$</span>
+                        <input type="text" id="input_amortizar" class="currency-input w-full bg-black/50 border border-emerald-500/30 rounded-2xl pl-16 pr-4 py-5 focus:border-emerald-400 font-medium text-emerald-400 text-4xl outline-none transition-all shadow-[inset_0_2px_10px_rgba(0,0,0,0.5)]" value="1.000,00">
+                    </div>
+                    <input type="range" id="slider_amortizar" min="0" max="20000" step="100" value="1000" class="w-full">
+                    <p class="text-[10px] text-slate-500 mt-4 text-center tracking-wide">Deslize para ver o impacto no seu futuro</p>
+                </div>
+
+                <!-- Outputs de Ganho (Aura) -->
+                <div class="w-full lg:w-1/2 bg-black/40 border border-emerald-500/30 rounded-2xl p-8 backdrop-blur-sm shadow-[inset_0_0_20px_rgba(16,185,129,0.1)] text-center flex flex-col justify-center">
+                    <div class="mb-8">
                         <p class="text-emerald-500/80 text-[10px] font-bold uppercase tracking-widest mb-3">Economia Total de Juros</p>
-                        <p class="text-6xl md:text-7xl font-serif text-emerald-400 drop-shadow-[0_0_15px_rgba(16,185,129,0.3)]" id="res_economia">R$ 0,00</p>
+                        <p class="text-5xl md:text-6xl font-serif text-emerald-400 drop-shadow-[0_0_15px_rgba(16,185,129,0.3)]" id="res_economia">R$ 0,00</p>
                     </div>
 
-                    <div class="bg-black/40 border border-emerald-500/30 rounded-2xl p-8 relative z-10 backdrop-blur-sm shadow-[inset_0_0_20px_rgba(16,185,129,0.1)] text-center">
+                    <div>
                         <p class="text-emerald-500 text-[10px] font-bold uppercase tracking-widest mb-2">Tempo de Financiamento Reduzido Em</p>
-                        <p class="text-4xl md:text-5xl font-light text-white tracking-tight" id="res_impacto">0 Anos e 0 Meses</p>
+                        <p class="text-3xl md:text-4xl font-light text-white tracking-tight" id="res_impacto">0 Anos e 0 Meses</p>
                         
                         <!-- Mini Timeline Visual -->
-                        <div class="mt-6 w-full h-2 bg-slate-800 rounded-full relative overflow-hidden">
+                        <div class="mt-5 w-full h-2 bg-slate-800 rounded-full relative overflow-hidden">
                             <div class="absolute left-0 top-0 h-full bg-slate-600 w-full"></div>
                             <div id="bar_novo_prazo" class="absolute left-0 top-0 h-full bg-emerald-500 transition-all duration-700" style="width: 100%;"></div>
                         </div>
@@ -303,21 +294,16 @@ def gerar_paginas_pseo():
                             <span class="text-emerald-500" id="label_novo_prazo">Novo Fim</span>
                             <span>Fim Original</span>
                         </div>
-
-                        <p id="retorno_multiplo" class="text-emerald-400 text-xs font-semibold mt-6 tracking-wide">
-                            Cada R$ 1,00 extra amortizado gera R$ 0,00 de economia.
-                        </p>
                     </div>
                 </div>
-
-                <!-- CTA -->
-                <div class="mt-6 text-center">
-                    <a id="btn_wa_cta" href="#" target="_blank" class="inline-flex items-center justify-center bg-white text-slate-900 hover:bg-slate-200 font-bold px-10 py-5 rounded-2xl transition-all shadow-[0_10px_30px_rgba(255,255,255,0.1)] text-sm tracking-wide w-full md:w-auto">
-                        Solicitar Análise Gratuita no WhatsApp <i class="fa-solid fa-arrow-right ml-3"></i>
-                    </a>
-                </div>
-
             </div>
+        </div>
+
+        <!-- CTA Final -->
+        <div class="text-center pt-4">
+            <a id="btn_wa_cta" href="#" target="_blank" class="inline-flex items-center justify-center bg-white text-slate-900 hover:bg-slate-200 font-bold px-10 py-5 rounded-2xl transition-all shadow-[0_10px_30px_rgba(255,255,255,0.1)] text-sm tracking-wide w-full md:w-auto">
+                Solicitar Análise Gratuita no WhatsApp <i class="fa-solid fa-arrow-right ml-3"></i>
+            </a>
         </div>
     </main>
 
@@ -387,7 +373,7 @@ def gerar_paginas_pseo():
             const textoNav = `Olá! Gostaria de tirar dúvidas sobre financiamento de imóveis pela ${{bancoNome}}.`;
             const textoCta = `Olá! Fiz uma simulação no Simulador Datalab e gostaria de uma análise:\n\n` +
                 `• Banco: ${{bancoNome}}\n` +
-                `• Valor do Imóvel: R$ ${{formatCurrency(vImovel)}}\n` +
+                `• Total Financiado: R$ ${{formatCurrency(vImovel)}}\n` +
                 `• Entrada: R$ ${{formatCurrency(entrada)}}\n` +
                 `• Amortização Extra: R$ ${{formatCurrency(valorAmortizarMensal)}}/mês\n` +
                 `• Economia Gerada: R$ ${{formatCurrency(economiaJuros)}}\n` +
@@ -406,6 +392,8 @@ def gerar_paginas_pseo():
             const sistema = document.querySelector('input[name="sistema"]:checked').value;
             
             const aporteMensal = unformatCurrency(document.getElementById('input_amortizar').value);
+            
+            // Total financiado (Matematicamente)
             const vFinanciado = vImovel - entrada;
             
             if (vFinanciado <= 0 || prazoOrig <= 0) return;
@@ -482,10 +470,6 @@ def gerar_paginas_pseo():
             // Barra de Tempo
             let pctNovoPrazo = (mesesNovo / prazoOrig) * 100;
             document.getElementById('bar_novo_prazo').style.width = pctNovoPrazo + '%';
-
-            // Retorno Múltiplo
-            const retornoMultiplo = aporteMensal > 0 ? (economiaJuros / (aporteMensal * mesesNovo)).toFixed(2) : "0,00";
-            document.getElementById('retorno_multiplo').innerText = `Cada R$ 1,00 extra amortizado gera R$ ${{retornoMultiplo.replace('.', ',')}} de economia.`;
 
             // Ativa o Glow
             const cardAmortizacao = document.getElementById('card_amortizacao');
