@@ -291,8 +291,8 @@ def gerar_paginas_pseo():
                 <p class="text-slate-300 text-sm md:text-base font-light leading-relaxed mb-6">
                     Descubra o segredo matemático para quitar seu financiamento de 30 anos em menos de 5 anos. Uma ferramenta completa para simular cenários exatos, controlar suas parcelas e economizar centenas de milhares de reais em juros bancários.
                 </p>
-                <!-- SUBSTITUA "SEU_LINK_AQUI" PELO SEU LINK DA HOTMART/KIWIFY -->
-                <a href="SEU_LINK_AQUI" target="_blank" class="inline-flex items-center justify-center bg-emerald-500 text-slate-950 hover:bg-emerald-400 font-bold px-8 py-4 rounded-xl transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] text-sm tracking-wide w-full md:w-auto">
+                <!-- SUBSTITUA "https://go.hotmart.com/X107393174P" PELO SEU LINK DA HOTMART/KIWIFY -->
+                <a href="https://go.hotmart.com/X107393174P" target="_blank" class="inline-flex items-center justify-center bg-emerald-500 text-slate-950 hover:bg-emerald-400 font-bold px-8 py-4 rounded-xl transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] text-sm tracking-wide w-full md:w-auto">
                     Quero Baixar a Planilha Agora <i class="fa-solid fa-download ml-3"></i>
                 </a>
             </div>
