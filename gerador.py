@@ -13,6 +13,34 @@ def criar_csv_exemplo(caminho_csv):
         writer.writerow(cabecalho)
         writer.writerows(dados)
 
+def gerar_logo_svg(pasta_saida):
+    svg_transparente = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200" width="100%" height="100%">
+    <defs>
+        <linearGradient id="emeraldGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#34d399" /><stop offset="100%" stop-color="#047857" /></linearGradient>
+        <linearGradient id="emeraldDark" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#059669" /><stop offset="100%" stop-color="#022c22" /></linearGradient>
+        <filter id="glowMedium" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3.5" result="blur" /><feComposite in="SourceGraphic" in2="blur" operator="over" /></filter>
+    </defs>
+    <!-- Símbolo -->
+    <g transform="translate(60, 50)">
+        <g opacity="0.8">
+            <ellipse cx="40" cy="40" rx="78" ry="44" fill="none" stroke="#34d399" stroke-width="1" stroke-dasharray="8 8" opacity="0.3"/>
+            <ellipse cx="40" cy="40" rx="64" ry="36" fill="none" stroke="#059669" stroke-width="1" opacity="0.4"/>
+            <ellipse cx="40" cy="40" rx="78" ry="44" fill="none" stroke="#fef08a" stroke-width="1.8" stroke-dasharray="35 300" stroke-dashoffset="15" stroke-linecap="round" filter="url(#glowMedium)" opacity="0.8"/>
+            <circle cx="118" cy="40" r="2.5" fill="#fef08a" filter="url(#glowMedium)"/><circle cx="118" cy="40" r="1" fill="#ffffff"/><circle cx="-38" cy="40" r="2.5" fill="#34d399" filter="url(#glowMedium)"/><circle cx="70" cy="-2" r="1.5" fill="#ffffff" opacity="0.6"/>
+        </g>
+        <path d="M 40 80 L 40 40 L 5 20 L 5 60 Z" fill="url(#emeraldDark)" opacity="0.85"/><path d="M 40 80 L 40 40 L 75 20 L 75 60 Z" fill="#064e3b" opacity="0.9"/><path d="M 40 40 L 75 20 L 40 0 L 5 20 Z" fill="url(#emeraldGrad)"/>
+        <line x1="40" y1="40" x2="40" y2="80" stroke="#022c22" stroke-width="1.5" /><line x1="40" y1="40" x2="5" y2="20" stroke="#34d399" stroke-width="1" opacity="0.5" /><line x1="40" y1="40" x2="75" y2="20" stroke="#34d399" stroke-width="1" opacity="0.5" />
+        <line x1="40" y1="0" x2="5" y2="20" stroke="#fef08a" stroke-width="2" filter="url(#glowMedium)"/><line x1="40" y1="0" x2="75" y2="20" stroke="#fef08a" stroke-width="2" filter="url(#glowMedium)"/><line x1="40" y1="0" x2="40" y2="40" stroke="#fef08a" stroke-width="2.5" filter="url(#glowMedium)"/><line x1="5" y1="20" x2="40" y2="40" stroke="#10b981" stroke-width="1.5" /><line x1="75" y1="20" x2="40" y2="40" stroke="#10b981" stroke-width="1.5" />
+        <circle cx="40" cy="0" r="4.5" fill="#fef08a" filter="url(#glowMedium)"/><circle cx="40" cy="0" r="2" fill="#ffffff"/><circle cx="5" cy="20" r="3.5" fill="#34d399" filter="url(#glowMedium)"/><circle cx="75" cy="20" r="3.5" fill="#34d399" filter="url(#glowMedium)"/><circle cx="40" cy="40" r="4.5" fill="#fef08a" filter="url(#glowMedium)"/><circle cx="40" cy="40" r="2" fill="#ffffff"/><circle cx="40" cy="80" r="3" fill="#059669"/>
+    </g>
+    <!-- Tipografia -->
+    <text x="185" y="105" font-family="'Playfair Display', Georgia, serif" font-size="64" font-weight="700" fill="#ffffff">Datalab</text>
+    <text x="190" y="145" font-family="'Inter', system-ui, sans-serif" font-size="20" font-weight="600" fill="#10b981" letter-spacing="14">GLOBAL</text>
+    <circle cx="375" cy="139" r="2.5" fill="#fef08a" filter="url(#glowMedium)"/>
+</svg>"""
+    with open(os.path.join(pasta_saida, 'logo.svg'), "w", encoding="utf-8") as f:
+        f.write(svg_transparente)
+
 def gerar_paginas_pseo():
     caminho_csv = 'dados.csv'
     pasta_saida = 'paginas_seo'
@@ -68,7 +96,6 @@ def gerar_paginas_pseo():
             
             entrada_padrao = valor_imovel * 0.20 
 
-            # --- ZONA C: LINKAGEM INTERNA ---
             paginas_candidatas = [pag for pag in todas_as_paginas if pag["slug"] != slug]
             qtd_links = min(4, len(paginas_candidatas))
             paginas_sorteadas = random.sample(paginas_candidatas, qtd_links)
@@ -83,7 +110,6 @@ def gerar_paginas_pseo():
                 </a>
                 """
             
-            # --- ZONA D: TEXTOS DO FAQ ---
             faq_q1 = f"Vale a pena amortizar o financiamento imobiliário no {banco}?"
             faq_a1 = f"Sim! Ao fazer amortizações extras no {banco}, você reduz diretamente o saldo devedor. Isso significa que você foge dos juros compostos cobrados ao longo dos {prazo} meses, podendo economizar milhares de reais e quitar seu imóvel muito antes do previsto."
             
@@ -105,68 +131,39 @@ def gerar_paginas_pseo():
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- INÍCIO DO SCHEMA MARKUP PARA O FAQ -->
+    <!-- MONETIZAÇÃO 1: SCRIPT DO GOOGLE ADSENSE (Substitua SEU_ID pelo ID que o Google te der) -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-SEU_ID_DO_ADSENSE_AQUI" crossorigin="anonymous"></script>
+
     <script type="application/ld+json">
     {{
       "@context": "https://schema.org",
       "@type": "FAQPage",
       "mainEntity": [
-        {{
-          "@type": "Question",
-          "name": "{faq_q1}",
-          "acceptedAnswer": {{
-            "@type": "Answer",
-            "text": "{faq_a1}"
-          }}
-        }},
-        {{
-          "@type": "Question",
-          "name": "{faq_q2}",
-          "acceptedAnswer": {{
-            "@type": "Answer",
-            "text": "{faq_a2}"
-          }}
-        }},
-        {{
-          "@type": "Question",
-          "name": "{faq_q3}",
-          "acceptedAnswer": {{
-            "@type": "Answer",
-            "text": "{faq_a3}"
-          }}
-        }}
+        {{ "@type": "Question", "name": "{faq_q1}", "acceptedAnswer": {{ "@type": "Answer", "text": "{faq_a1}" }} }},
+        {{ "@type": "Question", "name": "{faq_q2}", "acceptedAnswer": {{ "@type": "Answer", "text": "{faq_a2}" }} }},
+        {{ "@type": "Question", "name": "{faq_q3}", "acceptedAnswer": {{ "@type": "Answer", "text": "{faq_a3}" }} }}
       ]
     }}
     </script>
-    <!-- FIM DO SCHEMA MARKUP -->
-
+    
     <style>
         body {{ font-family: 'Inter', sans-serif; background: #020617; background-image: radial-gradient(at 80% 0%, #1e293b 0px, transparent 50%), radial-gradient(at 0% 100%, #0f172a 0px, transparent 50%); color: #f8fafc; min-height: 100vh; overflow-x: hidden; }}
         h1, h2, h3, .font-serif {{ font-family: 'Playfair Display', serif; }}
-        .glass-panel {{ background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1); }}
-        .glass-panel-emerald {{ background: rgba(4, 47, 46, 0.4); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(16, 185, 129, 0.2); box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(16, 185, 129, 0.2); }}
-        input[type=range] {{ -webkit-appearance: none; appearance: none; width: 100%; height: 6px; background: rgba(255,255,255,0.05); border-radius: 9999px; outline: none; box-shadow: inset 0 1px 3px rgba(0,0,0,0.5); }}
-        input[type=range]::-webkit-slider-thumb {{ -webkit-appearance: none; appearance: none; width: 26px; height: 26px; border-radius: 50%; background: radial-gradient(circle at 50% 0%, #cbd5e1, #64748b); cursor: pointer; box-shadow: 0 5px 10px rgba(0,0,0,0.5), inset 0 2px 2px rgba(255,255,255,0.9), inset 0 -2px 5px rgba(0,0,0,0.3); border: 1px solid #334155; transition: transform 0.1s ease; }}
-        input[type="radio"]:checked + div {{ background: linear-gradient(145deg, #10b981, #047857); color: white; border-color: transparent; box-shadow: 0 0 20px rgba(16,185,129,0.2); }}
-        input[type="radio"]:not(:checked) + div {{ background-color: transparent; color: #64748b; border-color: transparent; }}
+        .glass-panel {{ background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8); }}
+        .glass-panel-emerald {{ background: rgba(4, 47, 46, 0.4); backdrop-filter: blur(25px); border: 1px solid rgba(16, 185, 129, 0.2); box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8); }}
+        input[type=range] {{ -webkit-appearance: none; appearance: none; width: 100%; height: 6px; background: rgba(255,255,255,0.05); border-radius: 9999px; outline: none; }}
+        input[type=range]::-webkit-slider-thumb {{ -webkit-appearance: none; appearance: none; width: 26px; height: 26px; border-radius: 50%; background: radial-gradient(circle at 50% 0%, #cbd5e1, #64748b); cursor: pointer; border: 1px solid #334155; }}
+        input[type="radio"]:checked + div {{ background: linear-gradient(145deg, #10b981, #047857); color: white; }}
+        input[type="radio"]:not(:checked) + div {{ background-color: transparent; color: #64748b; }}
         .currency-input {{ font-variant-numeric: tabular-nums; }}
-        .particle {{ position: fixed; width: 4px; height: 4px; background-color: #10b981; border-radius: 50%; box-shadow: 0 0 10px #10b981, 0 0 20px #34d399; pointer-events: none; z-index: 9999; animation: floatParticle 1s ease-out forwards; }}
-        @keyframes floatParticle {{ 0% {{ transform: translate(0, 0) scale(1); opacity: 1; }} 100% {{ transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }} }}
-        .aura-glow {{ position: relative; }}
-        .aura-glow::before {{ content: ''; position: absolute; top: -1px; left: -1px; right: -1px; bottom: -1px; background: linear-gradient(45deg, rgba(16,185,129,0.1), rgba(16,185,129,0.5), rgba(16,185,129,0.1)); z-index: -1; border-radius: inherit; filter: blur(10px); opacity: 0; transition: opacity 0.5s ease; }}
-        .aura-active::before {{ opacity: 1; }}
     </style>
 </head>
 <body class="antialiased flex flex-col">
-    <!-- Navbar -->
     <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
-                <a href="index.html" class="flex items-center space-x-3">
-                    <div class="w-10 h-10 rounded-full flex items-center justify-center border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.2)] text-emerald-500">
-                        <i class="fa-solid fa-calculator"></i>
-                    </div>
-                    <span class="font-serif text-2xl tracking-wide text-white">Simulador <span class="text-emerald-400">Datalab</span></span>
+                <a href="index.html" class="flex items-center">
+                    <img src="logo.svg" alt="Datalab Global" class="h-10 md:h-12 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
                 </a>
                 <div class="hidden md:flex items-center space-x-3">
                     <a id="btn_wa_nav" href="#" target="_blank" class="bg-white hover:bg-slate-200 text-slate-900 px-6 py-2.5 rounded-full font-bold transition-all text-sm flex items-center shadow-lg">
@@ -186,8 +183,15 @@ def gerar_paginas_pseo():
 
     <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 flex-grow w-full relative z-10 space-y-8">
         
+        <!-- MONETIZAÇÃO 1: BLOCO DE ANÚNCIO ADSENSE (Topo) -->
+        <div class="w-full text-center py-2 bg-slate-900/30 rounded-xl border border-white/5 text-xs text-slate-500">
+            <!-- Insira a tag <ins> do bloco de anúncio do AdSense aqui -->
+            Publicidade
+        </div>
+
         <!-- ZONA A: O FINANCIAMENTO -->
         <div class="glass-panel p-8 md:p-10 rounded-3xl">
+            <!-- (Conteúdo inalterado da calculadora A) -->
             <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-8 border-b border-white/10 pb-4 flex items-center">
                 <i class="fa-solid fa-file-invoice-dollar mr-3"></i> 1. Estratégia de Financiamento
             </h2>
@@ -210,63 +214,36 @@ def gerar_paginas_pseo():
                     <div class="grid grid-cols-2 gap-6">
                         <div>
                             <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 block">Prazo</label>
-                            <div class="flex items-center border-b border-white/10 pb-1">
-                                <input type="number" id="input_prazo" class="w-full bg-transparent font-medium text-white text-lg outline-none" value="{prazo}">
-                                <span class="text-xs text-slate-500 ml-2">meses</span>
-                            </div>
+                            <div class="flex items-center border-b border-white/10 pb-1"><input type="number" id="input_prazo" class="w-full bg-transparent font-medium text-white text-lg outline-none" value="{prazo}"><span class="text-xs text-slate-500 ml-2">meses</span></div>
                         </div>
                         <div>
                             <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 block">Taxa Estimada</label>
-                            <div class="flex items-center border-b border-white/10 pb-1">
-                                <input type="number" id="input_taxa" step="0.01" class="w-full bg-transparent font-medium text-white text-lg outline-none" value="{taxa}">
-                                <span class="text-xs text-slate-500 ml-2">% a.m.</span>
-                            </div>
+                            <div class="flex items-center border-b border-white/10 pb-1"><input type="number" id="input_taxa" step="0.01" class="w-full bg-transparent font-medium text-white text-lg outline-none" value="{taxa}"><span class="text-xs text-slate-500 ml-2">% a.m.</span></div>
                         </div>
                     </div>
                     <div>
                         <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 block">Sistema de Amortização</label>
                         <div class="flex bg-black/40 p-1 rounded-xl border border-white/5">
-                            <label class="flex-1 text-center relative cursor-pointer">
-                                <input type="radio" name="sistema" value="SAC" class="peer sr-only" checked>
-                                <div class="py-2.5 rounded-lg text-xs font-bold transition-all border border-transparent tracking-widest">SAC</div>
-                            </label>
-                            <label class="flex-1 text-center relative cursor-pointer">
-                                <input type="radio" name="sistema" value="PRICE" class="peer sr-only">
-                                <div class="py-2.5 rounded-lg text-xs font-bold transition-all border border-transparent tracking-widest">PRICE</div>
-                            </label>
+                            <label class="flex-1 text-center relative cursor-pointer"><input type="radio" name="sistema" value="SAC" class="peer sr-only" checked><div class="py-2.5 rounded-lg text-xs font-bold transition-all border border-transparent tracking-widest">SAC</div></label>
+                            <label class="flex-1 text-center relative cursor-pointer"><input type="radio" name="sistema" value="PRICE" class="peer sr-only"><div class="py-2.5 rounded-lg text-xs font-bold transition-all border border-transparent tracking-widest">PRICE</div></label>
                         </div>
                     </div>
                 </div>
                 <div class="w-full lg:w-1/2 bg-black/20 rounded-2xl p-8 border border-white/5 flex flex-col justify-center space-y-8">
                     <div class="grid grid-cols-2 gap-6">
-                        <div>
-                            <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-2">Primeira Parcela</p>
-                            <p class="text-white text-3xl font-light tracking-tight" id="res_p1">R$ 0,00</p>
-                        </div>
-                        <div>
-                            <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-2">Última Parcela</p>
-                            <p class="text-slate-300 text-2xl font-light tracking-tight mt-1" id="res_pU">R$ 0,00</p>
-                        </div>
+                        <div><p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-2">Primeira Parcela</p><p class="text-white text-3xl font-light tracking-tight" id="res_p1">R$ 0,00</p></div>
+                        <div><p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-2">Última Parcela</p><p class="text-slate-300 text-2xl font-light tracking-tight mt-1" id="res_pU">R$ 0,00</p></div>
                     </div>
                     <div class="pt-6 border-t border-white/5 grid grid-cols-1 gap-6">
-                        <div>
-                            <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1.5">Total Financiado (Sem Juros)</p>
-                            <p class="text-white font-medium text-lg" id="res_capital">R$ 0,00</p>
-                        </div>
-                        <div>
-                            <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1.5 flex items-center">
-                                Custo Total Final (Capital + Juros) <i class="fa-solid fa-triangle-exclamation text-amber-500/50 ml-2"></i>
-                            </p>
-                            <p class="text-white font-medium text-xl" id="res_total_pago">R$ 0,00</p>
-                        </div>
+                        <div><p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1.5">Total Financiado (Sem Juros)</p><p class="text-white font-medium text-lg" id="res_capital">R$ 0,00</p></div>
+                        <div><p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1.5 flex items-center">Custo Total Final (Capital + Juros)</p><p class="text-white font-medium text-xl" id="res_total_pago">R$ 0,00</p></div>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- ZONA B: A AMORTIZAÇÃO -->
-        <div class="glass-panel-emerald rounded-3xl p-8 md:p-10 aura-glow relative overflow-hidden" id="card_amortizacao">
-            <div class="absolute right-0 top-0 w-64 h-64 bg-emerald-500/20 rounded-full blur-[80px] pointer-events-none"></div>
+        <div class="glass-panel-emerald rounded-3xl p-8 md:p-10 relative overflow-hidden" id="card_amortizacao">
             <h2 class="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-8 border-b border-emerald-500/20 pb-4 relative z-10 flex items-center">
                 <i class="fa-solid fa-bolt mr-3"></i> 2. Valor a Amortizar (A Solução)
             </h2>
@@ -278,24 +255,18 @@ def gerar_paginas_pseo():
                         <input type="text" id="input_amortizar" class="currency-input w-full bg-black/50 border border-emerald-500/30 rounded-2xl pl-16 pr-4 py-5 focus:border-emerald-400 font-medium text-emerald-400 text-4xl outline-none transition-all shadow-[inset_0_2px_10px_rgba(0,0,0,0.5)]" value="20.000,00">
                     </div>
                     <input type="range" id="slider_amortizar" min="0" max="500000" step="5000" value="20000" class="w-full">
-                    <p class="text-[10px] text-slate-500 mt-4 text-center tracking-wide">Deslize para simular o aporte único</p>
                 </div>
-                <div class="w-full lg:w-1/2 bg-black/40 border border-emerald-500/30 rounded-2xl p-8 backdrop-blur-sm shadow-[inset_0_0_20px_rgba(16,185,129,0.1)] text-center flex flex-col justify-center">
+                <div class="w-full lg:w-1/2 bg-black/40 border border-emerald-500/30 rounded-2xl p-8 backdrop-blur-sm text-center flex flex-col justify-center">
                     <div class="mb-8">
                         <p class="text-emerald-500/80 text-[10px] font-bold uppercase tracking-widest mb-3">Economia Total de Juros</p>
-                        <p class="text-5xl md:text-6xl font-serif text-emerald-400 drop-shadow-[0_0_15px_rgba(16,185,129,0.3)]" id="res_economia">R$ 0,00</p>
+                        <p class="text-5xl md:text-6xl font-serif text-emerald-400" id="res_economia">R$ 0,00</p>
                     </div>
                     <div>
-                        <p class="text-emerald-500 text-[10px] font-bold uppercase tracking-widest mb-2">Tempo de Financiamento Reduzido Em</p>
-                        <p class="text-3xl md:text-4xl font-light text-white tracking-tight" id="res_impacto">0 Anos e 0 Meses</p>
+                        <p class="text-emerald-500 text-[10px] font-bold uppercase tracking-widest mb-2">Tempo Reduzido Em</p>
+                        <p class="text-3xl md:text-4xl font-light text-white tracking-tight" id="res_impacto">0 Anos</p>
                         <div class="mt-5 w-full h-2 bg-slate-800 rounded-full relative overflow-hidden">
                             <div class="absolute left-0 top-0 h-full bg-slate-600 w-full"></div>
                             <div id="bar_novo_prazo" class="absolute left-0 top-0 h-full bg-emerald-500 transition-all duration-700" style="width: 100%;"></div>
-                        </div>
-                        <div class="flex justify-between mt-2 text-[9px] font-bold text-slate-500 uppercase tracking-widest">
-                            <span>Hoje</span>
-                            <span class="text-emerald-500" id="label_novo_prazo">Novo Fim</span>
-                            <span>Fim Original</span>
                         </div>
                     </div>
                 </div>
@@ -304,9 +275,36 @@ def gerar_paginas_pseo():
 
         <div class="text-center pt-4">
             <a id="btn_wa_cta" href="#" target="_blank" class="inline-flex items-center justify-center bg-white text-slate-900 hover:bg-slate-200 font-bold px-10 py-5 rounded-2xl transition-all shadow-[0_10px_30px_rgba(255,255,255,0.1)] text-sm tracking-wide w-full md:w-auto">
-                Solicitar Análise Gratuita no WhatsApp <i class="fa-solid fa-arrow-right ml-3"></i>
+                Falar com Especialista no WhatsApp <i class="fa-solid fa-arrow-right ml-3"></i>
             </a>
         </div>
+
+        <!-- ============================================================== -->
+        <!-- MONETIZAÇÃO 3: BANNER DE PRODUTO DIGITAL (HOTMART / KIWIFY)    -->
+        <!-- ============================================================== -->
+        <div class="mt-8 bg-gradient-to-r from-emerald-900/40 to-slate-900 border border-emerald-500/30 p-8 md:p-10 rounded-3xl flex flex-col md:flex-row items-center gap-8 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px]"></div>
+            
+            <div class="md:w-2/3 relative z-10 text-left">
+                <span class="bg-emerald-500 text-slate-950 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-4 inline-block">Recomendado</span>
+                <h3 class="text-2xl md:text-3xl font-serif text-white mb-3">Planilha de Amortização Inteligente</h3>
+                <p class="text-slate-300 text-sm md:text-base font-light leading-relaxed mb-6">
+                    Descubra o segredo matemático para quitar seu financiamento de 30 anos em menos de 5 anos. Uma ferramenta completa para simular cenários exatos, controlar suas parcelas e economizar centenas de milhares de reais em juros bancários.
+                </p>
+                <!-- SUBSTITUA "SEU_LINK_AQUI" PELO SEU LINK DA HOTMART/KIWIFY -->
+                <a href="SEU_LINK_AQUI" target="_blank" class="inline-flex items-center justify-center bg-emerald-500 text-slate-950 hover:bg-emerald-400 font-bold px-8 py-4 rounded-xl transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] text-sm tracking-wide w-full md:w-auto">
+                    Quero Baixar a Planilha Agora <i class="fa-solid fa-download ml-3"></i>
+                </a>
+            </div>
+            
+            <div class="md:w-1/3 flex justify-center relative z-10">
+                <div class="w-32 h-40 bg-slate-800 rounded-xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex items-center justify-center rotate-6 hover:rotate-0 transition-transform duration-500 relative">
+                    <div class="absolute -top-3 -right-3 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-md shadow-lg">-60%</div>
+                    <i class="fa-solid fa-file-excel text-6xl text-emerald-500 drop-shadow-[0_0_15px_rgba(16,185,129,0.5)]"></i>
+                </div>
+            </div>
+        </div>
+        <!-- ============================================================== -->
 
         <!-- ZONA C: LINKAGEM INTERNA -->
         <div class="mt-16 pt-8 border-t border-white/5">
@@ -322,18 +320,9 @@ def gerar_paginas_pseo():
         <div class="mt-16 mb-8">
             <h3 class="text-2xl font-serif text-white mb-6 text-center">Perguntas Frequentes</h3>
             <div class="space-y-4 max-w-3xl mx-auto">
-                <div class="bg-white/5 border border-white/10 p-5 rounded-xl">
-                    <h4 class="text-emerald-400 font-bold text-sm mb-2">{faq_q1}</h4>
-                    <p class="text-slate-300 text-sm font-light leading-relaxed">{faq_a1}</p>
-                </div>
-                <div class="bg-white/5 border border-white/10 p-5 rounded-xl">
-                    <h4 class="text-emerald-400 font-bold text-sm mb-2">{faq_q2}</h4>
-                    <p class="text-slate-300 text-sm font-light leading-relaxed">{faq_a2}</p>
-                </div>
-                <div class="bg-white/5 border border-white/10 p-5 rounded-xl">
-                    <h4 class="text-emerald-400 font-bold text-sm mb-2">{faq_q3}</h4>
-                    <p class="text-slate-300 text-sm font-light leading-relaxed">{faq_a3}</p>
-                </div>
+                <div class="bg-white/5 border border-white/10 p-5 rounded-xl"><h4 class="text-emerald-400 font-bold text-sm mb-2">{faq_q1}</h4><p class="text-slate-300 text-sm font-light leading-relaxed">{faq_a1}</p></div>
+                <div class="bg-white/5 border border-white/10 p-5 rounded-xl"><h4 class="text-emerald-400 font-bold text-sm mb-2">{faq_q2}</h4><p class="text-slate-300 text-sm font-light leading-relaxed">{faq_a2}</p></div>
+                <div class="bg-white/5 border border-white/10 p-5 rounded-xl"><h4 class="text-emerald-400 font-bold text-sm mb-2">{faq_q3}</h4><p class="text-slate-300 text-sm font-light leading-relaxed">{faq_a3}</p></div>
             </div>
         </div>
 
@@ -343,60 +332,14 @@ def gerar_paginas_pseo():
         const bancoNome = "{banco}";
         const SEU_WHATSAPP = "5527995051571";
         
-        function unformatCurrency(val) {{
-            if (typeof val === 'number') return val;
-            return Number(val.replace(/\D/g, '')) / 100;
-        }}
-
-        function formatCurrency(val) {{
-            return (val).toLocaleString('pt-BR', {{ minimumFractionDigits: 2, maximumFractionDigits: 2 }});
-        }}
-
-        function initMask(inputId) {{
-            const input = document.getElementById(inputId);
-            let rawVal = unformatCurrency(input.value);
-            if(rawVal > 0) input.value = formatCurrency(rawVal);
-            input.addEventListener('input', function(e) {{
-                let raw = unformatCurrency(e.target.value);
-                e.target.value = formatCurrency(raw);
-            }});
-        }}
-
-        function spawnParticle() {{
-            const btn = document.getElementById('slider_amortizar');
-            const rect = btn.getBoundingClientRect();
-            const p = document.createElement('div');
-            p.className = 'particle';
-            const startX = rect.left + (rect.width * (btn.value / btn.max));
-            const startY = rect.top + (rect.height / 2);
-            p.style.left = startX + 'px';
-            p.style.top = startY + 'px';
-            const tx = (Math.random() * 200) + 100 + 'px';
-            const ty = (Math.random() * -100) - 50 + 'px';
-            p.style.setProperty('--tx', tx);
-            p.style.setProperty('--ty', ty);
-            document.body.appendChild(p);
-            setTimeout(() => p.remove(), 1000);
-        }}
-
-        function syncSliderInput(sliderId, inputId) {{
-            const slider = document.getElementById(sliderId);
-            const input = document.getElementById(inputId);
-            slider.addEventListener('input', function() {{
-                input.value = formatCurrency(Number(this.value));
-                if(sliderId === 'slider_amortizar') spawnParticle();
-                calcularTudo();
-            }});
-            input.addEventListener('blur', function() {{
-                let val = unformatCurrency(this.value);
-                slider.value = val;
-                calcularTudo();
-            }});
-        }}
+        function unformatCurrency(val) {{ return typeof val === 'number' ? val : Number(val.replace(/\D/g, '')) / 100; }}
+        function formatCurrency(val) {{ return (val).toLocaleString('pt-BR', {{ minimumFractionDigits: 2, maximumFractionDigits: 2 }}); }}
+        function initMask(inputId) {{ const input = document.getElementById(inputId); let rawVal = unformatCurrency(input.value); if(rawVal > 0) input.value = formatCurrency(rawVal); input.addEventListener('input', function(e) {{ let raw = unformatCurrency(e.target.value); e.target.value = formatCurrency(raw); }}); }}
+        function syncSliderInput(sliderId, inputId) {{ const slider = document.getElementById(sliderId); const input = document.getElementById(inputId); slider.addEventListener('input', function() {{ input.value = formatCurrency(Number(this.value)); calcularTudo(); }}); input.addEventListener('blur', function() {{ let val = unformatCurrency(this.value); slider.value = val; calcularTudo(); }}); }}
 
         function atualizarLinksWhatsapp(vImovel, entrada, aporteUnico, economiaJuros, anosLivre) {{
-            const textoNav = `Olá! Gostaria de tirar dúvidas sobre financiamento de imóveis pela ${{bancoNome}}.`;
-            const textoCta = `Olá! Fiz uma simulação no Simulador Datalab e gostaria de uma análise:\n\n• Banco: ${{bancoNome}}\n• Total Financiado: R$ ${{formatCurrency(vImovel - entrada)}}\n• Amortização Única: R$ ${{formatCurrency(aporteUnico)}}\n• Economia Gerada: R$ ${{formatCurrency(economiaJuros)}}\n• Tempo Reduzido: ${{anosLivre}}\n\nPodemos conversar?`;
+            const textoNav = `Olá! Gostaria de falar com um especialista sobre financiamento no ${{bancoNome}}.`;
+            const textoCta = `Olá! Fiz uma simulação no Datalab e gostaria de consultoria:\n• Banco: ${{bancoNome}}\n• Financiado: R$ ${{formatCurrency(vImovel - entrada)}}\n• Amortização: R$ ${{formatCurrency(aporteUnico)}}\n• Economia: R$ ${{formatCurrency(economiaJuros)}}\nPodemos conversar?`;
             document.getElementById('btn_wa_nav').href = `https://wa.me/${{SEU_WHATSAPP}}?text=${{encodeURIComponent(textoNav)}}`;
             document.getElementById('btn_wa_cta').href = `https://wa.me/${{SEU_WHATSAPP}}?text=${{encodeURIComponent(textoCta)}}`;
         }}
@@ -453,8 +396,6 @@ def gerar_paginas_pseo():
             let pctNovoPrazo = (mesesNovo / prazoOrig) * 100;
             document.getElementById('bar_novo_prazo').style.width = pctNovoPrazo + '%';
             
-            const cardAmortizacao = document.getElementById('card_amortizacao');
-            if (economiaJuros > 0) {{ cardAmortizacao.classList.add('aura-active'); }} else {{ cardAmortizacao.classList.remove('aura-active'); }}
             atualizarLinksWhatsapp(vImovel, entrada, aporteUnico, economiaJuros, textoTempo);
         }}
 
@@ -481,7 +422,8 @@ def gerar_paginas_pseo():
 
     gerar_index_home(pasta_saida, links_por_banco)
     gerar_sitemap(urls_sitemap, pasta_saida)
-    gerar_robots_txt(pasta_saida, dominio) # <-- Chamada para criar o robots.txt
+    gerar_robots_txt(pasta_saida, dominio)
+    gerar_logo_svg(pasta_saida)
 
 def gerar_index_home(pasta_saida, links_por_banco):
     dominios_bancos = {
@@ -523,6 +465,10 @@ def gerar_index_home(pasta_saida, links_por_banco):
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simulador de Financiamento | Simulador Datalab</title>
+    
+    <!-- MONETIZAÇÃO 1: SCRIPT DO GOOGLE ADSENSE -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-SEU_ID_DO_ADSENSE_AQUI" crossorigin="anonymous"></script>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -539,11 +485,8 @@ def gerar_index_home(pasta_saida, links_por_banco):
     <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
-                <a href="index.html" class="flex items-center space-x-3">
-                    <div class="w-10 h-10 rounded-full flex items-center justify-center border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.2)] text-emerald-500">
-                        <i class="fa-solid fa-calculator"></i>
-                    </div>
-                    <span class="font-serif text-2xl tracking-wide text-white">Simulador <span class="text-emerald-400">Datalab</span></span>
+                <a href="index.html" class="flex items-center">
+                    <img src="logo.svg" alt="Datalab Global" class="h-10 md:h-12 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
                 </a>
             </div>
         </div>
@@ -557,6 +500,13 @@ def gerar_index_home(pasta_saida, links_por_banco):
             Selecione a instituição financeira abaixo e descubra quanto você economiza ao fazer amortizações.
         </p>
     </div>
+    
+    <!-- MONETIZAÇÃO 1: BLOCO DE ANÚNCIO ADSENSE (HOME) -->
+    <div class="max-w-7xl mx-auto px-4 mb-8 text-center text-xs text-slate-500">
+        <!-- Insira a tag <ins> do bloco de anúncio do AdSense aqui -->
+        Publicidade
+    </div>
+
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-32 relative z-10">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {blocos_html}
