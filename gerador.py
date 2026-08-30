@@ -132,7 +132,7 @@ def gerar_paginas_pseo():
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- MONETIZAÇÃO 1: SCRIPT DO GOOGLE ADSENSE (Substitua SEU_ID pelo ID que o Google te der) -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-SEU_ID_DO_ADSENSE_AQUI" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5414184968223405" crossorigin="anonymous"></script>
 
     <script type="application/ld+json">
     {{
@@ -467,7 +467,7 @@ def gerar_index_home(pasta_saida, links_por_banco):
     <title>Simulador de Financiamento | Simulador Datalab</title>
     
     <!-- MONETIZAÇÃO 1: SCRIPT DO GOOGLE ADSENSE -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-SEU_ID_DO_ADSENSE_AQUI" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5414184968223405" crossorigin="anonymous"></script>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
