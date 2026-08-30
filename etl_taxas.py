@@ -23,7 +23,6 @@ def extrair_taxas_idinheiro():
         texto_pagina = soup.get_text(separator=' ', strip=True)
         
         # Mapeamento dos bancos e as expressões regulares (Regex) para achar a taxa a.m.
-        # O iDinheiro costuma escrever: "11,54% a.a. (ou 0,91% a.m.)"
         mapa_buscas = {
             "Caixa": r"Caixa(?: Econômica Federal)?.*?(\d+,\d+)%\s*a\.m\.",
             "Banco do Brasil": r"Banco do Brasil.*?(\d+,\d+)%\s*a\.m\.",
@@ -50,36 +49,62 @@ def extrair_taxas_idinheiro():
     return novas_taxas
 
 def atualizar_base_csv(novas_taxas):
-    if not novas_taxas:
-        print("Nenhuma taxa nova para atualizar. Mantendo base original.")
-        return
-
     caminho_csv = 'dados.csv'
     dados_atualizados = []
     
-    # 1. Lê a base atual e substitui pelas novas taxas
+    # Dicionário de regras de negócio de mercado para enriquecimento
+    regras_bancos = {
+        "Caixa": {"ltv": 80, "prazo_maximo": 420},
+        "Banco do Brasil": {"ltv": 80, "prazo_maximo": 420},
+        "Santander": {"ltv": 80, "prazo_maximo": 420},
+        "Itau": {"ltv": 82, "prazo_maximo": 360},
+        "Bradesco": {"ltv": 80, "prazo_maximo": 360},
+        "Banco Inter": {"ltv": 70, "prazo_maximo": 360},
+        "Sicredi": {"ltv": 80, "prazo_maximo": 360}
+    }
+    
     try:
         with open(caminho_csv, mode='r', encoding='utf-8') as f:
             leitor = csv.DictReader(f, delimiter=';')
-            cabecalho = leitor.fieldnames
+            cabecalho = list(leitor.fieldnames)
+            
+            # Garante que as novas colunas existam no cabeçalho
+            colunas_enriquecimento = ['cet', 'ltv', 'prazo_maximo']
+            for col in colunas_enriquecimento:
+                if col not in cabecalho:
+                    cabecalho.append(col)
+
             for linha in leitor:
                 banco = linha['banco']
-                # Atualiza a taxa só se o banco estiver no dicionário que raspamos
-                if banco in novas_taxas:
+                
+                # 1. Atualiza a taxa nominal SE o robô encontrou uma nova
+                if novas_taxas and banco in novas_taxas:
                     linha['taxa'] = novas_taxas[banco] 
+                
+                # 2. Enriquecimento: LTV e Prazo Máximo (usa o padrão de 80%/360 se o banco não estiver na lista)
+                regra = regras_bancos.get(banco, {"ltv": 80, "prazo_maximo": 360})
+                linha['ltv'] = regra['ltv']
+                linha['prazo_maximo'] = regra['prazo_maximo']
+                
+                # 3. Enriquecimento: CET (Calculamos a taxa nominal + 0.15% de custo médio de seguros)
+                taxa_atual = float(linha['taxa'])
+                linha['cet'] = round(taxa_atual + 0.15, 2)
+
                 dados_atualizados.append(linha)
 
-        # 2. Salva o arquivo CSV atualizado
+        # Salva o arquivo CSV atualizado com as novas colunas
         with open(caminho_csv, mode='w', newline='', encoding='utf-8') as f:
             escritor = csv.DictWriter(f, fieldnames=cabecalho, delimiter=';')
             escritor.writeheader()
             escritor.writerows(dados_atualizados)
         
-        print("\n🚀 O arquivo dados.csv foi reescrito com sucesso com os juros do mês!")
+        print("\n🚀 O arquivo dados.csv foi enriquecido e reescrito com sucesso!")
         
     except FileNotFoundError:
         print("Arquivo dados.csv não encontrado para atualização.")
 
 if __name__ == "__main__":
     taxas = extrair_taxas_idinheiro()
+    # O script roda a atualização mesmo se 'taxas' estiver vazio, 
+    # justamente para forçar a criação das novas colunas (CET, LTV) no CSV!
     atualizar_base_csv(taxas)

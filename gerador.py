@@ -1,5 +1,6 @@
 import os
 import csv
+import random
 
 def criar_csv_exemplo(caminho_csv):
     cabecalho = ['banco', 'valor_imovel', 'taxa', 'prazo', 'slug']
@@ -23,27 +24,74 @@ def gerar_paginas_pseo():
 
     urls_sitemap = []
     links_por_banco = {}
+    todas_as_paginas = [] 
 
     with open(caminho_csv, mode='r', encoding='utf-8') as arquivo:
-        leitor_csv = csv.DictReader(arquivo, delimiter=';')
+        leitor_csv = list(csv.DictReader(arquivo, delimiter=';'))
         
-        paginas_geradas = 0
         for linha in leitor_csv:
+            banco = linha['banco']
+            valor_imovel = float(linha['valor_imovel'])
+            prazo = int(linha['prazo'])
+            slug = linha['slug']
+            valor_amigavel = f"R$ {valor_imovel:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+            
+            pagina_info = {
+                "banco": banco,
+                "slug": slug,
+                "texto": f"Simular {valor_amigavel} em {prazo} meses",
+                "linha_original": linha
+            }
+            todas_as_paginas.append(pagina_info)
+            
+            if banco not in links_por_banco:
+                links_por_banco[banco] = []
+            links_por_banco[banco].append(pagina_info)
+
+        paginas_geradas = 0
+        termos_variados = [
+            "Calculadora de financiamento",
+            "Simulador de crédito",
+            "Simulação de amortização",
+            "Calcular taxas de juros",
+            "Simulador imobiliário",
+            "Comparador de financiamento"
+        ]
+
+        for p in todas_as_paginas:
+            linha = p["linha_original"]
             banco = linha['banco']
             valor_imovel = float(linha['valor_imovel'])
             taxa = float(linha['taxa'])
             prazo = int(linha['prazo'])
-            slug = linha['slug']
+            slug = p['slug']
             
-            valor_amigavel = f"R$ {valor_imovel:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
             entrada_padrao = valor_imovel * 0.20 
+
+            # --- ZONA C: LINKAGEM INTERNA ---
+            paginas_candidatas = [pag for pag in todas_as_paginas if pag["slug"] != slug]
+            qtd_links = min(4, len(paginas_candidatas))
+            paginas_sorteadas = random.sample(paginas_candidatas, qtd_links)
             
-            if banco not in links_por_banco:
-                links_por_banco[banco] = []
-            links_por_banco[banco].append({
-                "slug": slug,
-                "texto": f"Simular {valor_amigavel} em {prazo} meses"
-            })
+            links_internos_html = ""
+            for pag_sorteada in paginas_sorteadas:
+                termo = random.choice(termos_variados)
+                links_internos_html += f"""
+                <a href="{pag_sorteada['slug']}.html" class="block p-4 bg-white/5 rounded-xl border border-white/10 hover:border-emerald-500/50 hover:bg-white/10 transition-all">
+                    <span class="text-xs text-emerald-500 font-bold uppercase tracking-wider block mb-1">{termo}</span>
+                    <span class="text-sm text-slate-300 group-hover:text-white block">{pag_sorteada['banco']} - {pag_sorteada['texto'].replace('Simular ', '')}</span>
+                </a>
+                """
+            
+            # --- ZONA D: TEXTOS DO FAQ ---
+            faq_q1 = f"Vale a pena amortizar o financiamento imobiliário no {banco}?"
+            faq_a1 = f"Sim! Ao fazer amortizações extras no {banco}, você reduz diretamente o saldo devedor. Isso significa que você foge dos juros compostos cobrados ao longo dos {prazo} meses, podendo economizar milhares de reais e quitar seu imóvel muito antes do previsto."
+            
+            faq_q2 = f"Qual a diferença entre a Tabela SAC e PRICE na simulação do {banco}?"
+            faq_a2 = f"Na Tabela SAC, a amortização é constante e o valor das parcelas do {banco} diminui com o tempo. Já na Tabela PRICE, as parcelas são fixas do início ao fim do contrato. A escolha ideal depende do seu planejamento financeiro mensal."
+            
+            faq_q3 = f"É possível simular o financiamento com a taxa atual de {taxa}% a.m.?"
+            faq_a3 = f"Nossa calculadora já utiliza a taxa de juros estimada em {taxa}% ao mês para o {banco}. Você pode ajustar os valores de entrada e prazo no simulador acima para ver o cenário exato para o seu perfil e solicitar uma análise de crédito."
 
             html_content = f'''<!DOCTYPE html>
 <html lang="pt-BR">
@@ -56,86 +104,61 @@ def gerar_paginas_pseo():
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {{ 
-            font-family: 'Inter', sans-serif; 
-            background: #020617;
-            background-image: radial-gradient(at 80% 0%, #1e293b 0px, transparent 50%), radial-gradient(at 0% 100%, #0f172a 0px, transparent 50%);
-            color: #f8fafc;
-            min-height: 100vh;
-            overflow-x: hidden;
+    
+    <!-- INÍCIO DO SCHEMA MARKUP PARA O FAQ -->
+    <script type="application/ld+json">
+    {{
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {{
+          "@type": "Question",
+          "name": "{faq_q1}",
+          "acceptedAnswer": {{
+            "@type": "Answer",
+            "text": "{faq_a1}"
+          }}
+        }},
+        {{
+          "@type": "Question",
+          "name": "{faq_q2}",
+          "acceptedAnswer": {{
+            "@type": "Answer",
+            "text": "{faq_a2}"
+          }}
+        }},
+        {{
+          "@type": "Question",
+          "name": "{faq_q3}",
+          "acceptedAnswer": {{
+            "@type": "Answer",
+            "text": "{faq_a3}"
+          }}
         }}
-        
-        h1, h2, .font-serif {{ font-family: 'Playfair Display', serif; }}
-        
-        /* Glass Panels */
-        .glass-panel {{
-            background: rgba(15, 23, 42, 0.4);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        }}
-        
-        .glass-panel-emerald {{
-            background: rgba(4, 47, 46, 0.4);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(16, 185, 129, 0.2);
-            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(16, 185, 129, 0.2);
-        }}
+      ]
+    }}
+    </script>
+    <!-- FIM DO SCHEMA MARKUP -->
 
-        .text-gold {{
-            background: linear-gradient(135deg, #fef08a 0%, #d97706 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }}
-        
-        /* Machined Aluminum Knobs */
-        input[type=range] {{
-            -webkit-appearance: none; appearance: none; width: 100%; height: 6px; 
-            background: rgba(255,255,255,0.05); border-radius: 9999px; outline: none;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
-        }}
-        input[type=range]::-webkit-slider-thumb {{
-            -webkit-appearance: none; appearance: none; width: 26px; height: 26px; border-radius: 50%; 
-            background: radial-gradient(circle at 50% 0%, #cbd5e1, #64748b);
-            cursor: pointer; 
-            box-shadow: 0 5px 10px rgba(0,0,0,0.5), inset 0 2px 2px rgba(255,255,255,0.9), inset 0 -2px 5px rgba(0,0,0,0.3);
-            border: 1px solid #334155; transition: transform 0.1s ease;
-        }}
-        input[type=range]::-webkit-slider-thumb:active {{ transform: scale(0.95); }}
-        
-        /* Elegant Radios */
+    <style>
+        body {{ font-family: 'Inter', sans-serif; background: #020617; background-image: radial-gradient(at 80% 0%, #1e293b 0px, transparent 50%), radial-gradient(at 0% 100%, #0f172a 0px, transparent 50%); color: #f8fafc; min-height: 100vh; overflow-x: hidden; }}
+        h1, h2, h3, .font-serif {{ font-family: 'Playfair Display', serif; }}
+        .glass-panel {{ background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1); }}
+        .glass-panel-emerald {{ background: rgba(4, 47, 46, 0.4); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(16, 185, 129, 0.2); box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(16, 185, 129, 0.2); }}
+        input[type=range] {{ -webkit-appearance: none; appearance: none; width: 100%; height: 6px; background: rgba(255,255,255,0.05); border-radius: 9999px; outline: none; box-shadow: inset 0 1px 3px rgba(0,0,0,0.5); }}
+        input[type=range]::-webkit-slider-thumb {{ -webkit-appearance: none; appearance: none; width: 26px; height: 26px; border-radius: 50%; background: radial-gradient(circle at 50% 0%, #cbd5e1, #64748b); cursor: pointer; box-shadow: 0 5px 10px rgba(0,0,0,0.5), inset 0 2px 2px rgba(255,255,255,0.9), inset 0 -2px 5px rgba(0,0,0,0.3); border: 1px solid #334155; transition: transform 0.1s ease; }}
         input[type="radio"]:checked + div {{ background: linear-gradient(145deg, #10b981, #047857); color: white; border-color: transparent; box-shadow: 0 0 20px rgba(16,185,129,0.2); }}
         input[type="radio"]:not(:checked) + div {{ background-color: transparent; color: #64748b; border-color: transparent; }}
-        input[type="radio"]:not(:checked) + div:hover {{ color: white; }}
-        
         .currency-input {{ font-variant-numeric: tabular-nums; }}
-        
-        /* Emerald Particles */
-        .particle {{
-            position: fixed; width: 4px; height: 4px; background-color: #10b981; border-radius: 50%;
-            box-shadow: 0 0 10px #10b981, 0 0 20px #34d399; pointer-events: none; z-index: 9999;
-            animation: floatParticle 1s ease-out forwards;
-        }}
-        @keyframes floatParticle {{
-            0% {{ transform: translate(0, 0) scale(1); opacity: 1; }}
-            100% {{ transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }}
-        }}
-
-        /* Aura Glow */
+        .particle {{ position: fixed; width: 4px; height: 4px; background-color: #10b981; border-radius: 50%; box-shadow: 0 0 10px #10b981, 0 0 20px #34d399; pointer-events: none; z-index: 9999; animation: floatParticle 1s ease-out forwards; }}
+        @keyframes floatParticle {{ 0% {{ transform: translate(0, 0) scale(1); opacity: 1; }} 100% {{ transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }} }}
         .aura-glow {{ position: relative; }}
-        .aura-glow::before {{
-            content: ''; position: absolute; top: -1px; left: -1px; right: -1px; bottom: -1px;
-            background: linear-gradient(45deg, rgba(16,185,129,0.1), rgba(16,185,129,0.5), rgba(16,185,129,0.1));
-            z-index: -1; border-radius: inherit; filter: blur(10px); opacity: 0; transition: opacity 0.5s ease;
-        }}
+        .aura-glow::before {{ content: ''; position: absolute; top: -1px; left: -1px; right: -1px; bottom: -1px; background: linear-gradient(45deg, rgba(16,185,129,0.1), rgba(16,185,129,0.5), rgba(16,185,129,0.1)); z-index: -1; border-radius: inherit; filter: blur(10px); opacity: 0; transition: opacity 0.5s ease; }}
         .aura-active::before {{ opacity: 1; }}
     </style>
 </head>
 <body class="antialiased flex flex-col">
-    <!-- Navbar Premium -->
+    <!-- Navbar -->
     <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
@@ -155,9 +178,7 @@ def gerar_paginas_pseo():
     </nav>
 
     <header class="py-12 md:py-16 relative z-10 text-center">
-        <h1 class="text-4xl md:text-5xl font-serif text-white mb-4 leading-tight">
-            Simulador de Financiamento
-        </h1>
+        <h1 class="text-4xl md:text-5xl font-serif text-white mb-4 leading-tight">Simulador de Financiamento</h1>
         <p class="text-slate-400 text-base md:text-lg font-light tracking-wide max-w-3xl mx-auto">
             Ajuste os valores para o banco <strong class="text-white font-medium">{banco}</strong> e descubra quanto você economiza ao fazer amortizações.
         </p>
@@ -165,14 +186,12 @@ def gerar_paginas_pseo():
 
     <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 flex-grow w-full relative z-10 space-y-8">
         
-        <!-- ZONA A: O FINANCIAMENTO (A DÍVIDA) -->
+        <!-- ZONA A: O FINANCIAMENTO -->
         <div class="glass-panel p-8 md:p-10 rounded-3xl">
             <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-8 border-b border-white/10 pb-4 flex items-center">
                 <i class="fa-solid fa-file-invoice-dollar mr-3"></i> 1. Estratégia de Financiamento
             </h2>
-            
             <div class="flex flex-col lg:flex-row gap-10">
-                <!-- Inputs Frios -->
                 <div class="w-full lg:w-1/2 space-y-6">
                     <div>
                         <div class="flex justify-between items-end mb-2">
@@ -181,7 +200,6 @@ def gerar_paginas_pseo():
                         </div>
                         <input type="range" id="slider_imovel" min="100000" max="2000000" step="10000" value="{valor_imovel}" class="w-full mt-4">
                     </div>
-
                     <div>
                         <div class="flex justify-between items-end mb-2">
                             <label class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">Entrada do Financiamento</label>
@@ -189,7 +207,6 @@ def gerar_paginas_pseo():
                         </div>
                         <input type="range" id="slider_entrada" min="0" max="1000000" step="5000" value="{int(entrada_padrao)}" class="w-full mt-4">
                     </div>
-
                     <div class="grid grid-cols-2 gap-6">
                         <div>
                             <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 block">Prazo</label>
@@ -206,7 +223,6 @@ def gerar_paginas_pseo():
                             </div>
                         </div>
                     </div>
-                    
                     <div>
                         <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 block">Sistema de Amortização</label>
                         <div class="flex bg-black/40 p-1 rounded-xl border border-white/5">
@@ -221,8 +237,6 @@ def gerar_paginas_pseo():
                         </div>
                     </div>
                 </div>
-
-                <!-- Outputs Analíticos da Dívida -->
                 <div class="w-full lg:w-1/2 bg-black/20 rounded-2xl p-8 border border-white/5 flex flex-col justify-center space-y-8">
                     <div class="grid grid-cols-2 gap-6">
                         <div>
@@ -234,7 +248,6 @@ def gerar_paginas_pseo():
                             <p class="text-slate-300 text-2xl font-light tracking-tight mt-1" id="res_pU">R$ 0,00</p>
                         </div>
                     </div>
-                    
                     <div class="pt-6 border-t border-white/5 grid grid-cols-1 gap-6">
                         <div>
                             <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1.5">Total Financiado (Sem Juros)</p>
@@ -251,20 +264,15 @@ def gerar_paginas_pseo():
             </div>
         </div>
 
-        <!-- ZONA B: A AMORTIZAÇÃO (O REMÉDIO) -->
+        <!-- ZONA B: A AMORTIZAÇÃO -->
         <div class="glass-panel-emerald rounded-3xl p-8 md:p-10 aura-glow relative overflow-hidden" id="card_amortizacao">
             <div class="absolute right-0 top-0 w-64 h-64 bg-emerald-500/20 rounded-full blur-[80px] pointer-events-none"></div>
-            
             <h2 class="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-8 border-b border-emerald-500/20 pb-4 relative z-10 flex items-center">
                 <i class="fa-solid fa-bolt mr-3"></i> 2. Valor a Amortizar (A Solução)
             </h2>
-            
             <div class="flex flex-col lg:flex-row gap-10 relative z-10">
-                <!-- Input de Ação -->
                 <div class="w-full lg:w-1/2 flex flex-col justify-center">
-                    <label class="text-[10px] font-bold text-slate-300 uppercase tracking-widest block mb-4">
-                        Amortização Extra (Pagamento Único)
-                    </label>
+                    <label class="text-[10px] font-bold text-slate-300 uppercase tracking-widest block mb-4">Amortização Extra (Pagamento Único)</label>
                     <div class="relative mb-6">
                         <span class="absolute left-4 top-1/2 -translate-y-1/2 font-light text-emerald-500/50 text-3xl">R$</span>
                         <input type="text" id="input_amortizar" class="currency-input w-full bg-black/50 border border-emerald-500/30 rounded-2xl pl-16 pr-4 py-5 focus:border-emerald-400 font-medium text-emerald-400 text-4xl outline-none transition-all shadow-[inset_0_2px_10px_rgba(0,0,0,0.5)]" value="20.000,00">
@@ -272,19 +280,14 @@ def gerar_paginas_pseo():
                     <input type="range" id="slider_amortizar" min="0" max="500000" step="5000" value="20000" class="w-full">
                     <p class="text-[10px] text-slate-500 mt-4 text-center tracking-wide">Deslize para simular o aporte único</p>
                 </div>
-
-                <!-- Outputs de Ganho (Aura) -->
                 <div class="w-full lg:w-1/2 bg-black/40 border border-emerald-500/30 rounded-2xl p-8 backdrop-blur-sm shadow-[inset_0_0_20px_rgba(16,185,129,0.1)] text-center flex flex-col justify-center">
                     <div class="mb-8">
                         <p class="text-emerald-500/80 text-[10px] font-bold uppercase tracking-widest mb-3">Economia Total de Juros</p>
                         <p class="text-5xl md:text-6xl font-serif text-emerald-400 drop-shadow-[0_0_15px_rgba(16,185,129,0.3)]" id="res_economia">R$ 0,00</p>
                     </div>
-
                     <div>
                         <p class="text-emerald-500 text-[10px] font-bold uppercase tracking-widest mb-2">Tempo de Financiamento Reduzido Em</p>
                         <p class="text-3xl md:text-4xl font-light text-white tracking-tight" id="res_impacto">0 Anos e 0 Meses</p>
-                        
-                        <!-- Mini Timeline Visual -->
                         <div class="mt-5 w-full h-2 bg-slate-800 rounded-full relative overflow-hidden">
                             <div class="absolute left-0 top-0 h-full bg-slate-600 w-full"></div>
                             <div id="bar_novo_prazo" class="absolute left-0 top-0 h-full bg-emerald-500 transition-all duration-700" style="width: 100%;"></div>
@@ -299,12 +302,41 @@ def gerar_paginas_pseo():
             </div>
         </div>
 
-        <!-- CTA Final -->
         <div class="text-center pt-4">
             <a id="btn_wa_cta" href="#" target="_blank" class="inline-flex items-center justify-center bg-white text-slate-900 hover:bg-slate-200 font-bold px-10 py-5 rounded-2xl transition-all shadow-[0_10px_30px_rgba(255,255,255,0.1)] text-sm tracking-wide w-full md:w-auto">
                 Solicitar Análise Gratuita no WhatsApp <i class="fa-solid fa-arrow-right ml-3"></i>
             </a>
         </div>
+
+        <!-- ZONA C: LINKAGEM INTERNA -->
+        <div class="mt-16 pt-8 border-t border-white/5">
+            <h3 class="text-sm font-serif text-slate-400 mb-6 flex items-center justify-center">
+                <i class="fa-solid fa-link mr-2 text-emerald-500/50"></i> Veja Outras Simulações
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {links_internos_html}
+            </div>
+        </div>
+
+        <!-- ZONA D: FAQ VISUAL -->
+        <div class="mt-16 mb-8">
+            <h3 class="text-2xl font-serif text-white mb-6 text-center">Perguntas Frequentes</h3>
+            <div class="space-y-4 max-w-3xl mx-auto">
+                <div class="bg-white/5 border border-white/10 p-5 rounded-xl">
+                    <h4 class="text-emerald-400 font-bold text-sm mb-2">{faq_q1}</h4>
+                    <p class="text-slate-300 text-sm font-light leading-relaxed">{faq_a1}</p>
+                </div>
+                <div class="bg-white/5 border border-white/10 p-5 rounded-xl">
+                    <h4 class="text-emerald-400 font-bold text-sm mb-2">{faq_q2}</h4>
+                    <p class="text-slate-300 text-sm font-light leading-relaxed">{faq_a2}</p>
+                </div>
+                <div class="bg-white/5 border border-white/10 p-5 rounded-xl">
+                    <h4 class="text-emerald-400 font-bold text-sm mb-2">{faq_q3}</h4>
+                    <p class="text-slate-300 text-sm font-light leading-relaxed">{faq_a3}</p>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <script>
@@ -330,24 +362,19 @@ def gerar_paginas_pseo():
             }});
         }}
 
-        // Particle Effect Engine
         function spawnParticle() {{
             const btn = document.getElementById('slider_amortizar');
             const rect = btn.getBoundingClientRect();
-            
             const p = document.createElement('div');
             p.className = 'particle';
-            
             const startX = rect.left + (rect.width * (btn.value / btn.max));
             const startY = rect.top + (rect.height / 2);
             p.style.left = startX + 'px';
             p.style.top = startY + 'px';
-            
             const tx = (Math.random() * 200) + 100 + 'px';
             const ty = (Math.random() * -100) - 50 + 'px';
             p.style.setProperty('--tx', tx);
             p.style.setProperty('--ty', ty);
-            
             document.body.appendChild(p);
             setTimeout(() => p.remove(), 1000);
         }}
@@ -355,13 +382,11 @@ def gerar_paginas_pseo():
         function syncSliderInput(sliderId, inputId) {{
             const slider = document.getElementById(sliderId);
             const input = document.getElementById(inputId);
-
             slider.addEventListener('input', function() {{
                 input.value = formatCurrency(Number(this.value));
                 if(sliderId === 'slider_amortizar') spawnParticle();
                 calcularTudo();
             }});
-
             input.addEventListener('blur', function() {{
                 let val = unformatCurrency(this.value);
                 slider.value = val;
@@ -371,14 +396,7 @@ def gerar_paginas_pseo():
 
         function atualizarLinksWhatsapp(vImovel, entrada, aporteUnico, economiaJuros, anosLivre) {{
             const textoNav = `Olá! Gostaria de tirar dúvidas sobre financiamento de imóveis pela ${{bancoNome}}.`;
-            const textoCta = `Olá! Fiz uma simulação no Simulador Datalab e gostaria de uma análise:\n\n` +
-                `• Banco: ${{bancoNome}}\n` +
-                `• Total Financiado: R$ ${{formatCurrency(vImovel - entrada)}}\n` +
-                `• Amortização Única: R$ ${{formatCurrency(aporteUnico)}}\n` +
-                `• Economia Gerada: R$ ${{formatCurrency(economiaJuros)}}\n` +
-                `• Tempo Reduzido: ${{anosLivre}}\n\n` +
-                `Podemos conversar?`;
-
+            const textoCta = `Olá! Fiz uma simulação no Simulador Datalab e gostaria de uma análise:\n\n• Banco: ${{bancoNome}}\n• Total Financiado: R$ ${{formatCurrency(vImovel - entrada)}}\n• Amortização Única: R$ ${{formatCurrency(aporteUnico)}}\n• Economia Gerada: R$ ${{formatCurrency(economiaJuros)}}\n• Tempo Reduzido: ${{anosLivre}}\n\nPodemos conversar?`;
             document.getElementById('btn_wa_nav').href = `https://wa.me/${{SEU_WHATSAPP}}?text=${{encodeURIComponent(textoNav)}}`;
             document.getElementById('btn_wa_cta').href = `https://wa.me/${{SEU_WHATSAPP}}?text=${{encodeURIComponent(textoCta)}}`;
         }}
@@ -389,74 +407,36 @@ def gerar_paginas_pseo():
             const taxa = (parseFloat(document.getElementById('input_taxa').value) || 0) / 100;
             const prazoOrig = parseInt(document.getElementById('input_prazo').value) || 0;
             const sistema = document.querySelector('input[name="sistema"]:checked').value;
-            
             const aporteUnico = unformatCurrency(document.getElementById('input_amortizar').value);
-            
-            // Total financiado original
             const vFinanciado = vImovel - entrada;
-            
             if (vFinanciado <= 0 || prazoOrig <= 0) return;
 
-            // CENÁRIO 1: FINANCIAMENTO NORMAL
-            let saldoTrad = vFinanciado;
-            let jurosTotalTrad = 0;
-            let p1Trad = 0;
-            let pUTrad = 0;
-            let pmtPriceTrad = 0;
-
-            if (sistema === 'PRICE') {{
-                pmtPriceTrad = vFinanciado * (taxa * Math.pow(1 + taxa, prazoOrig)) / (Math.pow(1 + taxa, prazoOrig) - 1);
-            }}
+            let saldoTrad = vFinanciado; let jurosTotalTrad = 0; let p1Trad = 0; let pUTrad = 0; let pmtPriceTrad = 0;
+            if (sistema === 'PRICE') {{ pmtPriceTrad = vFinanciado * (taxa * Math.pow(1 + taxa, prazoOrig)) / (Math.pow(1 + taxa, prazoOrig) - 1); }}
 
             for (let m = 1; m <= prazoOrig; m++) {{
-                let juros = saldoTrad * taxa;
-                jurosTotalTrad += juros;
-                
+                let juros = saldoTrad * taxa; jurosTotalTrad += juros;
                 let amortizacaoBase = (sistema === 'SAC') ? (vFinanciado / prazoOrig) : (pmtPriceTrad - juros);
                 let parcelaMensal = amortizacaoBase + juros;
-                
                 if (m === 1) p1Trad = parcelaMensal;
                 if (m === prazoOrig) pUTrad = parcelaMensal;
-                
                 saldoTrad -= amortizacaoBase;
             }}
 
-            // CENÁRIO 2: COM AMORTIZAÇÃO ÚNICA (Abate no inicio do contrato)
-            let saldoNovo = vFinanciado - aporteUnico;
-            let jurosTotalNovo = 0;
-            let mesesNovo = 0;
-
+            let saldoNovo = vFinanciado - aporteUnico; let jurosTotalNovo = 0; let mesesNovo = 0;
             if (saldoNovo > 0) {{
                 while (saldoNovo > 0 && mesesNovo < prazoOrig) {{
-                    let juros = saldoNovo * taxa;
-                    jurosTotalNovo += juros;
-                    
-                    let amortizacaoBase = 0;
-                    if (sistema === 'SAC') {{
-                        // No SAC, abatendo no prazo, a parcela de amortização continua a mesma original
-                        amortizacaoBase = vFinanciado / prazoOrig;
-                    }} else {{
-                        // Na PRICE, abatendo no prazo, o valor da prestação continua o mesmo original
-                        amortizacaoBase = pmtPriceTrad - juros;
-                    }}
-
+                    let juros = saldoNovo * taxa; jurosTotalNovo += juros;
+                    let amortizacaoBase = (sistema === 'SAC') ? (vFinanciado / prazoOrig) : (pmtPriceTrad - juros);
                     let abatimentoTotal = amortizacaoBase;
                     if (abatimentoTotal > saldoNovo) abatimentoTotal = saldoNovo;
-
-                    saldoNovo -= abatimentoTotal;
-                    mesesNovo++;
+                    saldoNovo -= abatimentoTotal; mesesNovo++;
                 }}
-            }} else {{
-                // Se o aporte for maior ou igual a dívida, quita na hora.
-                mesesNovo = 0;
-                jurosTotalNovo = 0;
-            }}
+            }} else {{ mesesNovo = 0; jurosTotalNovo = 0; }}
 
-            // RESULTADOS FINAIS
             const economiaJuros = jurosTotalTrad - jurosTotalNovo;
             const mesesEliminados = Math.max(0, prazoOrig - mesesNovo);
             const totalDesembolsado = vFinanciado + jurosTotalTrad; 
-
             const cfg = {{style:'currency',currency:'BRL'}};
             document.getElementById('res_p1').innerText = p1Trad.toLocaleString('pt-BR', cfg);
             document.getElementById('res_pU').innerText = pUTrad.toLocaleString('pt-BR', cfg);
@@ -464,49 +444,30 @@ def gerar_paginas_pseo():
             document.getElementById('res_total_pago').innerText = totalDesembolsado.toLocaleString('pt-BR', cfg);
             document.getElementById('res_economia').innerText = economiaJuros.toLocaleString('pt-BR', cfg);
 
-            let anos = Math.floor(mesesEliminados / 12);
-            let meses = mesesEliminados % 12;
-            let textoTempo = "";
+            let anos = Math.floor(mesesEliminados / 12); let meses = mesesEliminados % 12; let textoTempo = "";
             if (anos > 0) textoTempo += anos + (anos === 1 ? " Ano" : " Anos");
             if (anos > 0 && meses > 0) textoTempo += " e ";
             if (meses > 0 || (anos === 0 && meses === 0)) textoTempo += meses + (meses === 1 ? " Mês" : " Meses");
             if (textoTempo === "") textoTempo = "0 Meses";
-            
             document.getElementById('res_impacto').innerText = textoTempo;
-
-            // Barra de Tempo
             let pctNovoPrazo = (mesesNovo / prazoOrig) * 100;
             document.getElementById('bar_novo_prazo').style.width = pctNovoPrazo + '%';
-
-            // Ativa o Glow
+            
             const cardAmortizacao = document.getElementById('card_amortizacao');
-            if (economiaJuros > 0) {{
-                cardAmortizacao.classList.add('aura-active');
-            }} else {{
-                cardAmortizacao.classList.remove('aura-active');
-            }}
-
+            if (economiaJuros > 0) {{ cardAmortizacao.classList.add('aura-active'); }} else {{ cardAmortizacao.classList.remove('aura-active'); }}
             atualizarLinksWhatsapp(vImovel, entrada, aporteUnico, economiaJuros, textoTempo);
         }}
 
         window.onload = function() {{
-            initMask('input_imovel');
-            initMask('input_entrada');
-            initMask('input_amortizar');
-            
-            syncSliderInput('slider_imovel', 'input_imovel');
-            syncSliderInput('slider_entrada', 'input_entrada');
-            syncSliderInput('slider_amortizar', 'input_amortizar');
-
+            initMask('input_imovel'); initMask('input_entrada'); initMask('input_amortizar');
+            syncSliderInput('slider_imovel', 'input_imovel'); syncSliderInput('slider_entrada', 'input_entrada'); syncSliderInput('slider_amortizar', 'input_amortizar');
             document.getElementById('input_prazo').addEventListener('input', calcularTudo);
             document.getElementById('input_taxa').addEventListener('input', calcularTudo);
             document.querySelectorAll('input[name="sistema"]').forEach(r => r.addEventListener('change', calcularTudo));
-
             document.getElementById('slider_imovel').value = {valor_imovel};
             document.getElementById('input_imovel').value = formatCurrency({valor_imovel});
             document.getElementById('slider_entrada').value = {int(entrada_padrao)};
             document.getElementById('input_entrada').value = formatCurrency({int(entrada_padrao)});
-            
             calcularTudo();
         }};
     </script>
@@ -515,12 +476,12 @@ def gerar_paginas_pseo():
             caminho_arquivo = os.path.join(pasta_saida, f"{slug}.html")
             with open(caminho_arquivo, "w", encoding="utf-8") as f:
                 f.write(html_content)
-            
             urls_sitemap.append(f"{dominio}/{slug}.html")
             paginas_geradas += 1
 
     gerar_index_home(pasta_saida, links_por_banco)
     gerar_sitemap(urls_sitemap, pasta_saida)
+    gerar_robots_txt(pasta_saida, dominio) # <-- Chamada para criar o robots.txt
 
 def gerar_index_home(pasta_saida, links_por_banco):
     dominios_bancos = {
@@ -529,18 +490,14 @@ def gerar_index_home(pasta_saida, links_por_banco):
         "Banrisul": "banrisul.com.br", "BRB": "brb.com.br", "Sicredi": "sicredi.com.br",
         "Sicoob": "sicoob.com.br", "C6 Bank": "c6bank.com.br", "Poupex": "poupex.com.br"
     }
-
     blocos_html = ""
     for banco, links in links_por_banco.items():
         dominio_banco = dominios_bancos.get(banco, "google.com")
         url_logo = f"https://www.google.com/s2/favicons?domain={dominio_banco}&sz=128"
-
         links_html = "".join([f'''
             <li>
                 <a href="{item["slug"]}.html" class="group flex items-center justify-between p-3 rounded-lg hover:bg-white/5 transition-colors border border-transparent hover:border-white/10">
-                    <span class="text-xs font-light text-slate-300 group-hover:text-white">
-                        {item["texto"]}
-                    </span>
+                    <span class="text-xs font-light text-slate-300 group-hover:text-white">{item["texto"]}</span>
                     <svg class="w-3 h-3 text-emerald-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                 </a>
             </li>
@@ -607,7 +564,6 @@ def gerar_index_home(pasta_saida, links_por_banco):
     </main>
 </body>
 </html>'''
-
     with open(os.path.join(pasta_saida, 'index.html'), "w", encoding="utf-8") as f:
         f.write(html_home)
 
@@ -618,6 +574,11 @@ def gerar_sitemap(urls, pasta_saida):
     xml_content += '</urlset>'
     with open(os.path.join(pasta_saida, 'sitemap.xml'), "w", encoding="utf-8") as f:
         f.write(xml_content)
+
+def gerar_robots_txt(pasta_saida, dominio):
+    conteudo = f"User-agent: *\nAllow: /\n\nSitemap: {dominio}/sitemap.xml\n"
+    with open(os.path.join(pasta_saida, 'robots.txt'), "w", encoding="utf-8") as f:
+        f.write(conteudo)
 
 if __name__ == "__main__":
     gerar_paginas_pseo()
