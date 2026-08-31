@@ -4,9 +4,10 @@ import random
 
 def criar_csv_exemplo(caminho_csv):
     cabecalho = ['banco', 'valor_imovel', 'taxa', 'prazo', 'slug']
+    # Atualizado para taxas ANUAIS como base de exemplo
     dados = [
-        ['Caixa', '300000', '0.80', '360', 'simulador-caixa-300-mil-360-meses'],
-        ['Itau', '500000', '0.85', '360', 'simulador-itau-500-mil-360-meses']
+        ['Caixa', '300000', '9.99', '360', 'simulador-caixa-300-mil-360-meses'],
+        ['Itau', '500000', '10.49', '360', 'simulador-itau-500-mil-360-meses']
     ]
     with open(caminho_csv, mode='w', newline='', encoding='utf-8') as arquivo:
         writer = csv.writer(arquivo, delimiter=';')
@@ -93,15 +94,16 @@ def gerar_paginas_pseo():
             prazo = int(linha['prazo'])
             slug = p['slug']
             
-            # --- PROTEÇÃO DO ETL: Definindo a taxa média base ---
+            # --- PROTEÇÃO DO ETL (TRAVA DE TAXA ANUAL) ---
             try:
-                taxa_str = str(linha.get('taxa', '0.85')).replace(',', '.')
+                taxa_str = str(linha.get('taxa', '9.99')).replace(',', '.')
                 taxa = float(taxa_str)
+                # Se não houver taxa ou for 0, aplica taxa base de 9.99% a.a.
                 if taxa <= 0:
-                    taxa = 0.85
+                    taxa = 9.99
             except (ValueError, TypeError):
-                taxa = 0.85
-            # ----------------------------------------------------
+                taxa = 9.99
+            # ----------------------------------------------
 
             entrada_padrao = valor_imovel * 0.20 
 
@@ -125,8 +127,8 @@ def gerar_paginas_pseo():
             faq_q2 = f"Qual a diferença entre a Tabela SAC e PRICE na simulação do {banco}?"
             faq_a2 = f"Na Tabela SAC, a amortização é constante e o valor das parcelas do {banco} diminui com o tempo. Já na Tabela PRICE, as parcelas são fixas do início ao fim do contrato. A escolha ideal depende do seu planejamento financeiro mensal."
             
-            faq_q3 = f"É possível simular o financiamento com a taxa atual de {taxa}% a.m.?"
-            faq_a3 = f"Nossa calculadora já utiliza a taxa de juros estimada em {taxa}% ao mês para o {banco}. Você pode ajustar os valores de entrada e prazo no simulador acima para ver o cenário exato para o seu perfil e solicitar uma análise de crédito."
+            faq_q3 = f"É possível simular o financiamento com a taxa atual de {taxa}% a.a.?"
+            faq_a3 = f"Nossa calculadora já utiliza a taxa de juros anual estimada em {taxa}% ao ano para o {banco}. Você pode ajustar os valores de entrada e prazo no simulador acima para ver o cenário exato para o seu perfil e solicitar uma análise de crédito."
 
             html_content = f'''<!DOCTYPE html>
 <html lang="pt-BR">
@@ -223,7 +225,7 @@ def gerar_paginas_pseo():
                         </div>
                         <div>
                             <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 block">Taxa Estimada</label>
-                            <div class="flex items-center border-b border-white/10 pb-1"><input type="number" id="input_taxa" step="0.01" class="w-full bg-transparent font-medium text-white text-lg outline-none" value="{taxa}"><span class="text-xs text-slate-500 ml-2">% a.m.</span></div>
+                            <div class="flex items-center border-b border-white/10 pb-1"><input type="number" id="input_taxa" step="0.01" class="w-full bg-transparent font-medium text-white text-lg outline-none" value="{taxa}"><span class="text-xs text-slate-500 ml-2">% a.a.</span></div>
                         </div>
                     </div>
                     <div>
@@ -349,9 +351,10 @@ def gerar_paginas_pseo():
             const vImovel = unformatCurrency(document.getElementById('input_imovel').value);
             const entrada = unformatCurrency(document.getElementById('input_entrada').value);
             
-            // Corrige possível vírgula no input da taxa
-            const taxaRaw = document.getElementById('input_taxa').value.toString().replace(',', '.');
-            const taxa = (parseFloat(taxaRaw) || 0) / 100;
+            // Pega a taxa ANUAL informada e converte para MENSAL nos bastidores
+            const taxaAnualRaw = document.getElementById('input_taxa').value.toString().replace(',', '.');
+            const taxaAnual = parseFloat(taxaAnualRaw) || 0;
+            const taxa = (taxaAnual / 100) / 12; // Cálculo base nominal para financiamentos
             
             const prazoOrig = parseInt(document.getElementById('input_prazo').value) || 0;
             const sistema = document.querySelector('input[name="sistema"]:checked').value;
@@ -365,7 +368,7 @@ def gerar_paginas_pseo():
                 if (taxa > 0) {{
                     pmtPriceTrad = vFinanciado * (taxa * Math.pow(1 + taxa, prazoOrig)) / (Math.pow(1 + taxa, prazoOrig) - 1); 
                 }} else {{
-                    pmtPriceTrad = vFinanciado / prazoOrig; // Proteção contra taxa zero
+                    pmtPriceTrad = vFinanciado / prazoOrig;
                 }}
             }}
 
