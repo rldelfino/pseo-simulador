@@ -90,10 +90,19 @@ def gerar_paginas_pseo():
             linha = p["linha_original"]
             banco = linha['banco']
             valor_imovel = float(linha['valor_imovel'])
-            taxa = float(linha['taxa'])
             prazo = int(linha['prazo'])
             slug = p['slug']
             
+            # --- PROTEÇÃO DO ETL: Definindo a taxa média base ---
+            try:
+                taxa_str = str(linha.get('taxa', '0.85')).replace(',', '.')
+                taxa = float(taxa_str)
+                if taxa <= 0:
+                    taxa = 0.85
+            except (ValueError, TypeError):
+                taxa = 0.85
+            # ----------------------------------------------------
+
             entrada_padrao = valor_imovel * 0.20 
 
             paginas_candidatas = [pag for pag in todas_as_paginas if pag["slug"] != slug]
@@ -131,7 +140,6 @@ def gerar_paginas_pseo():
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- MONETIZAÇÃO 1: SCRIPT DO GOOGLE ADSENSE -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5414184968223405" crossorigin="anonymous"></script>
 
     <script type="application/ld+json">
@@ -183,9 +191,7 @@ def gerar_paginas_pseo():
 
     <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 flex-grow w-full relative z-10 space-y-8">
         
-        <!-- MONETIZAÇÃO 1: BLOCO DE ANÚNCIO ADSENSE (Topo) -->
         <div class="w-full text-center py-2 bg-slate-900/30 rounded-xl border border-white/5 text-xs text-slate-500">
-            <!-- Insira a tag <ins> do bloco de anúncio do AdSense aqui -->
             Publicidade
         </div>
 
@@ -278,9 +284,7 @@ def gerar_paginas_pseo():
             </a>
         </div>
 
-        <!-- ============================================================== -->
-        <!-- MONETIZAÇÃO 3: BANNER DE PRODUTO DIGITAL (HOTMART / KIWIFY)    -->
-        <!-- ============================================================== -->
+        <!-- ZONA DE MONETIZAÇÃO -->
         <div class="mt-8 bg-gradient-to-r from-emerald-900/40 to-slate-900 border border-emerald-500/30 p-8 md:p-10 rounded-3xl flex flex-col md:flex-row items-center gap-8 relative overflow-hidden">
             <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px]"></div>
             
@@ -302,7 +306,6 @@ def gerar_paginas_pseo():
                 </div>
             </div>
         </div>
-        <!-- ============================================================== -->
 
         <!-- ZONA C: LINKAGEM INTERNA -->
         <div class="mt-16 pt-8 border-t border-white/5">
@@ -330,7 +333,7 @@ def gerar_paginas_pseo():
         const bancoNome = "{banco}";
         const SEU_WHATSAPP = "5527995051571";
         
-        function unformatCurrency(val) {{ return typeof val === 'number' ? val : Number(val.replace(/\\\\D/g, '')) / 100; }}
+        function unformatCurrency(val) {{ return typeof val === 'number' ? val : Number(val.replace(/\\D/g, '')) / 100; }}
         function formatCurrency(val) {{ return (val).toLocaleString('pt-BR', {{ minimumFractionDigits: 2, maximumFractionDigits: 2 }}); }}
         function initMask(inputId) {{ const input = document.getElementById(inputId); let rawVal = unformatCurrency(input.value); if(rawVal > 0) input.value = formatCurrency(rawVal); input.addEventListener('input', function(e) {{ let raw = unformatCurrency(e.target.value); e.target.value = formatCurrency(raw); }}); }}
         function syncSliderInput(sliderId, inputId) {{ const slider = document.getElementById(sliderId); const input = document.getElementById(inputId); slider.addEventListener('input', function() {{ input.value = formatCurrency(Number(this.value)); calcularTudo(); }}); input.addEventListener('blur', function() {{ let val = unformatCurrency(this.value); slider.value = val; calcularTudo(); }}); }}
@@ -345,7 +348,11 @@ def gerar_paginas_pseo():
         function calcularTudo() {{
             const vImovel = unformatCurrency(document.getElementById('input_imovel').value);
             const entrada = unformatCurrency(document.getElementById('input_entrada').value);
-            const taxa = (parseFloat(document.getElementById('input_taxa').value) || 0) / 100;
+            
+            // Corrige possível vírgula no input da taxa
+            const taxaRaw = document.getElementById('input_taxa').value.toString().replace(',', '.');
+            const taxa = (parseFloat(taxaRaw) || 0) / 100;
+            
             const prazoOrig = parseInt(document.getElementById('input_prazo').value) || 0;
             const sistema = document.querySelector('input[name="sistema"]:checked').value;
             const aporteUnico = unformatCurrency(document.getElementById('input_amortizar').value);
@@ -353,7 +360,14 @@ def gerar_paginas_pseo():
             if (vFinanciado <= 0 || prazoOrig <= 0) return;
 
             let saldoTrad = vFinanciado; let jurosTotalTrad = 0; let p1Trad = 0; let pUTrad = 0; let pmtPriceTrad = 0;
-            if (sistema === 'PRICE') {{ pmtPriceTrad = vFinanciado * (taxa * Math.pow(1 + taxa, prazoOrig)) / (Math.pow(1 + taxa, prazoOrig) - 1); }}
+            
+            if (sistema === 'PRICE') {{
+                if (taxa > 0) {{
+                    pmtPriceTrad = vFinanciado * (taxa * Math.pow(1 + taxa, prazoOrig)) / (Math.pow(1 + taxa, prazoOrig) - 1); 
+                }} else {{
+                    pmtPriceTrad = vFinanciado / prazoOrig; // Proteção contra taxa zero
+                }}
+            }}
 
             for (let m = 1; m <= prazoOrig; m++) {{
                 let juros = saldoTrad * taxa; jurosTotalTrad += juros;
@@ -464,7 +478,6 @@ def gerar_index_home(pasta_saida, links_por_banco):
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simulador de Financiamento | Simulador Datalab</title>
     
-    <!-- MONETIZAÇÃO 1: SCRIPT DO GOOGLE ADSENSE -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5414184968223405" crossorigin="anonymous"></script>
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -499,9 +512,7 @@ def gerar_index_home(pasta_saida, links_por_banco):
         </p>
     </div>
     
-    <!-- MONETIZAÇÃO 1: BLOCO DE ANÚNCIO ADSENSE (HOME) -->
     <div class="max-w-7xl mx-auto px-4 mb-8 text-center text-xs text-slate-500">
-        <!-- Insira a tag <ins> do bloco de anúncio do AdSense aqui -->
         Publicidade
     </div>
 
