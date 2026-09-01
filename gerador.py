@@ -7,7 +7,9 @@ def criar_csv_exemplo(caminho_csv):
     # Atualizado para taxas ANUAIS como base de exemplo
     dados = [
         ['Caixa', '300000', '9.99', '360', 'simulador-caixa-300-mil-360-meses'],
-        ['Itau', '500000', '10.49', '360', 'simulador-itau-500-mil-360-meses']
+        ['Itau', '500000', '10.49', '360', 'simulador-itau-500-mil-360-meses'],
+        ['C6 Bank', '400000', '12.50', '240', 'simulador-c6-bank-400-mil-240-meses'],
+        ['Banrisul', '250000', '10.90', '360', 'simulador-banrisul-250-mil-360-meses']
     ]
     with open(caminho_csv, mode='w', newline='', encoding='utf-8') as arquivo:
         writer = csv.writer(arquivo, delimiter=';')
@@ -91,21 +93,50 @@ def gerar_paginas_pseo():
             linha = p["linha_original"]
             banco = linha['banco']
             valor_imovel = float(linha['valor_imovel'])
-            prazo = int(linha['prazo'])
+            prazo_csv = int(linha['prazo'])
             slug = p['slug']
             
+            # --- MOTOR DE REGRAS DE NEGÓCIO ---
+            regras_bancos = {
+                "Caixa": {"ltv": 0.80, "prazo_max": 420, "mod": "Financiamento Imobiliário"},
+                "Banco do Brasil": {"ltv": 0.80, "prazo_max": 420, "mod": "Financiamento Imobiliário"},
+                "Santander": {"ltv": 0.80, "prazo_max": 420, "mod": "Financiamento Imobiliário"},
+                "BRB": {"ltv": 0.80, "prazo_max": 420, "mod": "Financiamento Imobiliário"},
+                "Poupex": {"ltv": 0.90, "prazo_max": 420, "mod": "Financiamento Imobiliário"},
+                "Itau": {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário"},
+                "Itaú": {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário"}, # Tratando acento
+                "Bradesco": {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário"},
+                "Banco Inter": {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário"},
+                "Sicredi": {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário"},
+                "Sicoob": {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário"},
+                "Banrisul": {"ltv": 0.75, "prazo_max": 360, "mod": "Financiamento Imobiliário"},
+                "C6 Bank": {"ltv": 0.60, "prazo_max": 240, "mod": "Crédito com Garantia de Imóvel"}
+            }
+            
+            # Busca a regra do banco atual (padrão 80% LTV, 360 meses se não achar)
+            regra = regras_bancos.get(banco, {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário"})
+            
+            # Aplica as travas da regra
+            prazo_max_banco = regra["prazo_max"]
+            prazo = min(prazo_csv, prazo_max_banco) 
+            
+            # Calcula a entrada mínima permitida
+            perc_entrada_minima = 1 - regra["ltv"]
+            entrada_minima_valor = valor_imovel * perc_entrada_minima
+            
+            # Se o CSV mandar uma entrada menor que o mínimo do banco, forçamos o mínimo
+            entrada_padrao = max(valor_imovel * 0.20, entrada_minima_valor)
+            # ----------------------------------
+
             # --- PROTEÇÃO DO ETL (TRAVA DE TAXA ANUAL) ---
             try:
                 taxa_str = str(linha.get('taxa', '9.99')).replace(',', '.')
                 taxa = float(taxa_str)
-                # Se não houver taxa ou for 0, aplica taxa base de 9.99% a.a.
                 if taxa <= 0:
                     taxa = 9.99
             except (ValueError, TypeError):
                 taxa = 9.99
             # ----------------------------------------------
-
-            entrada_padrao = valor_imovel * 0.20 
 
             paginas_candidatas = [pag for pag in todas_as_paginas if pag["slug"] != slug]
             qtd_links = min(4, len(paginas_candidatas))
@@ -121,22 +152,22 @@ def gerar_paginas_pseo():
                 </a>
                 """
             
-            faq_q1 = f"Vale a pena amortizar o financiamento imobiliário no {banco}?"
-            faq_a1 = f"Sim! Ao fazer amortizações extras no {banco}, você reduz diretamente o saldo devedor. Isso significa que você foge dos juros compostos cobrados ao longo dos {prazo} meses, podendo economizar milhares de reais e quitar seu imóvel muito antes do previsto."
+            faq_q1 = f"Vale a pena amortizar o {regra['mod'].lower()} no {banco}?"
+            faq_a1 = f"Sim! Ao fazer amortizações extras no {banco}, você reduz diretamente o saldo devedor. Isso significa que você foge dos juros compostos cobrados ao longo dos {prazo} meses, podendo economizar milhares de reais e quitar muito antes do previsto."
             
             faq_q2 = f"Qual a diferença entre a Tabela SAC e PRICE na simulação do {banco}?"
             faq_a2 = f"Na Tabela SAC, a amortização é constante e o valor das parcelas do {banco} diminui com o tempo. Já na Tabela PRICE, as parcelas são fixas do início ao fim do contrato. A escolha ideal depende do seu planejamento financeiro mensal."
             
-            faq_q3 = f"É possível simular o financiamento com a taxa atual de {taxa}% a.a.?"
-            faq_a3 = f"Nossa calculadora já utiliza a taxa de juros anual estimada em {taxa}% ao ano para o {banco}. Você pode ajustar os valores de entrada e prazo no simulador acima para ver o cenário exato para o seu perfil e solicitar uma análise de crédito."
+            faq_q3 = f"É possível simular o crédito com a taxa atual de {taxa}% a.a.?"
+            faq_a3 = f"Nossa calculadora já utiliza a taxa de juros anual estimada em {taxa}% ao ano para o {banco}. Você pode ajustar os valores de entrada (margem de garantia) e prazo no simulador acima para ver o cenário exato para o seu perfil e solicitar uma análise."
 
             html_content = f'''<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador de Financiamento | {banco} | Simulador Datalab</title>
-    <meta name="description" content="Simule seu financiamento imobiliário pela {banco}. Planeje o futuro e descubra quanto economiza adiantando parcelas.">
+    <title>Simulador | {banco} | Datalab Global</title>
+    <meta name="description" content="Simule seu {regra['mod'].lower()} pela {banco}. Planeje o futuro e descubra quanto economiza adiantando parcelas.">
     <link rel="canonical" href="{dominio}/{slug}.html" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -185,7 +216,7 @@ def gerar_paginas_pseo():
     </nav>
 
     <header class="py-12 md:py-16 relative z-10 text-center">
-        <h1 class="text-4xl md:text-5xl font-serif text-white mb-4 leading-tight">Simulador de Financiamento</h1>
+        <h1 class="text-4xl md:text-5xl font-serif text-white mb-4 leading-tight">Simulador de {regra['mod']}</h1>
         <p class="text-slate-400 text-base md:text-lg font-light tracking-wide max-w-3xl mx-auto">
             Ajuste os valores para o banco <strong class="text-white font-medium">{banco}</strong> e descubra quanto você economiza ao fazer amortizações.
         </p>
@@ -200,28 +231,32 @@ def gerar_paginas_pseo():
         <!-- ZONA A: O FINANCIAMENTO -->
         <div class="glass-panel p-8 md:p-10 rounded-3xl">
             <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-8 border-b border-white/10 pb-4 flex items-center">
-                <i class="fa-solid fa-file-invoice-dollar mr-3"></i> 1. Estratégia de Financiamento
+                <i class="fa-solid fa-file-invoice-dollar mr-3"></i> 1. Estratégia
             </h2>
             <div class="flex flex-col lg:flex-row gap-10">
                 <div class="w-full lg:w-1/2 space-y-6">
                     <div>
                         <div class="flex justify-between items-end mb-2">
-                            <label class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">Valor do Imóvel</label>
+                            <label class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">Valor do Imóvel / Garantia</label>
                             <input type="text" id="input_imovel" class="currency-input w-40 text-right bg-transparent font-medium text-white text-2xl outline-none border-b border-transparent focus:border-emerald-500 transition-colors" value="">
                         </div>
                         <input type="range" id="slider_imovel" min="100000" max="2000000" step="10000" value="{valor_imovel}" class="w-full mt-4">
                     </div>
                     <div>
                         <div class="flex justify-between items-end mb-2">
-                            <label class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">Entrada do Financiamento</label>
+                            <label class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">Entrada / Margem Retida</label>
                             <input type="text" id="input_entrada" class="currency-input w-40 text-right bg-transparent font-medium text-white text-2xl outline-none border-b border-transparent focus:border-emerald-500 transition-colors" value="">
                         </div>
-                        <input type="range" id="slider_entrada" min="0" max="1000000" step="5000" value="{int(entrada_padrao)}" class="w-full mt-4">
+                        <!-- TRAVA DA ENTRADA MÍNIMA APLICADA NO HTML -->
+                        <input type="range" id="slider_entrada" min="{int(entrada_minima_valor)}" max="1000000" step="5000" value="{int(entrada_padrao)}" class="w-full mt-4">
+                        <p class="text-[9px] text-slate-500 mt-1 text-right">Mínimo exigido: {(perc_entrada_minima*100):.0f}% do valor</p>
                     </div>
                     <div class="grid grid-cols-2 gap-6">
                         <div>
                             <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 block">Prazo</label>
-                            <div class="flex items-center border-b border-white/10 pb-1"><input type="number" id="input_prazo" class="w-full bg-transparent font-medium text-white text-lg outline-none" value="{prazo}"><span class="text-xs text-slate-500 ml-2">meses</span></div>
+                            <!-- TRAVA DO PRAZO MÁXIMO APLICADA NO HTML -->
+                            <div class="flex items-center border-b border-white/10 pb-1"><input type="number" id="input_prazo" min="12" max="{prazo_max_banco}" class="w-full bg-transparent font-medium text-white text-lg outline-none" value="{prazo}"><span class="text-xs text-slate-500 ml-2">meses</span></div>
+                            <p class="text-[9px] text-slate-500 mt-1">Máx: {prazo_max_banco} meses</p>
                         </div>
                         <div>
                             <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 block">Taxa Estimada</label>
@@ -242,7 +277,7 @@ def gerar_paginas_pseo():
                         <div><p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-2">Última Parcela</p><p class="text-slate-300 text-2xl font-light tracking-tight mt-1" id="res_pU">R$ 0,00</p></div>
                     </div>
                     <div class="pt-6 border-t border-white/5 grid grid-cols-1 gap-6">
-                        <div><p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1.5">Total Financiado (Sem Juros)</p><p class="text-white font-medium text-lg" id="res_capital">R$ 0,00</p></div>
+                        <div><p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1.5">Crédito Liberado (Sem Juros)</p><p class="text-white font-medium text-lg" id="res_capital">R$ 0,00</p></div>
                         <div><p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1.5 flex items-center">Custo Total Final (Capital + Juros)</p><p class="text-white font-medium text-xl" id="res_total_pago">R$ 0,00</p></div>
                     </div>
                 </div>
@@ -294,7 +329,7 @@ def gerar_paginas_pseo():
                 <span class="bg-emerald-500 text-slate-950 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-4 inline-block">Recomendado</span>
                 <h3 class="text-2xl md:text-3xl font-serif text-white mb-3">Planilha de Amortização Inteligente</h3>
                 <p class="text-slate-300 text-sm md:text-base font-light leading-relaxed mb-6">
-                    Descubra o segredo matemático para quitar seu financiamento de 30 anos em menos de 5 anos. Uma ferramenta completa para simular cenários exatos, controlar suas parcelas e economizar centenas de milhares de reais em juros bancários.
+                    Descubra o segredo matemático para quitar seu contrato de {prazo_max_banco} meses em menos de 5 anos. Uma ferramenta completa para simular cenários exatos, controlar suas parcelas e economizar centenas de milhares de reais em juros bancários.
                 </p>
                 <a href="https://go.hotmart.com/S107394856P" target="_blank" class="inline-flex items-center justify-center bg-emerald-500 text-slate-950 hover:bg-emerald-400 font-bold px-8 py-4 rounded-xl transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] text-sm tracking-wide w-full md:w-auto">
                     Quero Baixar a Planilha Agora <i class="fa-solid fa-download ml-3"></i>
@@ -335,28 +370,62 @@ def gerar_paginas_pseo():
         const bancoNome = "{banco}";
         const SEU_WHATSAPP = "5527995051571";
         
+        // Passando as travas do Python para o JS
+        const REGRA_PRAZO_MAX = {prazo_max_banco};
+        const REGRA_PERC_ENTRADA_MIN = {perc_entrada_minima};
+        
         function unformatCurrency(val) {{ return typeof val === 'number' ? val : Number(val.replace(/\\D/g, '')) / 100; }}
         function formatCurrency(val) {{ return (val).toLocaleString('pt-BR', {{ minimumFractionDigits: 2, maximumFractionDigits: 2 }}); }}
         function initMask(inputId) {{ const input = document.getElementById(inputId); let rawVal = unformatCurrency(input.value); if(rawVal > 0) input.value = formatCurrency(rawVal); input.addEventListener('input', function(e) {{ let raw = unformatCurrency(e.target.value); e.target.value = formatCurrency(raw); }}); }}
-        function syncSliderInput(sliderId, inputId) {{ const slider = document.getElementById(sliderId); const input = document.getElementById(inputId); slider.addEventListener('input', function() {{ input.value = formatCurrency(Number(this.value)); calcularTudo(); }}); input.addEventListener('blur', function() {{ let val = unformatCurrency(this.value); slider.value = val; calcularTudo(); }}); }}
+        
+        function syncSliderInput(sliderId, inputId) {{ 
+            const slider = document.getElementById(sliderId); 
+            const input = document.getElementById(inputId); 
+            slider.addEventListener('input', function() {{ 
+                input.value = formatCurrency(Number(this.value)); 
+                calcularTudo(); 
+            }}); 
+            input.addEventListener('blur', function() {{ 
+                let val = unformatCurrency(this.value); 
+                slider.value = val; 
+                calcularTudo(); 
+            }}); 
+        }}
 
         function atualizarLinksWhatsapp(vImovel, entrada, aporteUnico, economiaJuros, anosLivre) {{
-            const textoNav = `Olá! Gostaria de falar com um especialista sobre financiamento no ${{bancoNome}}.`;
-            const textoCta = `Olá! Fiz uma simulação no Datalab e gostaria de consultoria:\\n• Banco: ${{bancoNome}}\\n• Financiado: R$ ${{formatCurrency(vImovel - entrada)}}\\n• Amortização: R$ ${{formatCurrency(aporteUnico)}}\\n• Economia: R$ ${{formatCurrency(economiaJuros)}}\\nPodemos conversar?`;
+            const textoNav = `Olá! Gostaria de falar com um especialista sobre simulação no ${{bancoNome}}.`;
+            const textoCta = `Olá! Fiz uma simulação no Datalab e gostaria de consultoria:\\n• Banco: ${{bancoNome}}\\n• Crédito Liberado: R$ ${{formatCurrency(vImovel - entrada)}}\\n• Amortização: R$ ${{formatCurrency(aporteUnico)}}\\n• Economia: R$ ${{formatCurrency(economiaJuros)}}\\nPodemos conversar?`;
             document.getElementById('btn_wa_nav').href = `https://wa.me/${{SEU_WHATSAPP}}?text=${{encodeURIComponent(textoNav)}}`;
             document.getElementById('btn_wa_cta').href = `https://wa.me/${{SEU_WHATSAPP}}?text=${{encodeURIComponent(textoCta)}}`;
         }}
 
         function calcularTudo() {{
             const vImovel = unformatCurrency(document.getElementById('input_imovel').value);
-            const entrada = unformatCurrency(document.getElementById('input_entrada').value);
+            let entrada = unformatCurrency(document.getElementById('input_entrada').value);
             
-            // Pega a taxa ANUAL informada e converte para MENSAL nos bastidores
+            // TRAVA DE SEGURANÇA JS: Impede o usuário de digitar uma entrada menor que a regra do banco
+            const entradaMinimaReal = vImovel * REGRA_PERC_ENTRADA_MIN;
+            if (entrada < entradaMinimaReal) {{
+                entrada = entradaMinimaReal;
+                document.getElementById('input_entrada').value = formatCurrency(entrada);
+                document.getElementById('slider_entrada').value = entrada;
+            }}
+            
+            // Atualiza o mínimo do slider de entrada dinamicamente caso o valor do imóvel mude
+            document.getElementById('slider_entrada').min = entradaMinimaReal;
+            
             const taxaAnualRaw = document.getElementById('input_taxa').value.toString().replace(',', '.');
             const taxaAnual = parseFloat(taxaAnualRaw) || 0;
-            const taxa = (taxaAnual / 100) / 12; // Cálculo base nominal para financiamentos
+            const taxa = (taxaAnual / 100) / 12; 
             
-            const prazoOrig = parseInt(document.getElementById('input_prazo').value) || 0;
+            let prazoOrig = parseInt(document.getElementById('input_prazo').value) || 0;
+            
+            // TRAVA DE SEGURANÇA JS: Impede prazo maior que o banco permite
+            if (prazoOrig > REGRA_PRAZO_MAX) {{
+                prazoOrig = REGRA_PRAZO_MAX;
+                document.getElementById('input_prazo').value = prazoOrig;
+            }}
+
             const sistema = document.querySelector('input[name="sistema"]:checked').value;
             const aporteUnico = unformatCurrency(document.getElementById('input_amortizar').value);
             const vFinanciado = vImovel - entrada;
@@ -422,8 +491,8 @@ def gerar_paginas_pseo():
             document.querySelectorAll('input[name="sistema"]').forEach(r => r.addEventListener('change', calcularTudo));
             document.getElementById('slider_imovel').value = {valor_imovel};
             document.getElementById('input_imovel').value = formatCurrency({valor_imovel});
-            document.getElementById('slider_entrada').value = {int(entrada_padrao)};
-            document.getElementById('input_entrada').value = formatCurrency({int(entrada_padrao)});
+            
+            // Força a validação inicial baseada nas novas regras
             calcularTudo();
         }};
     </script>
