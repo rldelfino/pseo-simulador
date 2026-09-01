@@ -22,12 +22,16 @@ REGRAS_BANCOS = {
     "Daycoval": {"ltv": 0.60, "prazo_max": 360, "mod": "Crédito com Garantia de Imóvel", "taxa_padrao": 16.63}
 }
 
-# COLOQUE SEU LINK DE AFILIADO AQUI
-LINK_FINANCIA_TUDO = "https://seulinkdeafiliado.com.br"
+# --- LINK OFICIAL DE AFILIADO ---
+LINK_FINANCIA_TUDO = "https://app.financiatudo.com.br/financiamento-de-imoveis/chave/8940d282b765cbf97b6df55fd1eb0b52b18b2f6e"
 
 def criar_csv_exemplo(caminho_csv):
     cabecalho = ['banco', 'valor_imovel', 'taxa', 'prazo', 'slug']
-    dados = [['Caixa', '300000', '11.49', '420', 'simulador-caixa-300-mil-420-meses']]
+    dados = [
+        ['Caixa', '300000', '11.49', '420', 'simulador-caixa-300-mil-420-meses'],
+        ['Itau', '500000', '13.09', '360', 'simulador-itau-500-mil-360-meses'],
+        ['C6 Bank', '600000', '13.50', '240', 'simulador-c6-bank-600-mil-240-meses']
+    ]
     with open(caminho_csv, mode='w', newline='', encoding='utf-8') as arquivo:
         writer = csv.writer(arquivo, delimiter=';')
         writer.writerow(cabecalho)
@@ -314,11 +318,26 @@ def gerar_paginas_pseo():
             </div>
         </div>
 
-        <div class="text-center pt-4">
-            <!-- LINK DE AFILIADO PRINCIPAL AQUI -->
-            <a href="{LINK_FINANCIA_TUDO}" target="_blank" class="inline-flex items-center justify-center bg-emerald-500 text-slate-950 hover:bg-emerald-400 font-bold px-10 py-5 rounded-2xl transition-all shadow-[0_10px_30px_rgba(16,185,129,0.2)] text-sm tracking-wide w-full md:w-auto">
-                Solicitar Análise de Crédito Gratuita <i class="fa-solid fa-arrow-right ml-3"></i>
-            </a>
+        <!-- BANNER DE CONVERSÃO FINANCIA TUDO (SUA NOVA ISCA DE VENDAS) -->
+        <div class="mt-12 bg-gradient-to-r from-emerald-600 to-emerald-900 rounded-3xl p-8 md:p-12 relative overflow-hidden shadow-[0_20px_50px_rgba(16,185,129,0.3)] border border-emerald-400/50">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-[80px]"></div>
+            <div class="flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
+                <div class="md:w-2/3 text-left">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="bg-yellow-400 text-yellow-950 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Parceria Oficial</span>
+                        <span class="flex items-center text-emerald-200 text-xs font-medium"><i class="fa-solid fa-shield-halved mr-1"></i> 100% Seguro</span>
+                    </div>
+                    <h3 class="text-3xl font-serif text-white mb-3">Aprove o seu crédito no {banco} sem sair de casa.</h3>
+                    <p class="text-emerald-100 text-sm md:text-base font-light leading-relaxed">
+                        Como parceiros credenciados, conectamos você diretamente à mesa de crédito para buscar as <strong>melhores taxas e condições de aprovação</strong>. Análise gratuita, rápida e sem compromisso.
+                    </p>
+                </div>
+                <div class="md:w-1/3 w-full flex justify-center md:justify-end">
+                    <a href="{LINK_FINANCIA_TUDO}" target="_blank" class="group relative inline-flex items-center justify-center bg-white text-emerald-900 hover:bg-slate-100 font-black px-8 py-5 rounded-2xl transition-all shadow-2xl text-sm tracking-widest uppercase w-full text-center overflow-hidden">
+                        <span class="relative z-10 flex items-center">Fazer Análise Grátis <i class="fa-solid fa-arrow-up-right-from-square ml-3 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i></span>
+                    </a>
+                </div>
+            </div>
         </div>
 
         <!-- ZONA DE MONETIZAÇÃO (INFO PRODUTO) -->
