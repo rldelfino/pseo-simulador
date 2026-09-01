@@ -1,508 +1,508 @@
 banco;valor_imovel;taxa;prazo;slug;cet;ltv;prazo_maximo
-Caixa;150000;8.0;360;simulador-caixa-150-mil-360-meses;8.15;80;420
-Caixa;150000;8.0;420;simulador-caixa-150-mil-420-meses;8.15;80;420
-Caixa;200000;8.0;360;simulador-caixa-200-mil-360-meses;8.15;80;420
-Caixa;200000;8.0;420;simulador-caixa-200-mil-420-meses;8.15;80;420
-Caixa;250000;8.0;360;simulador-caixa-250-mil-360-meses;8.15;80;420
-Caixa;250000;8.0;420;simulador-caixa-250-mil-420-meses;8.15;80;420
-Caixa;300000;8.0;360;simulador-caixa-300-mil-360-meses;8.15;80;420
-Caixa;300000;8.0;420;simulador-caixa-300-mil-420-meses;8.15;80;420
-Caixa;350000;8.0;360;simulador-caixa-350-mil-360-meses;8.15;80;420
-Caixa;350000;8.0;420;simulador-caixa-350-mil-420-meses;8.15;80;420
-Caixa;400000;8.0;360;simulador-caixa-400-mil-360-meses;8.15;80;420
-Caixa;400000;8.0;420;simulador-caixa-400-mil-420-meses;8.15;80;420
-Caixa;450000;8.0;360;simulador-caixa-450-mil-360-meses;8.15;80;420
-Caixa;450000;8.0;420;simulador-caixa-450-mil-420-meses;8.15;80;420
-Caixa;500000;8.0;360;simulador-caixa-500-mil-360-meses;8.15;80;420
-Caixa;500000;8.0;420;simulador-caixa-500-mil-420-meses;8.15;80;420
-Caixa;550000;8.0;360;simulador-caixa-550-mil-360-meses;8.15;80;420
-Caixa;550000;8.0;420;simulador-caixa-550-mil-420-meses;8.15;80;420
-Caixa;600000;8.0;360;simulador-caixa-600-mil-360-meses;8.15;80;420
-Caixa;600000;8.0;420;simulador-caixa-600-mil-420-meses;8.15;80;420
-Caixa;650000;8.0;360;simulador-caixa-650-mil-360-meses;8.15;80;420
-Caixa;650000;8.0;420;simulador-caixa-650-mil-420-meses;8.15;80;420
-Caixa;700000;8.0;360;simulador-caixa-700-mil-360-meses;8.15;80;420
-Caixa;700000;8.0;420;simulador-caixa-700-mil-420-meses;8.15;80;420
-Caixa;750000;8.0;360;simulador-caixa-750-mil-360-meses;8.15;80;420
-Caixa;750000;8.0;420;simulador-caixa-750-mil-420-meses;8.15;80;420
-Caixa;800000;8.0;360;simulador-caixa-800-mil-360-meses;8.15;80;420
-Caixa;800000;8.0;420;simulador-caixa-800-mil-420-meses;8.15;80;420
-Caixa;850000;8.0;360;simulador-caixa-850-mil-360-meses;8.15;80;420
-Caixa;850000;8.0;420;simulador-caixa-850-mil-420-meses;8.15;80;420
-Caixa;900000;8.0;360;simulador-caixa-900-mil-360-meses;8.15;80;420
-Caixa;900000;8.0;420;simulador-caixa-900-mil-420-meses;8.15;80;420
-Caixa;950000;8.0;360;simulador-caixa-950-mil-360-meses;8.15;80;420
-Caixa;950000;8.0;420;simulador-caixa-950-mil-420-meses;8.15;80;420
-Caixa;1000000;8.0;360;simulador-caixa-1000-mil-360-meses;8.15;80;420
-Caixa;1000000;8.0;420;simulador-caixa-1000-mil-420-meses;8.15;80;420
-Caixa;1050000;8.0;360;simulador-caixa-1050-mil-360-meses;8.15;80;420
-Caixa;1050000;8.0;420;simulador-caixa-1050-mil-420-meses;8.15;80;420
-Caixa;1100000;8.0;360;simulador-caixa-1100-mil-360-meses;8.15;80;420
-Caixa;1100000;8.0;420;simulador-caixa-1100-mil-420-meses;8.15;80;420
-Caixa;1150000;8.0;360;simulador-caixa-1150-mil-360-meses;8.15;80;420
-Caixa;1150000;8.0;420;simulador-caixa-1150-mil-420-meses;8.15;80;420
-Caixa;1200000;8.0;360;simulador-caixa-1200-mil-360-meses;8.15;80;420
-Caixa;1200000;8.0;420;simulador-caixa-1200-mil-420-meses;8.15;80;420
-Caixa;1250000;8.0;360;simulador-caixa-1250-mil-360-meses;8.15;80;420
-Caixa;1250000;8.0;420;simulador-caixa-1250-mil-420-meses;8.15;80;420
-Caixa;1300000;8.0;360;simulador-caixa-1300-mil-360-meses;8.15;80;420
-Caixa;1300000;8.0;420;simulador-caixa-1300-mil-420-meses;8.15;80;420
-Caixa;1350000;8.0;360;simulador-caixa-1350-mil-360-meses;8.15;80;420
-Caixa;1350000;8.0;420;simulador-caixa-1350-mil-420-meses;8.15;80;420
-Caixa;1400000;8.0;360;simulador-caixa-1400-mil-360-meses;8.15;80;420
-Caixa;1400000;8.0;420;simulador-caixa-1400-mil-420-meses;8.15;80;420
-Caixa;1450000;8.0;360;simulador-caixa-1450-mil-360-meses;8.15;80;420
-Caixa;1450000;8.0;420;simulador-caixa-1450-mil-420-meses;8.15;80;420
-Caixa;1500000;8.0;360;simulador-caixa-1500-mil-360-meses;8.15;80;420
-Caixa;1500000;8.0;420;simulador-caixa-1500-mil-420-meses;8.15;80;420
-Banco do Brasil;150000;9.0;360;simulador-banco-do-brasil-150-mil-360-meses;9.15;80;420
-Banco do Brasil;150000;9.0;420;simulador-banco-do-brasil-150-mil-420-meses;9.15;80;420
-Banco do Brasil;200000;9.0;360;simulador-banco-do-brasil-200-mil-360-meses;9.15;80;420
-Banco do Brasil;200000;9.0;420;simulador-banco-do-brasil-200-mil-420-meses;9.15;80;420
-Banco do Brasil;250000;9.0;360;simulador-banco-do-brasil-250-mil-360-meses;9.15;80;420
-Banco do Brasil;250000;9.0;420;simulador-banco-do-brasil-250-mil-420-meses;9.15;80;420
-Banco do Brasil;300000;9.0;360;simulador-banco-do-brasil-300-mil-360-meses;9.15;80;420
-Banco do Brasil;300000;9.0;420;simulador-banco-do-brasil-300-mil-420-meses;9.15;80;420
-Banco do Brasil;350000;9.0;360;simulador-banco-do-brasil-350-mil-360-meses;9.15;80;420
-Banco do Brasil;350000;9.0;420;simulador-banco-do-brasil-350-mil-420-meses;9.15;80;420
-Banco do Brasil;400000;9.0;360;simulador-banco-do-brasil-400-mil-360-meses;9.15;80;420
-Banco do Brasil;400000;9.0;420;simulador-banco-do-brasil-400-mil-420-meses;9.15;80;420
-Banco do Brasil;450000;9.0;360;simulador-banco-do-brasil-450-mil-360-meses;9.15;80;420
-Banco do Brasil;450000;9.0;420;simulador-banco-do-brasil-450-mil-420-meses;9.15;80;420
-Banco do Brasil;500000;9.0;360;simulador-banco-do-brasil-500-mil-360-meses;9.15;80;420
-Banco do Brasil;500000;9.0;420;simulador-banco-do-brasil-500-mil-420-meses;9.15;80;420
-Banco do Brasil;550000;9.0;360;simulador-banco-do-brasil-550-mil-360-meses;9.15;80;420
-Banco do Brasil;550000;9.0;420;simulador-banco-do-brasil-550-mil-420-meses;9.15;80;420
-Banco do Brasil;600000;9.0;360;simulador-banco-do-brasil-600-mil-360-meses;9.15;80;420
-Banco do Brasil;600000;9.0;420;simulador-banco-do-brasil-600-mil-420-meses;9.15;80;420
-Banco do Brasil;650000;9.0;360;simulador-banco-do-brasil-650-mil-360-meses;9.15;80;420
-Banco do Brasil;650000;9.0;420;simulador-banco-do-brasil-650-mil-420-meses;9.15;80;420
-Banco do Brasil;700000;9.0;360;simulador-banco-do-brasil-700-mil-360-meses;9.15;80;420
-Banco do Brasil;700000;9.0;420;simulador-banco-do-brasil-700-mil-420-meses;9.15;80;420
-Banco do Brasil;750000;9.0;360;simulador-banco-do-brasil-750-mil-360-meses;9.15;80;420
-Banco do Brasil;750000;9.0;420;simulador-banco-do-brasil-750-mil-420-meses;9.15;80;420
-Banco do Brasil;800000;9.0;360;simulador-banco-do-brasil-800-mil-360-meses;9.15;80;420
-Banco do Brasil;800000;9.0;420;simulador-banco-do-brasil-800-mil-420-meses;9.15;80;420
-Banco do Brasil;850000;9.0;360;simulador-banco-do-brasil-850-mil-360-meses;9.15;80;420
-Banco do Brasil;850000;9.0;420;simulador-banco-do-brasil-850-mil-420-meses;9.15;80;420
-Banco do Brasil;900000;9.0;360;simulador-banco-do-brasil-900-mil-360-meses;9.15;80;420
-Banco do Brasil;900000;9.0;420;simulador-banco-do-brasil-900-mil-420-meses;9.15;80;420
-Banco do Brasil;950000;9.0;360;simulador-banco-do-brasil-950-mil-360-meses;9.15;80;420
-Banco do Brasil;950000;9.0;420;simulador-banco-do-brasil-950-mil-420-meses;9.15;80;420
-Banco do Brasil;1000000;9.0;360;simulador-banco-do-brasil-1000-mil-360-meses;9.15;80;420
-Banco do Brasil;1000000;9.0;420;simulador-banco-do-brasil-1000-mil-420-meses;9.15;80;420
-Banco do Brasil;1050000;9.0;360;simulador-banco-do-brasil-1050-mil-360-meses;9.15;80;420
-Banco do Brasil;1050000;9.0;420;simulador-banco-do-brasil-1050-mil-420-meses;9.15;80;420
-Banco do Brasil;1100000;9.0;360;simulador-banco-do-brasil-1100-mil-360-meses;9.15;80;420
-Banco do Brasil;1100000;9.0;420;simulador-banco-do-brasil-1100-mil-420-meses;9.15;80;420
-Banco do Brasil;1150000;9.0;360;simulador-banco-do-brasil-1150-mil-360-meses;9.15;80;420
-Banco do Brasil;1150000;9.0;420;simulador-banco-do-brasil-1150-mil-420-meses;9.15;80;420
-Banco do Brasil;1200000;9.0;360;simulador-banco-do-brasil-1200-mil-360-meses;9.15;80;420
-Banco do Brasil;1200000;9.0;420;simulador-banco-do-brasil-1200-mil-420-meses;9.15;80;420
-Banco do Brasil;1250000;9.0;360;simulador-banco-do-brasil-1250-mil-360-meses;9.15;80;420
-Banco do Brasil;1250000;9.0;420;simulador-banco-do-brasil-1250-mil-420-meses;9.15;80;420
-Banco do Brasil;1300000;9.0;360;simulador-banco-do-brasil-1300-mil-360-meses;9.15;80;420
-Banco do Brasil;1300000;9.0;420;simulador-banco-do-brasil-1300-mil-420-meses;9.15;80;420
-Banco do Brasil;1350000;9.0;360;simulador-banco-do-brasil-1350-mil-360-meses;9.15;80;420
-Banco do Brasil;1350000;9.0;420;simulador-banco-do-brasil-1350-mil-420-meses;9.15;80;420
-Banco do Brasil;1400000;9.0;360;simulador-banco-do-brasil-1400-mil-360-meses;9.15;80;420
-Banco do Brasil;1400000;9.0;420;simulador-banco-do-brasil-1400-mil-420-meses;9.15;80;420
-Banco do Brasil;1450000;9.0;360;simulador-banco-do-brasil-1450-mil-360-meses;9.15;80;420
-Banco do Brasil;1450000;9.0;420;simulador-banco-do-brasil-1450-mil-420-meses;9.15;80;420
-Banco do Brasil;1500000;9.0;360;simulador-banco-do-brasil-1500-mil-360-meses;9.15;80;420
-Banco do Brasil;1500000;9.0;420;simulador-banco-do-brasil-1500-mil-420-meses;9.15;80;420
-Itau;150000;8.3;360;simulador-itau-150-mil-360-meses;8.45;82;360
-Itau;150000;8.3;420;simulador-itau-150-mil-420-meses;8.45;82;360
-Itau;200000;8.3;360;simulador-itau-200-mil-360-meses;8.45;82;360
-Itau;200000;8.3;420;simulador-itau-200-mil-420-meses;8.45;82;360
-Itau;250000;8.3;360;simulador-itau-250-mil-360-meses;8.45;82;360
-Itau;250000;8.3;420;simulador-itau-250-mil-420-meses;8.45;82;360
-Itau;300000;8.3;360;simulador-itau-300-mil-360-meses;8.45;82;360
-Itau;300000;8.3;420;simulador-itau-300-mil-420-meses;8.45;82;360
-Itau;350000;8.3;360;simulador-itau-350-mil-360-meses;8.45;82;360
-Itau;350000;8.3;420;simulador-itau-350-mil-420-meses;8.45;82;360
-Itau;400000;8.3;360;simulador-itau-400-mil-360-meses;8.45;82;360
-Itau;400000;8.3;420;simulador-itau-400-mil-420-meses;8.45;82;360
-Itau;450000;8.3;360;simulador-itau-450-mil-360-meses;8.45;82;360
-Itau;450000;8.3;420;simulador-itau-450-mil-420-meses;8.45;82;360
-Itau;500000;8.3;360;simulador-itau-500-mil-360-meses;8.45;82;360
-Itau;500000;8.3;420;simulador-itau-500-mil-420-meses;8.45;82;360
-Itau;550000;8.3;360;simulador-itau-550-mil-360-meses;8.45;82;360
-Itau;550000;8.3;420;simulador-itau-550-mil-420-meses;8.45;82;360
-Itau;600000;8.3;360;simulador-itau-600-mil-360-meses;8.45;82;360
-Itau;600000;8.3;420;simulador-itau-600-mil-420-meses;8.45;82;360
-Itau;650000;8.3;360;simulador-itau-650-mil-360-meses;8.45;82;360
-Itau;650000;8.3;420;simulador-itau-650-mil-420-meses;8.45;82;360
-Itau;700000;8.3;360;simulador-itau-700-mil-360-meses;8.45;82;360
-Itau;700000;8.3;420;simulador-itau-700-mil-420-meses;8.45;82;360
-Itau;750000;8.3;360;simulador-itau-750-mil-360-meses;8.45;82;360
-Itau;750000;8.3;420;simulador-itau-750-mil-420-meses;8.45;82;360
-Itau;800000;8.3;360;simulador-itau-800-mil-360-meses;8.45;82;360
-Itau;800000;8.3;420;simulador-itau-800-mil-420-meses;8.45;82;360
-Itau;850000;8.3;360;simulador-itau-850-mil-360-meses;8.45;82;360
-Itau;850000;8.3;420;simulador-itau-850-mil-420-meses;8.45;82;360
-Itau;900000;8.3;360;simulador-itau-900-mil-360-meses;8.45;82;360
-Itau;900000;8.3;420;simulador-itau-900-mil-420-meses;8.45;82;360
-Itau;950000;8.3;360;simulador-itau-950-mil-360-meses;8.45;82;360
-Itau;950000;8.3;420;simulador-itau-950-mil-420-meses;8.45;82;360
-Itau;1000000;8.3;360;simulador-itau-1000-mil-360-meses;8.45;82;360
-Itau;1000000;8.3;420;simulador-itau-1000-mil-420-meses;8.45;82;360
-Itau;1050000;8.3;360;simulador-itau-1050-mil-360-meses;8.45;82;360
-Itau;1050000;8.3;420;simulador-itau-1050-mil-420-meses;8.45;82;360
-Itau;1100000;8.3;360;simulador-itau-1100-mil-360-meses;8.45;82;360
-Itau;1100000;8.3;420;simulador-itau-1100-mil-420-meses;8.45;82;360
-Itau;1150000;8.3;360;simulador-itau-1150-mil-360-meses;8.45;82;360
-Itau;1150000;8.3;420;simulador-itau-1150-mil-420-meses;8.45;82;360
-Itau;1200000;8.3;360;simulador-itau-1200-mil-360-meses;8.45;82;360
-Itau;1200000;8.3;420;simulador-itau-1200-mil-420-meses;8.45;82;360
-Itau;1250000;8.3;360;simulador-itau-1250-mil-360-meses;8.45;82;360
-Itau;1250000;8.3;420;simulador-itau-1250-mil-420-meses;8.45;82;360
-Itau;1300000;8.3;360;simulador-itau-1300-mil-360-meses;8.45;82;360
-Itau;1300000;8.3;420;simulador-itau-1300-mil-420-meses;8.45;82;360
-Itau;1350000;8.3;360;simulador-itau-1350-mil-360-meses;8.45;82;360
-Itau;1350000;8.3;420;simulador-itau-1350-mil-420-meses;8.45;82;360
-Itau;1400000;8.3;360;simulador-itau-1400-mil-360-meses;8.45;82;360
-Itau;1400000;8.3;420;simulador-itau-1400-mil-420-meses;8.45;82;360
-Itau;1450000;8.3;360;simulador-itau-1450-mil-360-meses;8.45;82;360
-Itau;1450000;8.3;420;simulador-itau-1450-mil-420-meses;8.45;82;360
-Itau;1500000;8.3;360;simulador-itau-1500-mil-360-meses;8.45;82;360
-Itau;1500000;8.3;420;simulador-itau-1500-mil-420-meses;8.45;82;360
-Bradesco;150000;8.9;360;simulador-bradesco-150-mil-360-meses;9.05;80;360
-Bradesco;150000;8.9;420;simulador-bradesco-150-mil-420-meses;9.05;80;360
-Bradesco;200000;8.9;360;simulador-bradesco-200-mil-360-meses;9.05;80;360
-Bradesco;200000;8.9;420;simulador-bradesco-200-mil-420-meses;9.05;80;360
-Bradesco;250000;8.9;360;simulador-bradesco-250-mil-360-meses;9.05;80;360
-Bradesco;250000;8.9;420;simulador-bradesco-250-mil-420-meses;9.05;80;360
-Bradesco;300000;8.9;360;simulador-bradesco-300-mil-360-meses;9.05;80;360
-Bradesco;300000;8.9;420;simulador-bradesco-300-mil-420-meses;9.05;80;360
-Bradesco;350000;8.9;360;simulador-bradesco-350-mil-360-meses;9.05;80;360
-Bradesco;350000;8.9;420;simulador-bradesco-350-mil-420-meses;9.05;80;360
-Bradesco;400000;8.9;360;simulador-bradesco-400-mil-360-meses;9.05;80;360
-Bradesco;400000;8.9;420;simulador-bradesco-400-mil-420-meses;9.05;80;360
-Bradesco;450000;8.9;360;simulador-bradesco-450-mil-360-meses;9.05;80;360
-Bradesco;450000;8.9;420;simulador-bradesco-450-mil-420-meses;9.05;80;360
-Bradesco;500000;8.9;360;simulador-bradesco-500-mil-360-meses;9.05;80;360
-Bradesco;500000;8.9;420;simulador-bradesco-500-mil-420-meses;9.05;80;360
-Bradesco;550000;8.9;360;simulador-bradesco-550-mil-360-meses;9.05;80;360
-Bradesco;550000;8.9;420;simulador-bradesco-550-mil-420-meses;9.05;80;360
-Bradesco;600000;8.9;360;simulador-bradesco-600-mil-360-meses;9.05;80;360
-Bradesco;600000;8.9;420;simulador-bradesco-600-mil-420-meses;9.05;80;360
-Bradesco;650000;8.9;360;simulador-bradesco-650-mil-360-meses;9.05;80;360
-Bradesco;650000;8.9;420;simulador-bradesco-650-mil-420-meses;9.05;80;360
-Bradesco;700000;8.9;360;simulador-bradesco-700-mil-360-meses;9.05;80;360
-Bradesco;700000;8.9;420;simulador-bradesco-700-mil-420-meses;9.05;80;360
-Bradesco;750000;8.9;360;simulador-bradesco-750-mil-360-meses;9.05;80;360
-Bradesco;750000;8.9;420;simulador-bradesco-750-mil-420-meses;9.05;80;360
-Bradesco;800000;8.9;360;simulador-bradesco-800-mil-360-meses;9.05;80;360
-Bradesco;800000;8.9;420;simulador-bradesco-800-mil-420-meses;9.05;80;360
-Bradesco;850000;8.9;360;simulador-bradesco-850-mil-360-meses;9.05;80;360
-Bradesco;850000;8.9;420;simulador-bradesco-850-mil-420-meses;9.05;80;360
-Bradesco;900000;8.9;360;simulador-bradesco-900-mil-360-meses;9.05;80;360
-Bradesco;900000;8.9;420;simulador-bradesco-900-mil-420-meses;9.05;80;360
-Bradesco;950000;8.9;360;simulador-bradesco-950-mil-360-meses;9.05;80;360
-Bradesco;950000;8.9;420;simulador-bradesco-950-mil-420-meses;9.05;80;360
-Bradesco;1000000;8.9;360;simulador-bradesco-1000-mil-360-meses;9.05;80;360
-Bradesco;1000000;8.9;420;simulador-bradesco-1000-mil-420-meses;9.05;80;360
-Bradesco;1050000;8.9;360;simulador-bradesco-1050-mil-360-meses;9.05;80;360
-Bradesco;1050000;8.9;420;simulador-bradesco-1050-mil-420-meses;9.05;80;360
-Bradesco;1100000;8.9;360;simulador-bradesco-1100-mil-360-meses;9.05;80;360
-Bradesco;1100000;8.9;420;simulador-bradesco-1100-mil-420-meses;9.05;80;360
-Bradesco;1150000;8.9;360;simulador-bradesco-1150-mil-360-meses;9.05;80;360
-Bradesco;1150000;8.9;420;simulador-bradesco-1150-mil-420-meses;9.05;80;360
-Bradesco;1200000;8.9;360;simulador-bradesco-1200-mil-360-meses;9.05;80;360
-Bradesco;1200000;8.9;420;simulador-bradesco-1200-mil-420-meses;9.05;80;360
-Bradesco;1250000;8.9;360;simulador-bradesco-1250-mil-360-meses;9.05;80;360
-Bradesco;1250000;8.9;420;simulador-bradesco-1250-mil-420-meses;9.05;80;360
-Bradesco;1300000;8.9;360;simulador-bradesco-1300-mil-360-meses;9.05;80;360
-Bradesco;1300000;8.9;420;simulador-bradesco-1300-mil-420-meses;9.05;80;360
-Bradesco;1350000;8.9;360;simulador-bradesco-1350-mil-360-meses;9.05;80;360
-Bradesco;1350000;8.9;420;simulador-bradesco-1350-mil-420-meses;9.05;80;360
-Bradesco;1400000;8.9;360;simulador-bradesco-1400-mil-360-meses;9.05;80;360
-Bradesco;1400000;8.9;420;simulador-bradesco-1400-mil-420-meses;9.05;80;360
-Bradesco;1450000;8.9;360;simulador-bradesco-1450-mil-360-meses;9.05;80;360
-Bradesco;1450000;8.9;420;simulador-bradesco-1450-mil-420-meses;9.05;80;360
-Bradesco;1500000;8.9;360;simulador-bradesco-1500-mil-360-meses;9.05;80;360
-Bradesco;1500000;8.9;420;simulador-bradesco-1500-mil-420-meses;9.05;80;360
-Santander;150000;8.99;360;simulador-santander-150-mil-360-meses;9.14;80;420
-Santander;150000;8.99;420;simulador-santander-150-mil-420-meses;9.14;80;420
-Santander;200000;8.99;360;simulador-santander-200-mil-360-meses;9.14;80;420
-Santander;200000;8.99;420;simulador-santander-200-mil-420-meses;9.14;80;420
-Santander;250000;8.99;360;simulador-santander-250-mil-360-meses;9.14;80;420
-Santander;250000;8.99;420;simulador-santander-250-mil-420-meses;9.14;80;420
-Santander;300000;8.99;360;simulador-santander-300-mil-360-meses;9.14;80;420
-Santander;300000;8.99;420;simulador-santander-300-mil-420-meses;9.14;80;420
-Santander;350000;8.99;360;simulador-santander-350-mil-360-meses;9.14;80;420
-Santander;350000;8.99;420;simulador-santander-350-mil-420-meses;9.14;80;420
-Santander;400000;8.99;360;simulador-santander-400-mil-360-meses;9.14;80;420
-Santander;400000;8.99;420;simulador-santander-400-mil-420-meses;9.14;80;420
-Santander;450000;8.99;360;simulador-santander-450-mil-360-meses;9.14;80;420
-Santander;450000;8.99;420;simulador-santander-450-mil-420-meses;9.14;80;420
-Santander;500000;8.99;360;simulador-santander-500-mil-360-meses;9.14;80;420
-Santander;500000;8.99;420;simulador-santander-500-mil-420-meses;9.14;80;420
-Santander;550000;8.99;360;simulador-santander-550-mil-360-meses;9.14;80;420
-Santander;550000;8.99;420;simulador-santander-550-mil-420-meses;9.14;80;420
-Santander;600000;8.99;360;simulador-santander-600-mil-360-meses;9.14;80;420
-Santander;600000;8.99;420;simulador-santander-600-mil-420-meses;9.14;80;420
-Santander;650000;8.99;360;simulador-santander-650-mil-360-meses;9.14;80;420
-Santander;650000;8.99;420;simulador-santander-650-mil-420-meses;9.14;80;420
-Santander;700000;8.99;360;simulador-santander-700-mil-360-meses;9.14;80;420
-Santander;700000;8.99;420;simulador-santander-700-mil-420-meses;9.14;80;420
-Santander;750000;8.99;360;simulador-santander-750-mil-360-meses;9.14;80;420
-Santander;750000;8.99;420;simulador-santander-750-mil-420-meses;9.14;80;420
-Santander;800000;8.99;360;simulador-santander-800-mil-360-meses;9.14;80;420
-Santander;800000;8.99;420;simulador-santander-800-mil-420-meses;9.14;80;420
-Santander;850000;8.99;360;simulador-santander-850-mil-360-meses;9.14;80;420
-Santander;850000;8.99;420;simulador-santander-850-mil-420-meses;9.14;80;420
-Santander;900000;8.99;360;simulador-santander-900-mil-360-meses;9.14;80;420
-Santander;900000;8.99;420;simulador-santander-900-mil-420-meses;9.14;80;420
-Santander;950000;8.99;360;simulador-santander-950-mil-360-meses;9.14;80;420
-Santander;950000;8.99;420;simulador-santander-950-mil-420-meses;9.14;80;420
-Santander;1000000;8.99;360;simulador-santander-1000-mil-360-meses;9.14;80;420
-Santander;1000000;8.99;420;simulador-santander-1000-mil-420-meses;9.14;80;420
-Santander;1050000;8.99;360;simulador-santander-1050-mil-360-meses;9.14;80;420
-Santander;1050000;8.99;420;simulador-santander-1050-mil-420-meses;9.14;80;420
-Santander;1100000;8.99;360;simulador-santander-1100-mil-360-meses;9.14;80;420
-Santander;1100000;8.99;420;simulador-santander-1100-mil-420-meses;9.14;80;420
-Santander;1150000;8.99;360;simulador-santander-1150-mil-360-meses;9.14;80;420
-Santander;1150000;8.99;420;simulador-santander-1150-mil-420-meses;9.14;80;420
-Santander;1200000;8.99;360;simulador-santander-1200-mil-360-meses;9.14;80;420
-Santander;1200000;8.99;420;simulador-santander-1200-mil-420-meses;9.14;80;420
-Santander;1250000;8.99;360;simulador-santander-1250-mil-360-meses;9.14;80;420
-Santander;1250000;8.99;420;simulador-santander-1250-mil-420-meses;9.14;80;420
-Santander;1300000;8.99;360;simulador-santander-1300-mil-360-meses;9.14;80;420
-Santander;1300000;8.99;420;simulador-santander-1300-mil-420-meses;9.14;80;420
-Santander;1350000;8.99;360;simulador-santander-1350-mil-360-meses;9.14;80;420
-Santander;1350000;8.99;420;simulador-santander-1350-mil-420-meses;9.14;80;420
-Santander;1400000;8.99;360;simulador-santander-1400-mil-360-meses;9.14;80;420
-Santander;1400000;8.99;420;simulador-santander-1400-mil-420-meses;9.14;80;420
-Santander;1450000;8.99;360;simulador-santander-1450-mil-360-meses;9.14;80;420
-Santander;1450000;8.99;420;simulador-santander-1450-mil-420-meses;9.14;80;420
-Santander;1500000;8.99;360;simulador-santander-1500-mil-360-meses;9.14;80;420
-Santander;1500000;8.99;420;simulador-santander-1500-mil-420-meses;9.14;80;420
-Banco Inter;150000;8.2;360;simulador-banco-inter-150-mil-360-meses;8.35;70;360
-Banco Inter;150000;8.2;420;simulador-banco-inter-150-mil-420-meses;8.35;70;360
-Banco Inter;200000;8.2;360;simulador-banco-inter-200-mil-360-meses;8.35;70;360
-Banco Inter;200000;8.2;420;simulador-banco-inter-200-mil-420-meses;8.35;70;360
-Banco Inter;250000;8.2;360;simulador-banco-inter-250-mil-360-meses;8.35;70;360
-Banco Inter;250000;8.2;420;simulador-banco-inter-250-mil-420-meses;8.35;70;360
-Banco Inter;300000;8.2;360;simulador-banco-inter-300-mil-360-meses;8.35;70;360
-Banco Inter;300000;8.2;420;simulador-banco-inter-300-mil-420-meses;8.35;70;360
-Banco Inter;350000;8.2;360;simulador-banco-inter-350-mil-360-meses;8.35;70;360
-Banco Inter;350000;8.2;420;simulador-banco-inter-350-mil-420-meses;8.35;70;360
-Banco Inter;400000;8.2;360;simulador-banco-inter-400-mil-360-meses;8.35;70;360
-Banco Inter;400000;8.2;420;simulador-banco-inter-400-mil-420-meses;8.35;70;360
-Banco Inter;450000;8.2;360;simulador-banco-inter-450-mil-360-meses;8.35;70;360
-Banco Inter;450000;8.2;420;simulador-banco-inter-450-mil-420-meses;8.35;70;360
-Banco Inter;500000;8.2;360;simulador-banco-inter-500-mil-360-meses;8.35;70;360
-Banco Inter;500000;8.2;420;simulador-banco-inter-500-mil-420-meses;8.35;70;360
-Banco Inter;550000;8.2;360;simulador-banco-inter-550-mil-360-meses;8.35;70;360
-Banco Inter;550000;8.2;420;simulador-banco-inter-550-mil-420-meses;8.35;70;360
-Banco Inter;600000;8.2;360;simulador-banco-inter-600-mil-360-meses;8.35;70;360
-Banco Inter;600000;8.2;420;simulador-banco-inter-600-mil-420-meses;8.35;70;360
-Banco Inter;650000;8.2;360;simulador-banco-inter-650-mil-360-meses;8.35;70;360
-Banco Inter;650000;8.2;420;simulador-banco-inter-650-mil-420-meses;8.35;70;360
-Banco Inter;700000;8.2;360;simulador-banco-inter-700-mil-360-meses;8.35;70;360
-Banco Inter;700000;8.2;420;simulador-banco-inter-700-mil-420-meses;8.35;70;360
-Banco Inter;750000;8.2;360;simulador-banco-inter-750-mil-360-meses;8.35;70;360
-Banco Inter;750000;8.2;420;simulador-banco-inter-750-mil-420-meses;8.35;70;360
-Banco Inter;800000;8.2;360;simulador-banco-inter-800-mil-360-meses;8.35;70;360
-Banco Inter;800000;8.2;420;simulador-banco-inter-800-mil-420-meses;8.35;70;360
-Banco Inter;850000;8.2;360;simulador-banco-inter-850-mil-360-meses;8.35;70;360
-Banco Inter;850000;8.2;420;simulador-banco-inter-850-mil-420-meses;8.35;70;360
-Banco Inter;900000;8.2;360;simulador-banco-inter-900-mil-360-meses;8.35;70;360
-Banco Inter;900000;8.2;420;simulador-banco-inter-900-mil-420-meses;8.35;70;360
-Banco Inter;950000;8.2;360;simulador-banco-inter-950-mil-360-meses;8.35;70;360
-Banco Inter;950000;8.2;420;simulador-banco-inter-950-mil-420-meses;8.35;70;360
-Banco Inter;1000000;8.2;360;simulador-banco-inter-1000-mil-360-meses;8.35;70;360
-Banco Inter;1000000;8.2;420;simulador-banco-inter-1000-mil-420-meses;8.35;70;360
-Banco Inter;1050000;8.2;360;simulador-banco-inter-1050-mil-360-meses;8.35;70;360
-Banco Inter;1050000;8.2;420;simulador-banco-inter-1050-mil-420-meses;8.35;70;360
-Banco Inter;1100000;8.2;360;simulador-banco-inter-1100-mil-360-meses;8.35;70;360
-Banco Inter;1100000;8.2;420;simulador-banco-inter-1100-mil-420-meses;8.35;70;360
-Banco Inter;1150000;8.2;360;simulador-banco-inter-1150-mil-360-meses;8.35;70;360
-Banco Inter;1150000;8.2;420;simulador-banco-inter-1150-mil-420-meses;8.35;70;360
-Banco Inter;1200000;8.2;360;simulador-banco-inter-1200-mil-360-meses;8.35;70;360
-Banco Inter;1200000;8.2;420;simulador-banco-inter-1200-mil-420-meses;8.35;70;360
-Banco Inter;1250000;8.2;360;simulador-banco-inter-1250-mil-360-meses;8.35;70;360
-Banco Inter;1250000;8.2;420;simulador-banco-inter-1250-mil-420-meses;8.35;70;360
-Banco Inter;1300000;8.2;360;simulador-banco-inter-1300-mil-360-meses;8.35;70;360
-Banco Inter;1300000;8.2;420;simulador-banco-inter-1300-mil-420-meses;8.35;70;360
-Banco Inter;1350000;8.2;360;simulador-banco-inter-1350-mil-360-meses;8.35;70;360
-Banco Inter;1350000;8.2;420;simulador-banco-inter-1350-mil-420-meses;8.35;70;360
-Banco Inter;1400000;8.2;360;simulador-banco-inter-1400-mil-360-meses;8.35;70;360
-Banco Inter;1400000;8.2;420;simulador-banco-inter-1400-mil-420-meses;8.35;70;360
-Banco Inter;1450000;8.2;360;simulador-banco-inter-1450-mil-360-meses;8.35;70;360
-Banco Inter;1450000;8.2;420;simulador-banco-inter-1450-mil-420-meses;8.35;70;360
-Banco Inter;1500000;8.2;360;simulador-banco-inter-1500-mil-360-meses;8.35;70;360
-Banco Inter;1500000;8.2;420;simulador-banco-inter-1500-mil-420-meses;8.35;70;360
-Banrisul;150000;0.84;360;simulador-banrisul-150-mil-360-meses;0.99;80;360
-Banrisul;150000;0.84;420;simulador-banrisul-150-mil-420-meses;0.99;80;360
-Banrisul;200000;0.84;360;simulador-banrisul-200-mil-360-meses;0.99;80;360
-Banrisul;200000;0.84;420;simulador-banrisul-200-mil-420-meses;0.99;80;360
-Banrisul;250000;0.84;360;simulador-banrisul-250-mil-360-meses;0.99;80;360
-Banrisul;250000;0.84;420;simulador-banrisul-250-mil-420-meses;0.99;80;360
-Banrisul;300000;0.84;360;simulador-banrisul-300-mil-360-meses;0.99;80;360
-Banrisul;300000;0.84;420;simulador-banrisul-300-mil-420-meses;0.99;80;360
-Banrisul;350000;0.84;360;simulador-banrisul-350-mil-360-meses;0.99;80;360
-Banrisul;350000;0.84;420;simulador-banrisul-350-mil-420-meses;0.99;80;360
-Banrisul;400000;0.84;360;simulador-banrisul-400-mil-360-meses;0.99;80;360
-Banrisul;400000;0.84;420;simulador-banrisul-400-mil-420-meses;0.99;80;360
-Banrisul;450000;0.84;360;simulador-banrisul-450-mil-360-meses;0.99;80;360
-Banrisul;450000;0.84;420;simulador-banrisul-450-mil-420-meses;0.99;80;360
-Banrisul;500000;0.84;360;simulador-banrisul-500-mil-360-meses;0.99;80;360
-Banrisul;500000;0.84;420;simulador-banrisul-500-mil-420-meses;0.99;80;360
-Banrisul;550000;0.84;360;simulador-banrisul-550-mil-360-meses;0.99;80;360
-Banrisul;550000;0.84;420;simulador-banrisul-550-mil-420-meses;0.99;80;360
-Banrisul;600000;0.84;360;simulador-banrisul-600-mil-360-meses;0.99;80;360
-Banrisul;600000;0.84;420;simulador-banrisul-600-mil-420-meses;0.99;80;360
-Banrisul;650000;0.84;360;simulador-banrisul-650-mil-360-meses;0.99;80;360
-Banrisul;650000;0.84;420;simulador-banrisul-650-mil-420-meses;0.99;80;360
-Banrisul;700000;0.84;360;simulador-banrisul-700-mil-360-meses;0.99;80;360
-Banrisul;700000;0.84;420;simulador-banrisul-700-mil-420-meses;0.99;80;360
-Banrisul;750000;0.84;360;simulador-banrisul-750-mil-360-meses;0.99;80;360
-Banrisul;750000;0.84;420;simulador-banrisul-750-mil-420-meses;0.99;80;360
-Banrisul;800000;0.84;360;simulador-banrisul-800-mil-360-meses;0.99;80;360
-Banrisul;800000;0.84;420;simulador-banrisul-800-mil-420-meses;0.99;80;360
-Banrisul;850000;0.84;360;simulador-banrisul-850-mil-360-meses;0.99;80;360
-Banrisul;850000;0.84;420;simulador-banrisul-850-mil-420-meses;0.99;80;360
-Banrisul;900000;0.84;360;simulador-banrisul-900-mil-360-meses;0.99;80;360
-Banrisul;900000;0.84;420;simulador-banrisul-900-mil-420-meses;0.99;80;360
-Banrisul;950000;0.84;360;simulador-banrisul-950-mil-360-meses;0.99;80;360
-Banrisul;950000;0.84;420;simulador-banrisul-950-mil-420-meses;0.99;80;360
-Banrisul;1000000;0.84;360;simulador-banrisul-1000-mil-360-meses;0.99;80;360
-Banrisul;1000000;0.84;420;simulador-banrisul-1000-mil-420-meses;0.99;80;360
-Banrisul;1050000;0.84;360;simulador-banrisul-1050-mil-360-meses;0.99;80;360
-Banrisul;1050000;0.84;420;simulador-banrisul-1050-mil-420-meses;0.99;80;360
-Banrisul;1100000;0.84;360;simulador-banrisul-1100-mil-360-meses;0.99;80;360
-Banrisul;1100000;0.84;420;simulador-banrisul-1100-mil-420-meses;0.99;80;360
-Banrisul;1150000;0.84;360;simulador-banrisul-1150-mil-360-meses;0.99;80;360
-Banrisul;1150000;0.84;420;simulador-banrisul-1150-mil-420-meses;0.99;80;360
-Banrisul;1200000;0.84;360;simulador-banrisul-1200-mil-360-meses;0.99;80;360
-Banrisul;1200000;0.84;420;simulador-banrisul-1200-mil-420-meses;0.99;80;360
-Banrisul;1250000;0.84;360;simulador-banrisul-1250-mil-360-meses;0.99;80;360
-Banrisul;1250000;0.84;420;simulador-banrisul-1250-mil-420-meses;0.99;80;360
-Banrisul;1300000;0.84;360;simulador-banrisul-1300-mil-360-meses;0.99;80;360
-Banrisul;1300000;0.84;420;simulador-banrisul-1300-mil-420-meses;0.99;80;360
-Banrisul;1350000;0.84;360;simulador-banrisul-1350-mil-360-meses;0.99;80;360
-Banrisul;1350000;0.84;420;simulador-banrisul-1350-mil-420-meses;0.99;80;360
-Banrisul;1400000;0.84;360;simulador-banrisul-1400-mil-360-meses;0.99;80;360
-Banrisul;1400000;0.84;420;simulador-banrisul-1400-mil-420-meses;0.99;80;360
-Banrisul;1450000;0.84;360;simulador-banrisul-1450-mil-360-meses;0.99;80;360
-Banrisul;1450000;0.84;420;simulador-banrisul-1450-mil-420-meses;0.99;80;360
-Banrisul;1500000;0.84;360;simulador-banrisul-1500-mil-360-meses;0.99;80;360
-Banrisul;1500000;0.84;420;simulador-banrisul-1500-mil-420-meses;0.99;80;360
-BRB;150000;0.78;360;simulador-brb-150-mil-360-meses;0.93;80;360
-BRB;150000;0.78;420;simulador-brb-150-mil-420-meses;0.93;80;360
-BRB;200000;0.78;360;simulador-brb-200-mil-360-meses;0.93;80;360
-BRB;200000;0.78;420;simulador-brb-200-mil-420-meses;0.93;80;360
-BRB;250000;0.78;360;simulador-brb-250-mil-360-meses;0.93;80;360
-BRB;250000;0.78;420;simulador-brb-250-mil-420-meses;0.93;80;360
-BRB;300000;0.78;360;simulador-brb-300-mil-360-meses;0.93;80;360
-BRB;300000;0.78;420;simulador-brb-300-mil-420-meses;0.93;80;360
-BRB;350000;0.78;360;simulador-brb-350-mil-360-meses;0.93;80;360
-BRB;350000;0.78;420;simulador-brb-350-mil-420-meses;0.93;80;360
-BRB;400000;0.78;360;simulador-brb-400-mil-360-meses;0.93;80;360
-BRB;400000;0.78;420;simulador-brb-400-mil-420-meses;0.93;80;360
-BRB;450000;0.78;360;simulador-brb-450-mil-360-meses;0.93;80;360
-BRB;450000;0.78;420;simulador-brb-450-mil-420-meses;0.93;80;360
-BRB;500000;0.78;360;simulador-brb-500-mil-360-meses;0.93;80;360
-BRB;500000;0.78;420;simulador-brb-500-mil-420-meses;0.93;80;360
-BRB;550000;0.78;360;simulador-brb-550-mil-360-meses;0.93;80;360
-BRB;550000;0.78;420;simulador-brb-550-mil-420-meses;0.93;80;360
-BRB;600000;0.78;360;simulador-brb-600-mil-360-meses;0.93;80;360
-BRB;600000;0.78;420;simulador-brb-600-mil-420-meses;0.93;80;360
-BRB;650000;0.78;360;simulador-brb-650-mil-360-meses;0.93;80;360
-BRB;650000;0.78;420;simulador-brb-650-mil-420-meses;0.93;80;360
-BRB;700000;0.78;360;simulador-brb-700-mil-360-meses;0.93;80;360
-BRB;700000;0.78;420;simulador-brb-700-mil-420-meses;0.93;80;360
-BRB;750000;0.78;360;simulador-brb-750-mil-360-meses;0.93;80;360
-BRB;750000;0.78;420;simulador-brb-750-mil-420-meses;0.93;80;360
-BRB;800000;0.78;360;simulador-brb-800-mil-360-meses;0.93;80;360
-BRB;800000;0.78;420;simulador-brb-800-mil-420-meses;0.93;80;360
-BRB;850000;0.78;360;simulador-brb-850-mil-360-meses;0.93;80;360
-BRB;850000;0.78;420;simulador-brb-850-mil-420-meses;0.93;80;360
-BRB;900000;0.78;360;simulador-brb-900-mil-360-meses;0.93;80;360
-BRB;900000;0.78;420;simulador-brb-900-mil-420-meses;0.93;80;360
-BRB;950000;0.78;360;simulador-brb-950-mil-360-meses;0.93;80;360
-BRB;950000;0.78;420;simulador-brb-950-mil-420-meses;0.93;80;360
-BRB;1000000;0.78;360;simulador-brb-1000-mil-360-meses;0.93;80;360
-BRB;1000000;0.78;420;simulador-brb-1000-mil-420-meses;0.93;80;360
-BRB;1050000;0.78;360;simulador-brb-1050-mil-360-meses;0.93;80;360
-BRB;1050000;0.78;420;simulador-brb-1050-mil-420-meses;0.93;80;360
-BRB;1100000;0.78;360;simulador-brb-1100-mil-360-meses;0.93;80;360
-BRB;1100000;0.78;420;simulador-brb-1100-mil-420-meses;0.93;80;360
-BRB;1150000;0.78;360;simulador-brb-1150-mil-360-meses;0.93;80;360
-BRB;1150000;0.78;420;simulador-brb-1150-mil-420-meses;0.93;80;360
-BRB;1200000;0.78;360;simulador-brb-1200-mil-360-meses;0.93;80;360
-BRB;1200000;0.78;420;simulador-brb-1200-mil-420-meses;0.93;80;360
-BRB;1250000;0.78;360;simulador-brb-1250-mil-360-meses;0.93;80;360
-BRB;1250000;0.78;420;simulador-brb-1250-mil-420-meses;0.93;80;360
-BRB;1300000;0.78;360;simulador-brb-1300-mil-360-meses;0.93;80;360
-BRB;1300000;0.78;420;simulador-brb-1300-mil-420-meses;0.93;80;360
-BRB;1350000;0.78;360;simulador-brb-1350-mil-360-meses;0.93;80;360
-BRB;1350000;0.78;420;simulador-brb-1350-mil-420-meses;0.93;80;360
-BRB;1400000;0.78;360;simulador-brb-1400-mil-360-meses;0.93;80;360
-BRB;1400000;0.78;420;simulador-brb-1400-mil-420-meses;0.93;80;360
-BRB;1450000;0.78;360;simulador-brb-1450-mil-360-meses;0.93;80;360
-BRB;1450000;0.78;420;simulador-brb-1450-mil-420-meses;0.93;80;360
-BRB;1500000;0.78;360;simulador-brb-1500-mil-360-meses;0.93;80;360
-BRB;1500000;0.78;420;simulador-brb-1500-mil-420-meses;0.93;80;360
-Sicredi;150000;0.76;360;simulador-sicredi-150-mil-360-meses;0.91;80;360
-Sicredi;150000;0.76;420;simulador-sicredi-150-mil-420-meses;0.91;80;360
-Sicredi;200000;0.76;360;simulador-sicredi-200-mil-360-meses;0.91;80;360
-Sicredi;200000;0.76;420;simulador-sicredi-200-mil-420-meses;0.91;80;360
-Sicredi;250000;0.76;360;simulador-sicredi-250-mil-360-meses;0.91;80;360
-Sicredi;250000;0.76;420;simulador-sicredi-250-mil-420-meses;0.91;80;360
-Sicredi;300000;0.76;360;simulador-sicredi-300-mil-360-meses;0.91;80;360
-Sicredi;300000;0.76;420;simulador-sicredi-300-mil-420-meses;0.91;80;360
-Sicredi;350000;0.76;360;simulador-sicredi-350-mil-360-meses;0.91;80;360
-Sicredi;350000;0.76;420;simulador-sicredi-350-mil-420-meses;0.91;80;360
-Sicredi;400000;0.76;360;simulador-sicredi-400-mil-360-meses;0.91;80;360
-Sicredi;400000;0.76;420;simulador-sicredi-400-mil-420-meses;0.91;80;360
-Sicredi;450000;0.76;360;simulador-sicredi-450-mil-360-meses;0.91;80;360
-Sicredi;450000;0.76;420;simulador-sicredi-450-mil-420-meses;0.91;80;360
-Sicredi;500000;0.76;360;simulador-sicredi-500-mil-360-meses;0.91;80;360
-Sicredi;500000;0.76;420;simulador-sicredi-500-mil-420-meses;0.91;80;360
-Sicredi;550000;0.76;360;simulador-sicredi-550-mil-360-meses;0.91;80;360
-Sicredi;550000;0.76;420;simulador-sicredi-550-mil-420-meses;0.91;80;360
-Sicredi;600000;0.76;360;simulador-sicredi-600-mil-360-meses;0.91;80;360
-Sicredi;600000;0.76;420;simulador-sicredi-600-mil-420-meses;0.91;80;360
-Sicredi;650000;0.76;360;simulador-sicredi-650-mil-360-meses;0.91;80;360
-Sicredi;650000;0.76;420;simulador-sicredi-650-mil-420-meses;0.91;80;360
-Sicredi;700000;0.76;360;simulador-sicredi-700-mil-360-meses;0.91;80;360
-Sicredi;700000;0.76;420;simulador-sicredi-700-mil-420-meses;0.91;80;360
-Sicredi;750000;0.76;360;simulador-sicredi-750-mil-360-meses;0.91;80;360
-Sicredi;750000;0.76;420;simulador-sicredi-750-mil-420-meses;0.91;80;360
-Sicredi;800000;0.76;360;simulador-sicredi-800-mil-360-meses;0.91;80;360
-Sicredi;800000;0.76;420;simulador-sicredi-800-mil-420-meses;0.91;80;360
-Sicredi;850000;0.76;360;simulador-sicredi-850-mil-360-meses;0.91;80;360
-Sicredi;850000;0.76;420;simulador-sicredi-850-mil-420-meses;0.91;80;360
-Sicredi;900000;0.76;360;simulador-sicredi-900-mil-360-meses;0.91;80;360
-Sicredi;900000;0.76;420;simulador-sicredi-900-mil-420-meses;0.91;80;360
-Sicredi;950000;0.76;360;simulador-sicredi-950-mil-360-meses;0.91;80;360
-Sicredi;950000;0.76;420;simulador-sicredi-950-mil-420-meses;0.91;80;360
-Sicredi;1000000;0.76;360;simulador-sicredi-1000-mil-360-meses;0.91;80;360
-Sicredi;1000000;0.76;420;simulador-sicredi-1000-mil-420-meses;0.91;80;360
-Sicredi;1050000;0.76;360;simulador-sicredi-1050-mil-360-meses;0.91;80;360
-Sicredi;1050000;0.76;420;simulador-sicredi-1050-mil-420-meses;0.91;80;360
-Sicredi;1100000;0.76;360;simulador-sicredi-1100-mil-360-meses;0.91;80;360
-Sicredi;1100000;0.76;420;simulador-sicredi-1100-mil-420-meses;0.91;80;360
-Sicredi;1150000;0.76;360;simulador-sicredi-1150-mil-360-meses;0.91;80;360
-Sicredi;1150000;0.76;420;simulador-sicredi-1150-mil-420-meses;0.91;80;360
-Sicredi;1200000;0.76;360;simulador-sicredi-1200-mil-360-meses;0.91;80;360
-Sicredi;1200000;0.76;420;simulador-sicredi-1200-mil-420-meses;0.91;80;360
-Sicredi;1250000;0.76;360;simulador-sicredi-1250-mil-360-meses;0.91;80;360
-Sicredi;1250000;0.76;420;simulador-sicredi-1250-mil-420-meses;0.91;80;360
-Sicredi;1300000;0.76;360;simulador-sicredi-1300-mil-360-meses;0.91;80;360
-Sicredi;1300000;0.76;420;simulador-sicredi-1300-mil-420-meses;0.91;80;360
-Sicredi;1350000;0.76;360;simulador-sicredi-1350-mil-360-meses;0.91;80;360
-Sicredi;1350000;0.76;420;simulador-sicredi-1350-mil-420-meses;0.91;80;360
-Sicredi;1400000;0.76;360;simulador-sicredi-1400-mil-360-meses;0.91;80;360
-Sicredi;1400000;0.76;420;simulador-sicredi-1400-mil-420-meses;0.91;80;360
-Sicredi;1450000;0.76;360;simulador-sicredi-1450-mil-360-meses;0.91;80;360
-Sicredi;1450000;0.76;420;simulador-sicredi-1450-mil-420-meses;0.91;80;360
-Sicredi;1500000;0.76;360;simulador-sicredi-1500-mil-360-meses;0.91;80;360
-Sicredi;1500000;0.76;420;simulador-sicredi-1500-mil-420-meses;0.91;80;360
+Caixa;150000;151.82;360;simulador-caixa-150-mil-360-meses;151.97;80;420
+Caixa;150000;151.82;420;simulador-caixa-150-mil-420-meses;151.97;80;420
+Caixa;200000;151.82;360;simulador-caixa-200-mil-360-meses;151.97;80;420
+Caixa;200000;151.82;420;simulador-caixa-200-mil-420-meses;151.97;80;420
+Caixa;250000;151.82;360;simulador-caixa-250-mil-360-meses;151.97;80;420
+Caixa;250000;151.82;420;simulador-caixa-250-mil-420-meses;151.97;80;420
+Caixa;300000;151.82;360;simulador-caixa-300-mil-360-meses;151.97;80;420
+Caixa;300000;151.82;420;simulador-caixa-300-mil-420-meses;151.97;80;420
+Caixa;350000;151.82;360;simulador-caixa-350-mil-360-meses;151.97;80;420
+Caixa;350000;151.82;420;simulador-caixa-350-mil-420-meses;151.97;80;420
+Caixa;400000;151.82;360;simulador-caixa-400-mil-360-meses;151.97;80;420
+Caixa;400000;151.82;420;simulador-caixa-400-mil-420-meses;151.97;80;420
+Caixa;450000;151.82;360;simulador-caixa-450-mil-360-meses;151.97;80;420
+Caixa;450000;151.82;420;simulador-caixa-450-mil-420-meses;151.97;80;420
+Caixa;500000;151.82;360;simulador-caixa-500-mil-360-meses;151.97;80;420
+Caixa;500000;151.82;420;simulador-caixa-500-mil-420-meses;151.97;80;420
+Caixa;550000;151.82;360;simulador-caixa-550-mil-360-meses;151.97;80;420
+Caixa;550000;151.82;420;simulador-caixa-550-mil-420-meses;151.97;80;420
+Caixa;600000;151.82;360;simulador-caixa-600-mil-360-meses;151.97;80;420
+Caixa;600000;151.82;420;simulador-caixa-600-mil-420-meses;151.97;80;420
+Caixa;650000;151.82;360;simulador-caixa-650-mil-360-meses;151.97;80;420
+Caixa;650000;151.82;420;simulador-caixa-650-mil-420-meses;151.97;80;420
+Caixa;700000;151.82;360;simulador-caixa-700-mil-360-meses;151.97;80;420
+Caixa;700000;151.82;420;simulador-caixa-700-mil-420-meses;151.97;80;420
+Caixa;750000;151.82;360;simulador-caixa-750-mil-360-meses;151.97;80;420
+Caixa;750000;151.82;420;simulador-caixa-750-mil-420-meses;151.97;80;420
+Caixa;800000;151.82;360;simulador-caixa-800-mil-360-meses;151.97;80;420
+Caixa;800000;151.82;420;simulador-caixa-800-mil-420-meses;151.97;80;420
+Caixa;850000;151.82;360;simulador-caixa-850-mil-360-meses;151.97;80;420
+Caixa;850000;151.82;420;simulador-caixa-850-mil-420-meses;151.97;80;420
+Caixa;900000;151.82;360;simulador-caixa-900-mil-360-meses;151.97;80;420
+Caixa;900000;151.82;420;simulador-caixa-900-mil-420-meses;151.97;80;420
+Caixa;950000;151.82;360;simulador-caixa-950-mil-360-meses;151.97;80;420
+Caixa;950000;151.82;420;simulador-caixa-950-mil-420-meses;151.97;80;420
+Caixa;1000000;151.82;360;simulador-caixa-1000-mil-360-meses;151.97;80;420
+Caixa;1000000;151.82;420;simulador-caixa-1000-mil-420-meses;151.97;80;420
+Caixa;1050000;151.82;360;simulador-caixa-1050-mil-360-meses;151.97;80;420
+Caixa;1050000;151.82;420;simulador-caixa-1050-mil-420-meses;151.97;80;420
+Caixa;1100000;151.82;360;simulador-caixa-1100-mil-360-meses;151.97;80;420
+Caixa;1100000;151.82;420;simulador-caixa-1100-mil-420-meses;151.97;80;420
+Caixa;1150000;151.82;360;simulador-caixa-1150-mil-360-meses;151.97;80;420
+Caixa;1150000;151.82;420;simulador-caixa-1150-mil-420-meses;151.97;80;420
+Caixa;1200000;151.82;360;simulador-caixa-1200-mil-360-meses;151.97;80;420
+Caixa;1200000;151.82;420;simulador-caixa-1200-mil-420-meses;151.97;80;420
+Caixa;1250000;151.82;360;simulador-caixa-1250-mil-360-meses;151.97;80;420
+Caixa;1250000;151.82;420;simulador-caixa-1250-mil-420-meses;151.97;80;420
+Caixa;1300000;151.82;360;simulador-caixa-1300-mil-360-meses;151.97;80;420
+Caixa;1300000;151.82;420;simulador-caixa-1300-mil-420-meses;151.97;80;420
+Caixa;1350000;151.82;360;simulador-caixa-1350-mil-360-meses;151.97;80;420
+Caixa;1350000;151.82;420;simulador-caixa-1350-mil-420-meses;151.97;80;420
+Caixa;1400000;151.82;360;simulador-caixa-1400-mil-360-meses;151.97;80;420
+Caixa;1400000;151.82;420;simulador-caixa-1400-mil-420-meses;151.97;80;420
+Caixa;1450000;151.82;360;simulador-caixa-1450-mil-360-meses;151.97;80;420
+Caixa;1450000;151.82;420;simulador-caixa-1450-mil-420-meses;151.97;80;420
+Caixa;1500000;151.82;360;simulador-caixa-1500-mil-360-meses;151.97;80;420
+Caixa;1500000;151.82;420;simulador-caixa-1500-mil-420-meses;151.97;80;420
+Banco do Brasil;150000;181.27;360;simulador-banco-do-brasil-150-mil-360-meses;181.42;80;420
+Banco do Brasil;150000;181.27;420;simulador-banco-do-brasil-150-mil-420-meses;181.42;80;420
+Banco do Brasil;200000;181.27;360;simulador-banco-do-brasil-200-mil-360-meses;181.42;80;420
+Banco do Brasil;200000;181.27;420;simulador-banco-do-brasil-200-mil-420-meses;181.42;80;420
+Banco do Brasil;250000;181.27;360;simulador-banco-do-brasil-250-mil-360-meses;181.42;80;420
+Banco do Brasil;250000;181.27;420;simulador-banco-do-brasil-250-mil-420-meses;181.42;80;420
+Banco do Brasil;300000;181.27;360;simulador-banco-do-brasil-300-mil-360-meses;181.42;80;420
+Banco do Brasil;300000;181.27;420;simulador-banco-do-brasil-300-mil-420-meses;181.42;80;420
+Banco do Brasil;350000;181.27;360;simulador-banco-do-brasil-350-mil-360-meses;181.42;80;420
+Banco do Brasil;350000;181.27;420;simulador-banco-do-brasil-350-mil-420-meses;181.42;80;420
+Banco do Brasil;400000;181.27;360;simulador-banco-do-brasil-400-mil-360-meses;181.42;80;420
+Banco do Brasil;400000;181.27;420;simulador-banco-do-brasil-400-mil-420-meses;181.42;80;420
+Banco do Brasil;450000;181.27;360;simulador-banco-do-brasil-450-mil-360-meses;181.42;80;420
+Banco do Brasil;450000;181.27;420;simulador-banco-do-brasil-450-mil-420-meses;181.42;80;420
+Banco do Brasil;500000;181.27;360;simulador-banco-do-brasil-500-mil-360-meses;181.42;80;420
+Banco do Brasil;500000;181.27;420;simulador-banco-do-brasil-500-mil-420-meses;181.42;80;420
+Banco do Brasil;550000;181.27;360;simulador-banco-do-brasil-550-mil-360-meses;181.42;80;420
+Banco do Brasil;550000;181.27;420;simulador-banco-do-brasil-550-mil-420-meses;181.42;80;420
+Banco do Brasil;600000;181.27;360;simulador-banco-do-brasil-600-mil-360-meses;181.42;80;420
+Banco do Brasil;600000;181.27;420;simulador-banco-do-brasil-600-mil-420-meses;181.42;80;420
+Banco do Brasil;650000;181.27;360;simulador-banco-do-brasil-650-mil-360-meses;181.42;80;420
+Banco do Brasil;650000;181.27;420;simulador-banco-do-brasil-650-mil-420-meses;181.42;80;420
+Banco do Brasil;700000;181.27;360;simulador-banco-do-brasil-700-mil-360-meses;181.42;80;420
+Banco do Brasil;700000;181.27;420;simulador-banco-do-brasil-700-mil-420-meses;181.42;80;420
+Banco do Brasil;750000;181.27;360;simulador-banco-do-brasil-750-mil-360-meses;181.42;80;420
+Banco do Brasil;750000;181.27;420;simulador-banco-do-brasil-750-mil-420-meses;181.42;80;420
+Banco do Brasil;800000;181.27;360;simulador-banco-do-brasil-800-mil-360-meses;181.42;80;420
+Banco do Brasil;800000;181.27;420;simulador-banco-do-brasil-800-mil-420-meses;181.42;80;420
+Banco do Brasil;850000;181.27;360;simulador-banco-do-brasil-850-mil-360-meses;181.42;80;420
+Banco do Brasil;850000;181.27;420;simulador-banco-do-brasil-850-mil-420-meses;181.42;80;420
+Banco do Brasil;900000;181.27;360;simulador-banco-do-brasil-900-mil-360-meses;181.42;80;420
+Banco do Brasil;900000;181.27;420;simulador-banco-do-brasil-900-mil-420-meses;181.42;80;420
+Banco do Brasil;950000;181.27;360;simulador-banco-do-brasil-950-mil-360-meses;181.42;80;420
+Banco do Brasil;950000;181.27;420;simulador-banco-do-brasil-950-mil-420-meses;181.42;80;420
+Banco do Brasil;1000000;181.27;360;simulador-banco-do-brasil-1000-mil-360-meses;181.42;80;420
+Banco do Brasil;1000000;181.27;420;simulador-banco-do-brasil-1000-mil-420-meses;181.42;80;420
+Banco do Brasil;1050000;181.27;360;simulador-banco-do-brasil-1050-mil-360-meses;181.42;80;420
+Banco do Brasil;1050000;181.27;420;simulador-banco-do-brasil-1050-mil-420-meses;181.42;80;420
+Banco do Brasil;1100000;181.27;360;simulador-banco-do-brasil-1100-mil-360-meses;181.42;80;420
+Banco do Brasil;1100000;181.27;420;simulador-banco-do-brasil-1100-mil-420-meses;181.42;80;420
+Banco do Brasil;1150000;181.27;360;simulador-banco-do-brasil-1150-mil-360-meses;181.42;80;420
+Banco do Brasil;1150000;181.27;420;simulador-banco-do-brasil-1150-mil-420-meses;181.42;80;420
+Banco do Brasil;1200000;181.27;360;simulador-banco-do-brasil-1200-mil-360-meses;181.42;80;420
+Banco do Brasil;1200000;181.27;420;simulador-banco-do-brasil-1200-mil-420-meses;181.42;80;420
+Banco do Brasil;1250000;181.27;360;simulador-banco-do-brasil-1250-mil-360-meses;181.42;80;420
+Banco do Brasil;1250000;181.27;420;simulador-banco-do-brasil-1250-mil-420-meses;181.42;80;420
+Banco do Brasil;1300000;181.27;360;simulador-banco-do-brasil-1300-mil-360-meses;181.42;80;420
+Banco do Brasil;1300000;181.27;420;simulador-banco-do-brasil-1300-mil-420-meses;181.42;80;420
+Banco do Brasil;1350000;181.27;360;simulador-banco-do-brasil-1350-mil-360-meses;181.42;80;420
+Banco do Brasil;1350000;181.27;420;simulador-banco-do-brasil-1350-mil-420-meses;181.42;80;420
+Banco do Brasil;1400000;181.27;360;simulador-banco-do-brasil-1400-mil-360-meses;181.42;80;420
+Banco do Brasil;1400000;181.27;420;simulador-banco-do-brasil-1400-mil-420-meses;181.42;80;420
+Banco do Brasil;1450000;181.27;360;simulador-banco-do-brasil-1450-mil-360-meses;181.42;80;420
+Banco do Brasil;1450000;181.27;420;simulador-banco-do-brasil-1450-mil-420-meses;181.42;80;420
+Banco do Brasil;1500000;181.27;360;simulador-banco-do-brasil-1500-mil-360-meses;181.42;80;420
+Banco do Brasil;1500000;181.27;420;simulador-banco-do-brasil-1500-mil-420-meses;181.42;80;420
+Itau;150000;160.34;360;simulador-itau-150-mil-360-meses;160.49;80;360
+Itau;150000;160.34;420;simulador-itau-150-mil-420-meses;160.49;80;360
+Itau;200000;160.34;360;simulador-itau-200-mil-360-meses;160.49;80;360
+Itau;200000;160.34;420;simulador-itau-200-mil-420-meses;160.49;80;360
+Itau;250000;160.34;360;simulador-itau-250-mil-360-meses;160.49;80;360
+Itau;250000;160.34;420;simulador-itau-250-mil-420-meses;160.49;80;360
+Itau;300000;160.34;360;simulador-itau-300-mil-360-meses;160.49;80;360
+Itau;300000;160.34;420;simulador-itau-300-mil-420-meses;160.49;80;360
+Itau;350000;160.34;360;simulador-itau-350-mil-360-meses;160.49;80;360
+Itau;350000;160.34;420;simulador-itau-350-mil-420-meses;160.49;80;360
+Itau;400000;160.34;360;simulador-itau-400-mil-360-meses;160.49;80;360
+Itau;400000;160.34;420;simulador-itau-400-mil-420-meses;160.49;80;360
+Itau;450000;160.34;360;simulador-itau-450-mil-360-meses;160.49;80;360
+Itau;450000;160.34;420;simulador-itau-450-mil-420-meses;160.49;80;360
+Itau;500000;160.34;360;simulador-itau-500-mil-360-meses;160.49;80;360
+Itau;500000;160.34;420;simulador-itau-500-mil-420-meses;160.49;80;360
+Itau;550000;160.34;360;simulador-itau-550-mil-360-meses;160.49;80;360
+Itau;550000;160.34;420;simulador-itau-550-mil-420-meses;160.49;80;360
+Itau;600000;160.34;360;simulador-itau-600-mil-360-meses;160.49;80;360
+Itau;600000;160.34;420;simulador-itau-600-mil-420-meses;160.49;80;360
+Itau;650000;160.34;360;simulador-itau-650-mil-360-meses;160.49;80;360
+Itau;650000;160.34;420;simulador-itau-650-mil-420-meses;160.49;80;360
+Itau;700000;160.34;360;simulador-itau-700-mil-360-meses;160.49;80;360
+Itau;700000;160.34;420;simulador-itau-700-mil-420-meses;160.49;80;360
+Itau;750000;160.34;360;simulador-itau-750-mil-360-meses;160.49;80;360
+Itau;750000;160.34;420;simulador-itau-750-mil-420-meses;160.49;80;360
+Itau;800000;160.34;360;simulador-itau-800-mil-360-meses;160.49;80;360
+Itau;800000;160.34;420;simulador-itau-800-mil-420-meses;160.49;80;360
+Itau;850000;160.34;360;simulador-itau-850-mil-360-meses;160.49;80;360
+Itau;850000;160.34;420;simulador-itau-850-mil-420-meses;160.49;80;360
+Itau;900000;160.34;360;simulador-itau-900-mil-360-meses;160.49;80;360
+Itau;900000;160.34;420;simulador-itau-900-mil-420-meses;160.49;80;360
+Itau;950000;160.34;360;simulador-itau-950-mil-360-meses;160.49;80;360
+Itau;950000;160.34;420;simulador-itau-950-mil-420-meses;160.49;80;360
+Itau;1000000;160.34;360;simulador-itau-1000-mil-360-meses;160.49;80;360
+Itau;1000000;160.34;420;simulador-itau-1000-mil-420-meses;160.49;80;360
+Itau;1050000;160.34;360;simulador-itau-1050-mil-360-meses;160.49;80;360
+Itau;1050000;160.34;420;simulador-itau-1050-mil-420-meses;160.49;80;360
+Itau;1100000;160.34;360;simulador-itau-1100-mil-360-meses;160.49;80;360
+Itau;1100000;160.34;420;simulador-itau-1100-mil-420-meses;160.49;80;360
+Itau;1150000;160.34;360;simulador-itau-1150-mil-360-meses;160.49;80;360
+Itau;1150000;160.34;420;simulador-itau-1150-mil-420-meses;160.49;80;360
+Itau;1200000;160.34;360;simulador-itau-1200-mil-360-meses;160.49;80;360
+Itau;1200000;160.34;420;simulador-itau-1200-mil-420-meses;160.49;80;360
+Itau;1250000;160.34;360;simulador-itau-1250-mil-360-meses;160.49;80;360
+Itau;1250000;160.34;420;simulador-itau-1250-mil-420-meses;160.49;80;360
+Itau;1300000;160.34;360;simulador-itau-1300-mil-360-meses;160.49;80;360
+Itau;1300000;160.34;420;simulador-itau-1300-mil-420-meses;160.49;80;360
+Itau;1350000;160.34;360;simulador-itau-1350-mil-360-meses;160.49;80;360
+Itau;1350000;160.34;420;simulador-itau-1350-mil-420-meses;160.49;80;360
+Itau;1400000;160.34;360;simulador-itau-1400-mil-360-meses;160.49;80;360
+Itau;1400000;160.34;420;simulador-itau-1400-mil-420-meses;160.49;80;360
+Itau;1450000;160.34;360;simulador-itau-1450-mil-360-meses;160.49;80;360
+Itau;1450000;160.34;420;simulador-itau-1450-mil-420-meses;160.49;80;360
+Itau;1500000;160.34;360;simulador-itau-1500-mil-360-meses;160.49;80;360
+Itau;1500000;160.34;420;simulador-itau-1500-mil-420-meses;160.49;80;360
+Bradesco;150000;178.19;360;simulador-bradesco-150-mil-360-meses;178.34;80;360
+Bradesco;150000;178.19;420;simulador-bradesco-150-mil-420-meses;178.34;80;360
+Bradesco;200000;178.19;360;simulador-bradesco-200-mil-360-meses;178.34;80;360
+Bradesco;200000;178.19;420;simulador-bradesco-200-mil-420-meses;178.34;80;360
+Bradesco;250000;178.19;360;simulador-bradesco-250-mil-360-meses;178.34;80;360
+Bradesco;250000;178.19;420;simulador-bradesco-250-mil-420-meses;178.34;80;360
+Bradesco;300000;178.19;360;simulador-bradesco-300-mil-360-meses;178.34;80;360
+Bradesco;300000;178.19;420;simulador-bradesco-300-mil-420-meses;178.34;80;360
+Bradesco;350000;178.19;360;simulador-bradesco-350-mil-360-meses;178.34;80;360
+Bradesco;350000;178.19;420;simulador-bradesco-350-mil-420-meses;178.34;80;360
+Bradesco;400000;178.19;360;simulador-bradesco-400-mil-360-meses;178.34;80;360
+Bradesco;400000;178.19;420;simulador-bradesco-400-mil-420-meses;178.34;80;360
+Bradesco;450000;178.19;360;simulador-bradesco-450-mil-360-meses;178.34;80;360
+Bradesco;450000;178.19;420;simulador-bradesco-450-mil-420-meses;178.34;80;360
+Bradesco;500000;178.19;360;simulador-bradesco-500-mil-360-meses;178.34;80;360
+Bradesco;500000;178.19;420;simulador-bradesco-500-mil-420-meses;178.34;80;360
+Bradesco;550000;178.19;360;simulador-bradesco-550-mil-360-meses;178.34;80;360
+Bradesco;550000;178.19;420;simulador-bradesco-550-mil-420-meses;178.34;80;360
+Bradesco;600000;178.19;360;simulador-bradesco-600-mil-360-meses;178.34;80;360
+Bradesco;600000;178.19;420;simulador-bradesco-600-mil-420-meses;178.34;80;360
+Bradesco;650000;178.19;360;simulador-bradesco-650-mil-360-meses;178.34;80;360
+Bradesco;650000;178.19;420;simulador-bradesco-650-mil-420-meses;178.34;80;360
+Bradesco;700000;178.19;360;simulador-bradesco-700-mil-360-meses;178.34;80;360
+Bradesco;700000;178.19;420;simulador-bradesco-700-mil-420-meses;178.34;80;360
+Bradesco;750000;178.19;360;simulador-bradesco-750-mil-360-meses;178.34;80;360
+Bradesco;750000;178.19;420;simulador-bradesco-750-mil-420-meses;178.34;80;360
+Bradesco;800000;178.19;360;simulador-bradesco-800-mil-360-meses;178.34;80;360
+Bradesco;800000;178.19;420;simulador-bradesco-800-mil-420-meses;178.34;80;360
+Bradesco;850000;178.19;360;simulador-bradesco-850-mil-360-meses;178.34;80;360
+Bradesco;850000;178.19;420;simulador-bradesco-850-mil-420-meses;178.34;80;360
+Bradesco;900000;178.19;360;simulador-bradesco-900-mil-360-meses;178.34;80;360
+Bradesco;900000;178.19;420;simulador-bradesco-900-mil-420-meses;178.34;80;360
+Bradesco;950000;178.19;360;simulador-bradesco-950-mil-360-meses;178.34;80;360
+Bradesco;950000;178.19;420;simulador-bradesco-950-mil-420-meses;178.34;80;360
+Bradesco;1000000;178.19;360;simulador-bradesco-1000-mil-360-meses;178.34;80;360
+Bradesco;1000000;178.19;420;simulador-bradesco-1000-mil-420-meses;178.34;80;360
+Bradesco;1050000;178.19;360;simulador-bradesco-1050-mil-360-meses;178.34;80;360
+Bradesco;1050000;178.19;420;simulador-bradesco-1050-mil-420-meses;178.34;80;360
+Bradesco;1100000;178.19;360;simulador-bradesco-1100-mil-360-meses;178.34;80;360
+Bradesco;1100000;178.19;420;simulador-bradesco-1100-mil-420-meses;178.34;80;360
+Bradesco;1150000;178.19;360;simulador-bradesco-1150-mil-360-meses;178.34;80;360
+Bradesco;1150000;178.19;420;simulador-bradesco-1150-mil-420-meses;178.34;80;360
+Bradesco;1200000;178.19;360;simulador-bradesco-1200-mil-360-meses;178.34;80;360
+Bradesco;1200000;178.19;420;simulador-bradesco-1200-mil-420-meses;178.34;80;360
+Bradesco;1250000;178.19;360;simulador-bradesco-1250-mil-360-meses;178.34;80;360
+Bradesco;1250000;178.19;420;simulador-bradesco-1250-mil-420-meses;178.34;80;360
+Bradesco;1300000;178.19;360;simulador-bradesco-1300-mil-360-meses;178.34;80;360
+Bradesco;1300000;178.19;420;simulador-bradesco-1300-mil-420-meses;178.34;80;360
+Bradesco;1350000;178.19;360;simulador-bradesco-1350-mil-360-meses;178.34;80;360
+Bradesco;1350000;178.19;420;simulador-bradesco-1350-mil-420-meses;178.34;80;360
+Bradesco;1400000;178.19;360;simulador-bradesco-1400-mil-360-meses;178.34;80;360
+Bradesco;1400000;178.19;420;simulador-bradesco-1400-mil-420-meses;178.34;80;360
+Bradesco;1450000;178.19;360;simulador-bradesco-1450-mil-360-meses;178.34;80;360
+Bradesco;1450000;178.19;420;simulador-bradesco-1450-mil-420-meses;178.34;80;360
+Bradesco;1500000;178.19;360;simulador-bradesco-1500-mil-360-meses;178.34;80;360
+Bradesco;1500000;178.19;420;simulador-bradesco-1500-mil-420-meses;178.34;80;360
+Santander;150000;180.96;360;simulador-santander-150-mil-360-meses;181.11;80;420
+Santander;150000;180.96;420;simulador-santander-150-mil-420-meses;181.11;80;420
+Santander;200000;180.96;360;simulador-santander-200-mil-360-meses;181.11;80;420
+Santander;200000;180.96;420;simulador-santander-200-mil-420-meses;181.11;80;420
+Santander;250000;180.96;360;simulador-santander-250-mil-360-meses;181.11;80;420
+Santander;250000;180.96;420;simulador-santander-250-mil-420-meses;181.11;80;420
+Santander;300000;180.96;360;simulador-santander-300-mil-360-meses;181.11;80;420
+Santander;300000;180.96;420;simulador-santander-300-mil-420-meses;181.11;80;420
+Santander;350000;180.96;360;simulador-santander-350-mil-360-meses;181.11;80;420
+Santander;350000;180.96;420;simulador-santander-350-mil-420-meses;181.11;80;420
+Santander;400000;180.96;360;simulador-santander-400-mil-360-meses;181.11;80;420
+Santander;400000;180.96;420;simulador-santander-400-mil-420-meses;181.11;80;420
+Santander;450000;180.96;360;simulador-santander-450-mil-360-meses;181.11;80;420
+Santander;450000;180.96;420;simulador-santander-450-mil-420-meses;181.11;80;420
+Santander;500000;180.96;360;simulador-santander-500-mil-360-meses;181.11;80;420
+Santander;500000;180.96;420;simulador-santander-500-mil-420-meses;181.11;80;420
+Santander;550000;180.96;360;simulador-santander-550-mil-360-meses;181.11;80;420
+Santander;550000;180.96;420;simulador-santander-550-mil-420-meses;181.11;80;420
+Santander;600000;180.96;360;simulador-santander-600-mil-360-meses;181.11;80;420
+Santander;600000;180.96;420;simulador-santander-600-mil-420-meses;181.11;80;420
+Santander;650000;180.96;360;simulador-santander-650-mil-360-meses;181.11;80;420
+Santander;650000;180.96;420;simulador-santander-650-mil-420-meses;181.11;80;420
+Santander;700000;180.96;360;simulador-santander-700-mil-360-meses;181.11;80;420
+Santander;700000;180.96;420;simulador-santander-700-mil-420-meses;181.11;80;420
+Santander;750000;180.96;360;simulador-santander-750-mil-360-meses;181.11;80;420
+Santander;750000;180.96;420;simulador-santander-750-mil-420-meses;181.11;80;420
+Santander;800000;180.96;360;simulador-santander-800-mil-360-meses;181.11;80;420
+Santander;800000;180.96;420;simulador-santander-800-mil-420-meses;181.11;80;420
+Santander;850000;180.96;360;simulador-santander-850-mil-360-meses;181.11;80;420
+Santander;850000;180.96;420;simulador-santander-850-mil-420-meses;181.11;80;420
+Santander;900000;180.96;360;simulador-santander-900-mil-360-meses;181.11;80;420
+Santander;900000;180.96;420;simulador-santander-900-mil-420-meses;181.11;80;420
+Santander;950000;180.96;360;simulador-santander-950-mil-360-meses;181.11;80;420
+Santander;950000;180.96;420;simulador-santander-950-mil-420-meses;181.11;80;420
+Santander;1000000;180.96;360;simulador-santander-1000-mil-360-meses;181.11;80;420
+Santander;1000000;180.96;420;simulador-santander-1000-mil-420-meses;181.11;80;420
+Santander;1050000;180.96;360;simulador-santander-1050-mil-360-meses;181.11;80;420
+Santander;1050000;180.96;420;simulador-santander-1050-mil-420-meses;181.11;80;420
+Santander;1100000;180.96;360;simulador-santander-1100-mil-360-meses;181.11;80;420
+Santander;1100000;180.96;420;simulador-santander-1100-mil-420-meses;181.11;80;420
+Santander;1150000;180.96;360;simulador-santander-1150-mil-360-meses;181.11;80;420
+Santander;1150000;180.96;420;simulador-santander-1150-mil-420-meses;181.11;80;420
+Santander;1200000;180.96;360;simulador-santander-1200-mil-360-meses;181.11;80;420
+Santander;1200000;180.96;420;simulador-santander-1200-mil-420-meses;181.11;80;420
+Santander;1250000;180.96;360;simulador-santander-1250-mil-360-meses;181.11;80;420
+Santander;1250000;180.96;420;simulador-santander-1250-mil-420-meses;181.11;80;420
+Santander;1300000;180.96;360;simulador-santander-1300-mil-360-meses;181.11;80;420
+Santander;1300000;180.96;420;simulador-santander-1300-mil-420-meses;181.11;80;420
+Santander;1350000;180.96;360;simulador-santander-1350-mil-360-meses;181.11;80;420
+Santander;1350000;180.96;420;simulador-santander-1350-mil-420-meses;181.11;80;420
+Santander;1400000;180.96;360;simulador-santander-1400-mil-360-meses;181.11;80;420
+Santander;1400000;180.96;420;simulador-santander-1400-mil-420-meses;181.11;80;420
+Santander;1450000;180.96;360;simulador-santander-1450-mil-360-meses;181.11;80;420
+Santander;1450000;180.96;420;simulador-santander-1450-mil-420-meses;181.11;80;420
+Santander;1500000;180.96;360;simulador-santander-1500-mil-360-meses;181.11;80;420
+Santander;1500000;180.96;420;simulador-santander-1500-mil-420-meses;181.11;80;420
+Banco Inter;150000;157.47;360;simulador-banco-inter-150-mil-360-meses;157.62;80;360
+Banco Inter;150000;157.47;420;simulador-banco-inter-150-mil-420-meses;157.62;80;360
+Banco Inter;200000;157.47;360;simulador-banco-inter-200-mil-360-meses;157.62;80;360
+Banco Inter;200000;157.47;420;simulador-banco-inter-200-mil-420-meses;157.62;80;360
+Banco Inter;250000;157.47;360;simulador-banco-inter-250-mil-360-meses;157.62;80;360
+Banco Inter;250000;157.47;420;simulador-banco-inter-250-mil-420-meses;157.62;80;360
+Banco Inter;300000;157.47;360;simulador-banco-inter-300-mil-360-meses;157.62;80;360
+Banco Inter;300000;157.47;420;simulador-banco-inter-300-mil-420-meses;157.62;80;360
+Banco Inter;350000;157.47;360;simulador-banco-inter-350-mil-360-meses;157.62;80;360
+Banco Inter;350000;157.47;420;simulador-banco-inter-350-mil-420-meses;157.62;80;360
+Banco Inter;400000;157.47;360;simulador-banco-inter-400-mil-360-meses;157.62;80;360
+Banco Inter;400000;157.47;420;simulador-banco-inter-400-mil-420-meses;157.62;80;360
+Banco Inter;450000;157.47;360;simulador-banco-inter-450-mil-360-meses;157.62;80;360
+Banco Inter;450000;157.47;420;simulador-banco-inter-450-mil-420-meses;157.62;80;360
+Banco Inter;500000;157.47;360;simulador-banco-inter-500-mil-360-meses;157.62;80;360
+Banco Inter;500000;157.47;420;simulador-banco-inter-500-mil-420-meses;157.62;80;360
+Banco Inter;550000;157.47;360;simulador-banco-inter-550-mil-360-meses;157.62;80;360
+Banco Inter;550000;157.47;420;simulador-banco-inter-550-mil-420-meses;157.62;80;360
+Banco Inter;600000;157.47;360;simulador-banco-inter-600-mil-360-meses;157.62;80;360
+Banco Inter;600000;157.47;420;simulador-banco-inter-600-mil-420-meses;157.62;80;360
+Banco Inter;650000;157.47;360;simulador-banco-inter-650-mil-360-meses;157.62;80;360
+Banco Inter;650000;157.47;420;simulador-banco-inter-650-mil-420-meses;157.62;80;360
+Banco Inter;700000;157.47;360;simulador-banco-inter-700-mil-360-meses;157.62;80;360
+Banco Inter;700000;157.47;420;simulador-banco-inter-700-mil-420-meses;157.62;80;360
+Banco Inter;750000;157.47;360;simulador-banco-inter-750-mil-360-meses;157.62;80;360
+Banco Inter;750000;157.47;420;simulador-banco-inter-750-mil-420-meses;157.62;80;360
+Banco Inter;800000;157.47;360;simulador-banco-inter-800-mil-360-meses;157.62;80;360
+Banco Inter;800000;157.47;420;simulador-banco-inter-800-mil-420-meses;157.62;80;360
+Banco Inter;850000;157.47;360;simulador-banco-inter-850-mil-360-meses;157.62;80;360
+Banco Inter;850000;157.47;420;simulador-banco-inter-850-mil-420-meses;157.62;80;360
+Banco Inter;900000;157.47;360;simulador-banco-inter-900-mil-360-meses;157.62;80;360
+Banco Inter;900000;157.47;420;simulador-banco-inter-900-mil-420-meses;157.62;80;360
+Banco Inter;950000;157.47;360;simulador-banco-inter-950-mil-360-meses;157.62;80;360
+Banco Inter;950000;157.47;420;simulador-banco-inter-950-mil-420-meses;157.62;80;360
+Banco Inter;1000000;157.47;360;simulador-banco-inter-1000-mil-360-meses;157.62;80;360
+Banco Inter;1000000;157.47;420;simulador-banco-inter-1000-mil-420-meses;157.62;80;360
+Banco Inter;1050000;157.47;360;simulador-banco-inter-1050-mil-360-meses;157.62;80;360
+Banco Inter;1050000;157.47;420;simulador-banco-inter-1050-mil-420-meses;157.62;80;360
+Banco Inter;1100000;157.47;360;simulador-banco-inter-1100-mil-360-meses;157.62;80;360
+Banco Inter;1100000;157.47;420;simulador-banco-inter-1100-mil-420-meses;157.62;80;360
+Banco Inter;1150000;157.47;360;simulador-banco-inter-1150-mil-360-meses;157.62;80;360
+Banco Inter;1150000;157.47;420;simulador-banco-inter-1150-mil-420-meses;157.62;80;360
+Banco Inter;1200000;157.47;360;simulador-banco-inter-1200-mil-360-meses;157.62;80;360
+Banco Inter;1200000;157.47;420;simulador-banco-inter-1200-mil-420-meses;157.62;80;360
+Banco Inter;1250000;157.47;360;simulador-banco-inter-1250-mil-360-meses;157.62;80;360
+Banco Inter;1250000;157.47;420;simulador-banco-inter-1250-mil-420-meses;157.62;80;360
+Banco Inter;1300000;157.47;360;simulador-banco-inter-1300-mil-360-meses;157.62;80;360
+Banco Inter;1300000;157.47;420;simulador-banco-inter-1300-mil-420-meses;157.62;80;360
+Banco Inter;1350000;157.47;360;simulador-banco-inter-1350-mil-360-meses;157.62;80;360
+Banco Inter;1350000;157.47;420;simulador-banco-inter-1350-mil-420-meses;157.62;80;360
+Banco Inter;1400000;157.47;360;simulador-banco-inter-1400-mil-360-meses;157.62;80;360
+Banco Inter;1400000;157.47;420;simulador-banco-inter-1400-mil-420-meses;157.62;80;360
+Banco Inter;1450000;157.47;360;simulador-banco-inter-1450-mil-360-meses;157.62;80;360
+Banco Inter;1450000;157.47;420;simulador-banco-inter-1450-mil-420-meses;157.62;80;360
+Banco Inter;1500000;157.47;360;simulador-banco-inter-1500-mil-360-meses;157.62;80;360
+Banco Inter;1500000;157.47;420;simulador-banco-inter-1500-mil-420-meses;157.62;80;360
+Banrisul;150000;0.84;360;simulador-banrisul-150-mil-360-meses;0.99;75;360
+Banrisul;150000;0.84;420;simulador-banrisul-150-mil-420-meses;0.99;75;360
+Banrisul;200000;0.84;360;simulador-banrisul-200-mil-360-meses;0.99;75;360
+Banrisul;200000;0.84;420;simulador-banrisul-200-mil-420-meses;0.99;75;360
+Banrisul;250000;0.84;360;simulador-banrisul-250-mil-360-meses;0.99;75;360
+Banrisul;250000;0.84;420;simulador-banrisul-250-mil-420-meses;0.99;75;360
+Banrisul;300000;0.84;360;simulador-banrisul-300-mil-360-meses;0.99;75;360
+Banrisul;300000;0.84;420;simulador-banrisul-300-mil-420-meses;0.99;75;360
+Banrisul;350000;0.84;360;simulador-banrisul-350-mil-360-meses;0.99;75;360
+Banrisul;350000;0.84;420;simulador-banrisul-350-mil-420-meses;0.99;75;360
+Banrisul;400000;0.84;360;simulador-banrisul-400-mil-360-meses;0.99;75;360
+Banrisul;400000;0.84;420;simulador-banrisul-400-mil-420-meses;0.99;75;360
+Banrisul;450000;0.84;360;simulador-banrisul-450-mil-360-meses;0.99;75;360
+Banrisul;450000;0.84;420;simulador-banrisul-450-mil-420-meses;0.99;75;360
+Banrisul;500000;0.84;360;simulador-banrisul-500-mil-360-meses;0.99;75;360
+Banrisul;500000;0.84;420;simulador-banrisul-500-mil-420-meses;0.99;75;360
+Banrisul;550000;0.84;360;simulador-banrisul-550-mil-360-meses;0.99;75;360
+Banrisul;550000;0.84;420;simulador-banrisul-550-mil-420-meses;0.99;75;360
+Banrisul;600000;0.84;360;simulador-banrisul-600-mil-360-meses;0.99;75;360
+Banrisul;600000;0.84;420;simulador-banrisul-600-mil-420-meses;0.99;75;360
+Banrisul;650000;0.84;360;simulador-banrisul-650-mil-360-meses;0.99;75;360
+Banrisul;650000;0.84;420;simulador-banrisul-650-mil-420-meses;0.99;75;360
+Banrisul;700000;0.84;360;simulador-banrisul-700-mil-360-meses;0.99;75;360
+Banrisul;700000;0.84;420;simulador-banrisul-700-mil-420-meses;0.99;75;360
+Banrisul;750000;0.84;360;simulador-banrisul-750-mil-360-meses;0.99;75;360
+Banrisul;750000;0.84;420;simulador-banrisul-750-mil-420-meses;0.99;75;360
+Banrisul;800000;0.84;360;simulador-banrisul-800-mil-360-meses;0.99;75;360
+Banrisul;800000;0.84;420;simulador-banrisul-800-mil-420-meses;0.99;75;360
+Banrisul;850000;0.84;360;simulador-banrisul-850-mil-360-meses;0.99;75;360
+Banrisul;850000;0.84;420;simulador-banrisul-850-mil-420-meses;0.99;75;360
+Banrisul;900000;0.84;360;simulador-banrisul-900-mil-360-meses;0.99;75;360
+Banrisul;900000;0.84;420;simulador-banrisul-900-mil-420-meses;0.99;75;360
+Banrisul;950000;0.84;360;simulador-banrisul-950-mil-360-meses;0.99;75;360
+Banrisul;950000;0.84;420;simulador-banrisul-950-mil-420-meses;0.99;75;360
+Banrisul;1000000;0.84;360;simulador-banrisul-1000-mil-360-meses;0.99;75;360
+Banrisul;1000000;0.84;420;simulador-banrisul-1000-mil-420-meses;0.99;75;360
+Banrisul;1050000;0.84;360;simulador-banrisul-1050-mil-360-meses;0.99;75;360
+Banrisul;1050000;0.84;420;simulador-banrisul-1050-mil-420-meses;0.99;75;360
+Banrisul;1100000;0.84;360;simulador-banrisul-1100-mil-360-meses;0.99;75;360
+Banrisul;1100000;0.84;420;simulador-banrisul-1100-mil-420-meses;0.99;75;360
+Banrisul;1150000;0.84;360;simulador-banrisul-1150-mil-360-meses;0.99;75;360
+Banrisul;1150000;0.84;420;simulador-banrisul-1150-mil-420-meses;0.99;75;360
+Banrisul;1200000;0.84;360;simulador-banrisul-1200-mil-360-meses;0.99;75;360
+Banrisul;1200000;0.84;420;simulador-banrisul-1200-mil-420-meses;0.99;75;360
+Banrisul;1250000;0.84;360;simulador-banrisul-1250-mil-360-meses;0.99;75;360
+Banrisul;1250000;0.84;420;simulador-banrisul-1250-mil-420-meses;0.99;75;360
+Banrisul;1300000;0.84;360;simulador-banrisul-1300-mil-360-meses;0.99;75;360
+Banrisul;1300000;0.84;420;simulador-banrisul-1300-mil-420-meses;0.99;75;360
+Banrisul;1350000;0.84;360;simulador-banrisul-1350-mil-360-meses;0.99;75;360
+Banrisul;1350000;0.84;420;simulador-banrisul-1350-mil-420-meses;0.99;75;360
+Banrisul;1400000;0.84;360;simulador-banrisul-1400-mil-360-meses;0.99;75;360
+Banrisul;1400000;0.84;420;simulador-banrisul-1400-mil-420-meses;0.99;75;360
+Banrisul;1450000;0.84;360;simulador-banrisul-1450-mil-360-meses;0.99;75;360
+Banrisul;1450000;0.84;420;simulador-banrisul-1450-mil-420-meses;0.99;75;360
+Banrisul;1500000;0.84;360;simulador-banrisul-1500-mil-360-meses;0.99;75;360
+Banrisul;1500000;0.84;420;simulador-banrisul-1500-mil-420-meses;0.99;75;360
+BRB;150000;0.78;360;simulador-brb-150-mil-360-meses;0.93;80;420
+BRB;150000;0.78;420;simulador-brb-150-mil-420-meses;0.93;80;420
+BRB;200000;0.78;360;simulador-brb-200-mil-360-meses;0.93;80;420
+BRB;200000;0.78;420;simulador-brb-200-mil-420-meses;0.93;80;420
+BRB;250000;0.78;360;simulador-brb-250-mil-360-meses;0.93;80;420
+BRB;250000;0.78;420;simulador-brb-250-mil-420-meses;0.93;80;420
+BRB;300000;0.78;360;simulador-brb-300-mil-360-meses;0.93;80;420
+BRB;300000;0.78;420;simulador-brb-300-mil-420-meses;0.93;80;420
+BRB;350000;0.78;360;simulador-brb-350-mil-360-meses;0.93;80;420
+BRB;350000;0.78;420;simulador-brb-350-mil-420-meses;0.93;80;420
+BRB;400000;0.78;360;simulador-brb-400-mil-360-meses;0.93;80;420
+BRB;400000;0.78;420;simulador-brb-400-mil-420-meses;0.93;80;420
+BRB;450000;0.78;360;simulador-brb-450-mil-360-meses;0.93;80;420
+BRB;450000;0.78;420;simulador-brb-450-mil-420-meses;0.93;80;420
+BRB;500000;0.78;360;simulador-brb-500-mil-360-meses;0.93;80;420
+BRB;500000;0.78;420;simulador-brb-500-mil-420-meses;0.93;80;420
+BRB;550000;0.78;360;simulador-brb-550-mil-360-meses;0.93;80;420
+BRB;550000;0.78;420;simulador-brb-550-mil-420-meses;0.93;80;420
+BRB;600000;0.78;360;simulador-brb-600-mil-360-meses;0.93;80;420
+BRB;600000;0.78;420;simulador-brb-600-mil-420-meses;0.93;80;420
+BRB;650000;0.78;360;simulador-brb-650-mil-360-meses;0.93;80;420
+BRB;650000;0.78;420;simulador-brb-650-mil-420-meses;0.93;80;420
+BRB;700000;0.78;360;simulador-brb-700-mil-360-meses;0.93;80;420
+BRB;700000;0.78;420;simulador-brb-700-mil-420-meses;0.93;80;420
+BRB;750000;0.78;360;simulador-brb-750-mil-360-meses;0.93;80;420
+BRB;750000;0.78;420;simulador-brb-750-mil-420-meses;0.93;80;420
+BRB;800000;0.78;360;simulador-brb-800-mil-360-meses;0.93;80;420
+BRB;800000;0.78;420;simulador-brb-800-mil-420-meses;0.93;80;420
+BRB;850000;0.78;360;simulador-brb-850-mil-360-meses;0.93;80;420
+BRB;850000;0.78;420;simulador-brb-850-mil-420-meses;0.93;80;420
+BRB;900000;0.78;360;simulador-brb-900-mil-360-meses;0.93;80;420
+BRB;900000;0.78;420;simulador-brb-900-mil-420-meses;0.93;80;420
+BRB;950000;0.78;360;simulador-brb-950-mil-360-meses;0.93;80;420
+BRB;950000;0.78;420;simulador-brb-950-mil-420-meses;0.93;80;420
+BRB;1000000;0.78;360;simulador-brb-1000-mil-360-meses;0.93;80;420
+BRB;1000000;0.78;420;simulador-brb-1000-mil-420-meses;0.93;80;420
+BRB;1050000;0.78;360;simulador-brb-1050-mil-360-meses;0.93;80;420
+BRB;1050000;0.78;420;simulador-brb-1050-mil-420-meses;0.93;80;420
+BRB;1100000;0.78;360;simulador-brb-1100-mil-360-meses;0.93;80;420
+BRB;1100000;0.78;420;simulador-brb-1100-mil-420-meses;0.93;80;420
+BRB;1150000;0.78;360;simulador-brb-1150-mil-360-meses;0.93;80;420
+BRB;1150000;0.78;420;simulador-brb-1150-mil-420-meses;0.93;80;420
+BRB;1200000;0.78;360;simulador-brb-1200-mil-360-meses;0.93;80;420
+BRB;1200000;0.78;420;simulador-brb-1200-mil-420-meses;0.93;80;420
+BRB;1250000;0.78;360;simulador-brb-1250-mil-360-meses;0.93;80;420
+BRB;1250000;0.78;420;simulador-brb-1250-mil-420-meses;0.93;80;420
+BRB;1300000;0.78;360;simulador-brb-1300-mil-360-meses;0.93;80;420
+BRB;1300000;0.78;420;simulador-brb-1300-mil-420-meses;0.93;80;420
+BRB;1350000;0.78;360;simulador-brb-1350-mil-360-meses;0.93;80;420
+BRB;1350000;0.78;420;simulador-brb-1350-mil-420-meses;0.93;80;420
+BRB;1400000;0.78;360;simulador-brb-1400-mil-360-meses;0.93;80;420
+BRB;1400000;0.78;420;simulador-brb-1400-mil-420-meses;0.93;80;420
+BRB;1450000;0.78;360;simulador-brb-1450-mil-360-meses;0.93;80;420
+BRB;1450000;0.78;420;simulador-brb-1450-mil-420-meses;0.93;80;420
+BRB;1500000;0.78;360;simulador-brb-1500-mil-360-meses;0.93;80;420
+BRB;1500000;0.78;420;simulador-brb-1500-mil-420-meses;0.93;80;420
+Sicredi;150000;9.51;360;simulador-sicredi-150-mil-360-meses;9.66;80;360
+Sicredi;150000;9.51;420;simulador-sicredi-150-mil-420-meses;9.66;80;360
+Sicredi;200000;9.51;360;simulador-sicredi-200-mil-360-meses;9.66;80;360
+Sicredi;200000;9.51;420;simulador-sicredi-200-mil-420-meses;9.66;80;360
+Sicredi;250000;9.51;360;simulador-sicredi-250-mil-360-meses;9.66;80;360
+Sicredi;250000;9.51;420;simulador-sicredi-250-mil-420-meses;9.66;80;360
+Sicredi;300000;9.51;360;simulador-sicredi-300-mil-360-meses;9.66;80;360
+Sicredi;300000;9.51;420;simulador-sicredi-300-mil-420-meses;9.66;80;360
+Sicredi;350000;9.51;360;simulador-sicredi-350-mil-360-meses;9.66;80;360
+Sicredi;350000;9.51;420;simulador-sicredi-350-mil-420-meses;9.66;80;360
+Sicredi;400000;9.51;360;simulador-sicredi-400-mil-360-meses;9.66;80;360
+Sicredi;400000;9.51;420;simulador-sicredi-400-mil-420-meses;9.66;80;360
+Sicredi;450000;9.51;360;simulador-sicredi-450-mil-360-meses;9.66;80;360
+Sicredi;450000;9.51;420;simulador-sicredi-450-mil-420-meses;9.66;80;360
+Sicredi;500000;9.51;360;simulador-sicredi-500-mil-360-meses;9.66;80;360
+Sicredi;500000;9.51;420;simulador-sicredi-500-mil-420-meses;9.66;80;360
+Sicredi;550000;9.51;360;simulador-sicredi-550-mil-360-meses;9.66;80;360
+Sicredi;550000;9.51;420;simulador-sicredi-550-mil-420-meses;9.66;80;360
+Sicredi;600000;9.51;360;simulador-sicredi-600-mil-360-meses;9.66;80;360
+Sicredi;600000;9.51;420;simulador-sicredi-600-mil-420-meses;9.66;80;360
+Sicredi;650000;9.51;360;simulador-sicredi-650-mil-360-meses;9.66;80;360
+Sicredi;650000;9.51;420;simulador-sicredi-650-mil-420-meses;9.66;80;360
+Sicredi;700000;9.51;360;simulador-sicredi-700-mil-360-meses;9.66;80;360
+Sicredi;700000;9.51;420;simulador-sicredi-700-mil-420-meses;9.66;80;360
+Sicredi;750000;9.51;360;simulador-sicredi-750-mil-360-meses;9.66;80;360
+Sicredi;750000;9.51;420;simulador-sicredi-750-mil-420-meses;9.66;80;360
+Sicredi;800000;9.51;360;simulador-sicredi-800-mil-360-meses;9.66;80;360
+Sicredi;800000;9.51;420;simulador-sicredi-800-mil-420-meses;9.66;80;360
+Sicredi;850000;9.51;360;simulador-sicredi-850-mil-360-meses;9.66;80;360
+Sicredi;850000;9.51;420;simulador-sicredi-850-mil-420-meses;9.66;80;360
+Sicredi;900000;9.51;360;simulador-sicredi-900-mil-360-meses;9.66;80;360
+Sicredi;900000;9.51;420;simulador-sicredi-900-mil-420-meses;9.66;80;360
+Sicredi;950000;9.51;360;simulador-sicredi-950-mil-360-meses;9.66;80;360
+Sicredi;950000;9.51;420;simulador-sicredi-950-mil-420-meses;9.66;80;360
+Sicredi;1000000;9.51;360;simulador-sicredi-1000-mil-360-meses;9.66;80;360
+Sicredi;1000000;9.51;420;simulador-sicredi-1000-mil-420-meses;9.66;80;360
+Sicredi;1050000;9.51;360;simulador-sicredi-1050-mil-360-meses;9.66;80;360
+Sicredi;1050000;9.51;420;simulador-sicredi-1050-mil-420-meses;9.66;80;360
+Sicredi;1100000;9.51;360;simulador-sicredi-1100-mil-360-meses;9.66;80;360
+Sicredi;1100000;9.51;420;simulador-sicredi-1100-mil-420-meses;9.66;80;360
+Sicredi;1150000;9.51;360;simulador-sicredi-1150-mil-360-meses;9.66;80;360
+Sicredi;1150000;9.51;420;simulador-sicredi-1150-mil-420-meses;9.66;80;360
+Sicredi;1200000;9.51;360;simulador-sicredi-1200-mil-360-meses;9.66;80;360
+Sicredi;1200000;9.51;420;simulador-sicredi-1200-mil-420-meses;9.66;80;360
+Sicredi;1250000;9.51;360;simulador-sicredi-1250-mil-360-meses;9.66;80;360
+Sicredi;1250000;9.51;420;simulador-sicredi-1250-mil-420-meses;9.66;80;360
+Sicredi;1300000;9.51;360;simulador-sicredi-1300-mil-360-meses;9.66;80;360
+Sicredi;1300000;9.51;420;simulador-sicredi-1300-mil-420-meses;9.66;80;360
+Sicredi;1350000;9.51;360;simulador-sicredi-1350-mil-360-meses;9.66;80;360
+Sicredi;1350000;9.51;420;simulador-sicredi-1350-mil-420-meses;9.66;80;360
+Sicredi;1400000;9.51;360;simulador-sicredi-1400-mil-360-meses;9.66;80;360
+Sicredi;1400000;9.51;420;simulador-sicredi-1400-mil-420-meses;9.66;80;360
+Sicredi;1450000;9.51;360;simulador-sicredi-1450-mil-360-meses;9.66;80;360
+Sicredi;1450000;9.51;420;simulador-sicredi-1450-mil-420-meses;9.66;80;360
+Sicredi;1500000;9.51;360;simulador-sicredi-1500-mil-360-meses;9.66;80;360
+Sicredi;1500000;9.51;420;simulador-sicredi-1500-mil-420-meses;9.66;80;360
 Sicoob;150000;0.8;360;simulador-sicoob-150-mil-360-meses;0.95;80;360
 Sicoob;150000;0.8;420;simulador-sicoob-150-mil-420-meses;0.95;80;360
 Sicoob;200000;0.8;360;simulador-sicoob-200-mil-360-meses;0.95;80;360
@@ -559,115 +559,115 @@ Sicoob;1450000;0.8;360;simulador-sicoob-1450-mil-360-meses;0.95;80;360
 Sicoob;1450000;0.8;420;simulador-sicoob-1450-mil-420-meses;0.95;80;360
 Sicoob;1500000;0.8;360;simulador-sicoob-1500-mil-360-meses;0.95;80;360
 Sicoob;1500000;0.8;420;simulador-sicoob-1500-mil-420-meses;0.95;80;360
-C6 Bank;150000;0.86;360;simulador-c6-bank-150-mil-360-meses;1.01;80;360
-C6 Bank;150000;0.86;420;simulador-c6-bank-150-mil-420-meses;1.01;80;360
-C6 Bank;200000;0.86;360;simulador-c6-bank-200-mil-360-meses;1.01;80;360
-C6 Bank;200000;0.86;420;simulador-c6-bank-200-mil-420-meses;1.01;80;360
-C6 Bank;250000;0.86;360;simulador-c6-bank-250-mil-360-meses;1.01;80;360
-C6 Bank;250000;0.86;420;simulador-c6-bank-250-mil-420-meses;1.01;80;360
-C6 Bank;300000;0.86;360;simulador-c6-bank-300-mil-360-meses;1.01;80;360
-C6 Bank;300000;0.86;420;simulador-c6-bank-300-mil-420-meses;1.01;80;360
-C6 Bank;350000;0.86;360;simulador-c6-bank-350-mil-360-meses;1.01;80;360
-C6 Bank;350000;0.86;420;simulador-c6-bank-350-mil-420-meses;1.01;80;360
-C6 Bank;400000;0.86;360;simulador-c6-bank-400-mil-360-meses;1.01;80;360
-C6 Bank;400000;0.86;420;simulador-c6-bank-400-mil-420-meses;1.01;80;360
-C6 Bank;450000;0.86;360;simulador-c6-bank-450-mil-360-meses;1.01;80;360
-C6 Bank;450000;0.86;420;simulador-c6-bank-450-mil-420-meses;1.01;80;360
-C6 Bank;500000;0.86;360;simulador-c6-bank-500-mil-360-meses;1.01;80;360
-C6 Bank;500000;0.86;420;simulador-c6-bank-500-mil-420-meses;1.01;80;360
-C6 Bank;550000;0.86;360;simulador-c6-bank-550-mil-360-meses;1.01;80;360
-C6 Bank;550000;0.86;420;simulador-c6-bank-550-mil-420-meses;1.01;80;360
-C6 Bank;600000;0.86;360;simulador-c6-bank-600-mil-360-meses;1.01;80;360
-C6 Bank;600000;0.86;420;simulador-c6-bank-600-mil-420-meses;1.01;80;360
-C6 Bank;650000;0.86;360;simulador-c6-bank-650-mil-360-meses;1.01;80;360
-C6 Bank;650000;0.86;420;simulador-c6-bank-650-mil-420-meses;1.01;80;360
-C6 Bank;700000;0.86;360;simulador-c6-bank-700-mil-360-meses;1.01;80;360
-C6 Bank;700000;0.86;420;simulador-c6-bank-700-mil-420-meses;1.01;80;360
-C6 Bank;750000;0.86;360;simulador-c6-bank-750-mil-360-meses;1.01;80;360
-C6 Bank;750000;0.86;420;simulador-c6-bank-750-mil-420-meses;1.01;80;360
-C6 Bank;800000;0.86;360;simulador-c6-bank-800-mil-360-meses;1.01;80;360
-C6 Bank;800000;0.86;420;simulador-c6-bank-800-mil-420-meses;1.01;80;360
-C6 Bank;850000;0.86;360;simulador-c6-bank-850-mil-360-meses;1.01;80;360
-C6 Bank;850000;0.86;420;simulador-c6-bank-850-mil-420-meses;1.01;80;360
-C6 Bank;900000;0.86;360;simulador-c6-bank-900-mil-360-meses;1.01;80;360
-C6 Bank;900000;0.86;420;simulador-c6-bank-900-mil-420-meses;1.01;80;360
-C6 Bank;950000;0.86;360;simulador-c6-bank-950-mil-360-meses;1.01;80;360
-C6 Bank;950000;0.86;420;simulador-c6-bank-950-mil-420-meses;1.01;80;360
-C6 Bank;1000000;0.86;360;simulador-c6-bank-1000-mil-360-meses;1.01;80;360
-C6 Bank;1000000;0.86;420;simulador-c6-bank-1000-mil-420-meses;1.01;80;360
-C6 Bank;1050000;0.86;360;simulador-c6-bank-1050-mil-360-meses;1.01;80;360
-C6 Bank;1050000;0.86;420;simulador-c6-bank-1050-mil-420-meses;1.01;80;360
-C6 Bank;1100000;0.86;360;simulador-c6-bank-1100-mil-360-meses;1.01;80;360
-C6 Bank;1100000;0.86;420;simulador-c6-bank-1100-mil-420-meses;1.01;80;360
-C6 Bank;1150000;0.86;360;simulador-c6-bank-1150-mil-360-meses;1.01;80;360
-C6 Bank;1150000;0.86;420;simulador-c6-bank-1150-mil-420-meses;1.01;80;360
-C6 Bank;1200000;0.86;360;simulador-c6-bank-1200-mil-360-meses;1.01;80;360
-C6 Bank;1200000;0.86;420;simulador-c6-bank-1200-mil-420-meses;1.01;80;360
-C6 Bank;1250000;0.86;360;simulador-c6-bank-1250-mil-360-meses;1.01;80;360
-C6 Bank;1250000;0.86;420;simulador-c6-bank-1250-mil-420-meses;1.01;80;360
-C6 Bank;1300000;0.86;360;simulador-c6-bank-1300-mil-360-meses;1.01;80;360
-C6 Bank;1300000;0.86;420;simulador-c6-bank-1300-mil-420-meses;1.01;80;360
-C6 Bank;1350000;0.86;360;simulador-c6-bank-1350-mil-360-meses;1.01;80;360
-C6 Bank;1350000;0.86;420;simulador-c6-bank-1350-mil-420-meses;1.01;80;360
-C6 Bank;1400000;0.86;360;simulador-c6-bank-1400-mil-360-meses;1.01;80;360
-C6 Bank;1400000;0.86;420;simulador-c6-bank-1400-mil-420-meses;1.01;80;360
-C6 Bank;1450000;0.86;360;simulador-c6-bank-1450-mil-360-meses;1.01;80;360
-C6 Bank;1450000;0.86;420;simulador-c6-bank-1450-mil-420-meses;1.01;80;360
-C6 Bank;1500000;0.86;360;simulador-c6-bank-1500-mil-360-meses;1.01;80;360
-C6 Bank;1500000;0.86;420;simulador-c6-bank-1500-mil-420-meses;1.01;80;360
-Poupex;150000;0.77;360;simulador-poupex-150-mil-360-meses;0.92;80;360
-Poupex;150000;0.77;420;simulador-poupex-150-mil-420-meses;0.92;80;360
-Poupex;200000;0.77;360;simulador-poupex-200-mil-360-meses;0.92;80;360
-Poupex;200000;0.77;420;simulador-poupex-200-mil-420-meses;0.92;80;360
-Poupex;250000;0.77;360;simulador-poupex-250-mil-360-meses;0.92;80;360
-Poupex;250000;0.77;420;simulador-poupex-250-mil-420-meses;0.92;80;360
-Poupex;300000;0.77;360;simulador-poupex-300-mil-360-meses;0.92;80;360
-Poupex;300000;0.77;420;simulador-poupex-300-mil-420-meses;0.92;80;360
-Poupex;350000;0.77;360;simulador-poupex-350-mil-360-meses;0.92;80;360
-Poupex;350000;0.77;420;simulador-poupex-350-mil-420-meses;0.92;80;360
-Poupex;400000;0.77;360;simulador-poupex-400-mil-360-meses;0.92;80;360
-Poupex;400000;0.77;420;simulador-poupex-400-mil-420-meses;0.92;80;360
-Poupex;450000;0.77;360;simulador-poupex-450-mil-360-meses;0.92;80;360
-Poupex;450000;0.77;420;simulador-poupex-450-mil-420-meses;0.92;80;360
-Poupex;500000;0.77;360;simulador-poupex-500-mil-360-meses;0.92;80;360
-Poupex;500000;0.77;420;simulador-poupex-500-mil-420-meses;0.92;80;360
-Poupex;550000;0.77;360;simulador-poupex-550-mil-360-meses;0.92;80;360
-Poupex;550000;0.77;420;simulador-poupex-550-mil-420-meses;0.92;80;360
-Poupex;600000;0.77;360;simulador-poupex-600-mil-360-meses;0.92;80;360
-Poupex;600000;0.77;420;simulador-poupex-600-mil-420-meses;0.92;80;360
-Poupex;650000;0.77;360;simulador-poupex-650-mil-360-meses;0.92;80;360
-Poupex;650000;0.77;420;simulador-poupex-650-mil-420-meses;0.92;80;360
-Poupex;700000;0.77;360;simulador-poupex-700-mil-360-meses;0.92;80;360
-Poupex;700000;0.77;420;simulador-poupex-700-mil-420-meses;0.92;80;360
-Poupex;750000;0.77;360;simulador-poupex-750-mil-360-meses;0.92;80;360
-Poupex;750000;0.77;420;simulador-poupex-750-mil-420-meses;0.92;80;360
-Poupex;800000;0.77;360;simulador-poupex-800-mil-360-meses;0.92;80;360
-Poupex;800000;0.77;420;simulador-poupex-800-mil-420-meses;0.92;80;360
-Poupex;850000;0.77;360;simulador-poupex-850-mil-360-meses;0.92;80;360
-Poupex;850000;0.77;420;simulador-poupex-850-mil-420-meses;0.92;80;360
-Poupex;900000;0.77;360;simulador-poupex-900-mil-360-meses;0.92;80;360
-Poupex;900000;0.77;420;simulador-poupex-900-mil-420-meses;0.92;80;360
-Poupex;950000;0.77;360;simulador-poupex-950-mil-360-meses;0.92;80;360
-Poupex;950000;0.77;420;simulador-poupex-950-mil-420-meses;0.92;80;360
-Poupex;1000000;0.77;360;simulador-poupex-1000-mil-360-meses;0.92;80;360
-Poupex;1000000;0.77;420;simulador-poupex-1000-mil-420-meses;0.92;80;360
-Poupex;1050000;0.77;360;simulador-poupex-1050-mil-360-meses;0.92;80;360
-Poupex;1050000;0.77;420;simulador-poupex-1050-mil-420-meses;0.92;80;360
-Poupex;1100000;0.77;360;simulador-poupex-1100-mil-360-meses;0.92;80;360
-Poupex;1100000;0.77;420;simulador-poupex-1100-mil-420-meses;0.92;80;360
-Poupex;1150000;0.77;360;simulador-poupex-1150-mil-360-meses;0.92;80;360
-Poupex;1150000;0.77;420;simulador-poupex-1150-mil-420-meses;0.92;80;360
-Poupex;1200000;0.77;360;simulador-poupex-1200-mil-360-meses;0.92;80;360
-Poupex;1200000;0.77;420;simulador-poupex-1200-mil-420-meses;0.92;80;360
-Poupex;1250000;0.77;360;simulador-poupex-1250-mil-360-meses;0.92;80;360
-Poupex;1250000;0.77;420;simulador-poupex-1250-mil-420-meses;0.92;80;360
-Poupex;1300000;0.77;360;simulador-poupex-1300-mil-360-meses;0.92;80;360
-Poupex;1300000;0.77;420;simulador-poupex-1300-mil-420-meses;0.92;80;360
-Poupex;1350000;0.77;360;simulador-poupex-1350-mil-360-meses;0.92;80;360
-Poupex;1350000;0.77;420;simulador-poupex-1350-mil-420-meses;0.92;80;360
-Poupex;1400000;0.77;360;simulador-poupex-1400-mil-360-meses;0.92;80;360
-Poupex;1400000;0.77;420;simulador-poupex-1400-mil-420-meses;0.92;80;360
-Poupex;1450000;0.77;360;simulador-poupex-1450-mil-360-meses;0.92;80;360
-Poupex;1450000;0.77;420;simulador-poupex-1450-mil-420-meses;0.92;80;360
-Poupex;1500000;0.77;360;simulador-poupex-1500-mil-360-meses;0.92;80;360
-Poupex;1500000;0.77;420;simulador-poupex-1500-mil-420-meses;0.92;80;360
+C6 Bank;150000;0.86;360;simulador-c6-bank-150-mil-360-meses;1.01;60;240
+C6 Bank;150000;0.86;420;simulador-c6-bank-150-mil-420-meses;1.01;60;240
+C6 Bank;200000;0.86;360;simulador-c6-bank-200-mil-360-meses;1.01;60;240
+C6 Bank;200000;0.86;420;simulador-c6-bank-200-mil-420-meses;1.01;60;240
+C6 Bank;250000;0.86;360;simulador-c6-bank-250-mil-360-meses;1.01;60;240
+C6 Bank;250000;0.86;420;simulador-c6-bank-250-mil-420-meses;1.01;60;240
+C6 Bank;300000;0.86;360;simulador-c6-bank-300-mil-360-meses;1.01;60;240
+C6 Bank;300000;0.86;420;simulador-c6-bank-300-mil-420-meses;1.01;60;240
+C6 Bank;350000;0.86;360;simulador-c6-bank-350-mil-360-meses;1.01;60;240
+C6 Bank;350000;0.86;420;simulador-c6-bank-350-mil-420-meses;1.01;60;240
+C6 Bank;400000;0.86;360;simulador-c6-bank-400-mil-360-meses;1.01;60;240
+C6 Bank;400000;0.86;420;simulador-c6-bank-400-mil-420-meses;1.01;60;240
+C6 Bank;450000;0.86;360;simulador-c6-bank-450-mil-360-meses;1.01;60;240
+C6 Bank;450000;0.86;420;simulador-c6-bank-450-mil-420-meses;1.01;60;240
+C6 Bank;500000;0.86;360;simulador-c6-bank-500-mil-360-meses;1.01;60;240
+C6 Bank;500000;0.86;420;simulador-c6-bank-500-mil-420-meses;1.01;60;240
+C6 Bank;550000;0.86;360;simulador-c6-bank-550-mil-360-meses;1.01;60;240
+C6 Bank;550000;0.86;420;simulador-c6-bank-550-mil-420-meses;1.01;60;240
+C6 Bank;600000;0.86;360;simulador-c6-bank-600-mil-360-meses;1.01;60;240
+C6 Bank;600000;0.86;420;simulador-c6-bank-600-mil-420-meses;1.01;60;240
+C6 Bank;650000;0.86;360;simulador-c6-bank-650-mil-360-meses;1.01;60;240
+C6 Bank;650000;0.86;420;simulador-c6-bank-650-mil-420-meses;1.01;60;240
+C6 Bank;700000;0.86;360;simulador-c6-bank-700-mil-360-meses;1.01;60;240
+C6 Bank;700000;0.86;420;simulador-c6-bank-700-mil-420-meses;1.01;60;240
+C6 Bank;750000;0.86;360;simulador-c6-bank-750-mil-360-meses;1.01;60;240
+C6 Bank;750000;0.86;420;simulador-c6-bank-750-mil-420-meses;1.01;60;240
+C6 Bank;800000;0.86;360;simulador-c6-bank-800-mil-360-meses;1.01;60;240
+C6 Bank;800000;0.86;420;simulador-c6-bank-800-mil-420-meses;1.01;60;240
+C6 Bank;850000;0.86;360;simulador-c6-bank-850-mil-360-meses;1.01;60;240
+C6 Bank;850000;0.86;420;simulador-c6-bank-850-mil-420-meses;1.01;60;240
+C6 Bank;900000;0.86;360;simulador-c6-bank-900-mil-360-meses;1.01;60;240
+C6 Bank;900000;0.86;420;simulador-c6-bank-900-mil-420-meses;1.01;60;240
+C6 Bank;950000;0.86;360;simulador-c6-bank-950-mil-360-meses;1.01;60;240
+C6 Bank;950000;0.86;420;simulador-c6-bank-950-mil-420-meses;1.01;60;240
+C6 Bank;1000000;0.86;360;simulador-c6-bank-1000-mil-360-meses;1.01;60;240
+C6 Bank;1000000;0.86;420;simulador-c6-bank-1000-mil-420-meses;1.01;60;240
+C6 Bank;1050000;0.86;360;simulador-c6-bank-1050-mil-360-meses;1.01;60;240
+C6 Bank;1050000;0.86;420;simulador-c6-bank-1050-mil-420-meses;1.01;60;240
+C6 Bank;1100000;0.86;360;simulador-c6-bank-1100-mil-360-meses;1.01;60;240
+C6 Bank;1100000;0.86;420;simulador-c6-bank-1100-mil-420-meses;1.01;60;240
+C6 Bank;1150000;0.86;360;simulador-c6-bank-1150-mil-360-meses;1.01;60;240
+C6 Bank;1150000;0.86;420;simulador-c6-bank-1150-mil-420-meses;1.01;60;240
+C6 Bank;1200000;0.86;360;simulador-c6-bank-1200-mil-360-meses;1.01;60;240
+C6 Bank;1200000;0.86;420;simulador-c6-bank-1200-mil-420-meses;1.01;60;240
+C6 Bank;1250000;0.86;360;simulador-c6-bank-1250-mil-360-meses;1.01;60;240
+C6 Bank;1250000;0.86;420;simulador-c6-bank-1250-mil-420-meses;1.01;60;240
+C6 Bank;1300000;0.86;360;simulador-c6-bank-1300-mil-360-meses;1.01;60;240
+C6 Bank;1300000;0.86;420;simulador-c6-bank-1300-mil-420-meses;1.01;60;240
+C6 Bank;1350000;0.86;360;simulador-c6-bank-1350-mil-360-meses;1.01;60;240
+C6 Bank;1350000;0.86;420;simulador-c6-bank-1350-mil-420-meses;1.01;60;240
+C6 Bank;1400000;0.86;360;simulador-c6-bank-1400-mil-360-meses;1.01;60;240
+C6 Bank;1400000;0.86;420;simulador-c6-bank-1400-mil-420-meses;1.01;60;240
+C6 Bank;1450000;0.86;360;simulador-c6-bank-1450-mil-360-meses;1.01;60;240
+C6 Bank;1450000;0.86;420;simulador-c6-bank-1450-mil-420-meses;1.01;60;240
+C6 Bank;1500000;0.86;360;simulador-c6-bank-1500-mil-360-meses;1.01;60;240
+C6 Bank;1500000;0.86;420;simulador-c6-bank-1500-mil-420-meses;1.01;60;240
+Poupex;150000;0.77;360;simulador-poupex-150-mil-360-meses;0.92;90;420
+Poupex;150000;0.77;420;simulador-poupex-150-mil-420-meses;0.92;90;420
+Poupex;200000;0.77;360;simulador-poupex-200-mil-360-meses;0.92;90;420
+Poupex;200000;0.77;420;simulador-poupex-200-mil-420-meses;0.92;90;420
+Poupex;250000;0.77;360;simulador-poupex-250-mil-360-meses;0.92;90;420
+Poupex;250000;0.77;420;simulador-poupex-250-mil-420-meses;0.92;90;420
+Poupex;300000;0.77;360;simulador-poupex-300-mil-360-meses;0.92;90;420
+Poupex;300000;0.77;420;simulador-poupex-300-mil-420-meses;0.92;90;420
+Poupex;350000;0.77;360;simulador-poupex-350-mil-360-meses;0.92;90;420
+Poupex;350000;0.77;420;simulador-poupex-350-mil-420-meses;0.92;90;420
+Poupex;400000;0.77;360;simulador-poupex-400-mil-360-meses;0.92;90;420
+Poupex;400000;0.77;420;simulador-poupex-400-mil-420-meses;0.92;90;420
+Poupex;450000;0.77;360;simulador-poupex-450-mil-360-meses;0.92;90;420
+Poupex;450000;0.77;420;simulador-poupex-450-mil-420-meses;0.92;90;420
+Poupex;500000;0.77;360;simulador-poupex-500-mil-360-meses;0.92;90;420
+Poupex;500000;0.77;420;simulador-poupex-500-mil-420-meses;0.92;90;420
+Poupex;550000;0.77;360;simulador-poupex-550-mil-360-meses;0.92;90;420
+Poupex;550000;0.77;420;simulador-poupex-550-mil-420-meses;0.92;90;420
+Poupex;600000;0.77;360;simulador-poupex-600-mil-360-meses;0.92;90;420
+Poupex;600000;0.77;420;simulador-poupex-600-mil-420-meses;0.92;90;420
+Poupex;650000;0.77;360;simulador-poupex-650-mil-360-meses;0.92;90;420
+Poupex;650000;0.77;420;simulador-poupex-650-mil-420-meses;0.92;90;420
+Poupex;700000;0.77;360;simulador-poupex-700-mil-360-meses;0.92;90;420
+Poupex;700000;0.77;420;simulador-poupex-700-mil-420-meses;0.92;90;420
+Poupex;750000;0.77;360;simulador-poupex-750-mil-360-meses;0.92;90;420
+Poupex;750000;0.77;420;simulador-poupex-750-mil-420-meses;0.92;90;420
+Poupex;800000;0.77;360;simulador-poupex-800-mil-360-meses;0.92;90;420
+Poupex;800000;0.77;420;simulador-poupex-800-mil-420-meses;0.92;90;420
+Poupex;850000;0.77;360;simulador-poupex-850-mil-360-meses;0.92;90;420
+Poupex;850000;0.77;420;simulador-poupex-850-mil-420-meses;0.92;90;420
+Poupex;900000;0.77;360;simulador-poupex-900-mil-360-meses;0.92;90;420
+Poupex;900000;0.77;420;simulador-poupex-900-mil-420-meses;0.92;90;420
+Poupex;950000;0.77;360;simulador-poupex-950-mil-360-meses;0.92;90;420
+Poupex;950000;0.77;420;simulador-poupex-950-mil-420-meses;0.92;90;420
+Poupex;1000000;0.77;360;simulador-poupex-1000-mil-360-meses;0.92;90;420
+Poupex;1000000;0.77;420;simulador-poupex-1000-mil-420-meses;0.92;90;420
+Poupex;1050000;0.77;360;simulador-poupex-1050-mil-360-meses;0.92;90;420
+Poupex;1050000;0.77;420;simulador-poupex-1050-mil-420-meses;0.92;90;420
+Poupex;1100000;0.77;360;simulador-poupex-1100-mil-360-meses;0.92;90;420
+Poupex;1100000;0.77;420;simulador-poupex-1100-mil-420-meses;0.92;90;420
+Poupex;1150000;0.77;360;simulador-poupex-1150-mil-360-meses;0.92;90;420
+Poupex;1150000;0.77;420;simulador-poupex-1150-mil-420-meses;0.92;90;420
+Poupex;1200000;0.77;360;simulador-poupex-1200-mil-360-meses;0.92;90;420
+Poupex;1200000;0.77;420;simulador-poupex-1200-mil-420-meses;0.92;90;420
+Poupex;1250000;0.77;360;simulador-poupex-1250-mil-360-meses;0.92;90;420
+Poupex;1250000;0.77;420;simulador-poupex-1250-mil-420-meses;0.92;90;420
+Poupex;1300000;0.77;360;simulador-poupex-1300-mil-360-meses;0.92;90;420
+Poupex;1300000;0.77;420;simulador-poupex-1300-mil-420-meses;0.92;90;420
+Poupex;1350000;0.77;360;simulador-poupex-1350-mil-360-meses;0.92;90;420
+Poupex;1350000;0.77;420;simulador-poupex-1350-mil-420-meses;0.92;90;420
+Poupex;1400000;0.77;360;simulador-poupex-1400-mil-360-meses;0.92;90;420
+Poupex;1400000;0.77;420;simulador-poupex-1400-mil-420-meses;0.92;90;420
+Poupex;1450000;0.77;360;simulador-poupex-1450-mil-360-meses;0.92;90;420
+Poupex;1450000;0.77;420;simulador-poupex-1450-mil-420-meses;0.92;90;420
+Poupex;1500000;0.77;360;simulador-poupex-1500-mil-360-meses;0.92;90;420
+Poupex;1500000;0.77;420;simulador-poupex-1500-mil-420-meses;0.92;90;420

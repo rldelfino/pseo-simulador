@@ -2,29 +2,29 @@ import os
 import csv
 import random
 
-# --- 1. MOTOR DE REGRAS AGORA É GLOBAL ---
+# --- MOTOR DE REGRAS GLOBAL DA PLATAFORMA ---
 REGRAS_BANCOS = {
-    "Caixa": {"ltv": 0.80, "prazo_max": 420, "mod": "Financiamento Imobiliário"},
-    "Banco do Brasil": {"ltv": 0.80, "prazo_max": 420, "mod": "Financiamento Imobiliário"},
-    "Santander": {"ltv": 0.80, "prazo_max": 420, "mod": "Financiamento Imobiliário"},
-    "BRB": {"ltv": 0.80, "prazo_max": 420, "mod": "Financiamento Imobiliário"},
-    "Poupex": {"ltv": 0.90, "prazo_max": 420, "mod": "Financiamento Imobiliário"},
-    "Itau": {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário"},
-    "Itaú": {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário"},
-    "Bradesco": {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário"},
-    "Banco Inter": {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário"},
-    "Sicredi": {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário"},
-    "Sicoob": {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário"},
-    "Banrisul": {"ltv": 0.75, "prazo_max": 360, "mod": "Financiamento Imobiliário"},
-    "C6 Bank": {"ltv": 0.60, "prazo_max": 240, "mod": "Crédito com Garantia de Imóvel"}
+    "Caixa": {"ltv": 0.80, "prazo_max": 420, "mod": "Financiamento Imobiliário", "taxa_padrao": 9.99},
+    "Banco do Brasil": {"ltv": 0.80, "prazo_max": 420, "mod": "Financiamento Imobiliário", "taxa_padrao": 10.29},
+    "Santander": {"ltv": 0.80, "prazo_max": 420, "mod": "Financiamento Imobiliário", "taxa_padrao": 10.99},
+    "BRB": {"ltv": 0.80, "prazo_max": 420, "mod": "Financiamento Imobiliário", "taxa_padrao": 9.49},
+    "Poupex": {"ltv": 0.90, "prazo_max": 420, "mod": "Financiamento Imobiliário", "taxa_padrao": 9.35},
+    "Itau": {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário", "taxa_padrao": 10.49},
+    "Itaú": {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário", "taxa_padrao": 10.49},
+    "Bradesco": {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário", "taxa_padrao": 10.49},
+    "Banco Inter": {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário", "taxa_padrao": 11.00},
+    "Sicredi": {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário", "taxa_padrao": 10.50},
+    "Sicoob": {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário", "taxa_padrao": 10.50},
+    "Banrisul": {"ltv": 0.75, "prazo_max": 360, "mod": "Financiamento Imobiliário", "taxa_padrao": 10.90},
+    "C6 Bank": {"ltv": 0.60, "prazo_max": 240, "mod": "Crédito com Garantia de Imóvel", "taxa_padrao": 14.50}
 }
 
 def criar_csv_exemplo(caminho_csv):
     cabecalho = ['banco', 'valor_imovel', 'taxa', 'prazo', 'slug']
     dados = [
-        ['Caixa', '300000', '9.99', '360', 'simulador-caixa-300-mil-360-meses'],
-        ['Itau', '500000', '10.49', '420', 'simulador-itau-500-mil-420-meses'], # Forçando erro para testar a correção
-        ['C6 Bank', '400000', '12.50', '360', 'simulador-c6-bank-400-mil-360-meses']
+        ['Caixa', '300000', '9.99', '420', 'simulador-caixa-300-mil-420-meses'],
+        ['Itau', '500000', '10.49', '360', 'simulador-itau-500-mil-360-meses'],
+        ['C6 Bank', '600000', '14.50', '240', 'simulador-c6-bank-600-mil-240-meses']
     ]
     with open(caminho_csv, mode='w', newline='', encoding='utf-8') as arquivo:
         writer = csv.writer(arquivo, delimiter=';')
@@ -79,11 +79,12 @@ def gerar_paginas_pseo():
             prazo_csv = int(linha['prazo'])
             slug_original = linha['slug']
             
-            # --- 2. FILTRO INTELIGENTE (Rodando ANTES de montar a Home Page) ---
-            regra = REGRAS_BANCOS.get(banco, {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário"})
+            # FILTRO INTELIGENTE E VALIDADOR DE REGRAS
+            regra_padrao_fallback = {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário", "taxa_padrao": 10.49}
+            regra = REGRAS_BANCOS.get(banco, regra_padrao_fallback)
             prazo_correto = min(prazo_csv, regra["prazo_max"])
             
-            # Se o ETL errou e botou prazo a mais, conserta o URL gerado na hora!
+            # Conserta a URL se o ETL gerou prazo errado
             if prazo_correto != prazo_csv:
                 slug = slug_original.replace(f"-{prazo_csv}-meses", f"-{prazo_correto}-meses")
             else:
@@ -94,9 +95,9 @@ def gerar_paginas_pseo():
             pagina_info = {
                 "banco": banco,
                 "slug": slug,
-                "prazo_correto": prazo_correto, # Guardamos o prazo corrigido
+                "prazo_correto": prazo_correto,
                 "regra": regra,
-                "texto": f"Simular {valor_amigavel} em {prazo_correto} meses", # Link da Home consertado!
+                "texto": f"Simular {valor_amigavel} em {prazo_correto} meses",
                 "linha_original": linha
             }
             todas_as_paginas.append(pagina_info)
@@ -115,7 +116,7 @@ def gerar_paginas_pseo():
             linha = p["linha_original"]
             banco = p['banco']
             valor_imovel = float(linha['valor_imovel'])
-            prazo = p['prazo_correto'] # Usa o prazo corrigido
+            prazo = p['prazo_correto'] 
             slug = p['slug']
             regra = p['regra']
             
@@ -124,12 +125,20 @@ def gerar_paginas_pseo():
             entrada_minima_valor = valor_imovel * perc_entrada_minima
             entrada_padrao = max(valor_imovel * 0.20, entrada_minima_valor)
 
+            # Extração limpa e segura da TAXA ANUAL
             try:
-                taxa_str = str(linha.get('taxa', '9.99')).replace(',', '.')
-                taxa = float(taxa_str)
-                if taxa <= 0: taxa = 9.99
+                taxa_csv = linha.get('taxa', '')
+                if not taxa_csv:
+                    taxa = regra["taxa_padrao"]
+                else:
+                    taxa = float(str(taxa_csv).replace(',', '.'))
+                    if taxa < 2.0: # Se for menor que 2, o ETL provavalmente mandou a mensal, então arrumamos para anual!
+                         taxa = ((1 + (taxa / 100)) ** 12 - 1) * 100
             except (ValueError, TypeError):
-                taxa = 9.99
+                taxa = regra["taxa_padrao"]
+
+            # Arredonda a taxa para ficar bonito na tela (ex: 10.49)
+            taxa = round(taxa, 2)
 
             paginas_candidatas = [pag for pag in todas_as_paginas if pag["slug"] != slug]
             qtd_links = min(4, len(paginas_candidatas))

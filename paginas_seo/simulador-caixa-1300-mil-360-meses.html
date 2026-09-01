@@ -3,28 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador de Financiamento | Caixa | Simulador Datalab</title>
+    <title>Simulador | Caixa | Datalab Global</title>
     <meta name="description" content="Simule seu financiamento imobiliário pela Caixa. Planeje o futuro e descubra quanto economiza adiantando parcelas.">
     <link rel="canonical" href="https://datalabglobal.com/simulador-caixa-1300-mil-360-meses.html" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- MONETIZAÇÃO 1: SCRIPT DO GOOGLE ADSENSE -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5414184968223405" crossorigin="anonymous"></script>
-
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "FAQPage",
       "mainEntity": [
-        { "@type": "Question", "name": "Vale a pena amortizar o financiamento imobiliário no Caixa?", "acceptedAnswer": { "@type": "Answer", "text": "Sim! Ao fazer amortizações extras no Caixa, você reduz diretamente o saldo devedor. Isso significa que você foge dos juros compostos cobrados ao longo dos 360 meses, podendo economizar milhares de reais e quitar seu imóvel muito antes do previsto." } },
+        { "@type": "Question", "name": "Vale a pena amortizar o financiamento imobiliário no Caixa?", "acceptedAnswer": { "@type": "Answer", "text": "Sim! Ao fazer amortizações extras no Caixa, você reduz diretamente o saldo devedor. Isso significa que você foge dos juros compostos cobrados ao longo dos 360 meses, podendo economizar milhares de reais e quitar muito antes do previsto." } },
         { "@type": "Question", "name": "Qual a diferença entre a Tabela SAC e PRICE na simulação do Caixa?", "acceptedAnswer": { "@type": "Answer", "text": "Na Tabela SAC, a amortização é constante e o valor das parcelas do Caixa diminui com o tempo. Já na Tabela PRICE, as parcelas são fixas do início ao fim do contrato. A escolha ideal depende do seu planejamento financeiro mensal." } },
-        { "@type": "Question", "name": "É possível simular o financiamento com a taxa atual de 8.0% a.m.?", "acceptedAnswer": { "@type": "Answer", "text": "Nossa calculadora já utiliza a taxa de juros estimada em 8.0% ao mês para o Caixa. Você pode ajustar os valores de entrada e prazo no simulador acima para ver o cenário exato para o seu perfil e solicitar uma análise de crédito." } }
+        { "@type": "Question", "name": "É possível simular o crédito com a taxa atual de 151.82% a.a.?", "acceptedAnswer": { "@type": "Answer", "text": "Nossa calculadora já utiliza a taxa de juros anual estimada em 151.82% ao ano para o Caixa. Você pode ajustar os valores de entrada (margem de garantia) e prazo no simulador acima para ver o cenário exato para o seu perfil e solicitar uma análise." } }
       ]
     }
     </script>
-    
     <style>
         body { font-family: 'Inter', sans-serif; background: #020617; background-image: radial-gradient(at 80% 0%, #1e293b 0px, transparent 50%), radial-gradient(at 0% 100%, #0f172a 0px, transparent 50%); color: #f8fafc; min-height: 100vh; overflow-x: hidden; }
         h1, h2, h3, .font-serif { font-family: 'Playfair Display', serif; }
@@ -52,51 +48,47 @@
             </div>
         </div>
     </nav>
-
     <header class="py-12 md:py-16 relative z-10 text-center">
-        <h1 class="text-4xl md:text-5xl font-serif text-white mb-4 leading-tight">Simulador de Financiamento</h1>
+        <h1 class="text-4xl md:text-5xl font-serif text-white mb-4 leading-tight">Simulador de Financiamento Imobiliário</h1>
         <p class="text-slate-400 text-base md:text-lg font-light tracking-wide max-w-3xl mx-auto">
             Ajuste os valores para o banco <strong class="text-white font-medium">Caixa</strong> e descubra quanto você economiza ao fazer amortizações.
         </p>
     </header>
-
     <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 flex-grow w-full relative z-10 space-y-8">
-        
-        <!-- MONETIZAÇÃO 1: BLOCO DE ANÚNCIO ADSENSE (Topo) -->
         <div class="w-full text-center py-2 bg-slate-900/30 rounded-xl border border-white/5 text-xs text-slate-500">
-            <!-- Insira a tag <ins> do bloco de anúncio do AdSense aqui -->
             Publicidade
         </div>
-
         <!-- ZONA A: O FINANCIAMENTO -->
         <div class="glass-panel p-8 md:p-10 rounded-3xl">
             <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-8 border-b border-white/10 pb-4 flex items-center">
-                <i class="fa-solid fa-file-invoice-dollar mr-3"></i> 1. Estratégia de Financiamento
+                <i class="fa-solid fa-file-invoice-dollar mr-3"></i> 1. Estratégia
             </h2>
             <div class="flex flex-col lg:flex-row gap-10">
                 <div class="w-full lg:w-1/2 space-y-6">
                     <div>
                         <div class="flex justify-between items-end mb-2">
-                            <label class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">Valor do Imóvel</label>
+                            <label class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">Valor do Imóvel / Garantia</label>
                             <input type="text" id="input_imovel" class="currency-input w-40 text-right bg-transparent font-medium text-white text-2xl outline-none border-b border-transparent focus:border-emerald-500 transition-colors" value="">
                         </div>
                         <input type="range" id="slider_imovel" min="100000" max="2000000" step="10000" value="1300000.0" class="w-full mt-4">
                     </div>
                     <div>
                         <div class="flex justify-between items-end mb-2">
-                            <label class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">Entrada do Financiamento</label>
+                            <label class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">Entrada / Margem Retida</label>
                             <input type="text" id="input_entrada" class="currency-input w-40 text-right bg-transparent font-medium text-white text-2xl outline-none border-b border-transparent focus:border-emerald-500 transition-colors" value="">
                         </div>
-                        <input type="range" id="slider_entrada" min="0" max="1000000" step="5000" value="260000" class="w-full mt-4">
+                        <input type="range" id="slider_entrada" min="259999" max="1000000" step="5000" value="260000" class="w-full mt-4">
+                        <p class="text-[9px] text-slate-500 mt-1 text-right">Mínimo exigido: 20% do valor</p>
                     </div>
                     <div class="grid grid-cols-2 gap-6">
                         <div>
                             <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 block">Prazo</label>
-                            <div class="flex items-center border-b border-white/10 pb-1"><input type="number" id="input_prazo" class="w-full bg-transparent font-medium text-white text-lg outline-none" value="360"><span class="text-xs text-slate-500 ml-2">meses</span></div>
+                            <div class="flex items-center border-b border-white/10 pb-1"><input type="number" id="input_prazo" min="12" max="420" class="w-full bg-transparent font-medium text-white text-lg outline-none" value="360"><span class="text-xs text-slate-500 ml-2">meses</span></div>
+                            <p class="text-[9px] text-slate-500 mt-1">Máx: 420 meses</p>
                         </div>
                         <div>
                             <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 block">Taxa Estimada</label>
-                            <div class="flex items-center border-b border-white/10 pb-1"><input type="number" id="input_taxa" step="0.01" class="w-full bg-transparent font-medium text-white text-lg outline-none" value="8.0"><span class="text-xs text-slate-500 ml-2">% a.m.</span></div>
+                            <div class="flex items-center border-b border-white/10 pb-1"><input type="number" id="input_taxa" step="0.01" class="w-full bg-transparent font-medium text-white text-lg outline-none" value="151.82"><span class="text-xs text-slate-500 ml-2">% a.a.</span></div>
                         </div>
                     </div>
                     <div>
@@ -113,13 +105,12 @@
                         <div><p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-2">Última Parcela</p><p class="text-slate-300 text-2xl font-light tracking-tight mt-1" id="res_pU">R$ 0,00</p></div>
                     </div>
                     <div class="pt-6 border-t border-white/5 grid grid-cols-1 gap-6">
-                        <div><p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1.5">Total Financiado (Sem Juros)</p><p class="text-white font-medium text-lg" id="res_capital">R$ 0,00</p></div>
+                        <div><p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1.5">Crédito Liberado (Sem Juros)</p><p class="text-white font-medium text-lg" id="res_capital">R$ 0,00</p></div>
                         <div><p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1.5 flex items-center">Custo Total Final (Capital + Juros)</p><p class="text-white font-medium text-xl" id="res_total_pago">R$ 0,00</p></div>
                     </div>
                 </div>
             </div>
         </div>
-
         <!-- ZONA B: A AMORTIZAÇÃO -->
         <div class="glass-panel-emerald rounded-3xl p-8 md:p-10 relative overflow-hidden" id="card_amortizacao">
             <h2 class="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-8 border-b border-emerald-500/20 pb-4 relative z-10 flex items-center">
@@ -150,30 +141,24 @@
                 </div>
             </div>
         </div>
-
         <div class="text-center pt-4">
             <a id="btn_wa_cta" href="#" target="_blank" class="inline-flex items-center justify-center bg-white text-slate-900 hover:bg-slate-200 font-bold px-10 py-5 rounded-2xl transition-all shadow-[0_10px_30px_rgba(255,255,255,0.1)] text-sm tracking-wide w-full md:w-auto">
                 Falar com Especialista no WhatsApp <i class="fa-solid fa-arrow-right ml-3"></i>
             </a>
         </div>
-
-        <!-- ============================================================== -->
-        <!-- MONETIZAÇÃO 3: BANNER DE PRODUTO DIGITAL (HOTMART / KIWIFY)    -->
-        <!-- ============================================================== -->
+        <!-- ZONA DE MONETIZAÇÃO -->
         <div class="mt-8 bg-gradient-to-r from-emerald-900/40 to-slate-900 border border-emerald-500/30 p-8 md:p-10 rounded-3xl flex flex-col md:flex-row items-center gap-8 relative overflow-hidden">
             <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px]"></div>
-            
             <div class="md:w-2/3 relative z-10 text-left">
                 <span class="bg-emerald-500 text-slate-950 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-4 inline-block">Recomendado</span>
                 <h3 class="text-2xl md:text-3xl font-serif text-white mb-3">Planilha de Amortização Inteligente</h3>
                 <p class="text-slate-300 text-sm md:text-base font-light leading-relaxed mb-6">
-                    Descubra o segredo matemático para quitar seu financiamento de 30 anos em menos de 5 anos. Uma ferramenta completa para simular cenários exatos, controlar suas parcelas e economizar centenas de milhares de reais em juros bancários.
+                    Descubra o segredo matemático para quitar seu contrato de 420 meses em menos de 5 anos. Uma ferramenta completa para simular cenários exatos, controlar suas parcelas e economizar centenas de milhares de reais em juros bancários.
                 </p>
                 <a href="https://go.hotmart.com/S107394856P" target="_blank" class="inline-flex items-center justify-center bg-emerald-500 text-slate-950 hover:bg-emerald-400 font-bold px-8 py-4 rounded-xl transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] text-sm tracking-wide w-full md:w-auto">
                     Quero Baixar a Planilha Agora <i class="fa-solid fa-download ml-3"></i>
                 </a>
             </div>
-            
             <div class="md:w-1/3 flex justify-center relative z-10">
                 <div class="w-32 h-40 bg-slate-800 rounded-xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex items-center justify-center rotate-6 hover:rotate-0 transition-transform duration-500 relative">
                     <div class="absolute -top-3 -right-3 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-md shadow-lg">-60%</div>
@@ -181,8 +166,6 @@
                 </div>
             </div>
         </div>
-        <!-- ============================================================== -->
-
         <!-- ZONA C: LINKAGEM INTERNA -->
         <div class="mt-16 pt-8 border-t border-white/5">
             <h3 class="text-sm font-serif text-slate-400 mb-6 flex items-center justify-center">
@@ -190,69 +173,96 @@
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 
-                <a href="simulador-sicoob-1300-mil-360-meses.html" class="block p-4 bg-white/5 rounded-xl border border-white/10 hover:border-emerald-500/50 hover:bg-white/10 transition-all">
-                    <span class="text-xs text-emerald-500 font-bold uppercase tracking-wider block mb-1">Simulador de crédito</span>
-                    <span class="text-sm text-slate-300 group-hover:text-white block">Sicoob - R$ 1.300.000,00 em 360 meses</span>
+                <a href="simulador-banco-do-brasil-1350-mil-420-meses.html" class="block p-4 bg-white/5 rounded-xl border border-white/10 hover:border-emerald-500/50 hover:bg-white/10 transition-all">
+                    <span class="text-xs text-emerald-500 font-bold uppercase tracking-wider block mb-1">Calcular taxas de juros</span>
+                    <span class="text-sm text-slate-300 group-hover:text-white block">Banco do Brasil - R$ 1.350.000,00 em 420 meses</span>
                 </a>
                 
-                <a href="simulador-c6-bank-450-mil-420-meses.html" class="block p-4 bg-white/5 rounded-xl border border-white/10 hover:border-emerald-500/50 hover:bg-white/10 transition-all">
-                    <span class="text-xs text-emerald-500 font-bold uppercase tracking-wider block mb-1">Simulação de amortização</span>
-                    <span class="text-sm text-slate-300 group-hover:text-white block">C6 Bank - R$ 450.000,00 em 420 meses</span>
-                </a>
-                
-                <a href="simulador-itau-1250-mil-420-meses.html" class="block p-4 bg-white/5 rounded-xl border border-white/10 hover:border-emerald-500/50 hover:bg-white/10 transition-all">
-                    <span class="text-xs text-emerald-500 font-bold uppercase tracking-wider block mb-1">Simulador de crédito</span>
-                    <span class="text-sm text-slate-300 group-hover:text-white block">Itau - R$ 1.250.000,00 em 420 meses</span>
-                </a>
-                
-                <a href="simulador-itau-1500-mil-360-meses.html" class="block p-4 bg-white/5 rounded-xl border border-white/10 hover:border-emerald-500/50 hover:bg-white/10 transition-all">
+                <a href="simulador-c6-bank-300-mil-240-meses.html" class="block p-4 bg-white/5 rounded-xl border border-white/10 hover:border-emerald-500/50 hover:bg-white/10 transition-all">
                     <span class="text-xs text-emerald-500 font-bold uppercase tracking-wider block mb-1">Calculadora de financiamento</span>
-                    <span class="text-sm text-slate-300 group-hover:text-white block">Itau - R$ 1.500.000,00 em 360 meses</span>
+                    <span class="text-sm text-slate-300 group-hover:text-white block">C6 Bank - R$ 300.000,00 em 240 meses</span>
+                </a>
+                
+                <a href="simulador-sicredi-1100-mil-360-meses.html" class="block p-4 bg-white/5 rounded-xl border border-white/10 hover:border-emerald-500/50 hover:bg-white/10 transition-all">
+                    <span class="text-xs text-emerald-500 font-bold uppercase tracking-wider block mb-1">Simulador de crédito</span>
+                    <span class="text-sm text-slate-300 group-hover:text-white block">Sicredi - R$ 1.100.000,00 em 360 meses</span>
+                </a>
+                
+                <a href="simulador-banco-do-brasil-1250-mil-360-meses.html" class="block p-4 bg-white/5 rounded-xl border border-white/10 hover:border-emerald-500/50 hover:bg-white/10 transition-all">
+                    <span class="text-xs text-emerald-500 font-bold uppercase tracking-wider block mb-1">Simulação de amortização</span>
+                    <span class="text-sm text-slate-300 group-hover:text-white block">Banco do Brasil - R$ 1.250.000,00 em 360 meses</span>
                 </a>
                 
             </div>
         </div>
-
         <!-- ZONA D: FAQ VISUAL -->
         <div class="mt-16 mb-8">
             <h3 class="text-2xl font-serif text-white mb-6 text-center">Perguntas Frequentes</h3>
             <div class="space-y-4 max-w-3xl mx-auto">
-                <div class="bg-white/5 border border-white/10 p-5 rounded-xl"><h4 class="text-emerald-400 font-bold text-sm mb-2">Vale a pena amortizar o financiamento imobiliário no Caixa?</h4><p class="text-slate-300 text-sm font-light leading-relaxed">Sim! Ao fazer amortizações extras no Caixa, você reduz diretamente o saldo devedor. Isso significa que você foge dos juros compostos cobrados ao longo dos 360 meses, podendo economizar milhares de reais e quitar seu imóvel muito antes do previsto.</p></div>
+                <div class="bg-white/5 border border-white/10 p-5 rounded-xl"><h4 class="text-emerald-400 font-bold text-sm mb-2">Vale a pena amortizar o financiamento imobiliário no Caixa?</h4><p class="text-slate-300 text-sm font-light leading-relaxed">Sim! Ao fazer amortizações extras no Caixa, você reduz diretamente o saldo devedor. Isso significa que você foge dos juros compostos cobrados ao longo dos 360 meses, podendo economizar milhares de reais e quitar muito antes do previsto.</p></div>
                 <div class="bg-white/5 border border-white/10 p-5 rounded-xl"><h4 class="text-emerald-400 font-bold text-sm mb-2">Qual a diferença entre a Tabela SAC e PRICE na simulação do Caixa?</h4><p class="text-slate-300 text-sm font-light leading-relaxed">Na Tabela SAC, a amortização é constante e o valor das parcelas do Caixa diminui com o tempo. Já na Tabela PRICE, as parcelas são fixas do início ao fim do contrato. A escolha ideal depende do seu planejamento financeiro mensal.</p></div>
-                <div class="bg-white/5 border border-white/10 p-5 rounded-xl"><h4 class="text-emerald-400 font-bold text-sm mb-2">É possível simular o financiamento com a taxa atual de 8.0% a.m.?</h4><p class="text-slate-300 text-sm font-light leading-relaxed">Nossa calculadora já utiliza a taxa de juros estimada em 8.0% ao mês para o Caixa. Você pode ajustar os valores de entrada e prazo no simulador acima para ver o cenário exato para o seu perfil e solicitar uma análise de crédito.</p></div>
+                <div class="bg-white/5 border border-white/10 p-5 rounded-xl"><h4 class="text-emerald-400 font-bold text-sm mb-2">É possível simular o crédito com a taxa atual de 151.82% a.a.?</h4><p class="text-slate-300 text-sm font-light leading-relaxed">Nossa calculadora já utiliza a taxa de juros anual estimada em 151.82% ao ano para o Caixa. Você pode ajustar os valores de entrada (margem de garantia) e prazo no simulador acima para ver o cenário exato para o seu perfil e solicitar uma análise.</p></div>
             </div>
         </div>
-
     </main>
-
     <script>
         const bancoNome = "Caixa";
         const SEU_WHATSAPP = "5527995051571";
         
-        function unformatCurrency(val) { return typeof val === 'number' ? val : Number(val.replace(/\\D/g, '')) / 100; }
+        const REGRA_PRAZO_MAX = 420;
+        const REGRA_PERC_ENTRADA_MIN = 0.19999999999999996;
+        
+        function unformatCurrency(val) { return typeof val === 'number' ? val : Number(val.replace(/\D/g, '')) / 100; }
         function formatCurrency(val) { return (val).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
         function initMask(inputId) { const input = document.getElementById(inputId); let rawVal = unformatCurrency(input.value); if(rawVal > 0) input.value = formatCurrency(rawVal); input.addEventListener('input', function(e) { let raw = unformatCurrency(e.target.value); e.target.value = formatCurrency(raw); }); }
-        function syncSliderInput(sliderId, inputId) { const slider = document.getElementById(sliderId); const input = document.getElementById(inputId); slider.addEventListener('input', function() { input.value = formatCurrency(Number(this.value)); calcularTudo(); }); input.addEventListener('blur', function() { let val = unformatCurrency(this.value); slider.value = val; calcularTudo(); }); }
+        
+        function syncSliderInput(sliderId, inputId) { 
+            const slider = document.getElementById(sliderId); 
+            const input = document.getElementById(inputId); 
+            slider.addEventListener('input', function() { input.value = formatCurrency(Number(this.value)); calcularTudo(); }); 
+            input.addEventListener('blur', function() { let val = unformatCurrency(this.value); slider.value = val; calcularTudo(); }); 
+        }
 
         function atualizarLinksWhatsapp(vImovel, entrada, aporteUnico, economiaJuros, anosLivre) {
-            const textoNav = `Olá! Gostaria de falar com um especialista sobre financiamento no ${bancoNome}.`;
-            const textoCta = `Olá! Fiz uma simulação no Datalab e gostaria de consultoria:\n• Banco: ${bancoNome}\n• Financiado: R$ ${formatCurrency(vImovel - entrada)}\n• Amortização: R$ ${formatCurrency(aporteUnico)}\n• Economia: R$ ${formatCurrency(economiaJuros)}\nPodemos conversar?`;
+            const textoNav = `Olá! Gostaria de falar com um especialista sobre simulação no ${bancoNome}.`;
+            const textoCta = `Olá! Fiz uma simulação no Datalab e gostaria de consultoria:\n• Banco: ${bancoNome}\n• Crédito Liberado: R$ ${formatCurrency(vImovel - entrada)}\n• Amortização: R$ ${formatCurrency(aporteUnico)}\n• Economia: R$ ${formatCurrency(economiaJuros)}\nPodemos conversar?`;
             document.getElementById('btn_wa_nav').href = `https://wa.me/${SEU_WHATSAPP}?text=${encodeURIComponent(textoNav)}`;
             document.getElementById('btn_wa_cta').href = `https://wa.me/${SEU_WHATSAPP}?text=${encodeURIComponent(textoCta)}`;
         }
 
         function calcularTudo() {
             const vImovel = unformatCurrency(document.getElementById('input_imovel').value);
-            const entrada = unformatCurrency(document.getElementById('input_entrada').value);
-            const taxa = (parseFloat(document.getElementById('input_taxa').value) || 0) / 100;
-            const prazoOrig = parseInt(document.getElementById('input_prazo').value) || 0;
+            let entrada = unformatCurrency(document.getElementById('input_entrada').value);
+            
+            const entradaMinimaReal = vImovel * REGRA_PERC_ENTRADA_MIN;
+            if (entrada < entradaMinimaReal) {
+                entrada = entradaMinimaReal;
+                document.getElementById('input_entrada').value = formatCurrency(entrada);
+                document.getElementById('slider_entrada').value = entrada;
+            }
+            document.getElementById('slider_entrada').min = entradaMinimaReal;
+            
+            const taxaAnualRaw = document.getElementById('input_taxa').value.toString().replace(',', '.');
+            const taxaAnual = parseFloat(taxaAnualRaw) || 0;
+            const taxa = (taxaAnual / 100) / 12; 
+            
+            let prazoOrig = parseInt(document.getElementById('input_prazo').value) || 0;
+            if (prazoOrig > REGRA_PRAZO_MAX) {
+                prazoOrig = REGRA_PRAZO_MAX;
+                document.getElementById('input_prazo').value = prazoOrig;
+            }
+
             const sistema = document.querySelector('input[name="sistema"]:checked').value;
             const aporteUnico = unformatCurrency(document.getElementById('input_amortizar').value);
             const vFinanciado = vImovel - entrada;
             if (vFinanciado <= 0 || prazoOrig <= 0) return;
 
             let saldoTrad = vFinanciado; let jurosTotalTrad = 0; let p1Trad = 0; let pUTrad = 0; let pmtPriceTrad = 0;
-            if (sistema === 'PRICE') { pmtPriceTrad = vFinanciado * (taxa * Math.pow(1 + taxa, prazoOrig)) / (Math.pow(1 + taxa, prazoOrig) - 1); }
+            
+            if (sistema === 'PRICE') {
+                if (taxa > 0) { pmtPriceTrad = vFinanciado * (taxa * Math.pow(1 + taxa, prazoOrig)) / (Math.pow(1 + taxa, prazoOrig) - 1); 
+                } else { pmtPriceTrad = vFinanciado / prazoOrig; }
+            }
 
             for (let m = 1; m <= prazoOrig; m++) {
                 let juros = saldoTrad * taxa; jurosTotalTrad += juros;
@@ -304,8 +314,6 @@
             document.querySelectorAll('input[name="sistema"]').forEach(r => r.addEventListener('change', calcularTudo));
             document.getElementById('slider_imovel').value = 1300000.0;
             document.getElementById('input_imovel').value = formatCurrency(1300000.0);
-            document.getElementById('slider_entrada').value = 260000;
-            document.getElementById('input_entrada').value = formatCurrency(260000);
             calcularTudo();
         };
     </script>

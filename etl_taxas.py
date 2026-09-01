@@ -17,7 +17,7 @@ def extrair_taxas_idinheiro():
     
     try:
         response = requests.get(url, headers=headers, timeout=15)
-        response.raise_for_status() # Verifica se a página carregou com sucesso
+        response.raise_for_status() 
         
         soup = BeautifulSoup(response.text, 'html.parser')
         texto_pagina = soup.get_text(separator=' ', strip=True)
@@ -36,10 +36,16 @@ def extrair_taxas_idinheiro():
         for banco, padrao in mapa_buscas.items():
             resultado = re.search(padrao, texto_pagina, re.IGNORECASE)
             if resultado:
-                # Transforma a string "0,62" no float matemático 0.62
-                taxa_str = resultado.group(1).replace(',', '.')
-                novas_taxas[banco] = float(taxa_str)
-                print(f"✅ {banco} atualizado: {taxa_str}% a.m.")
+                # Transforma a string "0,86" no float matemático 0.86
+                taxa_mensal = float(resultado.group(1).replace(',', '.'))
+                
+                # REVISÃO: Converte a taxa MENSAL para a taxa ANUAL EQUIVALENTE
+                # Fórmula: ((1 + taxa_mensal/100)^12 - 1) * 100
+                taxa_anual = ((1 + (taxa_mensal / 100)) ** 12 - 1) * 100
+                
+                # Arredonda para 2 casas decimais e salva
+                novas_taxas[banco] = round(taxa_anual, 2)
+                print(f"✅ {banco} atualizado: {taxa_mensal}% a.m. -> {round(taxa_anual, 2)}% a.a.")
             else:
                 print(f"⚠️ Taxa não encontrada para {banco} na leitura de hoje.")
                 
@@ -52,15 +58,20 @@ def atualizar_base_csv(novas_taxas):
     caminho_csv = 'dados.csv'
     dados_atualizados = []
     
-    # Dicionário de regras de negócio de mercado para enriquecimento
+    # REVISÃO: Motor de regras centralizado com todos os 12 bancos!
     regras_bancos = {
         "Caixa": {"ltv": 80, "prazo_maximo": 420},
         "Banco do Brasil": {"ltv": 80, "prazo_maximo": 420},
         "Santander": {"ltv": 80, "prazo_maximo": 420},
-        "Itau": {"ltv": 82, "prazo_maximo": 360},
+        "BRB": {"ltv": 80, "prazo_maximo": 420},
+        "Poupex": {"ltv": 90, "prazo_maximo": 420},
+        "Itau": {"ltv": 80, "prazo_maximo": 360},
         "Bradesco": {"ltv": 80, "prazo_maximo": 360},
-        "Banco Inter": {"ltv": 70, "prazo_maximo": 360},
-        "Sicredi": {"ltv": 80, "prazo_maximo": 360}
+        "Banco Inter": {"ltv": 80, "prazo_maximo": 360},
+        "Sicredi": {"ltv": 80, "prazo_maximo": 360},
+        "Sicoob": {"ltv": 80, "prazo_maximo": 360},
+        "Banrisul": {"ltv": 75, "prazo_maximo": 360},
+        "C6 Bank": {"ltv": 60, "prazo_maximo": 240}
     }
     
     try:
@@ -87,7 +98,11 @@ def atualizar_base_csv(novas_taxas):
                 linha['prazo_maximo'] = regra['prazo_maximo']
                 
                 # 3. Enriquecimento: CET (Calculamos a taxa nominal + 0.15% de custo médio de seguros)
-                taxa_atual = float(linha['taxa'])
+                try:
+                    taxa_atual = float(str(linha['taxa']).replace(',', '.'))
+                except ValueError:
+                    taxa_atual = 9.99 # Taxa fallback de segurança
+                    
                 linha['cet'] = round(taxa_atual + 0.15, 2)
 
                 dados_atualizados.append(linha)
@@ -98,13 +113,11 @@ def atualizar_base_csv(novas_taxas):
             escritor.writeheader()
             escritor.writerows(dados_atualizados)
         
-        print("\n🚀 O arquivo dados.csv foi enriquecido e reescrito com sucesso!")
+        print("\n🚀 O arquivo dados.csv foi enriquecido e reescrito com sucesso (AGORA COM TAXAS ANUAIS)!")
         
     except FileNotFoundError:
         print("Arquivo dados.csv não encontrado para atualização.")
 
 if __name__ == "__main__":
     taxas = extrair_taxas_idinheiro()
-    # O script roda a atualização mesmo se 'taxas' estiver vazio, 
-    # justamente para forçar a criação das novas colunas (CET, LTV) no CSV!
     atualizar_base_csv(taxas)
