@@ -58,7 +58,7 @@ def atualizar_base_csv(novas_taxas):
     caminho_csv = 'dados.csv'
     dados_atualizados = []
     
-    # REVISÃO: Motor de regras centralizado com todos os 12 bancos!
+    # REVISÃO: Motor de regras centralizado com todos os 12 bancos (Taxas reais 2026 - Selic ~14.25%)
     regras_bancos = {
         "Caixa": {"ltv": 80, "prazo_maximo": 420},
         "Banco do Brasil": {"ltv": 80, "prazo_maximo": 420},
@@ -92,7 +92,7 @@ def atualizar_base_csv(novas_taxas):
                 if novas_taxas and banco in novas_taxas:
                     linha['taxa'] = novas_taxas[banco] 
                 
-                # 2. Enriquecimento: LTV e Prazo Máximo (usa o padrão de 80%/360 se o banco não estiver na lista)
+                # 2. Enriquecimento: LTV e Prazo Máximo
                 regra = regras_bancos.get(banco, {"ltv": 80, "prazo_maximo": 360})
                 linha['ltv'] = regra['ltv']
                 linha['prazo_maximo'] = regra['prazo_maximo']
@@ -101,7 +101,7 @@ def atualizar_base_csv(novas_taxas):
                 try:
                     taxa_atual = float(str(linha['taxa']).replace(',', '.'))
                 except ValueError:
-                    taxa_atual = 9.99 # Taxa fallback de segurança
+                    taxa_atual = 11.99 # Taxa fallback de segurança
                     
                 linha['cet'] = round(taxa_atual + 0.15, 2)
 

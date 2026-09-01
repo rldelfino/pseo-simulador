@@ -2,29 +2,29 @@ import os
 import csv
 import random
 
-# --- MOTOR DE REGRAS GLOBAL DA PLATAFORMA ---
+# --- MOTOR DE REGRAS GLOBAL DA PLATAFORMA (TAXAS REAIS 2026 - SELIC ALTA) ---
 REGRAS_BANCOS = {
-    "Caixa": {"ltv": 0.80, "prazo_max": 420, "mod": "Financiamento Imobiliário", "taxa_padrao": 9.99},
-    "Banco do Brasil": {"ltv": 0.80, "prazo_max": 420, "mod": "Financiamento Imobiliário", "taxa_padrao": 10.29},
-    "Santander": {"ltv": 0.80, "prazo_max": 420, "mod": "Financiamento Imobiliário", "taxa_padrao": 10.99},
-    "BRB": {"ltv": 0.80, "prazo_max": 420, "mod": "Financiamento Imobiliário", "taxa_padrao": 9.49},
-    "Poupex": {"ltv": 0.90, "prazo_max": 420, "mod": "Financiamento Imobiliário", "taxa_padrao": 9.35},
-    "Itau": {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário", "taxa_padrao": 10.49},
-    "Itaú": {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário", "taxa_padrao": 10.49},
-    "Bradesco": {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário", "taxa_padrao": 10.49},
-    "Banco Inter": {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário", "taxa_padrao": 11.00},
-    "Sicredi": {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário", "taxa_padrao": 10.50},
-    "Sicoob": {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário", "taxa_padrao": 10.50},
-    "Banrisul": {"ltv": 0.75, "prazo_max": 360, "mod": "Financiamento Imobiliário", "taxa_padrao": 10.90},
-    "C6 Bank": {"ltv": 0.60, "prazo_max": 240, "mod": "Crédito com Garantia de Imóvel", "taxa_padrao": 14.50}
+    "Caixa": {"ltv": 0.80, "prazo_max": 420, "mod": "Financiamento Imobiliário", "taxa_padrao": 11.49},
+    "Banco do Brasil": {"ltv": 0.80, "prazo_max": 420, "mod": "Financiamento Imobiliário", "taxa_padrao": 11.69},
+    "Santander": {"ltv": 0.80, "prazo_max": 420, "mod": "Financiamento Imobiliário", "taxa_padrao": 11.99},
+    "BRB": {"ltv": 0.80, "prazo_max": 420, "mod": "Financiamento Imobiliário", "taxa_padrao": 11.25},
+    "Poupex": {"ltv": 0.90, "prazo_max": 420, "mod": "Financiamento Imobiliário", "taxa_padrao": 10.80},
+    "Itau": {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário", "taxa_padrao": 11.89},
+    "Itaú": {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário", "taxa_padrao": 11.89},
+    "Bradesco": {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário", "taxa_padrao": 11.99},
+    "Banco Inter": {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário", "taxa_padrao": 12.99},
+    "Sicredi": {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário", "taxa_padrao": 11.50},
+    "Sicoob": {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário", "taxa_padrao": 11.50},
+    "Banrisul": {"ltv": 0.75, "prazo_max": 360, "mod": "Financiamento Imobiliário", "taxa_padrao": 11.60},
+    "C6 Bank": {"ltv": 0.60, "prazo_max": 240, "mod": "Crédito com Garantia de Imóvel", "taxa_padrao": 16.50}
 }
 
 def criar_csv_exemplo(caminho_csv):
     cabecalho = ['banco', 'valor_imovel', 'taxa', 'prazo', 'slug']
     dados = [
-        ['Caixa', '300000', '9.99', '420', 'simulador-caixa-300-mil-420-meses'],
-        ['Itau', '500000', '10.49', '360', 'simulador-itau-500-mil-360-meses'],
-        ['C6 Bank', '600000', '14.50', '240', 'simulador-c6-bank-600-mil-240-meses']
+        ['Caixa', '300000', '11.49', '420', 'simulador-caixa-300-mil-420-meses'],
+        ['Itau', '500000', '11.89', '360', 'simulador-itau-500-mil-360-meses'],
+        ['C6 Bank', '600000', '16.50', '240', 'simulador-c6-bank-600-mil-240-meses']
     ]
     with open(caminho_csv, mode='w', newline='', encoding='utf-8') as arquivo:
         writer = csv.writer(arquivo, delimiter=';')
@@ -80,11 +80,10 @@ def gerar_paginas_pseo():
             slug_original = linha['slug']
             
             # FILTRO INTELIGENTE E VALIDADOR DE REGRAS
-            regra_padrao_fallback = {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário", "taxa_padrao": 10.49}
+            regra_padrao_fallback = {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário", "taxa_padrao": 11.99}
             regra = REGRAS_BANCOS.get(banco, regra_padrao_fallback)
             prazo_correto = min(prazo_csv, regra["prazo_max"])
             
-            # Conserta a URL se o ETL gerou prazo errado
             if prazo_correto != prazo_csv:
                 slug = slug_original.replace(f"-{prazo_csv}-meses", f"-{prazo_correto}-meses")
             else:
@@ -125,19 +124,20 @@ def gerar_paginas_pseo():
             entrada_minima_valor = valor_imovel * perc_entrada_minima
             entrada_padrao = max(valor_imovel * 0.20, entrada_minima_valor)
 
-            # Extração limpa e segura da TAXA ANUAL
+            # EXTRAÇÃO LIMPA DA TAXA (Forçando conversão se vier mensal < 4%)
             try:
                 taxa_csv = linha.get('taxa', '')
                 if not taxa_csv:
                     taxa = regra["taxa_padrao"]
                 else:
                     taxa = float(str(taxa_csv).replace(',', '.'))
-                    if taxa < 2.0: # Se for menor que 2, o ETL provavalmente mandou a mensal, então arrumamos para anual!
+                    # Se o ETL trouxe algo tipo 0.86, convertemos para anual na força bruta
+                    if taxa < 4.0: 
                          taxa = ((1 + (taxa / 100)) ** 12 - 1) * 100
             except (ValueError, TypeError):
                 taxa = regra["taxa_padrao"]
 
-            # Arredonda a taxa para ficar bonito na tela (ex: 10.49)
+            # Arredonda a taxa para ficar bonito na tela (ex: 12.99)
             taxa = round(taxa, 2)
 
             paginas_candidatas = [pag for pag in todas_as_paginas if pag["slug"] != slug]
@@ -173,17 +173,6 @@ def gerar_paginas_pseo():
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5414184968223405" crossorigin="anonymous"></script>
-    <script type="application/ld+json">
-    {{
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {{ "@type": "Question", "name": "{faq_q1}", "acceptedAnswer": {{ "@type": "Answer", "text": "{faq_a1}" }} }},
-        {{ "@type": "Question", "name": "{faq_q2}", "acceptedAnswer": {{ "@type": "Answer", "text": "{faq_a2}" }} }},
-        {{ "@type": "Question", "name": "{faq_q3}", "acceptedAnswer": {{ "@type": "Answer", "text": "{faq_a3}" }} }}
-      ]
-    }}
-    </script>
     <style>
         body {{ font-family: 'Inter', sans-serif; background: #020617; background-image: radial-gradient(at 80% 0%, #1e293b 0px, transparent 50%), radial-gradient(at 0% 100%, #0f172a 0px, transparent 50%); color: #f8fafc; min-height: 100vh; overflow-x: hidden; }}
         h1, h2, h3, .font-serif {{ font-family: 'Playfair Display', serif; }}
@@ -218,10 +207,7 @@ def gerar_paginas_pseo():
         </p>
     </header>
     <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 flex-grow w-full relative z-10 space-y-8">
-        <div class="w-full text-center py-2 bg-slate-900/30 rounded-xl border border-white/5 text-xs text-slate-500">
-            Publicidade
-        </div>
-        <!-- ZONA A: O FINANCIAMENTO -->
+        <div class="w-full text-center py-2 bg-slate-900/30 rounded-xl border border-white/5 text-xs text-slate-500">Publicidade</div>
         <div class="glass-panel p-8 md:p-10 rounded-3xl">
             <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-8 border-b border-white/10 pb-4 flex items-center">
                 <i class="fa-solid fa-file-invoice-dollar mr-3"></i> 1. Estratégia
@@ -274,7 +260,6 @@ def gerar_paginas_pseo():
                 </div>
             </div>
         </div>
-        <!-- ZONA B: A AMORTIZAÇÃO -->
         <div class="glass-panel-emerald rounded-3xl p-8 md:p-10 relative overflow-hidden" id="card_amortizacao">
             <h2 class="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-8 border-b border-emerald-500/20 pb-4 relative z-10 flex items-center">
                 <i class="fa-solid fa-bolt mr-3"></i> 2. Valor a Amortizar (A Solução)
@@ -309,7 +294,6 @@ def gerar_paginas_pseo():
                 Falar com Especialista no WhatsApp <i class="fa-solid fa-arrow-right ml-3"></i>
             </a>
         </div>
-        <!-- ZONA DE MONETIZAÇÃO -->
         <div class="mt-8 bg-gradient-to-r from-emerald-900/40 to-slate-900 border border-emerald-500/30 p-8 md:p-10 rounded-3xl flex flex-col md:flex-row items-center gap-8 relative overflow-hidden">
             <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px]"></div>
             <div class="md:w-2/3 relative z-10 text-left">
@@ -329,7 +313,6 @@ def gerar_paginas_pseo():
                 </div>
             </div>
         </div>
-        <!-- ZONA C: LINKAGEM INTERNA -->
         <div class="mt-16 pt-8 border-t border-white/5">
             <h3 class="text-sm font-serif text-slate-400 mb-6 flex items-center justify-center">
                 <i class="fa-solid fa-link mr-2 text-emerald-500/50"></i> Veja Outras Simulações
@@ -338,7 +321,6 @@ def gerar_paginas_pseo():
                 {links_internos_html}
             </div>
         </div>
-        <!-- ZONA D: FAQ VISUAL -->
         <div class="mt-16 mb-8">
             <h3 class="text-2xl font-serif text-white mb-6 text-center">Perguntas Frequentes</h3>
             <div class="space-y-4 max-w-3xl mx-auto">
@@ -355,7 +337,7 @@ def gerar_paginas_pseo():
         const REGRA_PRAZO_MAX = {prazo_max_banco};
         const REGRA_PERC_ENTRADA_MIN = {perc_entrada_minima};
         
-        function unformatCurrency(val) {{ return typeof val === 'number' ? val : Number(val.replace(/\\D/g, '')) / 100; }}
+        function unformatCurrency(val) {{ return typeof val === 'number' ? val : Number(val.replace(/\D/g, '')) / 100; }}
         function formatCurrency(val) {{ return (val).toLocaleString('pt-BR', {{ minimumFractionDigits: 2, maximumFractionDigits: 2 }}); }}
         function initMask(inputId) {{ const input = document.getElementById(inputId); let rawVal = unformatCurrency(input.value); if(rawVal > 0) input.value = formatCurrency(rawVal); input.addEventListener('input', function(e) {{ let raw = unformatCurrency(e.target.value); e.target.value = formatCurrency(raw); }}); }}
         
@@ -368,7 +350,7 @@ def gerar_paginas_pseo():
 
         function atualizarLinksWhatsapp(vImovel, entrada, aporteUnico, economiaJuros, anosLivre) {{
             const textoNav = `Olá! Gostaria de falar com um especialista sobre simulação no ${{bancoNome}}.`;
-            const textoCta = `Olá! Fiz uma simulação no Datalab e gostaria de consultoria:\\n• Banco: ${{bancoNome}}\\n• Crédito Liberado: R$ ${{formatCurrency(vImovel - entrada)}}\\n• Amortização: R$ ${{formatCurrency(aporteUnico)}}\\n• Economia: R$ ${{formatCurrency(economiaJuros)}}\\nPodemos conversar?`;
+            const textoCta = `Olá! Fiz uma simulação no Datalab e gostaria de consultoria:\n• Banco: ${{bancoNome}}\n• Crédito Liberado: R$ ${{formatCurrency(vImovel - entrada)}}\n• Amortização: R$ ${{formatCurrency(aporteUnico)}}\n• Economia: R$ ${{formatCurrency(economiaJuros)}}\nPodemos conversar?`;
             document.getElementById('btn_wa_nav').href = `https://wa.me/${{SEU_WHATSAPP}}?text=${{encodeURIComponent(textoNav)}}`;
             document.getElementById('btn_wa_cta').href = `https://wa.me/${{SEU_WHATSAPP}}?text=${{encodeURIComponent(textoCta)}}`;
         }}

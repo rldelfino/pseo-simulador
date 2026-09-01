@@ -10,17 +10,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5414184968223405" crossorigin="anonymous"></script>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        { "@type": "Question", "name": "Vale a pena amortizar o financiamento imobiliário no Santander?", "acceptedAnswer": { "@type": "Answer", "text": "Sim! Ao fazer amortizações extras no Santander, você reduz diretamente o saldo devedor. Isso significa que você foge dos juros compostos cobrados ao longo dos 360 meses, podendo economizar milhares de reais e quitar muito antes do previsto." } },
-        { "@type": "Question", "name": "Qual a diferença entre a Tabela SAC e PRICE na simulação do Santander?", "acceptedAnswer": { "@type": "Answer", "text": "Na Tabela SAC, a amortização é constante e o valor das parcelas do Santander diminui com o tempo. Já na Tabela PRICE, as parcelas são fixas do início ao fim do contrato. A escolha ideal depende do seu planejamento financeiro mensal." } },
-        { "@type": "Question", "name": "É possível simular o crédito com a taxa atual de 180.96% a.a.?", "acceptedAnswer": { "@type": "Answer", "text": "Nossa calculadora já utiliza a taxa de juros anual estimada em 180.96% ao ano para o Santander. Você pode ajustar os valores de entrada (margem de garantia) e prazo no simulador acima para ver o cenário exato para o seu perfil e solicitar uma análise." } }
-      ]
-    }
-    </script>
     <style>
         body { font-family: 'Inter', sans-serif; background: #020617; background-image: radial-gradient(at 80% 0%, #1e293b 0px, transparent 50%), radial-gradient(at 0% 100%, #0f172a 0px, transparent 50%); color: #f8fafc; min-height: 100vh; overflow-x: hidden; }
         h1, h2, h3, .font-serif { font-family: 'Playfair Display', serif; }
@@ -55,10 +44,7 @@
         </p>
     </header>
     <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 flex-grow w-full relative z-10 space-y-8">
-        <div class="w-full text-center py-2 bg-slate-900/30 rounded-xl border border-white/5 text-xs text-slate-500">
-            Publicidade
-        </div>
-        <!-- ZONA A: O FINANCIAMENTO -->
+        <div class="w-full text-center py-2 bg-slate-900/30 rounded-xl border border-white/5 text-xs text-slate-500">Publicidade</div>
         <div class="glass-panel p-8 md:p-10 rounded-3xl">
             <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-8 border-b border-white/10 pb-4 flex items-center">
                 <i class="fa-solid fa-file-invoice-dollar mr-3"></i> 1. Estratégia
@@ -111,7 +97,6 @@
                 </div>
             </div>
         </div>
-        <!-- ZONA B: A AMORTIZAÇÃO -->
         <div class="glass-panel-emerald rounded-3xl p-8 md:p-10 relative overflow-hidden" id="card_amortizacao">
             <h2 class="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-8 border-b border-emerald-500/20 pb-4 relative z-10 flex items-center">
                 <i class="fa-solid fa-bolt mr-3"></i> 2. Valor a Amortizar (A Solução)
@@ -146,7 +131,6 @@
                 Falar com Especialista no WhatsApp <i class="fa-solid fa-arrow-right ml-3"></i>
             </a>
         </div>
-        <!-- ZONA DE MONETIZAÇÃO -->
         <div class="mt-8 bg-gradient-to-r from-emerald-900/40 to-slate-900 border border-emerald-500/30 p-8 md:p-10 rounded-3xl flex flex-col md:flex-row items-center gap-8 relative overflow-hidden">
             <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px]"></div>
             <div class="md:w-2/3 relative z-10 text-left">
@@ -166,36 +150,34 @@
                 </div>
             </div>
         </div>
-        <!-- ZONA C: LINKAGEM INTERNA -->
         <div class="mt-16 pt-8 border-t border-white/5">
             <h3 class="text-sm font-serif text-slate-400 mb-6 flex items-center justify-center">
                 <i class="fa-solid fa-link mr-2 text-emerald-500/50"></i> Veja Outras Simulações
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 
-                <a href="simulador-c6-bank-1050-mil-240-meses.html" class="block p-4 bg-white/5 rounded-xl border border-white/10 hover:border-emerald-500/50 hover:bg-white/10 transition-all">
+                <a href="simulador-sicredi-1400-mil-360-meses.html" class="block p-4 bg-white/5 rounded-xl border border-white/10 hover:border-emerald-500/50 hover:bg-white/10 transition-all">
+                    <span class="text-xs text-emerald-500 font-bold uppercase tracking-wider block mb-1">Calculadora de financiamento</span>
+                    <span class="text-sm text-slate-300 group-hover:text-white block">Sicredi - R$ 1.400.000,00 em 360 meses</span>
+                </a>
+                
+                <a href="simulador-poupex-1500-mil-420-meses.html" class="block p-4 bg-white/5 rounded-xl border border-white/10 hover:border-emerald-500/50 hover:bg-white/10 transition-all">
+                    <span class="text-xs text-emerald-500 font-bold uppercase tracking-wider block mb-1">Calculadora de financiamento</span>
+                    <span class="text-sm text-slate-300 group-hover:text-white block">Poupex - R$ 1.500.000,00 em 420 meses</span>
+                </a>
+                
+                <a href="simulador-banco-inter-1200-mil-360-meses.html" class="block p-4 bg-white/5 rounded-xl border border-white/10 hover:border-emerald-500/50 hover:bg-white/10 transition-all">
                     <span class="text-xs text-emerald-500 font-bold uppercase tracking-wider block mb-1">Calcular taxas de juros</span>
-                    <span class="text-sm text-slate-300 group-hover:text-white block">C6 Bank - R$ 1.050.000,00 em 240 meses</span>
+                    <span class="text-sm text-slate-300 group-hover:text-white block">Banco Inter - R$ 1.200.000,00 em 360 meses</span>
                 </a>
                 
-                <a href="simulador-sicoob-1150-mil-360-meses.html" class="block p-4 bg-white/5 rounded-xl border border-white/10 hover:border-emerald-500/50 hover:bg-white/10 transition-all">
-                    <span class="text-xs text-emerald-500 font-bold uppercase tracking-wider block mb-1">Simulador imobiliário</span>
-                    <span class="text-sm text-slate-300 group-hover:text-white block">Sicoob - R$ 1.150.000,00 em 360 meses</span>
-                </a>
-                
-                <a href="simulador-banrisul-450-mil-360-meses.html" class="block p-4 bg-white/5 rounded-xl border border-white/10 hover:border-emerald-500/50 hover:bg-white/10 transition-all">
-                    <span class="text-xs text-emerald-500 font-bold uppercase tracking-wider block mb-1">Calcular taxas de juros</span>
-                    <span class="text-sm text-slate-300 group-hover:text-white block">Banrisul - R$ 450.000,00 em 360 meses</span>
-                </a>
-                
-                <a href="simulador-santander-900-mil-360-meses.html" class="block p-4 bg-white/5 rounded-xl border border-white/10 hover:border-emerald-500/50 hover:bg-white/10 transition-all">
-                    <span class="text-xs text-emerald-500 font-bold uppercase tracking-wider block mb-1">Comparador de financiamento</span>
-                    <span class="text-sm text-slate-300 group-hover:text-white block">Santander - R$ 900.000,00 em 360 meses</span>
+                <a href="simulador-banco-do-brasil-1200-mil-360-meses.html" class="block p-4 bg-white/5 rounded-xl border border-white/10 hover:border-emerald-500/50 hover:bg-white/10 transition-all">
+                    <span class="text-xs text-emerald-500 font-bold uppercase tracking-wider block mb-1">Calculadora de financiamento</span>
+                    <span class="text-sm text-slate-300 group-hover:text-white block">Banco do Brasil - R$ 1.200.000,00 em 360 meses</span>
                 </a>
                 
             </div>
         </div>
-        <!-- ZONA D: FAQ VISUAL -->
         <div class="mt-16 mb-8">
             <h3 class="text-2xl font-serif text-white mb-6 text-center">Perguntas Frequentes</h3>
             <div class="space-y-4 max-w-3xl mx-auto">
@@ -225,7 +207,12 @@
 
         function atualizarLinksWhatsapp(vImovel, entrada, aporteUnico, economiaJuros, anosLivre) {
             const textoNav = `Olá! Gostaria de falar com um especialista sobre simulação no ${bancoNome}.`;
-            const textoCta = `Olá! Fiz uma simulação no Datalab e gostaria de consultoria:\n• Banco: ${bancoNome}\n• Crédito Liberado: R$ ${formatCurrency(vImovel - entrada)}\n• Amortização: R$ ${formatCurrency(aporteUnico)}\n• Economia: R$ ${formatCurrency(economiaJuros)}\nPodemos conversar?`;
+            const textoCta = `Olá! Fiz uma simulação no Datalab e gostaria de consultoria:
+• Banco: ${bancoNome}
+• Crédito Liberado: R$ ${formatCurrency(vImovel - entrada)}
+• Amortização: R$ ${formatCurrency(aporteUnico)}
+• Economia: R$ ${formatCurrency(economiaJuros)}
+Podemos conversar?`;
             document.getElementById('btn_wa_nav').href = `https://wa.me/${SEU_WHATSAPP}?text=${encodeURIComponent(textoNav)}`;
             document.getElementById('btn_wa_cta').href = `https://wa.me/${SEU_WHATSAPP}?text=${encodeURIComponent(textoCta)}`;
         }
