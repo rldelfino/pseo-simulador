@@ -2,6 +2,7 @@ import os
 import csv
 import random
 
+# --- MOTOR DE REGRAS GLOBAL DA PLATAFORMA ---
 REGRAS_BANCOS = {
     "Caixa": {"ltv": 0.80, "prazo_max": 420, "mod": "Financiamento Imobiliário", "taxa_padrao": 11.49},
     "Banco do Brasil": {"ltv": 0.80, "prazo_max": 420, "mod": "Financiamento Imobiliário", "taxa_padrao": 11.69},
@@ -91,13 +92,18 @@ def gerar_paginas_pseo():
             anos_equivalentes = prazo_correto // 12
             
             pagina_info = {
-                "banco": banco, "slug": slug, "prazo_correto": prazo_correto,
-                "anos_equivalentes": anos_equivalentes, "regra": regra,
+                "banco": banco,
+                "slug": slug,
+                "prazo_correto": prazo_correto,
+                "anos_equivalentes": anos_equivalentes,
+                "regra": regra,
                 "texto": f"Simular {valor_amigavel} em {prazo_correto} meses ({anos_equivalentes} anos)",
                 "linha_original": linha
             }
             todas_as_paginas.append(pagina_info)
-            if banco not in links_por_banco: links_por_banco[banco] = []
+            
+            if banco not in links_por_banco:
+                links_por_banco[banco] = []
             links_por_banco[banco].append(pagina_info)
 
         termos_variados = [
@@ -121,16 +127,25 @@ def gerar_paginas_pseo():
 
             try:
                 taxa_csv = linha.get('taxa', '')
-                taxa = float(str(taxa_csv).replace(',', '.')) if taxa_csv else regra["taxa_padrao"]
-                if taxa < 4.0: taxa = ((1 + (taxa / 100)) ** 12 - 1) * 100
+                if not taxa_csv:
+                    taxa = regra["taxa_padrao"]
+                else:
+                    taxa = float(str(taxa_csv).replace(',', '.'))
+                    if taxa < 4.0: 
+                         taxa = ((1 + (taxa / 100)) ** 12 - 1) * 100
             except (ValueError, TypeError):
                 taxa = regra["taxa_padrao"]
 
             taxa = round(taxa, 2)
 
-            paginas_candidatas = [pag for pag in todas_as_paginas if pag["slug"] != slug]
-            qtd_links = min(4, len(paginas_candidatas))
-            paginas_sorteadas = random.sample(paginas_candidatas, qtd_links)
+            # LÓGICA DE CLUSTERIZAÇÃO SEO: Prioriza links do mesmo banco
+            paginas_candidatas = [pag for pag in todas_as_paginas if pag["slug"] != slug and pag['banco'] == banco]
+            # Se não tiver 4 paginas do mesmo banco, pega aleatorias para completar
+            if len(paginas_candidatas) < 4:
+                outras_paginas = [pag for pag in todas_as_paginas if pag["slug"] != slug and pag['banco'] != banco]
+                paginas_candidatas.extend(random.sample(outras_paginas, min(4 - len(paginas_candidatas), len(outras_paginas))))
+            
+            paginas_sorteadas = random.sample(paginas_candidatas, min(4, len(paginas_candidatas)))
             
             links_internos_html = ""
             for pag_sorteada in paginas_sorteadas:
@@ -147,7 +162,7 @@ def gerar_paginas_pseo():
             faq_q2 = f"Qual a diferença entre a Tabela SAC e PRICE na simulação do {banco}?"
             faq_a2 = f"Na Tabela SAC, a amortização é constante e o valor das parcelas do {banco} diminui com o tempo. Já na Tabela PRICE, as parcelas são fixas do início ao fim do contrato. A escolha ideal depende do seu planejamento financeiro mensal."
             faq_q3 = f"É possível simular o crédito com a taxa atual de {taxa}% a.a.?"
-            faq_a3 = f"Nossa calculadora já utiliza a taxa de juros anual estimada em {taxa}% ao ano para o {banco}. Você pode ajustar os valores de entrada (margem de garantia) e prazo no simulador acima para ver o cenário exato para o seu perfil e solicitar uma análise."
+            faq_a3 = f"Nossa calculadora já utiliza a taxa de juros anual estimada em {taxa}% ao ano para o {banco}. Você pode ajustar os valores de entrada (margem de garantia) e prazo no simulador acima para ver o Custo Efetivo Total (CET) aproximado para o seu perfil e solicitar uma análise."
 
             html_content = f'''<!DOCTYPE html>
 <html lang="pt-BR">
@@ -155,8 +170,8 @@ def gerar_paginas_pseo():
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora e Simulador de {regra['mod']} | {banco} | {prazo} meses ({anos} anos)</title>
-    <meta name="description" content="Simule seu {regra['mod'].lower()} pela {banco} em até {prazo} meses (ou {anos} anos). Calcule juros, amortização e empréstimo com a taxa de {taxa}% ao ano.">
-    <meta name="keywords" content="simulador de financiamento, calculadora de amortização, empréstimo imobiliário, calcular juros {banco}, amortizar financiamento {banco}, {prazo} meses, {anos} anos">
+    <meta name="description" content="Simule seu {regra['mod'].lower()} pela {banco} em até {prazo} meses (ou {anos} anos). Calcule juros, saldo devedor, amortização e empréstimo com a taxa de {taxa}% ao ano.">
+    <meta name="keywords" content="simulador de financiamento, calculadora de amortização, empréstimo imobiliário, calcular juros {banco}, amortizar financiamento {banco}, {prazo} meses, {anos} anos, Custo Efetivo Total, TR, Saldo Devedor">
     <link rel="canonical" href="{dominio}/{slug}.html" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -212,7 +227,7 @@ def gerar_paginas_pseo():
     </header>
 
     <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 flex-grow w-full relative z-10 space-y-8">
-        
+
         <!-- ZONA A: O FINANCIAMENTO -->
         <div class="glass-panel p-8 md:p-10 rounded-3xl border-t border-slate-700/50">
             <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-8 border-b border-white/10 pb-4 flex items-center">
@@ -321,6 +336,29 @@ def gerar_paginas_pseo():
             </div>
         </div>
 
+        <!-- ZONA DE MONETIZAÇÃO (INFO PRODUTO) -->
+        <div class="mt-8 bg-gradient-to-r from-emerald-900/40 to-slate-900 border border-emerald-500/30 p-8 md:p-10 rounded-3xl flex flex-col md:flex-row items-center gap-8 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px]"></div>
+            
+            <div class="md:w-2/3 relative z-10 text-left">
+                <span class="bg-emerald-500 text-slate-950 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-4 inline-block">Recomendado</span>
+                <h3 class="text-2xl md:text-3xl font-serif text-white mb-3">Planilha de Amortização Inteligente</h3>
+                <p class="text-slate-300 text-sm md:text-base font-light leading-relaxed mb-6">
+                    Descubra o segredo matemático para quitar seu contrato de {prazo_max_banco} meses em menos de 5 anos. Uma ferramenta completa para simular cenários exatos, controlar suas parcelas e economizar centenas de milhares de reais em juros bancários.
+                </p>
+                <a href="https://go.hotmart.com/S107394856P" target="_blank" class="inline-flex items-center justify-center bg-white text-slate-950 hover:bg-slate-200 font-bold px-8 py-4 rounded-xl transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] text-sm tracking-wide w-full md:w-auto">
+                    Quero Baixar a Planilha <i class="fa-solid fa-download ml-3"></i>
+                </a>
+            </div>
+            
+            <div class="md:w-1/3 flex justify-center relative z-10">
+                <div class="w-32 h-40 bg-slate-800 rounded-xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex items-center justify-center rotate-6 hover:rotate-0 transition-transform duration-500 relative">
+                    <div class="absolute -top-3 -right-3 bg-emerald-500 text-slate-950 text-[10px] font-bold px-2 py-1 rounded-md shadow-lg">100% OFF</div>
+                    <i class="fa-solid fa-file-excel text-6xl text-emerald-500 drop-shadow-[0_0_15px_rgba(16,185,129,0.5)]"></i>
+                </div>
+            </div>
+        </div>
+
         <!-- ZONA C: LINKAGEM INTERNA -->
         <div class="mt-16 pt-8 border-t border-white/5">
             <h3 class="text-sm font-serif text-slate-400 mb-6 flex items-center justify-center">
@@ -372,14 +410,20 @@ def gerar_paginas_pseo():
             const vImovel = unformatCurrency(document.getElementById('input_imovel').value);
             let entrada = unformatCurrency(document.getElementById('input_entrada').value);
             
-            // CORREÇÃO DO BUG DO SLIDER DE ENTRADA
+            // TRAVA 1: ENTRADA NÃO PODE SER MENOR QUE O MÍNIMO NEM MAIOR QUE O IMÓVEL
             const entradaMinimaReal = vImovel * REGRA_PERC_ENTRADA_MIN;
-            if (entrada < entradaMinimaReal || entrada > vImovel) {{
+            if (entrada < entradaMinimaReal) {{
                 entrada = entradaMinimaReal;
                 document.getElementById('input_entrada').value = formatCurrency(entrada);
             }}
+            if (entrada >= vImovel) {{
+                // Se o cara tentar dar 100% de entrada, a gente limita a 99% pra não quebrar a matemática do financiamento
+                entrada = vImovel * 0.99;
+                document.getElementById('input_entrada').value = formatCurrency(entrada);
+            }}
+            
             document.getElementById('slider_entrada').min = entradaMinimaReal;
-            document.getElementById('slider_entrada').max = vImovel;
+            document.getElementById('slider_entrada').max = vImovel * 0.99;
             document.getElementById('slider_entrada').value = entrada;
             
             const taxaAnualRaw = document.getElementById('input_taxa').value.toString().replace(',', '.');
@@ -397,13 +441,21 @@ def gerar_paginas_pseo():
             document.getElementById('label_anos').innerText = anosEquivalentes + " anos";
 
             const sistema = document.querySelector('input[name="sistema"]:checked').value;
-            const aporteUnico = unformatCurrency(document.getElementById('input_amortizar').value);
             const vFinanciado = vImovel - entrada;
+            
+            // TRAVA 2: AMORTIZAÇÃO NÃO PODE SER MAIOR QUE O CRÉDITO LIBERADO
+            let aporteUnico = unformatCurrency(document.getElementById('input_amortizar').value);
+            if (aporteUnico > vFinanciado) {{
+                aporteUnico = vFinanciado;
+                document.getElementById('input_amortizar').value = formatCurrency(aporteUnico);
+            }}
+            document.getElementById('slider_amortizar').max = vFinanciado;
+            document.getElementById('slider_amortizar').value = aporteUnico;
+
             if (vFinanciado <= 0 || prazoOrig <= 0) return;
 
             let saldoTrad = vFinanciado; let jurosTotalTrad = 0; let p1Trad = 0; let pUTrad = 0; let pmtPriceTrad = 0;
             
-            // CORREÇÃO DO CÁLCULO PRICE
             if (sistema === 'PRICE') {{
                 if (taxa > 0) {{ pmtPriceTrad = vFinanciado * (taxa * Math.pow(1 + taxa, prazoOrig)) / (Math.pow(1 + taxa, prazoOrig) - 1); 
                 }} else {{ pmtPriceTrad = vFinanciado / prazoOrig; }}
@@ -419,16 +471,11 @@ def gerar_paginas_pseo():
             }}
 
             let saldoNovo = vFinanciado; let jurosTotalNovo = 0; let mesesNovo = 0;
-            // Abate a amortização extra LOGO NO MÊS 1 (Impacto real do juros sobre o saldo)
             saldoNovo -= aporteUnico;
             
             if (saldoNovo > 0) {{
                 while (saldoNovo > 0 && mesesNovo < prazoOrig) {{
                     let juros = saldoNovo * taxa; jurosTotalNovo += juros;
-                    
-                    // Na tabela Price, o valor da prestação (pmtPriceTrad) continua FIXO. 
-                    // Como o saldo devedor diminuiu pelo aporte extra, o juros cai, 
-                    // e a parcela de amortização dentro da prestação AUMENTA, quitando a dívida mais rápido.
                     let amortizacaoBase = (sistema === 'SAC') ? (vFinanciado / prazoOrig) : (pmtPriceTrad - juros);
                     
                     let abatimentoTotal = amortizacaoBase;
