@@ -1,4 +1,4 @@
-name: ETL Mensal de Taxas de Juros
+name: ETL Mensal de Taxas de Juros e Rebuild do Site
 
 on:
   schedule:
@@ -14,23 +14,37 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout do Repositório
-        uses: actions/checkout@v4 # Atualizado para v4
+        uses: actions/checkout@v4
 
       - name: Configurar Python
-        uses: actions/setup-python@v5 # Atualizado para v5
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
-      - name: Instalar Dependências
+      - name: Instalar Dependências Python
         run: pip install requests beautifulsoup4 pandas
 
-      - name: Rodar Extrator (Scraping)
+      - name: Rodar Extrator (atualiza dados.csv com taxas/LTV/prazo)
         run: python etl_taxas.py
+
+      - name: Regerar as páginas pSEO (gerador.py)
+        run: python gerador.py
+
+      - name: Configurar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar Tailwind CLI
+        run: npm install
+
+      - name: Compilar CSS estático (substitui o CDN do Tailwind em produção)
+        run: npm run build:css
 
       - name: Atualizar Site (Commit e Push)
         run: |
           git config --global user.name "Robô Datalab"
           git config --global user.email "bot@datalabglobal.com"
-          git add dados.csv
-          git commit -m "auto: atualização mensal das taxas de juros" || echo "Sem mudanças"
+          git add dados.csv paginas_seo
+          git commit -m "auto: atualização mensal de taxas e rebuild do site" || echo "Sem mudanças"
           git push

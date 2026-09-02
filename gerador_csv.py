@@ -1,4 +1,15 @@
+"""
+⚠️ SCRIPT DE BOOTSTRAP — NÃO RODAR EM PRODUÇÃO.
+
+Este script existiu para criar o dados.csv PELA PRIMEIRA VEZ, com taxas
+fictícias (0.75 etc.) como placeholder. Hoje o dados.csv é a base viva,
+curada com taxas reais de mercado e mantida pelo etl_taxas.py (que lê o
+bancos.py como fonte única de verdade). Rodar este script de novo
+SOBRESCREVE o dados.csv real com a grade antiga de bootstrap e destrói
+os dados de produção — só existe aqui por histórico/referência.
+"""
 import csv
+
 
 def criar_base_de_dados():
     bancos = [
