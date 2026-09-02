@@ -61,7 +61,7 @@
     </header>
 
     <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 flex-grow w-full relative z-10 space-y-8">
-        
+
         <!-- ZONA A: O FINANCIAMENTO -->
         <div class="glass-panel p-8 md:p-10 rounded-3xl border-t border-slate-700/50">
             <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-8 border-b border-white/10 pb-4 flex items-center">
@@ -148,7 +148,7 @@
             </div>
         </div>
 
-        <!-- BANNER DE CONVERSÃO FINANCIA TUDO (SUA NOVA ISCA DE VENDAS) -->
+        <!-- BANNER DE CONVERSÃO FINANCIA TUDO -->
         <div class="mt-12 bg-gradient-to-r from-emerald-600 to-emerald-900 rounded-3xl p-8 md:p-12 relative overflow-hidden shadow-[0_20px_50px_rgba(16,185,129,0.3)] border border-emerald-400/50">
             <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-[80px]"></div>
             <div class="flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
@@ -200,24 +200,24 @@
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 
-                <a href="simulador-sicoob-150-mil-360-meses.html" class="block p-4 bg-white/5 rounded-xl border border-white/10 hover:border-emerald-500/50 hover:bg-white/10 transition-all">
-                    <span class="text-xs text-emerald-500 font-bold uppercase tracking-wider block mb-1">Simulador de crédito</span>
-                    <span class="text-sm text-slate-300 group-hover:text-white block">Sicoob - R$ 150.000,00 em 360 meses (30 anos)</span>
+                <a href="simulador-sicoob-1050-mil-360-meses.html" class="block p-4 bg-white/5 rounded-xl border border-white/10 hover:border-emerald-500/50 hover:bg-white/10 transition-all">
+                    <span class="text-xs text-emerald-500 font-bold uppercase tracking-wider block mb-1">Simulador imobiliário</span>
+                    <span class="text-sm text-slate-300 group-hover:text-white block">Sicoob - R$ 1.050.000,00 em 360 meses (30 anos)</span>
                 </a>
                 
-                <a href="simulador-sicoob-600-mil-360-meses.html" class="block p-4 bg-white/5 rounded-xl border border-white/10 hover:border-emerald-500/50 hover:bg-white/10 transition-all">
+                <a href="simulador-sicoob-1300-mil-360-meses.html" class="block p-4 bg-white/5 rounded-xl border border-white/10 hover:border-emerald-500/50 hover:bg-white/10 transition-all">
                     <span class="text-xs text-emerald-500 font-bold uppercase tracking-wider block mb-1">Calculadora de financiamento</span>
-                    <span class="text-sm text-slate-300 group-hover:text-white block">Sicoob - R$ 600.000,00 em 360 meses (30 anos)</span>
+                    <span class="text-sm text-slate-300 group-hover:text-white block">Sicoob - R$ 1.300.000,00 em 360 meses (30 anos)</span>
+                </a>
+                
+                <a href="simulador-sicoob-700-mil-360-meses.html" class="block p-4 bg-white/5 rounded-xl border border-white/10 hover:border-emerald-500/50 hover:bg-white/10 transition-all">
+                    <span class="text-xs text-emerald-500 font-bold uppercase tracking-wider block mb-1">Calculadora de financiamento</span>
+                    <span class="text-sm text-slate-300 group-hover:text-white block">Sicoob - R$ 700.000,00 em 360 meses (30 anos)</span>
                 </a>
                 
                 <a href="simulador-sicoob-950-mil-360-meses.html" class="block p-4 bg-white/5 rounded-xl border border-white/10 hover:border-emerald-500/50 hover:bg-white/10 transition-all">
-                    <span class="text-xs text-emerald-500 font-bold uppercase tracking-wider block mb-1">Calcular taxas de juros</span>
-                    <span class="text-sm text-slate-300 group-hover:text-white block">Sicoob - R$ 950.000,00 em 360 meses (30 anos)</span>
-                </a>
-                
-                <a href="simulador-sicoob-400-mil-360-meses.html" class="block p-4 bg-white/5 rounded-xl border border-white/10 hover:border-emerald-500/50 hover:bg-white/10 transition-all">
                     <span class="text-xs text-emerald-500 font-bold uppercase tracking-wider block mb-1">Simulador imobiliário</span>
-                    <span class="text-sm text-slate-300 group-hover:text-white block">Sicoob - R$ 400.000,00 em 360 meses (30 anos)</span>
+                    <span class="text-sm text-slate-300 group-hover:text-white block">Sicoob - R$ 950.000,00 em 360 meses (30 anos)</span>
                 </a>
                 
             </div>
@@ -264,19 +264,20 @@
             const vImovel = unformatCurrency(document.getElementById('input_imovel').value);
             let entrada = unformatCurrency(document.getElementById('input_entrada').value);
             
-            // TRAVA 1: ENTRADA NÃO PODE SER MENOR QUE O MÍNIMO NEM MAIOR QUE O IMÓVEL
+            // TRAVA 1: ENTRADA NÃO PODE SER MENOR QUE O MÍNIMO E NÃO PODE PASSAR DE 80% DO IMÓVEL
             const entradaMinimaReal = vImovel * REGRA_PERC_ENTRADA_MIN;
+            const entradaMaximaReal = vImovel * 0.80; // Regra de Sanidade de Mercado (80% máx de entrada)
+            
             if (entrada < entradaMinimaReal) {
                 entrada = entradaMinimaReal;
                 document.getElementById('input_entrada').value = formatCurrency(entrada);
-            }
-            if (entrada >= vImovel) {
-                entrada = vImovel * 0.99;
+            } else if (entrada > entradaMaximaReal) {
+                entrada = entradaMaximaReal;
                 document.getElementById('input_entrada').value = formatCurrency(entrada);
             }
             
             document.getElementById('slider_entrada').min = entradaMinimaReal;
-            document.getElementById('slider_entrada').max = vImovel * 0.99;
+            document.getElementById('slider_entrada').max = entradaMaximaReal;
             document.getElementById('slider_entrada').value = entrada;
             
             const taxaAnualRaw = document.getElementById('input_taxa').value.toString().replace(',', '.');
@@ -296,13 +297,16 @@
             const sistema = document.querySelector('input[name="sistema"]:checked').value;
             const vFinanciado = vImovel - entrada;
             
-            // TRAVA 2: AMORTIZAÇÃO NÃO PODE SER MAIOR QUE O CRÉDITO LIBERADO
+            // TRAVA 2: A AMORTIZAÇÃO NÃO PODE PASSAR DO "SALDO DEVEDOR" DISPONÍVEL DENTRO DO TETO DE 80%
             let aporteUnico = unformatCurrency(document.getElementById('input_amortizar').value);
-            if (aporteUnico > vFinanciado) {
-                aporteUnico = vFinanciado;
+            let amortizacaoMaxima = entradaMaximaReal - entrada; 
+            if (amortizacaoMaxima < 0) amortizacaoMaxima = 0;
+            
+            if (aporteUnico > amortizacaoMaxima) {
+                aporteUnico = amortizacaoMaxima;
                 document.getElementById('input_amortizar').value = formatCurrency(aporteUnico);
             }
-            document.getElementById('slider_amortizar').max = vFinanciado;
+            document.getElementById('slider_amortizar').max = amortizacaoMaxima;
             document.getElementById('slider_amortizar').value = aporteUnico;
 
             if (vFinanciado <= 0 || prazoOrig <= 0) return;
