@@ -80,7 +80,8 @@ def gerar_paginas_pseo():
             prazo_csv = int(linha['prazo'])
             slug_original = linha['slug']
             
-            regra = REGRAS_BANCOS.get(banco, {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário", "taxa_padrao": 11.99})
+            regra_padrao_fallback = {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário", "taxa_padrao": 11.99}
+            regra = REGRAS_BANCOS.get(banco, regra_padrao_fallback)
             prazo_correto = min(prazo_csv, regra["prazo_max"])
             
             if prazo_correto != prazo_csv:
@@ -140,7 +141,6 @@ def gerar_paginas_pseo():
 
             # LÓGICA DE CLUSTERIZAÇÃO SEO: Prioriza links do mesmo banco
             paginas_candidatas = [pag for pag in todas_as_paginas if pag["slug"] != slug and pag['banco'] == banco]
-            # Se não tiver 4 paginas do mesmo banco, pega aleatorias para completar
             if len(paginas_candidatas) < 4:
                 outras_paginas = [pag for pag in todas_as_paginas if pag["slug"] != slug and pag['banco'] != banco]
                 paginas_candidatas.extend(random.sample(outras_paginas, min(4 - len(paginas_candidatas), len(outras_paginas))))
@@ -227,7 +227,7 @@ def gerar_paginas_pseo():
     </header>
 
     <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 flex-grow w-full relative z-10 space-y-8">
-
+        
         <!-- ZONA A: O FINANCIAMENTO -->
         <div class="glass-panel p-8 md:p-10 rounded-3xl border-t border-slate-700/50">
             <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-8 border-b border-white/10 pb-4 flex items-center">
@@ -395,7 +395,7 @@ def gerar_paginas_pseo():
         const REGRA_PRAZO_MAX = {prazo_max_banco};
         const REGRA_PERC_ENTRADA_MIN = {perc_entrada_minima};
         
-        function unformatCurrency(val) {{ return typeof val === 'number' ? val : Number(val.replace(/\D/g, '')) / 100; }}
+        function unformatCurrency(val) {{ return typeof val === 'number' ? val : Number(val.replace(/\\D/g, '')) / 100; }}
         function formatCurrency(val) {{ return (val).toLocaleString('pt-BR', {{ minimumFractionDigits: 2, maximumFractionDigits: 2 }}); }}
         function initMask(inputId) {{ const input = document.getElementById(inputId); let rawVal = unformatCurrency(input.value); if(rawVal > 0) input.value = formatCurrency(rawVal); input.addEventListener('input', function(e) {{ let raw = unformatCurrency(e.target.value); e.target.value = formatCurrency(raw); }}); }}
         
@@ -417,7 +417,6 @@ def gerar_paginas_pseo():
                 document.getElementById('input_entrada').value = formatCurrency(entrada);
             }}
             if (entrada >= vImovel) {{
-                // Se o cara tentar dar 100% de entrada, a gente limita a 99% pra não quebrar a matemática do financiamento
                 entrada = vImovel * 0.99;
                 document.getElementById('input_entrada').value = formatCurrency(entrada);
             }}
@@ -456,6 +455,7 @@ def gerar_paginas_pseo():
 
             let saldoTrad = vFinanciado; let jurosTotalTrad = 0; let p1Trad = 0; let pUTrad = 0; let pmtPriceTrad = 0;
             
+            // CÁLCULO TRADICIONAL
             if (sistema === 'PRICE') {{
                 if (taxa > 0) {{ pmtPriceTrad = vFinanciado * (taxa * Math.pow(1 + taxa, prazoOrig)) / (Math.pow(1 + taxa, prazoOrig) - 1); 
                 }} else {{ pmtPriceTrad = vFinanciado / prazoOrig; }}
@@ -521,7 +521,6 @@ def gerar_paginas_pseo():
             with open(caminho_arquivo, "w", encoding="utf-8") as f:
                 f.write(html_content)
             urls_sitemap.append(f"{dominio}/{slug}.html")
-            paginas_geradas += 1
 
     gerar_index_home(pasta_saida, links_por_banco)
     gerar_sitemap(urls_sitemap, pasta_saida)
