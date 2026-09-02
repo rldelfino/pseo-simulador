@@ -2,7 +2,6 @@ import os
 import csv
 import random
 
-# --- MOTOR DE REGRAS GLOBAL DA PLATAFORMA ---
 REGRAS_BANCOS = {
     "Caixa": {"ltv": 0.80, "prazo_max": 420, "mod": "Financiamento Imobiliário", "taxa_padrao": 11.49},
     "Banco do Brasil": {"ltv": 0.80, "prazo_max": 420, "mod": "Financiamento Imobiliário", "taxa_padrao": 11.69},
@@ -22,16 +21,11 @@ REGRAS_BANCOS = {
     "Daycoval": {"ltv": 0.60, "prazo_max": 360, "mod": "Crédito com Garantia de Imóvel", "taxa_padrao": 16.63}
 }
 
-# --- LINK OFICIAL DE AFILIADO ---
 LINK_FINANCIA_TUDO = "https://app.financiatudo.com.br/financiamento-de-imoveis/chave/8940d282b765cbf97b6df55fd1eb0b52b18b2f6e"
 
 def criar_csv_exemplo(caminho_csv):
     cabecalho = ['banco', 'valor_imovel', 'taxa', 'prazo', 'slug']
-    dados = [
-        ['Caixa', '300000', '11.49', '420', 'simulador-caixa-300-mil-420-meses'],
-        ['Itau', '500000', '13.09', '360', 'simulador-itau-500-mil-360-meses'],
-        ['C6 Bank', '600000', '13.50', '240', 'simulador-c6-bank-600-mil-240-meses']
-    ]
+    dados = [['Caixa', '300000', '11.49', '420', 'simulador-caixa-300-mil-420-meses']]
     with open(caminho_csv, mode='w', newline='', encoding='utf-8') as arquivo:
         writer = csv.writer(arquivo, delimiter=';')
         writer.writerow(cabecalho)
@@ -85,8 +79,7 @@ def gerar_paginas_pseo():
             prazo_csv = int(linha['prazo'])
             slug_original = linha['slug']
             
-            regra_padrao_fallback = {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário", "taxa_padrao": 11.99}
-            regra = REGRAS_BANCOS.get(banco, regra_padrao_fallback)
+            regra = REGRAS_BANCOS.get(banco, {"ltv": 0.80, "prazo_max": 360, "mod": "Financiamento Imobiliário", "taxa_padrao": 11.99})
             prazo_correto = min(prazo_csv, regra["prazo_max"])
             
             if prazo_correto != prazo_csv:
@@ -98,24 +91,18 @@ def gerar_paginas_pseo():
             anos_equivalentes = prazo_correto // 12
             
             pagina_info = {
-                "banco": banco,
-                "slug": slug,
-                "prazo_correto": prazo_correto,
-                "anos_equivalentes": anos_equivalentes,
-                "regra": regra,
+                "banco": banco, "slug": slug, "prazo_correto": prazo_correto,
+                "anos_equivalentes": anos_equivalentes, "regra": regra,
                 "texto": f"Simular {valor_amigavel} em {prazo_correto} meses ({anos_equivalentes} anos)",
                 "linha_original": linha
             }
             todas_as_paginas.append(pagina_info)
-            
-            if banco not in links_por_banco:
-                links_por_banco[banco] = []
+            if banco not in links_por_banco: links_por_banco[banco] = []
             links_por_banco[banco].append(pagina_info)
 
-        paginas_geradas = 0
         termos_variados = [
             "Calculadora de financiamento", "Simulador de crédito", "Simulação de amortização",
-            "Calcular taxas de juros", "Simulador imobiliário", "Comparador de financiamento"
+            "Calcular taxas de juros", "Simulador imobiliário", "Comparador de empréstimo"
         ]
 
         for p in todas_as_paginas:
@@ -134,12 +121,8 @@ def gerar_paginas_pseo():
 
             try:
                 taxa_csv = linha.get('taxa', '')
-                if not taxa_csv:
-                    taxa = regra["taxa_padrao"]
-                else:
-                    taxa = float(str(taxa_csv).replace(',', '.'))
-                    if taxa < 4.0: 
-                         taxa = ((1 + (taxa / 100)) ** 12 - 1) * 100
+                taxa = float(str(taxa_csv).replace(',', '.')) if taxa_csv else regra["taxa_padrao"]
+                if taxa < 4.0: taxa = ((1 + (taxa / 100)) ** 12 - 1) * 100
             except (ValueError, TypeError):
                 taxa = regra["taxa_padrao"]
 
@@ -171,8 +154,9 @@ def gerar_paginas_pseo():
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador de {regra['mod']} | {banco} | {prazo} meses ({anos} anos) | Datalab Global</title>
-    <meta name="description" content="Simule seu {regra['mod'].lower()} pela {banco} em até {prazo} meses (ou {anos} anos). Planeje o futuro e descubra quanto economiza adiantando parcelas.">
+    <title>Calculadora e Simulador de {regra['mod']} | {banco} | {prazo} meses ({anos} anos)</title>
+    <meta name="description" content="Simule seu {regra['mod'].lower()} pela {banco} em até {prazo} meses (ou {anos} anos). Calcule juros, amortização e empréstimo com a taxa de {taxa}% ao ano.">
+    <meta name="keywords" content="simulador de financiamento, calculadora de amortização, empréstimo imobiliário, calcular juros {banco}, amortizar financiamento {banco}, {prazo} meses, {anos} anos">
     <link rel="canonical" href="{dominio}/{slug}.html" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -201,7 +185,7 @@ def gerar_paginas_pseo():
         input[type=range]::-webkit-slider-thumb {{ -webkit-appearance: none; appearance: none; width: 26px; height: 26px; border-radius: 50%; background: radial-gradient(circle at 50% 0%, #cbd5e1, #64748b); cursor: pointer; border: 1px solid #334155; }}
         input[type="radio"]:checked + div {{ background: linear-gradient(145deg, #10b981, #047857); color: white; }}
         input[type="radio"]:not(:checked) + div {{ background-color: transparent; color: #64748b; }}
-        .currency-input {{ font-variant-numeric: tabular-nums; }}
+        .currency-input {{ font-variant-numeric: tabular-nums; text-shadow: 0 0 10px rgba(255,255,255,0.2); }}
     </style>
 </head>
 <body class="antialiased flex flex-col">
@@ -212,8 +196,8 @@ def gerar_paginas_pseo():
                     <img src="logo.svg" alt="Datalab Global" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
                 </a>
                 <div class="hidden md:flex items-center space-x-3">
-                    <a id="btn_wa_nav" href="#" target="_blank" class="bg-white/10 border border-white/20 hover:bg-white/20 text-white px-6 py-2.5 rounded-full font-bold transition-all text-sm flex items-center">
-                        <i class="fa-brands fa-whatsapp mr-2 text-lg text-emerald-500"></i> Suporte WhatsApp
+                    <a href="{LINK_FINANCIA_TUDO}" target="_blank" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-6 py-2.5 rounded-full font-bold transition-all text-sm flex items-center shadow-[0_0_15px_rgba(16,185,129,0.3)]">
+                        Fazer Análise Grátis <i class="fa-solid fa-arrow-right ml-2 text-sm"></i>
                     </a>
                 </div>
             </div>
@@ -229,66 +213,63 @@ def gerar_paginas_pseo():
 
     <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 flex-grow w-full relative z-10 space-y-8">
         
-        <div class="w-full text-center py-2 bg-slate-900/30 rounded-xl border border-white/5 text-xs text-slate-500">
-            Publicidade
-        </div>
-
         <!-- ZONA A: O FINANCIAMENTO -->
-        <div class="glass-panel p-8 md:p-10 rounded-3xl">
+        <div class="glass-panel p-8 md:p-10 rounded-3xl border-t border-slate-700/50">
             <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-8 border-b border-white/10 pb-4 flex items-center">
                 <i class="fa-solid fa-file-invoice-dollar mr-3"></i> 1. Estratégia
             </h2>
             <div class="flex flex-col lg:flex-row gap-10">
-                <div class="w-full lg:w-1/2 space-y-6">
-                    <div>
+                <div class="w-full lg:w-1/2 space-y-4">
+                    <div class="bg-slate-900/40 p-4 rounded-2xl border border-white/5">
                         <div class="flex justify-between items-end mb-2">
                             <label class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">Valor do Imóvel / Garantia</label>
                             <input type="text" id="input_imovel" class="currency-input w-40 text-right bg-transparent font-medium text-white text-2xl outline-none border-b border-transparent focus:border-emerald-500 transition-colors" value="">
                         </div>
-                        <input type="range" id="slider_imovel" min="100000" max="2000000" step="10000" value="{valor_imovel}" class="w-full mt-4">
+                        <input type="range" id="slider_imovel" min="100000" max="2000000" step="10000" value="{valor_imovel}" class="w-full mt-2">
                     </div>
-                    <div>
+                    <div class="bg-slate-900/40 p-4 rounded-2xl border border-white/5">
                         <div class="flex justify-between items-end mb-2">
                             <label class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">Entrada / Margem Retida</label>
                             <input type="text" id="input_entrada" class="currency-input w-40 text-right bg-transparent font-medium text-white text-2xl outline-none border-b border-transparent focus:border-emerald-500 transition-colors" value="">
                         </div>
-                        <input type="range" id="slider_entrada" min="{int(entrada_minima_valor)}" max="1000000" step="5000" value="{int(entrada_padrao)}" class="w-full mt-4">
+                        <input type="range" id="slider_entrada" min="{int(entrada_minima_valor)}" max="1000000" step="5000" value="{int(entrada_padrao)}" class="w-full mt-2">
                         <p class="text-[9px] text-slate-500 mt-1 text-right">Mínimo exigido: {(perc_entrada_minima*100):.0f}% do valor</p>
                     </div>
-                    <div class="grid grid-cols-2 gap-6">
-                        <div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-slate-900/40 p-4 rounded-2xl border border-white/5">
                             <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 block">Prazo</label>
-                            <div class="flex items-center border-b border-white/10 pb-1"><input type="number" id="input_prazo" min="12" max="{prazo_max_banco}" class="w-full bg-transparent font-medium text-white text-lg outline-none" value="{prazo}"><span class="text-xs text-slate-500 ml-2">meses</span></div>
+                            <div class="flex items-center"><input type="number" id="input_prazo" min="12" max="{prazo_max_banco}" class="w-full bg-transparent font-medium text-white text-lg outline-none" value="{prazo}"><span class="text-xs text-slate-500 ml-2">meses</span></div>
                             <p class="text-[9px] text-slate-500 mt-1">Equivale a <span id="hint_anos">{anos}</span> anos</p>
                         </div>
-                        <div>
+                        <div class="bg-slate-900/40 p-4 rounded-2xl border border-white/5">
                             <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 block">Taxa Estimada</label>
-                            <div class="flex items-center border-b border-white/10 pb-1"><input type="number" id="input_taxa" step="0.01" class="w-full bg-transparent font-medium text-white text-lg outline-none" value="{taxa}"><span class="text-xs text-slate-500 ml-2">% a.a.</span></div>
+                            <div class="flex items-center"><input type="number" id="input_taxa" step="0.01" class="w-full bg-transparent font-medium text-white text-lg outline-none" value="{taxa}"><span class="text-xs text-slate-500 ml-2">% a.a.</span></div>
                         </div>
                     </div>
-                    <div>
-                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 block">Sistema de Amortização</label>
+                    <div class="pt-2">
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 block pl-2">Sistema de Amortização</label>
                         <div class="flex bg-black/40 p-1 rounded-xl border border-white/5">
                             <label class="flex-1 text-center relative cursor-pointer"><input type="radio" name="sistema" value="SAC" class="peer sr-only" checked><div class="py-2.5 rounded-lg text-xs font-bold transition-all border border-transparent tracking-widest">SAC</div></label>
                             <label class="flex-1 text-center relative cursor-pointer"><input type="radio" name="sistema" value="PRICE" class="peer sr-only"><div class="py-2.5 rounded-lg text-xs font-bold transition-all border border-transparent tracking-widest">PRICE</div></label>
                         </div>
                     </div>
                 </div>
-                <div class="w-full lg:w-1/2 bg-black/20 rounded-2xl p-8 border border-white/5 flex flex-col justify-center space-y-8">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div><p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-2">Primeira Parcela</p><p class="text-white text-3xl sm:text-2xl lg:text-3xl font-light tracking-tight" id="res_p1">R$ 0,00</p></div>
-                        <div><p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-2">Última Parcela</p><p class="text-slate-300 text-2xl font-light tracking-tight mt-1" id="res_pU">R$ 0,00</p></div>
+                <div class="w-full lg:w-1/2 bg-slate-950 rounded-2xl p-8 border border-white/5 shadow-inner flex flex-col justify-center space-y-8 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-slate-800 rounded-full blur-[50px] opacity-50"></div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 relative z-10">
+                        <div><p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-2">Primeira Parcela</p><p class="text-white text-3xl font-light tracking-tight currency-input" id="res_p1">R$ 0,00</p></div>
+                        <div><p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-2">Última Parcela</p><p class="text-slate-300 text-2xl font-light tracking-tight mt-1 currency-input" id="res_pU">R$ 0,00</p></div>
                     </div>
-                    <div class="pt-6 border-t border-white/5 grid grid-cols-1 gap-6">
-                        <div><p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1.5">Crédito Liberado (Sem Juros)</p><p class="text-white font-medium text-lg" id="res_capital">R$ 0,00</p></div>
-                        <div><p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1.5 flex items-center">Custo Total Final (Capital + Juros)</p><p class="text-white font-medium text-xl" id="res_total_pago">R$ 0,00</p></div>
+                    <div class="pt-6 border-t border-white/5 grid grid-cols-1 gap-6 relative z-10">
+                        <div><p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1.5">Crédito Liberado (Sem Juros)</p><p class="text-white font-medium text-lg currency-input" id="res_capital">R$ 0,00</p></div>
+                        <div><p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1.5 flex items-center">Custo Total Final (Capital + Juros)</p><p class="text-white font-medium text-xl currency-input" id="res_total_pago">R$ 0,00</p></div>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- ZONA B: A AMORTIZAÇÃO -->
-        <div class="glass-panel-emerald rounded-3xl p-8 md:p-10 relative overflow-hidden" id="card_amortizacao">
+        <div class="glass-panel-emerald rounded-3xl p-8 md:p-10 relative overflow-hidden shadow-[0_10px_40px_rgba(16,185,129,0.1)] border-t border-emerald-500/30" id="card_amortizacao">
             <h2 class="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-8 border-b border-emerald-500/20 pb-4 relative z-10 flex items-center">
                 <i class="fa-solid fa-bolt mr-3"></i> 2. Valor a Amortizar (A Solução)
             </h2>
@@ -301,10 +282,10 @@ def gerar_paginas_pseo():
                     </div>
                     <input type="range" id="slider_amortizar" min="0" max="500000" step="5000" value="20000" class="w-full">
                 </div>
-                <div class="w-full lg:w-1/2 bg-black/40 border border-emerald-500/30 rounded-2xl p-8 backdrop-blur-sm text-center flex flex-col justify-center">
+                <div class="w-full lg:w-1/2 bg-black/40 border border-emerald-500/30 rounded-2xl p-8 backdrop-blur-sm text-center flex flex-col justify-center shadow-inner">
                     <div class="mb-8">
                         <p class="text-emerald-500/80 text-[10px] font-bold uppercase tracking-widest mb-3">Economia Total de Juros</p>
-                        <p class="text-5xl md:text-6xl font-serif text-emerald-400" id="res_economia">R$ 0,00</p>
+                        <p class="text-5xl md:text-6xl font-serif text-emerald-400 currency-input" id="res_economia">R$ 0,00</p>
                     </div>
                     <div>
                         <p class="text-emerald-500 text-[10px] font-bold uppercase tracking-widest mb-2">Tempo Reduzido Em</p>
@@ -340,29 +321,6 @@ def gerar_paginas_pseo():
             </div>
         </div>
 
-        <!-- ZONA DE MONETIZAÇÃO (INFO PRODUTO) -->
-        <div class="mt-8 bg-gradient-to-r from-emerald-900/40 to-slate-900 border border-emerald-500/30 p-8 md:p-10 rounded-3xl flex flex-col md:flex-row items-center gap-8 relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px]"></div>
-            
-            <div class="md:w-2/3 relative z-10 text-left">
-                <span class="bg-emerald-500 text-slate-950 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-4 inline-block">Recomendado</span>
-                <h3 class="text-2xl md:text-3xl font-serif text-white mb-3">Planilha de Amortização Inteligente</h3>
-                <p class="text-slate-300 text-sm md:text-base font-light leading-relaxed mb-6">
-                    Descubra o segredo matemático para quitar seu contrato de {prazo_max_banco} meses em menos de 5 anos. Uma ferramenta completa para simular cenários exatos, controlar suas parcelas e economizar centenas de milhares de reais em juros bancários.
-                </p>
-                <a href="https://go.hotmart.com/S107394856P" target="_blank" class="inline-flex items-center justify-center bg-white text-slate-950 hover:bg-slate-200 font-bold px-8 py-4 rounded-xl transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] text-sm tracking-wide w-full md:w-auto">
-                    Quero Baixar a Planilha <i class="fa-solid fa-download ml-3"></i>
-                </a>
-            </div>
-            
-            <div class="md:w-1/3 flex justify-center relative z-10">
-                <div class="w-32 h-40 bg-slate-800 rounded-xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex items-center justify-center rotate-6 hover:rotate-0 transition-transform duration-500 relative">
-                    <div class="absolute -top-3 -right-3 bg-emerald-500 text-slate-950 text-[10px] font-bold px-2 py-1 rounded-md shadow-lg">100% OFF</div>
-                    <i class="fa-solid fa-file-excel text-6xl text-emerald-500 drop-shadow-[0_0_15px_rgba(16,185,129,0.5)]"></i>
-                </div>
-            </div>
-        </div>
-
         <!-- ZONA C: LINKAGEM INTERNA -->
         <div class="mt-16 pt-8 border-t border-white/5">
             <h3 class="text-sm font-serif text-slate-400 mb-6 flex items-center justify-center">
@@ -385,10 +343,17 @@ def gerar_paginas_pseo():
 
     </main>
 
+    <!-- FOOTER COM SUPORTE HUMANO DISCRETO -->
+    <footer class="border-t border-white/5 py-8 mt-10">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
+            <a href="https://wa.me/5527995051571?text=Ol%C3%A1%2C%20preciso%20de%20ajuda%20com%20o%20simulador" target="_blank" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
+                <i class="fa-brands fa-whatsapp mr-1"></i> Falar com o suporte
+            </a>
+        </div>
+    </footer>
+
     <script>
-        const bancoNome = "{banco}";
-        const SEU_WHATSAPP = "5527995051571";
-        
         const REGRA_PRAZO_MAX = {prazo_max_banco};
         const REGRA_PERC_ENTRADA_MIN = {perc_entrada_minima};
         
@@ -403,22 +368,19 @@ def gerar_paginas_pseo():
             input.addEventListener('blur', function() {{ let val = unformatCurrency(this.value); slider.value = val; calcularTudo(); }}); 
         }}
 
-        function atualizarLinksWhatsapp() {{
-            const textoNav = `Olá! Gostaria de tirar uma dúvida sobre financiamento e análise de crédito.`;
-            document.getElementById('btn_wa_nav').href = `https://wa.me/${{SEU_WHATSAPP}}?text=${{encodeURIComponent(textoNav)}}`;
-        }}
-
         function calcularTudo() {{
             const vImovel = unformatCurrency(document.getElementById('input_imovel').value);
             let entrada = unformatCurrency(document.getElementById('input_entrada').value);
             
+            // CORREÇÃO DO BUG DO SLIDER DE ENTRADA
             const entradaMinimaReal = vImovel * REGRA_PERC_ENTRADA_MIN;
-            if (entrada < entradaMinimaReal) {{
+            if (entrada < entradaMinimaReal || entrada > vImovel) {{
                 entrada = entradaMinimaReal;
                 document.getElementById('input_entrada').value = formatCurrency(entrada);
-                document.getElementById('slider_entrada').value = entrada;
             }}
             document.getElementById('slider_entrada').min = entradaMinimaReal;
+            document.getElementById('slider_entrada').max = vImovel;
+            document.getElementById('slider_entrada').value = entrada;
             
             const taxaAnualRaw = document.getElementById('input_taxa').value.toString().replace(',', '.');
             const taxaAnual = parseFloat(taxaAnualRaw) || 0;
@@ -430,7 +392,6 @@ def gerar_paginas_pseo():
                 document.getElementById('input_prazo').value = prazoOrig;
             }}
             
-            // Atualiza os hints de anos em tempo real
             let anosEquivalentes = Math.floor(prazoOrig / 12);
             document.getElementById('hint_anos').innerText = anosEquivalentes;
             document.getElementById('label_anos').innerText = anosEquivalentes + " anos";
@@ -442,6 +403,7 @@ def gerar_paginas_pseo():
 
             let saldoTrad = vFinanciado; let jurosTotalTrad = 0; let p1Trad = 0; let pUTrad = 0; let pmtPriceTrad = 0;
             
+            // CORREÇÃO DO CÁLCULO PRICE
             if (sistema === 'PRICE') {{
                 if (taxa > 0) {{ pmtPriceTrad = vFinanciado * (taxa * Math.pow(1 + taxa, prazoOrig)) / (Math.pow(1 + taxa, prazoOrig) - 1); 
                 }} else {{ pmtPriceTrad = vFinanciado / prazoOrig; }}
@@ -456,11 +418,19 @@ def gerar_paginas_pseo():
                 saldoTrad -= amortizacaoBase;
             }}
 
-            let saldoNovo = vFinanciado - aporteUnico; let jurosTotalNovo = 0; let mesesNovo = 0;
+            let saldoNovo = vFinanciado; let jurosTotalNovo = 0; let mesesNovo = 0;
+            // Abate a amortização extra LOGO NO MÊS 1 (Impacto real do juros sobre o saldo)
+            saldoNovo -= aporteUnico;
+            
             if (saldoNovo > 0) {{
                 while (saldoNovo > 0 && mesesNovo < prazoOrig) {{
                     let juros = saldoNovo * taxa; jurosTotalNovo += juros;
+                    
+                    // Na tabela Price, o valor da prestação (pmtPriceTrad) continua FIXO. 
+                    // Como o saldo devedor diminuiu pelo aporte extra, o juros cai, 
+                    // e a parcela de amortização dentro da prestação AUMENTA, quitando a dívida mais rápido.
                     let amortizacaoBase = (sistema === 'SAC') ? (vFinanciado / prazoOrig) : (pmtPriceTrad - juros);
+                    
                     let abatimentoTotal = amortizacaoBase;
                     if (abatimentoTotal > saldoNovo) abatimentoTotal = saldoNovo;
                     saldoNovo -= abatimentoTotal; mesesNovo++;
@@ -485,8 +455,6 @@ def gerar_paginas_pseo():
             document.getElementById('res_impacto').innerText = textoTempo;
             let pctNovoPrazo = (mesesNovo / prazoOrig) * 100;
             document.getElementById('bar_novo_prazo').style.width = pctNovoPrazo + '%';
-            
-            atualizarLinksWhatsapp();
         }}
 
         window.onload = function() {{
@@ -553,7 +521,8 @@ def gerar_index_home(pasta_saida, links_por_banco):
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador de Financiamento | Simulador Datalab</title>
+    <title>Simulador de Financiamento e Amortização | Datalab Global</title>
+    <meta name="description" content="A ferramenta definitiva para simular seu financiamento imobiliário e descobrir quanto economizar antecipando parcelas.">
     
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5414184968223405" crossorigin="anonymous"></script>
 
@@ -569,7 +538,7 @@ def gerar_index_home(pasta_saida, links_por_banco):
         .custom-scrollbar::-webkit-scrollbar-thumb {{ background: rgba(255,255,255,0.2); border-radius: 4px; }}
     </style>
 </head>
-<body class="antialiased min-h-screen">
+<body class="antialiased min-h-screen flex flex-col">
     <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
@@ -579,7 +548,7 @@ def gerar_index_home(pasta_saida, links_por_banco):
             </div>
         </div>
     </nav>
-    <div class="py-24 md:py-32 text-center px-4 relative overflow-hidden">
+    <div class="py-24 md:py-32 text-center px-4 relative overflow-hidden flex-grow">
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-emerald-500/10 rounded-full blur-[100px] -z-10 pointer-events-none"></div>
         <h1 class="text-4xl md:text-6xl font-serif text-white mb-6 leading-tight max-w-4xl mx-auto">
             Simulador de Financiamento
@@ -588,10 +557,7 @@ def gerar_index_home(pasta_saida, links_por_banco):
             Selecione a instituição financeira abaixo e descubra quanto você economiza ao fazer amortizações.
         </p>
     </div>
-    <div class="max-w-7xl mx-auto px-4 mb-8 text-center text-xs text-slate-500">
-        Publicidade
-    </div>
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-32 relative z-10">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-32 relative z-10 w-full">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {blocos_html}
         </div>
