@@ -33,13 +33,6 @@ h1, h2, h3, .font-serif {
     box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8);
 }
 
-.glass-panel-sky {
-    background: rgba(8, 32, 56, 0.4);
-    backdrop-filter: blur(25px);
-    border: 1px solid rgba(56, 189, 248, 0.2);
-    box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8);
-}
-
 input[type=range] {
     -webkit-appearance: none;
     appearance: none;
@@ -110,3 +103,13 @@ input[type="radio"]:not(:checked) + div {
 .favicon-img.favicon-erro { display: none; }
 .favicon-fallback { display: none; }
 .favicon-img.favicon-erro + .favicon-fallback { display: inline-flex; }
+
+/* Acordeão do FAQ (<details>/<summary> nativo do HTML): reforço em CSS puro,
+   não dependente das variantes `open:`/`group-open:` do Tailwind (que só
+   existem a partir da v3.4). Isso garante que o marcador nativo do
+   navegador some e a animação do "+" funcione mesmo que a versão do
+   Tailwind usada no build não gere essas variantes. */
+details > summary { list-style: none; }
+details > summary::-webkit-details-marker { display: none; }
+details[open] > summary span.faq-toggle-icon { transform: rotate(45deg); }
+details[open] { border-color: rgba(16, 185, 129, 0.3) !important; }

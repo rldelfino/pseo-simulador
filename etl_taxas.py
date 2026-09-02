@@ -1,6 +1,9 @@
 import csv
+from datetime import date
 
 from bancos import BANCOS
+
+ARQUIVO_ULTIMA_ATUALIZACAO = 'ultima_atualizacao_taxas.txt'
 
 # Grade de valores/prazos usada para popular um banco novo com cobertura
 # completa (mesma grade já usada organicamente pelos bancos existentes:
@@ -80,6 +83,15 @@ def atualizar_base_csv(novas_taxas):
             escritor = csv.DictWriter(f, fieldnames=cabecalho, delimiter=';')
             escritor.writeheader()
             escritor.writerows(dados_atualizados)
+
+        # Grava a data real da última atualização de dados — usada pelo
+        # gerador.py como <lastmod> do sitemap e dateModified do schema.
+        # Importante: isso é a data em que os DADOS mudaram, não a data de
+        # cada deploy — o Google trata "lastmod sempre = hoje" como sinal de
+        # frescor falso, então só reescrevemos esse arquivo aqui, quando as
+        # taxas de fato são recuradas (rodagem mensal do ETL).
+        with open(ARQUIVO_ULTIMA_ATUALIZACAO, 'w', encoding='utf-8') as f:
+            f.write(date.today().isoformat())
 
         print("\n🚀 O arquivo dados.csv foi curado com taxas REAIS de mercado!")
 

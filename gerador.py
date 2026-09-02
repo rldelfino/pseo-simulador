@@ -8,6 +8,85 @@ from icones import icone, tooltip
 
 LINK_FINANCIA_TUDO = "https://app.financiatudo.com.br/financiamento-de-imoveis/chave/8940d282b765cbf97b6df55fd1eb0b52b18b2f6e"
 DOMINIO = 'https://datalabglobal.com'
+ARQUIVO_ULTIMA_ATUALIZACAO = 'ultima_atualizacao_taxas.txt'
+
+
+def obter_data_ultima_atualizacao():
+    """Lê a data real da última vez que as taxas mudaram (gravada pelo
+    etl_taxas.py). Usar isso (em vez de 'hoje' a cada build) no <lastmod>
+    do sitemap e no dateModified do schema é o que o Google espera como
+    sinal de frescor honesto — 'lastmod sempre = data do deploy' é tratado
+    como sinal de frescor falso."""
+    try:
+        with open(ARQUIVO_ULTIMA_ATUALIZACAO, encoding='utf-8') as f:
+            return f.read().strip()
+    except FileNotFoundError:
+        return date.today().isoformat()
+
+
+def calcular_sac_price(valor_financiado, prazo_meses, taxa_anual):
+    """Réplica em Python (server-side) do mesmo cálculo SAC/PRICE que roda
+    em JS no navegador, para o cenário padrão de cada página. O resultado
+    vira texto estático no HTML — visível sem JS, e principalmente: são
+    NÚMEROS REAIS e únicos por página (não apenas troca de variável em
+    texto template), que é exatamente o que a política de conteúdo
+    programático do Google pede pra diferenciar página de verdade de
+    template raso."""
+    taxa_mensal = (taxa_anual / 100) / 12
+
+    saldo = valor_financiado
+    juros_total_sac = 0.0
+    amortizacao = valor_financiado / prazo_meses
+    p1_sac = pU_sac = 0.0
+    for m in range(1, prazo_meses + 1):
+        juros = saldo * taxa_mensal
+        juros_total_sac += juros
+        parcela = amortizacao + juros
+        if m == 1:
+            p1_sac = parcela
+        if m == prazo_meses:
+            pU_sac = parcela
+        saldo -= amortizacao
+
+    if taxa_mensal > 0:
+        pmt_price = valor_financiado * (taxa_mensal * (1 + taxa_mensal) ** prazo_meses) / ((1 + taxa_mensal) ** prazo_meses - 1)
+    else:
+        pmt_price = valor_financiado / prazo_meses
+    juros_total_price = (pmt_price * prazo_meses) - valor_financiado
+
+    return {
+        "p1_sac": p1_sac, "pU_sac": pU_sac, "total_sac": valor_financiado + juros_total_sac,
+        "p1_price": pmt_price, "pU_price": pmt_price, "total_price": valor_financiado + juros_total_price,
+        "economia_sac": juros_total_price - juros_total_sac,
+    }
+
+
+def svg_donut_capital_juros(capital, juros):
+    """Gráfico donut SVG puro (sem lib externa) mostrando a proporção
+    Capital vs Juros do custo total — visualização de dado real em vez de
+    só números em caixinha de texto."""
+    total = capital + juros
+    if total <= 0:
+        return ""
+    pct_capital = capital / total
+    r = 42
+    circ = 2 * 3.14159265 * r
+    dash_capital = pct_capital * circ
+    dash_juros = circ - dash_capital
+    pct_juros_label = round((1 - pct_capital) * 100)
+    return f'''<div class="flex items-center gap-6">
+        <svg viewBox="0 0 100 100" class="w-24 h-24 shrink-0" style="transform: rotate(-90deg)">
+            <circle cx="50" cy="50" r="{r}" fill="none" stroke="#1e293b" stroke-width="12"></circle>
+            <circle cx="50" cy="50" r="{r}" fill="none" stroke="#10b981" stroke-width="12"
+                    stroke-dasharray="{dash_capital:.2f} {circ:.2f}" stroke-linecap="round"></circle>
+            <circle cx="50" cy="50" r="{r}" fill="none" stroke="#f59e0b" stroke-width="12"
+                    stroke-dasharray="{dash_juros:.2f} {circ:.2f}" stroke-dashoffset="-{dash_capital:.2f}" stroke-linecap="round"></circle>
+        </svg>
+        <div class="space-y-2 text-xs">
+            <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0"></span><span class="text-slate-400">Capital</span><span class="text-white font-medium ml-auto">{100 - pct_juros_label}%</span></div>
+            <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-amber-500 shrink-0"></span><span class="text-slate-400">Juros</span><span class="text-white font-medium ml-auto">{pct_juros_label}%</span></div>
+        </div>
+    </div>'''
 
 
 def favicon_com_fallback(url_logo, banco_exib, classe_tamanho="w-7 h-7"):
@@ -97,6 +176,8 @@ def gerar_paginas_pseo():
     if not os.path.exists(caminho_csv):
         criar_csv_exemplo(caminho_csv)
 
+    data_ultima_atualizacao = obter_data_ultima_atualizacao()
+    data_ultima_atualizacao_br = date.fromisoformat(data_ultima_atualizacao).strftime('%d/%m/%Y')
     urls_sitemap = []
     links_por_banco = {}
     todas_as_paginas = []
@@ -193,6 +274,21 @@ def gerar_paginas_pseo():
                 taxa = regra["taxa_padrao"]
 
             taxa = round(taxa, 2)
+
+            vfinanciado_padrao = valor_imovel - entrada_padrao
+            comparativo = calcular_sac_price(vfinanciado_padrao, prazo, taxa)
+
+            # Aporte único padrão da Zona de Amortização: antes era um valor fixo
+            # de R$ 20.000 em toda página, o que fazia a "Economia Total de
+            # Juros" parecer travada/pouco reativa quando o valor financiado
+            # mudava muito de página pra página (ou via slider). Agora é 5% do
+            # valor financiado desta página (arredondado pra R$ 1.000 mais
+            # próximo, com piso de R$ 5.000), então o campo já nasce coerente
+            # com a escala do financiamento simulado.
+            aporte_padrao = max(5_000, round((vfinanciado_padrao * 0.05) / 1000) * 1000)
+            aporte_padrao = min(aporte_padrao, int(vfinanciado_padrao)) if vfinanciado_padrao > 0 else 5_000
+            aporte_padrao_fmt = formatar_reais(aporte_padrao)[3:]  # remove o prefixo "R$ "
+            slider_amortizar_max = max(int(vfinanciado_padrao), aporte_padrao, 500_000)
 
             # LINKAGEM INTERNA (clusterização por banco, com cobertura garantida):
             # 1) link determinístico para a "próxima" página do mesmo banco no
@@ -291,7 +387,22 @@ def gerar_paginas_pseo():
       "applicationCategory": "FinanceApplication",
       "operatingSystem": "Web",
       "offers": {{ "@type": "Offer", "price": "0", "priceCurrency": "BRL" }},
-      "url": "{url_canonica}"
+      "url": "{url_canonica}",
+      "dateModified": "{data_ultima_atualizacao}"
+    }}'''
+
+            # HowTo: schema explicitamente citado por engines de IA (AI
+            # Overviews, ChatGPT, Perplexity) ao montar respostas passo-a-passo.
+            schema_howto = f'''{{
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "Como simular o financiamento {regra['mod'].lower()} do {banco_exib}",
+      "step": [
+        {{ "@type": "HowToStep", "name": "Informe o valor do imóvel", "text": "Digite ou arraste o slider até o valor do imóvel ou garantia que você quer financiar." }},
+        {{ "@type": "HowToStep", "name": "Ajuste a entrada", "text": "Defina quanto você vai pagar à vista — o simulador trava automaticamente no mínimo exigido pelo {banco_exib} e no teto de mercado de 80%." }},
+        {{ "@type": "HowToStep", "name": "Escolha prazo e sistema", "text": "Defina o prazo em meses (até {prazo_max_banco} no {banco_exib}) e escolha entre SAC ou PRICE." }},
+        {{ "@type": "HowToStep", "name": "Veja o resultado e simule uma amortização extra", "text": "Confira parcelas e custo total, depois teste um valor de amortização extra para ver a economia de juros e a redução de prazo." }}
+      ]
     }}'''
 
             html_content = f'''<!DOCTYPE html>
@@ -334,6 +445,9 @@ def gerar_paginas_pseo():
     <script type="application/ld+json">
     {schema_software}
     </script>
+    <script type="application/ld+json">
+    {schema_howto}
+    </script>
 </head>
 <body class="antialiased flex flex-col">
     <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
@@ -366,52 +480,52 @@ def gerar_paginas_pseo():
             <span id="label_anos" class="font-medium text-white">{anos} anos</span>), com entrada mínima de
             {(perc_entrada_minima*100):.0f}% e taxa estimada de {taxa}% a.a. Ajuste os valores abaixo para o seu caso.
         </p>
+        <p class="text-slate-600 text-[10px] uppercase tracking-widest mt-4">Taxas atualizadas em {data_ultima_atualizacao_br}</p>
     </header>
 
     <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 flex-grow w-full relative z-10 space-y-8">
 
         <!-- ZONA A: O FINANCIAMENTO -->
-        <div class="glass-panel-sky p-8 md:p-10 rounded-3xl border-t border-sky-500/30 relative overflow-hidden">
-            <div class="absolute top-0 left-0 w-72 h-72 bg-sky-500/10 rounded-full blur-[90px] -z-0 pointer-events-none"></div>
-            <h2 class="text-xs font-bold text-sky-400 uppercase tracking-widest mb-1 flex items-center relative z-10">
+        <div class="glass-panel p-8 md:p-10 rounded-3xl border-t border-slate-700/50 relative overflow-hidden">
+            <h2 class="text-xs font-bold text-slate-300 uppercase tracking-widest mb-1 flex items-center relative z-10">
                 {icone('invoice', 'mr-3')} 1. Estratégia
             </h2>
             <p class="text-slate-500 text-[11px] mb-8 pb-4 border-b border-white/10 relative z-10">Defina os parâmetros do seu financiamento {banco_exib.lower()}.</p>
             <div class="flex flex-col lg:flex-row gap-10 relative z-10">
                 <div class="w-full lg:w-1/2 space-y-4">
-                    <div class="bg-slate-900/40 p-4 rounded-2xl border border-white/5 hover:border-sky-500/30 transition-colors">
+                    <div class="bg-slate-800/60 p-5 rounded-2xl border border-white/10 shadow-md shadow-black/20 hover:border-emerald-500/30 transition-colors">
                         <div class="flex justify-between items-end mb-2">
                             <label class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest flex items-center">
-                                {icone('home', 'mr-1.5 text-sky-500')} Valor do Imóvel / Garantia
+                                {icone('home', 'mr-1.5 text-slate-500')} Valor do Imóvel / Garantia
                                 {tooltip('É o valor total do bem que você quer financiar. A partir dele calculamos a entrada mínima exigida pelo banco (regra de LTV) e o crédito liberado.')}
                             </label>
-                            <input type="text" id="input_imovel" class="currency-input w-40 text-right bg-transparent font-medium text-white text-2xl outline-none border-b border-transparent focus:border-sky-500 transition-colors" value="">
+                            <input type="text" id="input_imovel" class="currency-input w-40 text-right bg-transparent font-medium text-white text-2xl outline-none border-b border-transparent focus:border-emerald-500 transition-colors" value="">
                         </div>
                         <input type="range" id="slider_imovel" min="100000" max="2000000" step="10000" value="{valor_imovel}" class="w-full mt-2">
                     </div>
-                    <div class="bg-slate-900/40 p-4 rounded-2xl border border-white/5 hover:border-sky-500/30 transition-colors">
+                    <div class="bg-slate-800/60 p-5 rounded-2xl border border-white/10 shadow-md shadow-black/20 hover:border-emerald-500/30 transition-colors">
                         <div class="flex justify-between items-end mb-2">
                             <label class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest flex items-center">
-                                {icone('percent', 'mr-1.5 text-sky-500')} Entrada / Margem Retida
+                                {icone('percent', 'mr-1.5 text-slate-500')} Entrada / Margem Retida
                                 {tooltip(f'Quanto você paga à vista de imediato. Todo banco exige um mínimo (aqui, {(perc_entrada_minima*100):.0f}% pela regra de LTV do {banco_exib}) e o mercado considera pouco usual passar de 80% — acima disso, geralmente compensa mais comprar à vista.')}
                             </label>
-                            <input type="text" id="input_entrada" class="currency-input w-40 text-right bg-transparent font-medium text-white text-2xl outline-none border-b border-transparent focus:border-sky-500 transition-colors" value="">
+                            <input type="text" id="input_entrada" class="currency-input w-40 text-right bg-transparent font-medium text-white text-2xl outline-none border-b border-transparent focus:border-emerald-500 transition-colors" value="">
                         </div>
                         <input type="range" id="slider_entrada" min="{int(entrada_minima_valor)}" max="1000000" step="5000" value="{int(entrada_padrao)}" class="w-full mt-2">
                         <p class="text-[9px] text-slate-500 mt-1 text-right">Mínimo exigido: {(perc_entrada_minima*100):.0f}% do valor</p>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
-                        <div class="bg-slate-900/40 p-4 rounded-2xl border border-white/5 hover:border-sky-500/30 transition-colors">
+                        <div class="bg-slate-800/60 p-5 rounded-2xl border border-white/10 shadow-md shadow-black/20 hover:border-emerald-500/30 transition-colors">
                             <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 flex items-center">
-                                {icone('calendar', 'mr-1.5 text-sky-500')} Prazo
+                                {icone('calendar', 'mr-1.5 text-slate-500')} Prazo
                                 {tooltip(f'Quantidade de parcelas mensais do financiamento. O {banco_exib} permite no máximo {prazo_max_banco} meses ({prazo_max_banco // 12} anos) nessa modalidade.')}
                             </label>
                             <div class="flex items-center"><input type="number" id="input_prazo" min="12" max="{prazo_max_banco}" class="w-full bg-transparent font-medium text-white text-lg outline-none" value="{prazo}"><span class="text-xs text-slate-500 ml-2">meses</span></div>
                             <p class="text-[9px] text-slate-500 mt-1">Equivale a <span id="hint_anos">{anos}</span> anos</p>
                         </div>
-                        <div class="bg-slate-900/40 p-4 rounded-2xl border border-white/5 hover:border-sky-500/30 transition-colors">
+                        <div class="bg-slate-800/60 p-5 rounded-2xl border border-white/10 shadow-md shadow-black/20 hover:border-emerald-500/30 transition-colors">
                             <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 flex items-center">
-                                {icone('trending-up', 'mr-1.5 text-sky-500')} Taxa Estimada
+                                {icone('trending-up', 'mr-1.5 text-slate-500')} Taxa Estimada
                                 {tooltip('Taxa de juros anual estimada, aplicada mensalmente sobre o saldo devedor. É a "taxa de vitrine" — sua taxa final aprovada depende da sua análise de crédito.')}
                             </label>
                             <div class="flex items-center"><input type="number" id="input_taxa" step="0.01" class="w-full bg-transparent font-medium text-white text-lg outline-none" value="{taxa}"><span class="text-xs text-slate-500 ml-2">% a.a.</span></div>
@@ -428,20 +542,24 @@ def gerar_paginas_pseo():
                         </div>
                     </div>
                 </div>
-                <div class="w-full lg:w-1/2 bg-slate-950 rounded-2xl border border-sky-500/20 shadow-inner flex flex-col relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-sky-500 rounded-full blur-[60px] opacity-10"></div>
+                <div class="w-full lg:w-1/2 bg-slate-950 rounded-2xl border border-emerald-500/20 shadow-inner flex flex-col relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500 rounded-full blur-[60px] opacity-10"></div>
                     <div class="px-8 pt-6 pb-4 border-b border-white/5 relative z-10 flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-sky-400 shadow-[0_0_8px_rgba(56,189,248,0.8)]"></span>
-                        <p class="text-sky-400 text-[10px] font-bold uppercase tracking-widest">Resultado da Simulação</p>
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.8)]"></span>
+                        <p class="text-emerald-400 text-[10px] font-bold uppercase tracking-widest">Resultado da Simulação</p>
                     </div>
-                    <div class="p-8 flex-1 flex flex-col justify-center space-y-8 relative z-10">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                            <div><p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-2">Primeira Parcela</p><p class="text-white text-3xl font-light tracking-tight currency-input" id="res_p1">R$ 0,00</p></div>
-                            <div><p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-2">Última Parcela</p><p class="text-slate-300 text-2xl font-light tracking-tight mt-1 currency-input" id="res_pU">R$ 0,00</p></div>
+                    <div class="p-8 flex-1 flex flex-col justify-center space-y-6 relative z-10">
+                        <div class="grid grid-cols-1 gap-4">
+                            <div><p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-2">Primeira Parcela</p><p class="text-white text-3xl font-light tracking-tight currency-input break-words" id="res_p1">R$ 0,00</p></div>
+                            <div><p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-2">Última Parcela</p><p class="text-slate-300 text-2xl font-light tracking-tight currency-input break-words" id="res_pU">R$ 0,00</p></div>
                         </div>
                         <div class="pt-6 border-t border-white/5 grid grid-cols-1 gap-6">
                             <div><p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1.5">Crédito Liberado (Sem Juros)</p><p class="text-white font-medium text-lg currency-input" id="res_capital">R$ 0,00</p></div>
                             <div><p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1.5 flex items-center">Custo Total Final (Capital + Juros)</p><p class="text-white font-medium text-xl currency-input" id="res_total_pago">R$ 0,00</p></div>
+                        </div>
+                        <div class="pt-6 border-t border-white/5">
+                            <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-3">Composição do custo total (cenário padrão)</p>
+                            {svg_donut_capital_juros(vfinanciado_padrao, comparativo['total_sac'] - vfinanciado_padrao)}
                         </div>
                     </div>
                 </div>
@@ -458,9 +576,9 @@ def gerar_paginas_pseo():
                     <label class="text-[10px] font-bold text-slate-300 uppercase tracking-widest block mb-4">Amortização Extra (Pagamento Único)</label>
                     <div class="relative mb-6">
                         <span class="absolute left-4 top-1/2 -translate-y-1/2 font-light text-emerald-500/50 text-3xl">R$</span>
-                        <input type="text" id="input_amortizar" class="currency-input w-full bg-black/50 border border-emerald-500/30 rounded-2xl pl-16 pr-4 py-5 focus:border-emerald-400 font-medium text-emerald-400 text-4xl outline-none transition-all shadow-[inset_0_2px_10px_rgba(0,0,0,0.5)]" value="20.000,00">
+                        <input type="text" id="input_amortizar" class="currency-input w-full bg-black/50 border border-emerald-500/30 rounded-2xl pl-16 pr-4 py-5 focus:border-emerald-400 font-medium text-emerald-400 text-4xl outline-none transition-all shadow-[inset_0_2px_10px_rgba(0,0,0,0.5)]" value="{aporte_padrao_fmt}">
                     </div>
-                    <input type="range" id="slider_amortizar" min="0" max="500000" step="5000" value="20000" class="w-full">
+                    <input type="range" id="slider_amortizar" min="0" max="{slider_amortizar_max}" step="5000" value="{aporte_padrao}" class="w-full">
                 </div>
                 <div class="w-full lg:w-1/2 bg-black/40 border border-emerald-500/30 rounded-2xl p-8 backdrop-blur-sm text-center flex flex-col justify-center shadow-inner">
                     <div class="mb-8">
@@ -477,6 +595,40 @@ def gerar_paginas_pseo():
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- ZONA COMPARATIVA: SAC vs PRICE COM NUMEROS REAIS (sem depender de JS) -->
+        <div class="mt-8 bg-slate-900/40 border border-white/10 rounded-3xl p-8 md:p-10">
+            <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1 flex items-center">
+                {icone('trending-up', 'mr-3 text-emerald-500')} Comparativo Real: SAC vs. PRICE
+            </h2>
+            <p class="text-slate-500 text-[11px] mb-6">
+                Para {valor_curto} financiados pelo {banco_exib} em {prazo} meses, com entrada de {formatar_reais(entrada_padrao)} e taxa de {taxa}% a.a.:
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-black/30 border {('border-emerald-500/40' if comparativo['total_sac'] <= comparativo['total_price'] else 'border-white/10')} rounded-2xl p-5 relative">
+                    {('<span class="absolute -top-3 right-4 bg-emerald-500 text-slate-950 text-[9px] font-bold px-2.5 py-1 rounded-full uppercase tracking-widest shadow-lg">Mais econômico</span>' if comparativo['total_sac'] <= comparativo['total_price'] else '')}
+                    <p class="text-white font-bold text-sm mb-3">Tabela SAC</p>
+                    <div class="space-y-1.5 text-sm">
+                        <div class="flex justify-between"><span class="text-slate-400">1ª parcela</span><span class="text-white currency-input">{formatar_reais(comparativo['p1_sac'])}</span></div>
+                        <div class="flex justify-between"><span class="text-slate-400">Última parcela</span><span class="text-white currency-input">{formatar_reais(comparativo['pU_sac'])}</span></div>
+                        <div class="flex justify-between pt-2 border-t border-white/10"><span class="text-slate-400">Total pago</span><span class="text-emerald-400 font-medium currency-input">{formatar_reais(comparativo['total_sac'])}</span></div>
+                    </div>
+                </div>
+                <div class="bg-black/30 border {('border-emerald-500/40' if comparativo['total_price'] < comparativo['total_sac'] else 'border-white/10')} rounded-2xl p-5 relative">
+                    {('<span class="absolute -top-3 right-4 bg-emerald-500 text-slate-950 text-[9px] font-bold px-2.5 py-1 rounded-full uppercase tracking-widest shadow-lg">Mais econômico</span>' if comparativo['total_price'] < comparativo['total_sac'] else '')}
+                    <p class="text-white font-bold text-sm mb-3">Tabela PRICE</p>
+                    <div class="space-y-1.5 text-sm">
+                        <div class="flex justify-between"><span class="text-slate-400">Parcela fixa</span><span class="text-white currency-input">{formatar_reais(comparativo['p1_price'])}</span></div>
+                        <div class="flex justify-between"><span class="text-slate-400">Última parcela</span><span class="text-white currency-input">{formatar_reais(comparativo['pU_price'])}</span></div>
+                        <div class="flex justify-between pt-2 border-t border-white/10"><span class="text-slate-400">Total pago</span><span class="text-white font-medium currency-input">{formatar_reais(comparativo['total_price'])}</span></div>
+                    </div>
+                </div>
+            </div>
+            <p class="text-slate-400 text-xs mt-4 text-center">
+                Nesse cenário, escolher <strong class="text-emerald-400">SAC em vez de PRICE</strong> economiza aproximadamente
+                <strong class="text-emerald-400 currency-input">{formatar_reais(comparativo['economia_sac'])}</strong> em juros ao longo do contrato.
+            </p>
         </div>
 
         <!-- BANNER DE CONVERSÃO FINANCIA TUDO -->
@@ -533,28 +685,28 @@ def gerar_paginas_pseo():
             <p class="text-slate-500 text-sm text-center max-w-2xl mx-auto mb-8">
                 Mais do que uma calculadora: reunimos aqui o que cada termo do seu financiamento {banco_exib.lower()} significa na prática.
             </p>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
-                <div class="bg-white/5 border border-white/10 p-5 rounded-xl hover:border-emerald-500/30 transition-colors">
+            <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 md:gap-x-12 divide-y divide-white/10 md:divide-y-0">
+                <div class="py-5 md:pt-0 md:border-b md:border-white/10">
                     <p class="text-emerald-400 font-bold text-xs uppercase tracking-widest mb-2 flex items-center">{icone('percent', 'mr-2')} LTV (Loan-to-Value)</p>
                     <p class="text-slate-300 text-sm font-light leading-relaxed">É o percentual do valor do imóvel que o banco aceita financiar. No {banco_exib}, o LTV é de {(regra['ltv']*100):.0f}%, ou seja, sua entrada mínima é de {(perc_entrada_minima*100):.0f}%.</p>
                 </div>
-                <div class="bg-white/5 border border-white/10 p-5 rounded-xl hover:border-emerald-500/30 transition-colors">
+                <div class="py-5 md:pt-0 md:border-b md:border-white/10">
                     <p class="text-emerald-400 font-bold text-xs uppercase tracking-widest mb-2 flex items-center">{icone('invoice', 'mr-2')} CET (Custo Efetivo Total)</p>
                     <p class="text-slate-300 text-sm font-light leading-relaxed">É o custo real do financiamento, somando juros, tarifas e seguros — sempre maior que a taxa de juros anunciada. Use-o para comparar propostas de bancos diferentes de forma justa.</p>
                 </div>
-                <div class="bg-white/5 border border-white/10 p-5 rounded-xl hover:border-emerald-500/30 transition-colors">
+                <div class="py-5 md:border-b md:border-white/10">
                     <p class="text-emerald-400 font-bold text-xs uppercase tracking-widest mb-2 flex items-center">{icone('trending-up', 'mr-2')} Saldo Devedor</p>
                     <p class="text-slate-300 text-sm font-light leading-relaxed">É quanto você ainda deve ao banco em determinado momento (valor financiado menos o que já foi amortizado). É sobre ele que os juros do mês seguinte são calculados.</p>
                 </div>
-                <div class="bg-white/5 border border-white/10 p-5 rounded-xl hover:border-emerald-500/30 transition-colors">
+                <div class="py-5 md:border-b md:border-white/10">
                     <p class="text-emerald-400 font-bold text-xs uppercase tracking-widest mb-2 flex items-center">{icone('bolt', 'mr-2')} Amortização Extra</p>
                     <p class="text-slate-300 text-sm font-light leading-relaxed">Pagamento fora do cronograma que abate diretamente o saldo devedor (não é uma parcela adiantada). Reduz os juros futuros e pode encurtar o prazo ou o valor das próximas parcelas.</p>
                 </div>
-                <div class="bg-white/5 border border-white/10 p-5 rounded-xl hover:border-emerald-500/30 transition-colors">
+                <div class="py-5 pb-0 md:pb-0">
                     <p class="text-emerald-400 font-bold text-xs uppercase tracking-widest mb-2 flex items-center">{icone('calendar', 'mr-2')} SAC vs. PRICE</p>
                     <p class="text-slate-300 text-sm font-light leading-relaxed">SAC amortiza um valor fixo por mês (parcelas decrescentes, menos juros no total). PRICE mantém a parcela fixa (mais previsível, mas mais juros ao longo do contrato).</p>
                 </div>
-                <div class="bg-white/5 border border-white/10 p-5 rounded-xl hover:border-emerald-500/30 transition-colors">
+                <div class="py-5 pb-0 md:pb-0">
                     <p class="text-emerald-400 font-bold text-xs uppercase tracking-widest mb-2 flex items-center">{icone('home', 'mr-2')} Taxa de Vitrine</p>
                     <p class="text-slate-300 text-sm font-light leading-relaxed">A taxa de {taxa}% a.a. mostrada aqui é a taxa padrão anunciada pelo {banco_exib}. Sua taxa final depende do seu relacionamento com o banco e da análise de crédito.</p>
                 </div>
@@ -574,10 +726,28 @@ def gerar_paginas_pseo():
         <!-- ZONA D: FAQ VISUAL -->
         <div class="mt-16 mb-8">
             <h3 class="text-2xl font-serif text-white mb-6 text-center">Perguntas Frequentes</h3>
-            <div class="space-y-4 max-w-3xl mx-auto">
-                <div class="bg-white/5 border border-white/10 p-5 rounded-xl"><h4 class="text-emerald-400 font-bold text-sm mb-2">{faq_q1}</h4><p class="text-slate-300 text-sm font-light leading-relaxed">{faq_a1}</p></div>
-                <div class="bg-white/5 border border-white/10 p-5 rounded-xl"><h4 class="text-emerald-400 font-bold text-sm mb-2">{faq_q2}</h4><p class="text-slate-300 text-sm font-light leading-relaxed">{faq_a2}</p></div>
-                <div class="bg-white/5 border border-white/10 p-5 rounded-xl"><h4 class="text-emerald-400 font-bold text-sm mb-2">{faq_q3}</h4><p class="text-slate-300 text-sm font-light leading-relaxed">{faq_a3}</p></div>
+            <div class="space-y-3 max-w-3xl mx-auto">
+                <details class="group bg-white/5 border border-white/10 rounded-xl overflow-hidden open:border-emerald-500/30 transition-colors">
+                    <summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4">
+                        <h4 class="text-emerald-400 font-bold text-sm">{faq_q1}</h4>
+                        <span class="faq-toggle-icon shrink-0 text-slate-500 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
+                    </summary>
+                    <p class="text-slate-300 text-sm font-light leading-relaxed px-5 pb-5">{faq_a1}</p>
+                </details>
+                <details class="group bg-white/5 border border-white/10 rounded-xl overflow-hidden open:border-emerald-500/30 transition-colors">
+                    <summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4">
+                        <h4 class="text-emerald-400 font-bold text-sm">{faq_q2}</h4>
+                        <span class="faq-toggle-icon shrink-0 text-slate-500 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
+                    </summary>
+                    <p class="text-slate-300 text-sm font-light leading-relaxed px-5 pb-5">{faq_a2}</p>
+                </details>
+                <details class="group bg-white/5 border border-white/10 rounded-xl overflow-hidden open:border-emerald-500/30 transition-colors">
+                    <summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4">
+                        <h4 class="text-emerald-400 font-bold text-sm">{faq_q3}</h4>
+                        <span class="faq-toggle-icon shrink-0 text-slate-500 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
+                    </summary>
+                    <p class="text-slate-300 text-sm font-light leading-relaxed px-5 pb-5">{faq_a3}</p>
+                </details>
             </div>
         </div>
 
@@ -732,14 +902,15 @@ def gerar_paginas_pseo():
                 f.write(html_content)
             urls_sitemap.append(url_canonica)
 
-    gerar_index_home(pasta_saida, links_por_banco)
-    gerar_sitemap(urls_sitemap, pasta_saida, dominio)
+    gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao)
+    gerar_sitemap(urls_sitemap, pasta_saida, dominio, data_ultima_atualizacao)
     gerar_robots_txt(pasta_saida, dominio)
     gerar_logo_svg(pasta_saida)
+    gerar_llms_txt(pasta_saida, dominio, len(urls_sitemap), data_ultima_atualizacao)
     print(f"✅ {len(urls_sitemap)} páginas geradas em '{pasta_saida}/'.")
 
 
-def gerar_index_home(pasta_saida, links_por_banco):
+def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
     blocos_html = ""
     for banco, links in links_por_banco.items():
         regra = obter_regra(banco)
@@ -776,7 +947,8 @@ def gerar_index_home(pasta_saida, links_por_banco):
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "Datalab Global",
-      "url": "{url_home}"
+      "url": "{url_home}",
+      "dateModified": "{data_ultima_atualizacao}"
     }}'''
 
     html_home = f'''<!DOCTYPE html>
@@ -839,20 +1011,59 @@ def gerar_index_home(pasta_saida, links_por_banco):
         f.write(html_home)
 
 
-def gerar_sitemap(urls, pasta_saida, dominio):
-    hoje = date.today().isoformat()
+def gerar_sitemap(urls, pasta_saida, dominio, data_ultima_atualizacao):
+    # lastmod = data REAL da última mudança de taxa (não a data do deploy).
+    # Ver obter_data_ultima_atualizacao(): "lastmod sempre = hoje" é tratado
+    # pelo Google como sinal de frescor falso.
     xml_content = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-    xml_content += f"  <url>\n    <loc>{dominio}/index.html</loc>\n    <lastmod>{hoje}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>1.0</priority>\n  </url>\n"
+    xml_content += f"  <url>\n    <loc>{dominio}/index.html</loc>\n    <lastmod>{data_ultima_atualizacao}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>1.0</priority>\n  </url>\n"
     for url in urls:
-        xml_content += f"  <url>\n    <loc>{url}</loc>\n    <lastmod>{hoje}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.8</priority>\n  </url>\n"
+        xml_content += f"  <url>\n    <loc>{url}</loc>\n    <lastmod>{data_ultima_atualizacao}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.8</priority>\n  </url>\n"
     xml_content += '</urlset>'
     with open(os.path.join(pasta_saida, 'sitemap.xml'), "w", encoding="utf-8") as f:
         f.write(xml_content)
 
 
 def gerar_robots_txt(pasta_saida, dominio):
-    conteudo = f"User-agent: *\nAllow: /\n\nSitemap: {dominio}/sitemap.xml\n"
+    # "Allow: /" cobre todo mundo, incluindo os crawlers de IA (GPTBot,
+    # ClaudeBot, PerplexityBot, Google-Extended etc.) — listamos alguns
+    # explicitamente só por clareza/documentação, o efeito é o mesmo do "*".
+    conteudo = (
+        "User-agent: *\n"
+        "Allow: /\n\n"
+        "User-agent: GPTBot\n"
+        "Allow: /\n\n"
+        "User-agent: ClaudeBot\n"
+        "Allow: /\n\n"
+        "User-agent: PerplexityBot\n"
+        "Allow: /\n\n"
+        "User-agent: Google-Extended\n"
+        "Allow: /\n\n"
+        f"Sitemap: {dominio}/sitemap.xml\n"
+    )
     with open(os.path.join(pasta_saida, 'robots.txt'), "w", encoding="utf-8") as f:
+        f.write(conteudo)
+
+
+def gerar_llms_txt(pasta_saida, dominio, total_paginas, data_ultima_atualizacao):
+    """llms.txt: padrão emergente (2025+) que resume o site pra engines de
+    IA/LLM que buscam contexto rápido antes de citar uma página — análogo
+    ao robots.txt, mas descritivo em vez de regra de acesso."""
+    conteudo = f"""# Datalab Global
+
+> Hub financeiro com simuladores de financiamento imobiliário para mais de 15 instituições brasileiras (Caixa, Banco do Brasil, Itaú, Bradesco, Santander, Banco Inter, Sicredi, Sicoob, Banrisul, BRB, Poupex, C6 Bank, Bari, Cash Me, Daycoval). Calcula parcelas nos sistemas SAC e PRICE, e simula a economia de juros ao antecipar amortizações.
+
+Dados atualizados em: {data_ultima_atualizacao}
+Total de páginas de simulação: {total_paginas}
+
+## Páginas
+- [Home / lista de bancos]({dominio}/index.html)
+- [Sitemap completo]({dominio}/sitemap.xml)
+
+## Sobre os dados
+Taxas de juros, LTV (percentual mínimo de entrada) e prazo máximo são específicos de cada instituição financeira e atualizados mensalmente. Cada página de simulador (padrão de URL: /simulador-{{banco}}-{{valor}}-mil-{{prazo}}-meses.html) traz cálculo de parcelas, custo total e comparativo real entre os sistemas SAC e PRICE para o cenário daquele banco/valor/prazo específico.
+"""
+    with open(os.path.join(pasta_saida, 'llms.txt'), "w", encoding="utf-8") as f:
         f.write(conteudo)
 
 
