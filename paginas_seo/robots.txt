@@ -13,4 +13,4 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
-Sitemap: https://datalabglobal.com/sitemap.xml
+Sitemap: https://simulador.datalabglobal.com/sitemap.xml

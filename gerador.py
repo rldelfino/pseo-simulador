@@ -30,7 +30,7 @@ from bancos import BANCOS, obter_regra, nome_exibicao
 from icones import icone, tooltip
 
 LINK_FINANCIA_TUDO = "https://app.financiatudo.com.br/financiamento-de-imoveis/chave/8940d282b765cbf97b6df55fd1eb0b52b18b2f6e"
-DOMINIO = 'https://datalabglobal.com'
+DOMINIO = 'https://simulador.datalabglobal.com'
 ARQUIVO_ULTIMA_ATUALIZACAO = 'ultima_atualizacao_taxas.txt'
 
 # Matriz dos 15 bancos, compacta, embutida em toda página como JS — usada
