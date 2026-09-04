@@ -2,8 +2,8 @@
 
 > Hub financeiro com simuladores de financiamento imobiliário para mais de 15 instituições brasileiras (Caixa, Banco do Brasil, Itaú, Bradesco, Santander, Banco Inter, Sicredi, Sicoob, Banrisul, BRB, Poupex, C6 Bank, Bari, Cash Me, Daycoval). Calcula parcelas nos sistemas SAC e PRICE, e simula a economia de juros ao antecipar amortizações.
 
-Dados atualizados em: 2026-09-02
-Total de páginas de simulação: 560
+Dados atualizados em: 2026-09-03
+Total de páginas de simulação: 2184
 
 ## Páginas
 - [Home / lista de bancos](https://datalabglobal.com/index.html)

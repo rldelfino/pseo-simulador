@@ -22,7 +22,7 @@ jobs:
           python-version: '3.10'
 
       - name: Instalar Dependências Python
-        run: pip install requests beautifulsoup4 pandas
+        run: pip install -r requirements.txt
 
       - name: Rodar Extrator (atualiza dados.csv com taxas/LTV/prazo)
         run: python etl_taxas.py
@@ -45,6 +45,12 @@ jobs:
         run: |
           git config --global user.name "Robô Datalab"
           git config --global user.email "bot@datalabglobal.com"
-          git add dados.csv paginas_seo
+          # taxas_cache.json e relatorio_atualizacao_taxas.txt PRECISAM ser
+          # commitados: o cache é o que permite ao próximo mês "lembrar" a
+          # última taxa confirmada de cada banco quando uma fonte falhar
+          # (regra pedida pelo Rodolfo). Sem commitar, cada execução do
+          # Actions parte de um checkout limpo e o cache nasce vazio de
+          # novo — a regra de fallback nunca funcionaria de verdade.
+          git add dados.csv paginas_seo taxas_cache.json relatorio_atualizacao_taxas.txt
           git commit -m "auto: atualização mensal de taxas e rebuild do site" || echo "Sem mudanças"
           git push

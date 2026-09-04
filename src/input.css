@@ -80,11 +80,24 @@ input[type="radio"]:not(:checked) + div {
 .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
 
 /* Tooltip educativo (ícone "i" com balão) — sem JS: hover no desktop,
-   toque/foco no mobile via :focus (o span tem tabindex="0"). */
+   toque/foco no mobile via :focus (o span tem tabindex="0").
+
+   A centralização horizontal usa margin-left (não transform: translateX)
+   de propósito: transform só afeta a posição PINTADA do elemento, não a
+   caixa de layout que o navegador usa pra calcular scrollWidth/overflow
+   da página — então um deslocamento via JS em --tt-shift aplicado a um
+   transform podia ficar visualmente correto mas ainda "contar" overflow
+   horizontal na página (bug real encontrado na auditoria mobile,
+   confirmado via scrollWidth > clientWidth mesmo com o balão visualmente
+   dentro da tela). margin-left participa do layout de verdade, então o
+   ajuste de --tt-shift aqui elimina o overflow na origem, não só na tela. */
 .tooltip-box {
+    --tt-shift: -112px; /* metade de w-56 (224px), centraliza por padrão */
+    left: 50%;
+    margin-left: var(--tt-shift);
     opacity: 0;
     visibility: hidden;
-    transform: translate(-50%, 4px);
+    transform: translateY(4px);
     transition: opacity .15s ease, transform .15s ease, visibility .15s;
     pointer-events: none;
 }
@@ -93,9 +106,24 @@ input[type="radio"]:not(:checked) + div {
 .tooltip-wrap:focus-within .tooltip-box {
     opacity: 1;
     visibility: visible;
-    transform: translate(-50%, 0);
+    transform: translateY(0);
 }
 .tooltip-wrap { outline: none; cursor: help; }
+
+/* Micro-animação nos números do resultado (parcela, CET, total etc.):
+   antes o valor trocava instantaneamente ao mexer no slider, sem nenhum
+   feedback visual de "isso acabou de mudar" — um pulso rápido de cor
+   deixa a interação mais viva sem virar exagero. Respeita
+   prefers-reduced-motion (acessibilidade: gente sensível a movimento
+   pode desativar animação no SO/navegador). */
+@keyframes pulseValor {
+    0% { color: #34d399; }
+    100% { color: inherit; }
+}
+.valor-pulse { animation: pulseValor .6s ease-out; }
+@media (prefers-reduced-motion: reduce) {
+    .valor-pulse { animation: none; }
+}
 
 /* Favicon de banco com fallback silencioso: se o serviço de favicons
    externo falhar (ex: Poupex), a imagem quebrada é escondida via CSS e o

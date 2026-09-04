@@ -1,0 +1,13 @@
+# Datalab Global
+
+> Hub financeiro com simuladores de financiamento imobiliário para mais de 15 instituições brasileiras (Caixa, Banco do Brasil, Itaú, Bradesco, Santander, Banco Inter, Sicredi, Sicoob, Banrisul, BRB, Poupex, C6 Bank, Bari, Cash Me, Daycoval). Calcula parcelas nos sistemas SAC e PRICE, e simula a economia de juros ao antecipar amortizações.
+
+Dados atualizados em: 2026-09-03
+Total de páginas de simulação: 560
+
+## Páginas
+- [Home / lista de bancos](https://datalabglobal.com/index.html)
+- [Sitemap completo](https://datalabglobal.com/sitemap.xml)
+
+## Sobre os dados
+Taxas de juros, LTV (percentual mínimo de entrada) e prazo máximo são específicos de cada instituição financeira e atualizados mensalmente. Cada página de simulador (padrão de URL: /simulador-{banco}-{valor}-mil-{prazo}-meses.html) traz cálculo de parcelas, custo total e comparativo real entre os sistemas SAC e PRICE para o cenário daquele banco/valor/prazo específico.

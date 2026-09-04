@@ -27,7 +27,10 @@ BANCOS = {
     },
     "Santander": {
         "nome_exibicao": "Santander",
-        "taxa_padrao": 13.39, "ltv": 0.80, "prazo_max": 420,
+        # Corrigido de 13.39 para 11.69 — mesma correção de metodologia do
+        # Banco Inter (taxa típica de mercado, não uma estimativa alta
+        # demais). Fonte: comparativo de mercado, ago/2026.
+        "taxa_padrao": 11.69, "ltv": 0.80, "prazo_max": 420,
         "mod": "Financiamento Imobiliário", "dominio_favicon": "santander.com.br",
     },
     "BRB": {
@@ -42,17 +45,24 @@ BANCOS = {
     },
     "Itau": {
         "nome_exibicao": "Itaú",
-        "taxa_padrao": 13.09, "ltv": 0.80, "prazo_max": 360,
+        # Corrigido de 13.09 para 11.60 (mesma correção de metodologia).
+        "taxa_padrao": 11.60, "ltv": 0.80, "prazo_max": 360,
         "mod": "Financiamento Imobiliário", "dominio_favicon": "itau.com.br",
     },
     "Bradesco": {
         "nome_exibicao": "Bradesco",
-        "taxa_padrao": 13.50, "ltv": 0.80, "prazo_max": 360,
+        # Corrigido de 13.50 para 11.70 (mesma correção de metodologia).
+        "taxa_padrao": 11.70, "ltv": 0.80, "prazo_max": 360,
         "mod": "Financiamento Imobiliário", "dominio_favicon": "bradesco.com.br",
     },
     "Banco Inter": {
         "nome_exibicao": "Banco Inter",
-        "taxa_padrao": 9.50, "ltv": 0.80, "prazo_max": 360,
+        # Corrigido de 9.50 (taxa mínima "a partir de" anunciada pelo Inter,
+        # sujeita a aprovação de crédito) para 13.76 — taxa típica/realista
+        # de mercado, na mesma metodologia usada pros demais bancos da
+        # matriz (que já usam a taxa padrão típica, não a promocional
+        # mínima). Fonte: comparativo de mercado, ago/2026.
+        "taxa_padrao": 13.76, "ltv": 0.80, "prazo_max": 360,
         "mod": "Financiamento Imobiliário", "dominio_favicon": "bancointer.com.br",
     },
     "Sicredi": {

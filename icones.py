@@ -24,6 +24,8 @@ _ICONES = {
     "info": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="11"></line><circle cx="12" cy="7.5" r="0.9" fill="currentColor" stroke="none"></circle></svg>',
     "bank": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"></path><path d="M5 21V10"></path><path d="M19 21V10"></path><path d="M9 21V10"></path><path d="M15 21V10"></path><path d="M3 10l9-6 9 6"></path></svg>',
     "book-open": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 5h7a3 3 0 0 1 3 3v12a2.5 2.5 0 0 0-2.5-2.5H2z"></path><path d="M22 5h-7a3 3 0 0 0-3 3v12a2.5 2.5 0 0 1 2.5-2.5H22z"></path></svg>',
+    "lightbulb": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"></path><path d="M10 22h4"></path><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.3h6c0-1 .4-1.8 1-2.3A7 7 0 0 0 12 2z"></path></svg>',
+    "repeat": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>',
 }
 
 
@@ -39,9 +41,30 @@ def tooltip(texto):
     """Ícone de 'i' com balão explicativo em CSS puro (sem JS, funciona em
     hover no desktop e em toque no mobile via :focus com tabindex). Usado
     para transformar termos técnicos (LTV, CET, SAC, PRICE...) em conteúdo
-    educativo direto na página, sem poluir o layout principal."""
+    educativo direto na página, sem poluir o layout principal.
+
+    O balão (.tooltip-box) é centralizado no ícone via left-1/2 + translate,
+    com largura FIXA (w-56 = 224px) e sem limite relativo à tela. Isso
+    causava overflow horizontal real em mobile: qualquer ícone perto da
+    borda direita/esquerda da tela (comum, já que os ícones ficam no fim de
+    títulos de card) empurrava o balão pra fora do viewport — e como o
+    balão só fica invisível via opacity/visibility (não display:none, pra
+    permitir a transição suave), ele CONTINUA contando pro scrollWidth da
+    página mesmo escondido, inflando a área rolável mesmo sem o usuário
+    tocar em nada (confirmado via Playwright: scrollWidth > clientWidth em
+    toda página com tooltip perto da borda). O max-w-[calc(100vw-2rem)]
+    abaixo garante que o balão nunca seja mais largo que a tela menos as
+    margens, eliminando o overflow na origem.
+
+    A área de toque do ícone (span.tooltip-wrap) tinha só ~10x10px — o
+    ícone em si mede 1em (10-16px conforme o contexto), sem nenhum espaço
+    extra ao redor. Auditoria mobile confirmou isso abaixo do mínimo
+    recomendado (WCAG 2.5.5 / Apple HIG: 44x44px) pra toque confiável.
+    O p-2.5 (10px de padding) abaixo aumenta a área clicável real pra
+    ~30x30px sem aumentar o ícone visualmente (margem negativa compensa o
+    padding no fluxo do texto, pra não abrir um buraco visual ao redor)."""
     icone_info = icone('info', 'text-slate-500 hover:text-emerald-400 transition-colors')
-    return f'''<span class="tooltip-wrap relative inline-flex items-center ml-1.5 align-middle" tabindex="0">
+    return f'''<span class="tooltip-wrap relative inline-flex items-center justify-center ml-0.5 -my-2.5 p-2.5 align-middle" tabindex="0">
         {icone_info}
-        <span class="tooltip-box absolute z-20 left-1/2 -translate-x-1/2 bottom-full mb-2 w-56 p-3 rounded-lg bg-slate-800 border border-white/10 text-[11px] leading-relaxed font-normal text-slate-300 shadow-2xl normal-case tracking-normal">{texto}</span>
+        <span class="tooltip-box absolute z-20 bottom-full mb-1 w-56 max-w-[calc(100vw-2rem)] p-3 rounded-lg bg-slate-800 border border-white/10 text-[11px] leading-relaxed font-normal text-slate-300 shadow-2xl normal-case tracking-normal">{texto}</span>
     </span>'''
