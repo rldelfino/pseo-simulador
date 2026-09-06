@@ -1,0 +1,19 @@
+# Redireciona as ~508 URLs dos 4 bancos de home equity (C6 Bank, Bari,
+# Cash Me, Daycoval) removidos do produto em set/2026 — eram
+# "Crédito com Garantia de Imóvel", produto diferente de financiamento
+# de compra de imóvel, e vão virar um simulador próprio, separado.
+#
+# Sem isso, qualquer link externo/backlink/resultado de busca antigo
+# pra essas páginas batia num 404 puro — o Google Search Console já
+# começou a reportar isso como "Não encontrado (404)" no relatório de
+# indexação. 301 preserva o valor de SEO acumulado nessas páginas em
+# vez de simplesmente perdê-lo, e manda o visitante pra algo útil (o
+# comparador geral) em vez de uma página morta.
+/simulador-c6-bank-*      /comparador-bancos.html   301
+/simulador-bari-*         /comparador-bancos.html   301
+/simulador-cash-me-*      /comparador-bancos.html   301
+/simulador-daycoval-*     /comparador-bancos.html   301
+/banco-c6-bank.html       /comparador-bancos.html   301
+/banco-bari.html          /comparador-bancos.html   301
+/banco-cash-me.html       /comparador-bancos.html   301
+/banco-daycoval.html      /comparador-bancos.html   301
