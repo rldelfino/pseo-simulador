@@ -1004,7 +1004,7 @@ def gerar_paginas_pseo():
                 <div class="w-full lg:w-1/2 bg-black/40 border border-emerald-500/30 rounded-2xl p-8 backdrop-blur-sm text-center flex flex-col justify-center shadow-inner">
                     <div class="mb-8">
                         <p class="text-emerald-500/80 text-[10px] font-bold uppercase tracking-widest mb-3">Economia Total de Juros</p>
-                        <p class="text-5xl md:text-6xl font-serif text-emerald-400 currency-input" id="res_economia">R$ 0,00</p>
+                        <p class="text-5xl md:text-6xl font-serif text-emerald-400 currency-input break-words" id="res_economia">R$ 0,00</p>
                     </div>
                     <div>
                         <p class="text-emerald-500 text-[10px] font-bold uppercase tracking-widest mb-2">Tempo Reduzido Em</p>
