@@ -33,17 +33,56 @@ LINK_FINANCIA_TUDO = "https://app.financiatudo.com.br/financiamento-de-imoveis/c
 DOMINIO = 'https://simulador.datalabglobal.com'
 ARQUIVO_ULTIMA_ATUALIZACAO = 'ultima_atualizacao_taxas.txt'
 
-# Matriz dos 15 bancos, compacta, embutida em toda página como JS — usada
-# pela caixinha "Comparação com o Mercado" pra recalcular o ranking AO VIVO
-# quando o visitante mexe nos sliders (antes, o ranking era só uma foto
-# estática do cenário padrão da página, e ficava "errado" assim que o
-# usuário mudava valor/prazo — bug relatado pelo Rodolfo). É a mesma matriz
-# de bancos.py, só que no formato que o navegador consegue ler.
-BANCOS_JSON = json.dumps([
-    {"chave": chave, "nome": dados["nome_exibicao"], "taxa": dados["taxa_padrao"],
-     "ltv": dados["ltv"], "prazoMax": dados["prazo_max"]}
-    for chave, dados in BANCOS.items()
-], ensure_ascii=False)
+def taxas_atuais_de(links_por_banco):
+    """Extrai {banco: taxa_atual_float} a partir da própria grade de
+    páginas já lida do dados.csv — ou seja, a taxa que o etl_taxas.py
+    (BACEN/blog) de fato gravou na última atualização, não o
+    'taxa_padrao' estático de bancos.py.
+
+    Achado real (06/set/2026, print do Rodolfo): a página-hub, o
+    comparador-bancos.html e a caixinha "Comparação com o Mercado"
+    (tanto a versão estática quanto a versão ao vivo em JS) usavam
+    regra_banco['taxa_padrao'] direto de bancos.py em vez da taxa
+    recém-atualizada pelo ETL — então rodar o ETL atualizava a parcela
+    da página de simulação individual, mas o resumo do banco e o
+    ranking entre bancos continuavam com a taxa antiga. bancos.py
+    continua sendo a fonte de LTV/prazo_max (o ETL só re-deriva esses
+    dois de lá, nunca busca eles de fonte externa) — só a taxa muda de
+    fonte aqui."""
+    taxas = {}
+    for banco, links in links_por_banco.items():
+        if not links:
+            continue
+        try:
+            # Mesmo parsing defensivo usado pra página individual mais
+            # abaixo neste arquivo: se por acaso a coluna taxa guardar uma
+            # taxa mensal por engano (valor bem abaixo de 4%, implausível
+            # pra taxa anual de financiamento imobiliário), converte pra
+            # anual em vez de exibir o número mensal como se fosse anual.
+            taxa = float(str(links[0]["linha_original"]["taxa"]).replace(",", "."))
+            if taxa < 4.0:
+                taxa = ((1 + (taxa / 100)) ** 12 - 1) * 100
+            taxas[banco] = round(taxa, 2)
+        except (KeyError, ValueError, TypeError):
+            continue
+    return taxas
+
+
+def construir_bancos_json(taxas_atuais):
+    """Matriz dos bancos, compacta, embutida em toda página de simulação
+    como JS — usada pela caixinha "Comparação com o Mercado" pra
+    recalcular o ranking AO VIVO quando o visitante mexe nos sliders
+    (antes, o ranking era só uma foto estática do cenário padrão da
+    página, e ficava "errado" assim que o usuário mudava valor/prazo —
+    bug relatado pelo Rodolfo). taxas_atuais (ver taxas_atuais_de) tem
+    prioridade sobre o taxa_padrao estático de bancos.py, pelo mesmo
+    motivo documentado ali."""
+    return json.dumps([
+        {"chave": chave, "nome": dados["nome_exibicao"],
+         "taxa": taxas_atuais.get(chave, dados["taxa_padrao"]),
+         "ltv": dados["ltv"], "prazoMax": dados["prazo_max"]}
+        for chave, dados in BANCOS.items()
+    ], ensure_ascii=False)
 
 # Corrige o balão de tooltip (ícone "i") em telas estreitas: o CSS puro
 # (.tooltip-box) centraliza o balão no ícone via left:50% + translateX,
@@ -280,22 +319,31 @@ def calcular_sac_price(valor_financiado, prazo_meses, taxa_anual, valor_imovel=N
     return resultado
 
 
-def comparar_todos_bancos(valor_imovel, prazo_alvo, lookup_paginas):
+def comparar_todos_bancos(valor_imovel, prazo_alvo, lookup_paginas, taxas_atuais=None):
     """Compara o CET (sistema SAC) de TODOS os bancos cadastrados para o
     mesmo valor de imóvel, usando o prazo mais próximo do desejado que cada
     banco permite e a ENTRADA MÍNIMA exigida por cada um (regra de LTV
     própria) — não a entrada configurada no banco que está sendo exibido
     nesta página. É a base da caixinha "Comparação com o Mercado": qual
     banco teria o menor CET nas mesmas condições de imóvel/prazo.
+
+    taxas_atuais (opcional, ver taxas_atuais_de): quando informado, usa a
+    taxa que o etl_taxas.py de fato gravou por último em dados.csv em vez
+    do taxa_padrao estático de bancos.py — sem isso, o ranking entre
+    bancos ficava desatualizado mesmo depois do ETL rodar (achado real,
+    06/set/2026). Sem taxas_atuais, cai de volta pro estático (mantém
+    chamadas antigas/testes funcionando sem precisar passar o parâmetro).
+
     Retorna a lista ordenada por CET (menor primeiro)."""
     resultados = []
     for nome_banco, regra_banco in BANCOS.items():
+        taxa_banco = (taxas_atuais or {}).get(nome_banco, regra_banco["taxa_padrao"])
         prazo_b = min(prazo_alvo, regra_banco["prazo_max"])
         entrada_b = valor_imovel * (1 - regra_banco["ltv"])
         vfinanciado_b = valor_imovel - entrada_b
         if vfinanciado_b <= 0:
             continue
-        cet_b = calcular_cet_real(vfinanciado_b, prazo_b, regra_banco["taxa_padrao"], valor_imovel, 'SAC')
+        cet_b = calcular_cet_real(vfinanciado_b, prazo_b, taxa_banco, valor_imovel, 'SAC')
         slug_b = lookup_paginas.get((nome_banco, valor_imovel, prazo_b))
         resultados.append({
             "banco": nome_banco,
@@ -502,8 +550,29 @@ def gerar_paginas_pseo():
         # ciclo de linkagem interna que garante que TODA página recebe pelo
         # menos 1 link de entrada (elimina o risco de páginas órfãs que a
         # amostragem 100% aleatória anterior não garantia).
+        #
+        # Achado real (06/set/2026, print do Rodolfo): isso ordenava pelo
+        # SLUG (string) — "simulador-caixa-1000-mil-..." vem antes de
+        # "simulador-caixa-150-mil-..." em ordem alfabética (comparação
+        # char a char: '0' < '5'), então R$ 1.000.000 aparecia ANTES de
+        # R$ 150.000 nos cards da home/hub. Corrigido pra ordenar pelo
+        # valor numérico do imóvel e depois pelo prazo — o ciclo de
+        # linkagem interna continua cobrindo toda página igual, só que
+        # numa ordem que faz sentido pra quem lê.
         for banco in links_por_banco:
-            links_por_banco[banco].sort(key=lambda p: p["slug"])
+            links_por_banco[banco].sort(key=lambda p: (float(p["linha_original"]["valor_imovel"]), p["prazo_correto"]))
+
+        # Taxa que o etl_taxas.py de fato gravou por último em dados.csv,
+        # por banco — usada em vez do taxa_padrao estático de bancos.py em
+        # toda comparação entre bancos (ver taxas_atuais_de/
+        # comparar_todos_bancos). Calculado uma vez aqui, repassado pros
+        # três lugares que comparam banco com banco.
+        taxas_atuais_por_banco = taxas_atuais_de(links_por_banco)
+        # Calculado uma única vez (não a cada página do loop abaixo — o
+        # valor é o mesmo pra todas): a matriz que a caixinha "Comparação
+        # com o Mercado" recalcula ao vivo em JS quando o visitante mexe
+        # nos sliders.
+        bancos_json_atual = construir_bancos_json(taxas_atuais_por_banco)
 
         termos_variados = [
             "Calculadora de financiamento", "Simulador de crédito", "Simulação de amortização",
@@ -553,7 +622,7 @@ def gerar_paginas_pseo():
             # (que reflete a entrada de fato configurada nesta página) em vez
             # de recalcular com a entrada mínima — evita mostrar dois CETs
             # diferentes pro mesmo banco na mesma página.
-            ranking_bancos = comparar_todos_bancos(valor_imovel, prazo, lookup_paginas)
+            ranking_bancos = comparar_todos_bancos(valor_imovel, prazo, lookup_paginas, taxas_atuais_por_banco)
             for r in ranking_bancos:
                 if r["banco"] == banco:
                     r["cet"] = comparativo["cet_sac"]
@@ -1141,7 +1210,7 @@ def gerar_paginas_pseo():
     <script>
         const REGRA_PRAZO_MAX = {prazo_max_banco};
         const REGRA_PERC_ENTRADA_MIN = {perc_entrada_minima};
-        const BANCOS_JS = {BANCOS_JSON};
+        const BANCOS_JS = {bancos_json_atual};
         const BANCO_ATUAL_CHAVE = {json.dumps(banco, ensure_ascii=False)};
 
         function unformatCurrency(val) {{ return typeof val === 'number' ? val : Number(val.replace(/\\D/g, '')) / 100; }}
@@ -1475,8 +1544,8 @@ def gerar_paginas_pseo():
     # não alcançam sozinhas. Também reforçam o cluster de autoridade
     # temática por banco: cada página de simulação agora linka de volta
     # pro hub do seu banco (ver link real no cabeçalho, acima).
-    urls_hub = gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, dominio)
-    url_comparador = gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio)
+    urls_hub = gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, dominio, taxas_atuais_por_banco)
+    url_comparador = gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas_atuais_por_banco)
 
     gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao)
     gerar_sitemap(urls_sitemap + urls_hub + [url_comparador], pasta_saida, dominio, data_ultima_atualizacao)
@@ -1487,7 +1556,7 @@ def gerar_paginas_pseo():
     print(f"✅ {len(urls_hub)} páginas-hub por banco + 1 página comparativa geradas.")
 
 
-def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, dominio):
+def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, dominio, taxas_atuais=None):
     """Gera uma página-hub por banco (ex: banco-caixa.html): visão geral de
     taxa/entrada/prazo, posição do banco na faixa de CET do mercado, e um
     índice completo de todas as simulações daquele banco. Existe pra
@@ -1496,13 +1565,21 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
     pra caudas longas tipo "simulador caixa 500 mil 30 anos" — não
     capturam sozinhas, e pra dar ao Google um "resumo" por banco que
     reforça o cluster de autoridade temática de cada silo.
+
+    taxas_atuais: ver taxas_atuais_de/comparar_todos_bancos — sem isso o
+    resumo da página (taxa exibida) e a faixa de posição no mercado
+    ficavam com o taxa_padrao estático de bancos.py mesmo depois do ETL
+    atualizar dados.csv (achado real, 06/set/2026: a taxa do Banco do
+    Brasil aqui mostrava 11,69% enquanto a página de simulação individual
+    já mostrava 14,42%, a taxa nova do BACEN).
+
     Retorna a lista de URLs geradas (pro sitemap)."""
     ano_atual = date.today().year
     # Cenário de referência único (igual em toda página-hub e na página
     # comparativa) pra a faixa de CET ser comparável entre bancos — sem
     # isso, cada hub mostraria uma faixa calculada num cenário diferente.
     VALOR_REF, PRAZO_REF = 500_000, 360
-    ranking_ref = comparar_todos_bancos(VALOR_REF, PRAZO_REF, {})
+    ranking_ref = comparar_todos_bancos(VALOR_REF, PRAZO_REF, {}, taxas_atuais)
     cet_min_mercado = ranking_ref[0]["cet"] if ranking_ref else 0
     cet_max_mercado = ranking_ref[-1]["cet"] if ranking_ref else 0
 
@@ -1513,7 +1590,8 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
         slug_hub = slug_hub_banco(banco)
         url_canonica = f"{dominio}/{slug_hub}.html"
         url_logo_banco = f"https://www.google.com/s2/favicons?domain={regra['dominio_favicon']}&sz=128"
-        taxa_fmt = f"{regra['taxa_padrao']:.2f}".replace('.', ',')
+        taxa_atual_banco = (taxas_atuais or {}).get(banco, regra["taxa_padrao"])
+        taxa_fmt = f"{taxa_atual_banco:.2f}".replace('.', ',')
         entrada_min_pct = round((1 - regra['ltv']) * 100)
         prazo_max = regra['prazo_max']
         anos_max = prazo_max // 12
@@ -1717,7 +1795,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
                 </details>
             </div>
             <p class="text-center mt-8">
-                <a href="comparador-bancos.html" class="text-emerald-400 hover:text-emerald-300 underline text-sm">Ver comparativo entre os 15 bancos que acompanhamos →</a>
+                <a href="comparador-bancos.html" class="text-emerald-400 hover:text-emerald-300 underline text-sm">Ver comparativo entre os {len(BANCOS)} bancos que acompanhamos →</a>
             </p>
         </div>
     </main>
@@ -1745,20 +1823,25 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
     return urls
 
 
-def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio):
-    """Gera comparador-bancos.html: tabela com os 15 bancos lado a lado
+def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas_atuais=None):
+    """Gera comparador-bancos.html: tabela com todos os bancos lado a lado
     (taxa, entrada mínima, prazo máximo, CET num cenário de referência
     único), ordenada por CET. Alvo de buscas tipo "comparar taxa
     financiamento imobiliário" / "menor taxa financiamento imobiliário
     {ano}" — termos que nenhuma página-hub ou de simulação, focadas num
-    banco só, capturam sozinhas."""
+    banco só, capturam sozinhas.
+
+    taxas_atuais: ver taxas_atuais_de/comparar_todos_bancos — sem isso o
+    comparador ficava com a taxa estática de bancos.py mesmo depois do
+    ETL atualizar dados.csv (achado real, 06/set/2026)."""
     ano_atual = date.today().year
     VALOR_REF, PRAZO_REF = 500_000, 360
-    ranking_ref = comparar_todos_bancos(VALOR_REF, PRAZO_REF, {})
+    ranking_ref = comparar_todos_bancos(VALOR_REF, PRAZO_REF, {}, taxas_atuais)
 
     linhas_tabela = ""
     for i, r in enumerate(ranking_ref, start=1):
         regra = obter_regra(r["banco"])
+        taxa_exibida = (taxas_atuais or {}).get(r["banco"], regra["taxa_padrao"])
         url_logo = f"https://www.google.com/s2/favicons?domain={regra['dominio_favicon']}&sz=128"
         cet_fmt = f"{r['cet']:.2f}".replace('.', ',')
         destaque = "bg-emerald-500/10 border-emerald-500/30" if i == 1 else "bg-white/5 border-white/10"
@@ -1770,7 +1853,7 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio):
                 {favicon_com_fallback(url_logo, r['banco_exib'], "w-6 h-6")}
                 <span class="text-sm font-medium text-white truncate">{r['banco_exib']}</span>
             </span>
-            <span class="text-right md:text-center text-xs text-slate-400">{regra['taxa_padrao']:.2f}%<span class="hidden md:inline"> a.a.</span></span>
+            <span class="text-right md:text-center text-xs text-slate-400">{taxa_exibida:.2f}%<span class="hidden md:inline"> a.a.</span></span>
             <span class="hidden md:block text-center text-xs text-slate-400">{r['entrada_perc']}% entrada</span>
             <span class="text-right text-sm font-bold text-emerald-400">{cet_fmt}% <span class="hidden md:inline text-[10px] text-slate-500 font-normal">CET</span></span>
         </a>'''
@@ -1945,7 +2028,7 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
             Selecione a instituição financeira abaixo e descubra quanto você economiza ao fazer amortizações — em qualquer prazo, de meses a anos.
         </p>
         <a href="comparador-bancos.html" class="inline-flex items-center gap-2 mt-6 text-emerald-400 hover:text-emerald-300 text-sm font-medium underline underline-offset-4">
-            Ou veja o comparativo de taxas entre os 15 bancos {icone('arrow-right', 'text-xs')}
+            Ou veja o comparativo de taxas entre os {len(BANCOS)} bancos {icone('arrow-right', 'text-xs')}
         </a>
     </div>
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-32 relative z-10 w-full">
