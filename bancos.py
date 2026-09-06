@@ -80,27 +80,17 @@ BANCOS = {
         "taxa_padrao": 11.60, "ltv": 0.75, "prazo_max": 360,
         "mod": "Financiamento Imobiliário", "dominio_favicon": "banrisul.com.br",
     },
-    "C6 Bank": {
-        "nome_exibicao": "C6 Bank",
-        "taxa_padrao": 13.50, "ltv": 0.60, "prazo_max": 240,
-        "mod": "Crédito com Garantia de Imóvel", "dominio_favicon": "c6bank.com.br",
-    },
-    "Bari": {
-        "nome_exibicao": "Bari",
-        "taxa_padrao": 15.25, "ltv": 0.60, "prazo_max": 360,
-        "mod": "Crédito com Garantia de Imóvel", "dominio_favicon": "bancobari.com.br",
-    },
-    "Cash Me": {
-        "nome_exibicao": "Cash Me",
-        "taxa_padrao": 16.63, "ltv": 0.60, "prazo_max": 360,
-        "mod": "Crédito com Garantia de Imóvel", "dominio_favicon": "cashme.com.br",
-    },
-    "Daycoval": {
-        "nome_exibicao": "Daycoval",
-        "taxa_padrao": 16.63, "ltv": 0.60, "prazo_max": 360,
-        "mod": "Crédito com Garantia de Imóvel", "dominio_favicon": "daycoval.com.br",
-    },
 }
+
+# Removidos daqui em set/2026 (a pedido do Rodolfo, depois da auditoria
+# achar que a modalidade oficial do BACEN usada no ETL NÃO cobre estes 4 —
+# são "Crédito com Garantia de Imóvel" / home equity, produto diferente de
+# financiamento de COMPRA de imóvel): C6 Bank, Bari, Cash Me, Daycoval.
+# Vão virar um produto pSEO próprio (simulador de home equity), separado
+# deste, pra não duplicar conteúdo nem confundir o cliente misturando os
+# dois produtos na mesma árvore de páginas. Se precisar recuperar os
+# valores antigos (taxa_padrao/ltv/prazo_max/dominio_favicon) pro novo
+# produto, ver o histórico do git deste arquivo antes desta mudança.
 
 REGRA_FALLBACK = {
     "nome_exibicao": None, "taxa_padrao": 11.99, "ltv": 0.80,

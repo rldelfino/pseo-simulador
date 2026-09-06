@@ -2,7 +2,18 @@ name: ETL Mensal de Taxas de Juros e Rebuild do Site
 
 on:
   schedule:
-    - cron: '0 8 1 * *' # Roda todo dia 1º do mês às 08:00
+    # Dia 5 de cada mês (pedido do Rodolfo, set/2026). Investiguei se o
+    # BACEN tem um dia fixo de publicação do relatório mensal oficial
+    # (modalidade 903201, usada em etl_taxas.py) pra tentar cravar o dia
+    # exato: não achei um padrão confiável — o agregado mensal de um mês
+    # historicamente só fica disponível bem depois do fechamento dele (ex:
+    # em 06/set/2026, o agregado de agosto/2026 ainda não tinha sido
+    # publicado). Isso não é um problema prático: _buscar_taxas_bacen_
+    # oficial() já recua até 2 meses pra trás sozinho até achar o período
+    # mais recente publicado, então o dia exato do disparo não é crítico —
+    # dia 5 dá uma folga razoável sobre o dia 1º sem exigir uma data
+    # perfeita.
+    - cron: '0 8 5 * *'
   workflow_dispatch: # Permite rodar manualmente no GitHub
 
 # ISSO AQUI RESOLVE O ERRO 128 (Dá permissão de gravação pro robô)

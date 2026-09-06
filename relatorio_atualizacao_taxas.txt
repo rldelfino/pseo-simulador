@@ -1,0 +1,13 @@
+Atualização de taxas — 2026-09-06
+========================================
+✅ Caixa: 12.12% a.a. (encontrado agora em https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201)
+✅ Banco do Brasil: 14.42% a.a. (encontrado agora em https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201)
+✅ Santander: 12.29% a.a. (encontrado agora em https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201)
+✅ BRB: 11.36% a.a. (encontrado agora em https://larya.com.br/blog/qual-banco-tem-a-menor-taxa-para-financiamento-imobiliario-em-2026/)
+⚠️  Poupex: 10.8% a.a. (nenhuma fonte configurada ainda — usando valor padrão de bancos.py)
+✅ Itau: 12.01% a.a. (encontrado agora em https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201)
+✅ Bradesco: 12.29% a.a. (encontrado agora em https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201)
+✅ Banco Inter: 12.5% a.a. (encontrado agora em https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201)
+✅ Sicredi: 11.13% a.a. (encontrado agora em https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201)
+✅ Sicoob: 10.84% a.a. (encontrado agora em https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201)
+✅ Banrisul: 9.37% a.a. (encontrado agora em https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201)

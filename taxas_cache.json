@@ -1,0 +1,52 @@
+{
+  "BRB": {
+    "atualizado_em": "2026-09-06",
+    "fonte": "https://larya.com.br/blog/qual-banco-tem-a-menor-taxa-para-financiamento-imobiliario-em-2026/",
+    "taxa": 11.36
+  },
+  "Banco Inter": {
+    "atualizado_em": "2026-09-06",
+    "fonte": "https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201",
+    "taxa": 12.5
+  },
+  "Banco do Brasil": {
+    "atualizado_em": "2026-09-06",
+    "fonte": "https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201",
+    "taxa": 14.42
+  },
+  "Banrisul": {
+    "atualizado_em": "2026-09-06",
+    "fonte": "https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201",
+    "taxa": 9.37
+  },
+  "Bradesco": {
+    "atualizado_em": "2026-09-06",
+    "fonte": "https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201",
+    "taxa": 12.29
+  },
+  "Caixa": {
+    "atualizado_em": "2026-09-06",
+    "fonte": "https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201",
+    "taxa": 12.12
+  },
+  "Itau": {
+    "atualizado_em": "2026-09-06",
+    "fonte": "https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201",
+    "taxa": 12.01
+  },
+  "Santander": {
+    "atualizado_em": "2026-09-06",
+    "fonte": "https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201",
+    "taxa": 12.29
+  },
+  "Sicoob": {
+    "atualizado_em": "2026-09-06",
+    "fonte": "https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201",
+    "taxa": 10.84
+  },
+  "Sicredi": {
+    "atualizado_em": "2026-09-06",
+    "fonte": "https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201",
+    "taxa": 11.13
+  }
+}

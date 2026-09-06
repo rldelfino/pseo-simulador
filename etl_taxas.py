@@ -6,7 +6,7 @@ from datetime import date
 import requests
 from bs4 import BeautifulSoup
 
-from bancos import BANCOS
+from bancos import BANCOS, normalizar_chave
 
 ARQUIVO_ULTIMA_ATUALIZACAO = 'ultima_atualizacao_taxas.txt'
 ARQUIVO_CACHE_TAXAS = 'taxas_cache.json'
@@ -41,10 +41,163 @@ TAXA_MAXIMA_PLAUSIVEL = 25.0
 # incluímos aqui fontes que já checamos manualmente e que separam as
 # duas coisas com clareza.
 #
-# Pra adicionar uma fonte nova pra um banco que hoje não tem (Poupex,
-# Sicoob, Sicredi, Banrisul, C6, Bari, Cash Me, Daycoval): basta
+# Pra adicionar uma fonte nova pra um banco que hoje não tem: basta
 # acrescentar uma entrada na lista abaixo com a URL e os aliases que o
-# nome do banco pode assumir na tabela dessa fonte.
+# nome do banco pode assumir na tabela dessa fonte. Quando duas fontes
+# cobrem o mesmo banco, a primeira da lista que encontrar um valor
+# "ganha" (ver _buscar_taxas_nas_fontes) — por isso não tem problema a
+# tabela do idinheiro abaixo também listar Caixa/BB/Itaú/etc: como a
+# fonte da larya já resolve esses, os aliases aqui cobrem só os 4 bancos
+# que essa fonte de fato adiciona de novo.
+#
+# Restam sem fonte automatizada: C6 Bank, Bari, Cash Me e Daycoval — são
+# bancos de "Crédito com Garantia de Imóvel" (home equity), não
+# financiamento imobiliário tradicional (SFH), e depois de pesquisa
+# ativa (ago/2026) não existe hoje nenhuma tabela comparativa pública
+# que separe taxa típica de taxa promocional pra esses 4 especificamente
+# — os comparativos existentes ou não mencionam esses bancos, ou trazem
+# só texto solto sem tabela (o mesmo tipo de fonte não-confiável que
+# causou o bug do Banco Inter, que usamos taxa "a partir de" por engano).
+# Continuam curados manualmente em bancos.py até uma fonte confiável
+# aparecer — não é um bug, é a informação não existir de forma segura
+# pra automatizar ainda.
+# Fonte primária (achado da auditoria de set/2026, sugerida pelo Rodolfo:
+# "faz mais sentido buscar do banco central mesmo"): relatório OFICIAL do
+# Banco Central — Taxas de Juros por Instituição Financeira, modalidade
+# "Financiamento imobiliário com taxas de mercado - Pós-fixado
+# referenciado em TR" (código 903201, pessoa física) — a linha SFH
+# clássica, a mais comum no mercado brasileiro. É a taxa média REAL de
+# operações efetivamente contratadas, apurada mensalmente pelo próprio
+# regulador — mais autoritativa que qualquer comparativo de blog, e sem
+# o risco de misturar taxa promocional com taxa típica (o mesmo cuidado
+# da lição do Banco Inter, ver docstring de bancos.py).
+#
+# Consome a API JSON pública que a própria página do BACEN usa
+# internamente (achada inspecionando as chamadas de rede da página) —
+# não precisa de parsing de HTML/tabela, então é mais robusto a mudança
+# de layout do site do que as fontes de blog abaixo.
+#
+# Página humana equivalente (pra conferência manual):
+# https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201
+FONTE_BACEN_API_URL = "https://www.bcb.gov.br/api/servico/sitebcb/historicotaxajurosdiario/atual"
+FONTE_BACEN_PAGINA_HUMANA = "https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201"
+FONTE_BACEN_CODIGO_MODALIDADE = "903201"
+
+# BACEN usa razão social oficial na resposta (ex: "BCO DO ESTADO DO RS
+# S.A." = Banrisul; "CAIXA ECONOMICA FEDERAL" = Caixa) — não bate 1:1 com
+# o nome comercial usado em bancos.py, por isso o mapeamento manual
+# abaixo. Confirmado manualmente contra o relatório ao vivo (set/2026):
+# essa modalidade específica NÃO cobre BRB nem Poupex (não aparecem no
+# relatório desse período) — para esses dois, as fontes de blog abaixo
+# continuam sendo o que temos. Também não cobre C6 Bank/Bari/Cash Me/
+# Daycoval — que em bancos.py são "Crédito com Garantia de Imóvel"
+# (home equity), um produto DIFERENTE de financiamento de compra de
+# imóvel, então não faz sentido usar esta modalidade pra eles mesmo que
+# o nome do banco apareça no relatório (Bari aparece, mas com a taxa do
+# produto errado — cuidado se for adicionar uma fonte pra esses 4 no
+# futuro: precisa ser a modalidade de home equity, não esta).
+#
+# Usa a razão social EXATA observada ao vivo (não um alias curto tipo só
+# "SANTANDER"), pra reduzir o risco de casar sem querer com uma entidade
+# errada do mesmo grupo (ex: um braço de financiamento separado do banco
+# de varejo). A comparação em si (_normalizar_nome_instituicao) já tolera
+# acento/caixa/pontuação variando — não precisa listar variante acentuada
+# e sem acento à mão (antes tinha "ITAÚ"/"ITAU" duplicado; a normalização
+# resolve isso sozinha agora, reaproveitando normalizar_chave de bancos.py
+# em vez de duplicar a lógica de remover acento).
+ALIASES_BACEN_IMOVEL = {
+    "Caixa": ["CAIXA ECONOMICA FEDERAL"],
+    "Banco do Brasil": ["BCO DO BRASIL S.A."],
+    "Santander": ["BCO SANTANDER (BRASIL) S.A."],
+    "Itau": ["ITAÚ UNIBANCO S.A."],
+    "Bradesco": ["BCO BRADESCO S.A."],
+    "Banco Inter": ["BANCO INTER"],
+    "Sicredi": ["BANCO COOPERATIVO SICREDI"],
+    "Sicoob": ["BANCO SICOOB S.A."],
+    "Banrisul": ["BCO DO ESTADO DO RS S.A."],
+}
+
+
+def _normalizar_nome_instituicao(texto):
+    """Uppercase + remove acento (reaproveita normalizar_chave de
+    bancos.py) + remove pontuação solta + colapsa espaço — deixa a
+    comparação tolerante a variações de formatação da razão social entre
+    atualizações do relatório do BACEN (ex: 'S.A.' virar 'SA' num mês
+    futuro, ou espaçamento duplo)."""
+    sem_pontuacao = re.sub(r"[.,]", "", texto)
+    sem_espaco_duplo = re.sub(r"\s+", " ", sem_pontuacao).strip()
+    return normalizar_chave(sem_espaco_duplo).upper()
+
+
+def _buscar_taxas_bacen_oficial():
+    """
+    Consulta o relatório oficial do BACEN (ver FONTE_BACEN_API_URL acima).
+    É mensal — tenta o mês corrente e recua até 2 meses se ainda não
+    tiver sido publicado (normalmente sai com poucos dias de atraso após
+    o fechamento do mês). Retorna {banco: {"taxa": float, "fonte": url}}
+    só com o que encontrou; bancos não cobertos por esta modalidade
+    (BRB, Poupex, os 4 de home equity) simplesmente não aparecem — quem
+    chama decide o fallback.
+    """
+    hoje = date.today()
+    for meses_atras in range(3):
+        ano, mes = hoje.year, hoje.month - meses_atras
+        while mes <= 0:
+            mes += 12
+            ano -= 1
+        inicio_periodo = f"{ano:04d}-{mes:02d}-01"
+        filtro = (
+            f"(codigoSegmento eq '1') and (codigoModalidade eq '{FONTE_BACEN_CODIGO_MODALIDADE}') "
+            f"and (InicioPeriodo eq '{inicio_periodo}')"
+        )
+        try:
+            resp = requests.get(FONTE_BACEN_API_URL, params={"filtro": filtro}, headers=_HEADERS, timeout=20)
+            resp.raise_for_status()
+            linhas = resp.json().get("conteudo", [])
+        except (requests.RequestException, ValueError) as e:
+            print(f"⚠️  BACEN: falha ao consultar período {inicio_periodo}: {e}")
+            continue
+
+        if not linhas:
+            continue  # período ainda não publicado — tenta o mês anterior
+
+        resultado = {}
+        for linha in linhas:
+            nome_bacen_norm = _normalizar_nome_instituicao(str(linha.get("InstituicaoFinanceira", "")))
+            try:
+                taxa_aa = float(str(linha["TaxaJurosAoAno"]).replace(",", "."))
+            except (KeyError, ValueError, TypeError):
+                continue
+            if not (TAXA_MINIMA_PLAUSIVEL <= taxa_aa <= TAXA_MAXIMA_PLAUSIVEL):
+                continue
+            for banco, aliases in ALIASES_BACEN_IMOVEL.items():
+                if not any(_normalizar_nome_instituicao(alias) in nome_bacen_norm for alias in aliases):
+                    continue
+                if banco in resultado:
+                    # Mais de uma linha do relatório bateu no mesmo banco
+                    # (ex: duas entidades do mesmo grupo) — mantém a
+                    # primeira, mas avisa em vez de trocar em silêncio, pra
+                    # não arriscar pegar a taxa da entidade errada sem
+                    # ninguém perceber.
+                    print(f"⚠️  BACEN: mais de uma linha bateu no alias de {banco} — mantendo a primeira encontrada, ignorando '{linha.get('InstituicaoFinanceira')}'")
+                    continue
+                resultado[banco] = {"taxa": taxa_aa, "fonte": FONTE_BACEN_PAGINA_HUMANA}
+
+        if resultado:
+            print(f"✅ BACEN: {len(resultado)} banco(s) encontrados pro período {inicio_periodo} ({FONTE_BACEN_PAGINA_HUMANA})")
+            return resultado
+
+    print("⚠️  BACEN: nenhum dos últimos 3 meses tinha relatório publicado")
+    return {}
+
+
+# Fontes secundárias (blog) — funcionam como fallback. Na prática, hoje
+# só BRB e Poupex DEPENDEM delas (é o único par que o BACEN não cobre
+# nessa modalidade); Sicoob/Sicredi/Banrisul também aparecem nos aliases
+# abaixo, mas o BACEN já resolve os três primeiro — não remover esses
+# três achando que são redundantes: são a rede de segurança pro dia em
+# que o casamento de alias do BACEN quebrar pra algum deles (ver
+# _normalizar_nome_instituicao) sem que ninguém perceba na hora.
 FONTES_TAXA_TIPICA = [
     {
         "url": "https://larya.com.br/blog/qual-banco-tem-a-menor-taxa-para-financiamento-imobiliario-em-2026/",
@@ -56,6 +209,15 @@ FONTES_TAXA_TIPICA = [
             "Bradesco": ["bradesco"],
             "BRB": ["brb"],
             "Banco Inter": ["inter"],
+        },
+    },
+    {
+        "url": "https://www.idinheiro.com.br/financiamentos/imobiliario/melhor-taxa-financiamento-imobiliario/",
+        "aliases": {
+            "Sicoob": ["sicoob"],
+            "Sicredi": ["sicredi"],
+            "Poupex": ["poupex"],
+            "Banrisul": ["banrisul", "banco do estado do rs", "banco do estado do rio grande do sul"],
         },
     },
 ]
@@ -97,13 +259,22 @@ def _extrair_taxa_da_tabela(html, aliases_por_banco):
 
 def _buscar_taxas_nas_fontes():
     """
-    Percorre FONTES_TAXA_TIPICA e tenta extrair taxas reais de cada uma.
-    Uma fonte que falhar (rede fora do ar, HTML mudou de estrutura) não
-    derruba as outras — cada requisição é isolada em try/except. Retorna
-    um dict {banco: {"taxa": float, "fonte": url}} com tudo que
-    conseguiu, de qualquer fonte.
+    Tenta primeiro o BACEN oficial (_buscar_taxas_bacen_oficial —
+    prioridade máxima, é a fonte regulatória), depois percorre
+    FONTES_TAXA_TIPICA (blog) só pros bancos que o BACEN não cobriu
+    nessa modalidade (hoje: BRB, Poupex). Uma fonte que falhar (rede
+    fora do ar, HTML/API mudou de estrutura) não derruba as outras —
+    cada requisição é isolada em try/except. Retorna um dict
+    {banco: {"taxa": float, "fonte": url}} com tudo que conseguiu, de
+    qualquer fonte.
     """
     resultado = {}
+
+    try:
+        resultado.update(_buscar_taxas_bacen_oficial())
+    except Exception as e:
+        print(f"⚠️  Falha inesperada consultando o BACEN: {e}")
+
     for fonte in FONTES_TAXA_TIPICA:
         url = fonte["url"]
         try:
@@ -204,9 +375,9 @@ def atualizar_base_csv(novas_taxas):
     try:
         with open(caminho_csv, mode='r', encoding='utf-8') as f:
             leitor = csv.DictReader(f, delimiter=';')
-            cabecalho = list(leitor.fieldnames)
+            cabecalho = [c for c in leitor.fieldnames if c != 'cet']
 
-            for col in ['cet', 'ltv', 'prazo_maximo']:
+            for col in ['ltv', 'prazo_maximo']:
                 if col not in cabecalho:
                     cabecalho.append(col)
 
@@ -219,8 +390,15 @@ def atualizar_base_csv(novas_taxas):
                 linha['ltv'] = round(regra['ltv'] * 100)
                 linha['prazo_maximo'] = regra.get('prazo_max', 360)
 
-                taxa_atual = float(linha['taxa'])
-                linha['cet'] = round(taxa_atual + 0.15, 2)
+                # Coluna 'cet' removida (achado da auditoria de set/2026):
+                # era escrita aqui com uma fórmula grosseira (taxa + 0,15
+                # fixo), mas o gerador.py NUNCA leu essa coluna — o CET de
+                # verdade sempre foi recalculado do zero via TIR
+                # (calcular_cet_real), que já soma seguros MIP/DFI e taxa
+                # de administração. Era dado morto e potencialmente
+                # enganoso pra quem abrisse o CSV achando que ali estava
+                # o CET real.
+                linha.pop('cet', None)
                 dados_atualizados.append(linha)
 
             # Adiciona bancos novos definidos em bancos.py que ainda não estão no
@@ -240,7 +418,7 @@ def atualizar_base_csv(novas_taxas):
                             'banco': novo_banco, 'valor_imovel': str(valor), 'taxa': taxa_n,
                             'prazo': str(prazo),
                             'slug': f'simulador-{nome_slug}-{milhares}-mil-{prazo}-meses',
-                            'cet': round(taxa_n + 0.15, 2), 'ltv': round(regra['ltv'] * 100),
+                            'ltv': round(regra['ltv'] * 100),
                             'prazo_maximo': regra['prazo_max'],
                         })
 

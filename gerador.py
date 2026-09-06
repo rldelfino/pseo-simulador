@@ -60,12 +60,23 @@ BANCOS_JSON = json.dumps([
 SCRIPT_AJUSTA_TOOLTIPS = '''
         function ajustarTooltips() {
             const margem = 8;
+            // Achado real (06/set/2026, auditoria do projeto irmão de
+            // veículos): usar window.innerWidth aqui deixava o balão
+            // estourando a tela mesmo com ajustarTooltips() já rodando no
+            // window.onload — confirmado ao vivo (Playwright/navegador
+            // real, viewport 375px: scrollWidth 414 > clientWidth 375,
+            // tooltip do CET estourando). Causa: esta página tem
+            // overflow-x:hidden no <body>, e nesse caso window.innerWidth
+            // pode devolver um valor MAIOR que a área realmente visível.
+            // document.documentElement.clientWidth é a largura real
+            // renderizada e não sofre desse problema.
+            const larguraTela = document.documentElement.clientWidth;
             document.querySelectorAll('.tooltip-box').forEach(box => {
                 const metade = box.offsetWidth / 2;
                 box.style.setProperty('--tt-shift', (-metade) + 'px');
                 const r = box.getBoundingClientRect();
                 let shift = 0;
-                if (r.right > window.innerWidth - margem) shift = (window.innerWidth - margem) - r.right;
+                if (r.right > larguraTela - margem) shift = (larguraTela - margem) - r.right;
                 else if (r.left < margem) shift = margem - r.left;
                 if (shift !== 0) box.style.setProperty('--tt-shift', (-metade + shift).toFixed(0) + 'px');
             });
@@ -79,6 +90,70 @@ SCRIPT_AJUSTA_TOOLTIPS = '''
             document.fonts.ready.then(ajustarTooltips).catch(() => {});
         }
 '''.strip('\n')
+
+
+def render_head_boilerplate(titulo_pagina, meta_description, url_canonica, dominio, json_ld_blocos, meta_keywords=None, titulo_social=None):
+    """Bloco <head> compartilhado (charset/viewport/OG/Twitter Card/
+    AdSense/stylesheets) — extraído em set/2026 (auditoria pedida pelo
+    Rodolfo) porque estava colado quase idêntico em 4 funções geradoras
+    diferentes (gerar_paginas_pseo, gerar_hub_bancos,
+    gerar_comparador_bancos, gerar_index_home), ~40 linhas cada, e
+    divergindo entre si sem motivo (só a página de simulação tinha
+    dns-prefetch e twitter:title/description/image completos — as
+    outras três tinham só twitter:card). Padronizado aqui pra versão
+    mais completa em toda página, não só a de simulação.
+
+    titulo_social: og:title/twitter:title, se precisar ser diferente do
+    <title> (ex: a home tinha um og:title deliberadamente mais curto que
+    o <title> antes desta função existir — sem esse parâmetro, o refactor
+    tinha silenciosamente igualado os dois). Default: usa titulo_pagina.
+
+    json_ld_blocos: lista de strings já formatadas (cada uma o CONTEÚDO
+    de um bloco JSON-LD, sem as tags <script>) — mantém o mesmo formato
+    "f-string com chaves escapadas" que o resto do arquivo já usa pros
+    schemas, pra não precisar reescrever schema_faq/schema_breadcrumb/etc
+    de uma vez."""
+    titulo_social = titulo_social or titulo_pagina
+    scripts_json_ld = "\n".join(
+        f'    <script type="application/ld+json">\n    {bloco}\n    </script>'
+        for bloco in json_ld_blocos
+    )
+    # Lista de linhas em vez de montar a linha opcional de keywords com um
+    # \n embutido à mão (achado da auditoria: só essa linha precisava do
+    # \n manual, diferente de todas as outras — frágil pra reformatar).
+    linhas_topo = [
+        '    <meta charset="UTF-8">',
+        '    <meta name="viewport" content="width=device-width, initial-scale=1.0">',
+        f'    <title>{titulo_pagina}</title>',
+        f'    <meta name="description" content="{meta_description}">',
+        f'    <meta name="keywords" content="{meta_keywords}">' if meta_keywords else None,
+        f'    <link rel="canonical" href="{url_canonica}" />',
+    ]
+    linhas_topo_html = "\n".join(l for l in linhas_topo if l is not None)
+    return f'''{linhas_topo_html}
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="Datalab Global">
+    <meta property="og:title" content="{titulo_social}">
+    <meta property="og:description" content="{meta_description}">
+    <meta property="og:url" content="{url_canonica}">
+    <meta property="og:image" content="{dominio}/logo.svg">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{titulo_social}">
+    <meta name="twitter:description" content="{meta_description}">
+    <meta name="twitter:image" content="{dominio}/logo.svg">
+
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5414184968223405" crossorigin="anonymous"></script>
+
+{scripts_json_ld}'''
 
 
 def obter_data_ultima_atualizacao():
@@ -682,46 +757,7 @@ def gerar_paginas_pseo():
             html_content = f'''<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{titulo_pagina}</title>
-    <meta name="description" content="{meta_description}">
-    <meta name="keywords" content="{meta_keywords}">
-    <link rel="canonical" href="{url_canonica}" />
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
-
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="pt_BR">
-    <meta property="og:site_name" content="Datalab Global">
-    <meta property="og:title" content="{titulo_pagina}">
-    <meta property="og:description" content="{meta_description}">
-    <meta property="og:url" content="{url_canonica}">
-    <meta property="og:image" content="{dominio}/logo.svg">
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="{titulo_pagina}">
-    <meta name="twitter:description" content="{meta_description}">
-    <meta name="twitter:image" content="{dominio}/logo.svg">
-
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5414184968223405" crossorigin="anonymous"></script>
-
-    <script type="application/ld+json">
-    {schema_faq}
-    </script>
-    <script type="application/ld+json">
-    {schema_breadcrumb}
-    </script>
-    <script type="application/ld+json">
-    {schema_software}
-    </script>
-    <script type="application/ld+json">
-    {schema_howto}
-    </script>
+{render_head_boilerplate(titulo_pagina, meta_description, url_canonica, dominio, [schema_faq, schema_breadcrumb, schema_software, schema_howto], meta_keywords)}
 </head>
 <body class="antialiased flex flex-col">
     <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
@@ -1572,35 +1608,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
         html_hub = f'''<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{titulo_pagina}</title>
-    <meta name="description" content="{meta_description}">
-    <link rel="canonical" href="{url_canonica}" />
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="pt_BR">
-    <meta property="og:site_name" content="Datalab Global">
-    <meta property="og:title" content="{titulo_pagina}">
-    <meta property="og:description" content="{meta_description}">
-    <meta property="og:url" content="{url_canonica}">
-    <meta property="og:image" content="{dominio}/logo.svg">
-    <meta name="twitter:card" content="summary">
-
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5414184968223405" crossorigin="anonymous"></script>
-
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <script type="application/ld+json">
-    {schema_breadcrumb}
-    </script>
-    <script type="application/ld+json">
-    {schema_faq}
-    </script>
+{render_head_boilerplate(titulo_pagina, meta_description, url_canonica, dominio, [schema_breadcrumb, schema_faq])}
 </head>
 <body class="antialiased flex flex-col min-h-screen">
     <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
@@ -1786,32 +1794,7 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio):
     html_comparador = f'''<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{titulo_pagina}</title>
-    <meta name="description" content="{meta_description}">
-    <link rel="canonical" href="{url_canonica}" />
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="pt_BR">
-    <meta property="og:site_name" content="Datalab Global">
-    <meta property="og:title" content="{titulo_pagina}">
-    <meta property="og:description" content="{meta_description}">
-    <meta property="og:url" content="{url_canonica}">
-    <meta property="og:image" content="{dominio}/logo.svg">
-    <meta name="twitter:card" content="summary">
-
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5414184968223405" crossorigin="anonymous"></script>
-
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <script type="application/ld+json">
-    {schema_breadcrumb}
-    </script>
+{render_head_boilerplate(titulo_pagina, meta_description, url_canonica, dominio, [schema_breadcrumb])}
 </head>
 <body class="antialiased flex flex-col min-h-screen">
     <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
@@ -1931,35 +1914,17 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
       "dateModified": "{data_ultima_atualizacao}"
     }}'''
 
+    titulo_home = "Simulador de Financiamento e Amortização (Meses ou Anos) | Datalab Global"
+    # og:title/twitter:title deliberadamente mais curto que o <title> —
+    # comportamento original de antes do render_head_boilerplate existir,
+    # preservado explicitamente aqui (achado da auditoria: a extração
+    # tinha igualado os dois sem querer, mudando o texto que aparece ao
+    # compartilhar a home no Facebook/LinkedIn/Twitter).
+    titulo_home_social = "Simulador de Financiamento e Amortização | Datalab Global"
     html_home = f'''<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador de Financiamento e Amortização (Meses ou Anos) | Datalab Global</title>
-    <meta name="description" content="{descricao_home}">
-    <link rel="canonical" href="{url_home}" />
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="pt_BR">
-    <meta property="og:site_name" content="Datalab Global">
-    <meta property="og:title" content="Simulador de Financiamento e Amortização | Datalab Global">
-    <meta property="og:description" content="{descricao_home}">
-    <meta property="og:url" content="{url_home}">
-    <meta property="og:image" content="{DOMINIO}/logo.svg">
-    <meta name="twitter:card" content="summary">
-
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5414184968223405" crossorigin="anonymous"></script>
-
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <script type="application/ld+json">
-    {schema_website}
-    </script>
+{render_head_boilerplate(titulo_home, descricao_home, url_home, DOMINIO, [schema_website], titulo_social=titulo_home_social)}
 </head>
 <body class="antialiased min-h-screen flex flex-col">
     <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
