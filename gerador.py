@@ -33,6 +33,24 @@ LINK_FINANCIA_TUDO = "https://app.financiatudo.com.br/financiamento-de-imoveis/c
 DOMINIO = 'https://simulador.datalabglobal.com'
 ARQUIVO_ULTIMA_ATUALIZACAO = 'ultima_atualizacao_taxas.txt'
 
+# URLs PÚBLICAS (canonical/sitemap/links/schema) NUNCA levam ".html" —
+# achado real (06/set/2026, Google Search Console: 1,49 mil páginas em
+# "Página com redirecionamento", quase o site inteiro). Causa raiz: o
+# Cloudflare Pages devolve 308 de "/pagina.html" pra "/pagina" (remove a
+# extensão automaticamente) — mas todo canonical/sitemap/link interno
+# aqui sempre apontou pra versão COM ".html", a que redireciona. Isso
+# criava um ciclo que o Google não conseguia resolver: rastreia a URL do
+# sitemap (.html) -> recebe redirect -> chega na versão sem extensão ->
+# essa página diz que o canonical de verdade é a URL com ".html" (a que
+# acabou de redirecionar pra cá) -> Google não indexa nenhuma das duas
+# com confiança.
+#
+# Os ARQUIVOS no disco continuam terminando em .html (é isso que diz pro
+# Cloudflare "isto é HTML, pode servir e fazer o auto-redirect") — só as
+# URLs que este arquivo CONSTRÓI (canonical, sitemap, JSON-LD, <a href>)
+# é que não levam mais a extensão, pra bater exatamente com o que o
+# Cloudflare serve como resposta final (200), sem nenhum salto no meio.
+
 def taxas_atuais_de(links_por_banco):
     """Extrai {banco: taxa_atual_float} a partir da própria grade de
     páginas já lida do dados.csv — ou seja, a taxa que o etl_taxas.py
@@ -744,7 +762,7 @@ def gerar_paginas_pseo():
             for pag_sorteada in paginas_sorteadas:
                 termo = random.choice(termos_variados)
                 links_internos_html += f"""
-                <a href="{pag_sorteada['slug']}.html" class="block p-4 bg-white/5 rounded-xl border border-white/10 hover:border-emerald-500/50 hover:bg-white/10 transition-all">
+                <a href="{pag_sorteada['slug']}" class="block p-4 bg-white/5 rounded-xl border border-white/10 hover:border-emerald-500/50 hover:bg-white/10 transition-all">
                     <span class="text-xs text-emerald-500 font-bold uppercase tracking-wider block mb-1">{termo}</span>
                     <span class="text-sm text-slate-300 group-hover:text-white block">{pag_sorteada['banco_exib']} - {pag_sorteada['texto']}</span>
                 </a>
@@ -775,7 +793,7 @@ def gerar_paginas_pseo():
                 f"financiar imóvel {valor_curto}, calcular juros {banco_exib}, amortizar financiamento {banco_exib}, "
                 f"{prazo} meses, {anos} anos, financiamento {anos} anos, Custo Efetivo Total, TR, Saldo Devedor"
             )
-            url_canonica = f"{dominio}/{slug}.html"
+            url_canonica = f"{dominio}/{slug}"
             url_logo_banco = f"https://www.google.com/s2/favicons?domain={regra['dominio_favicon']}&sz=128"
 
             schema_faq = f'''{{
@@ -792,8 +810,8 @@ def gerar_paginas_pseo():
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       "itemListElement": [
-        {{ "@type": "ListItem", "position": 1, "name": "Datalab Global", "item": "{dominio}/index.html" }},
-        {{ "@type": "ListItem", "position": 2, "name": "{banco_exib}", "item": "{dominio}/{slug_hub_banco(banco)}.html" }},
+        {{ "@type": "ListItem", "position": 1, "name": "Datalab Global", "item": "{dominio}/" }},
+        {{ "@type": "ListItem", "position": 2, "name": "{banco_exib}", "item": "{dominio}/{slug_hub_banco(banco)}" }},
         {{ "@type": "ListItem", "position": 3, "name": "{valor_curto} em {prazo} meses ({anos} anos)", "item": "{url_canonica}" }}
       ]
     }}'''
@@ -832,7 +850,7 @@ def gerar_paginas_pseo():
     <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
-                <a href="index.html" class="flex items-center">
+                <a href="/" class="flex items-center">
                     <img src="logo.svg" alt="Datalab Global" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
                 </a>
                 <div class="hidden md:flex items-center space-x-3">
@@ -849,7 +867,7 @@ def gerar_paginas_pseo():
              no schema de breadcrumb. É o que dá à página-hub um in-degree de
              ~37 links (uma vez por página de simulação do banco), reforçando
              o cluster de autoridade temática por instituição. -->
-        <a href="{slug_hub_banco(banco)}.html" class="inline-flex items-center gap-2.5 bg-white/5 border border-white/10 hover:border-emerald-500/40 hover:bg-white/10 rounded-full pl-2 pr-4 py-1.5 mb-6 transition-colors group">
+        <a href="{slug_hub_banco(banco)}" class="inline-flex items-center gap-2.5 bg-white/5 border border-white/10 hover:border-emerald-500/40 hover:bg-white/10 rounded-full pl-2 pr-4 py-1.5 mb-6 transition-colors group">
             {favicon_com_fallback(url_logo_banco, banco_exib, "w-6 h-6")}
             <span class="text-xs font-bold text-slate-200 group-hover:text-emerald-400 tracking-wide transition-colors">{banco_exib}</span>
             <span class="text-[10px] text-slate-500 uppercase tracking-widest border-l border-white/10 pl-2">{regra['mod']}</span>
@@ -1588,7 +1606,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
         regra = obter_regra(banco)
         banco_exib = nome_exibicao(banco)
         slug_hub = slug_hub_banco(banco)
-        url_canonica = f"{dominio}/{slug_hub}.html"
+        url_canonica = f"{dominio}/{slug_hub}"
         url_logo_banco = f"https://www.google.com/s2/favicons?domain={regra['dominio_favicon']}&sz=128"
         taxa_atual_banco = (taxas_atuais or {}).get(banco, regra["taxa_padrao"])
         taxa_fmt = f"{taxa_atual_banco:.2f}".replace('.', ',')
@@ -1640,7 +1658,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
             itens = por_prazo[prazo_grupo]
             anos_grupo = prazo_grupo // 12
             links_grid = "".join(f'''
-                <a href="{item['slug']}.html" class="group flex items-center justify-between p-3 bg-white/5 rounded-lg border border-white/10 hover:border-emerald-500/50 hover:bg-white/10 transition-all">
+                <a href="{item['slug']}" class="group flex items-center justify-between p-3 bg-white/5 rounded-lg border border-white/10 hover:border-emerald-500/50 hover:bg-white/10 transition-all">
                     <span class="text-xs text-slate-300 group-hover:text-white">{formatar_reais(float(item['linha_original']['valor_imovel']))[3:]}</span>
                     <svg class="w-3 h-3 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                 </a>''' for item in itens)
@@ -1669,7 +1687,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       "itemListElement": [
-        {{ "@type": "ListItem", "position": 1, "name": "Datalab Global", "item": "{dominio}/index.html" }},
+        {{ "@type": "ListItem", "position": 1, "name": "Datalab Global", "item": "{dominio}/" }},
         {{ "@type": "ListItem", "position": 2, "name": "{banco_exib}", "item": "{url_canonica}" }}
       ]
     }}'''
@@ -1692,7 +1710,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
     <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
-                <a href="index.html" class="flex items-center">
+                <a href="/" class="flex items-center">
                     <img src="logo.svg" alt="Datalab Global" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
                 </a>
                 <div class="hidden md:flex items-center space-x-3">
@@ -1795,7 +1813,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
                 </details>
             </div>
             <p class="text-center mt-8">
-                <a href="comparador-bancos.html" class="text-emerald-400 hover:text-emerald-300 underline text-sm">Ver comparativo entre os {len(BANCOS)} bancos que acompanhamos →</a>
+                <a href="comparador-bancos" class="text-emerald-400 hover:text-emerald-300 underline text-sm">Ver comparativo entre os {len(BANCOS)} bancos que acompanhamos →</a>
             </p>
         </div>
     </main>
@@ -1847,7 +1865,7 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
         destaque = "bg-emerald-500/10 border-emerald-500/30" if i == 1 else "bg-white/5 border-white/10"
         medalha = f'<span class="text-emerald-400 font-bold text-xs">#{i}</span>' if i > 1 else f'<span class="text-yellow-400 font-bold text-xs">🏆 #1</span>'
         linhas_tabela += f'''
-        <a href="{slug_hub_banco(r['banco'])}.html" class="grid grid-cols-[auto_1fr_auto_auto_auto] md:grid-cols-[auto_1fr_1fr_1fr_1fr] items-center gap-3 md:gap-6 p-4 rounded-xl border {destaque} hover:border-emerald-500/50 transition-all">
+        <a href="{slug_hub_banco(r['banco'])}" class="grid grid-cols-[auto_1fr_auto_auto_auto] md:grid-cols-[auto_1fr_1fr_1fr_1fr] items-center gap-3 md:gap-6 p-4 rounded-xl border {destaque} hover:border-emerald-500/50 transition-all">
             <span class="w-8 text-center">{medalha}</span>
             <span class="flex items-center gap-2 min-w-0">
                 {favicon_com_fallback(url_logo, r['banco_exib'], "w-6 h-6")}
@@ -1858,7 +1876,7 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
             <span class="text-right text-sm font-bold text-emerald-400">{cet_fmt}% <span class="hidden md:inline text-[10px] text-slate-500 font-normal">CET</span></span>
         </a>'''
 
-    url_canonica = f"{dominio}/comparador-bancos.html"
+    url_canonica = f"{dominio}/comparador-bancos"
     titulo_pagina = f"Comparativo de Taxas: Financiamento Imobiliário {ano_atual} | Datalab Global"
     meta_description = (
         f"Compare a taxa de juros, entrada mínima e CET de {len(ranking_ref)} bancos e fintechs de financiamento "
@@ -1869,7 +1887,7 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       "itemListElement": [
-        {{ "@type": "ListItem", "position": 1, "name": "Datalab Global", "item": "{dominio}/index.html" }},
+        {{ "@type": "ListItem", "position": 1, "name": "Datalab Global", "item": "{dominio}/" }},
         {{ "@type": "ListItem", "position": 2, "name": "Comparativo de Bancos", "item": "{url_canonica}" }}
       ]
     }}'''
@@ -1883,7 +1901,7 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
     <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
-                <a href="index.html" class="flex items-center">
+                <a href="/" class="flex items-center">
                     <img src="logo.svg" alt="Datalab Global" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
                 </a>
                 <div class="hidden md:flex items-center space-x-3">
@@ -1964,7 +1982,7 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
         ancora_id = banco.lower().replace(" ", "-")
         links_html = "".join([f'''
             <li>
-                <a href="{item["slug"]}.html" class="group flex items-center justify-between p-3 rounded-lg hover:bg-white/5 transition-colors border border-transparent hover:border-white/10">
+                <a href="{item["slug"]}" class="group flex items-center justify-between p-3 rounded-lg hover:bg-white/5 transition-colors border border-transparent hover:border-white/10">
                     <span class="text-xs font-light text-slate-300 group-hover:text-white">{item["texto"]}</span>
                     <svg class="w-3 h-3 text-emerald-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                 </a>
@@ -1973,7 +1991,7 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
 
         blocos_html += f'''
         <div id="{ancora_id}" class="bg-slate-900/40 backdrop-blur-md rounded-2xl shadow-2xl border border-white/5 overflow-hidden transition-all duration-300 hover:border-emerald-500/30 hover:shadow-[0_0_30px_rgba(16,185,129,0.1)] scroll-mt-24">
-            <a href="{slug_hub_banco(banco)}.html" class="group/h2 border-b border-white/5 px-6 py-5 flex items-center gap-4 bg-black/40 hover:bg-black/60 transition-colors">
+            <a href="{slug_hub_banco(banco)}" class="group/h2 border-b border-white/5 px-6 py-5 flex items-center gap-4 bg-black/40 hover:bg-black/60 transition-colors">
                 {favicon_com_fallback(url_logo, banco_exib)}
                 <h2 class="text-xl font-serif text-white tracking-wide group-hover/h2:text-emerald-400 transition-colors">{banco_exib}</h2>
                 <span class="ml-auto text-[10px] text-slate-500 group-hover/h2:text-emerald-400 uppercase tracking-widest transition-colors">Ver taxas →</span>
@@ -1986,8 +2004,8 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
         </div>
         '''
 
-    url_home = f"{DOMINIO}/index.html"
-    descricao_home = "A ferramenta definitiva para simular seu financiamento imobiliário em meses ou anos e descobrir quanto economizar antecipando parcelas, com taxas reais de mais de 15 instituições financeiras."
+    url_home = f"{DOMINIO}/"
+    descricao_home = f"A ferramenta definitiva para simular seu financiamento imobiliário em meses ou anos e descobrir quanto economizar antecipando parcelas, com taxas reais de {len(BANCOS)} instituições financeiras."
 
     schema_website = f'''{{
       "@context": "https://schema.org",
@@ -2013,7 +2031,7 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
     <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
-                <a href="index.html" class="flex items-center">
+                <a href="/" class="flex items-center">
                     <img src="logo.svg" alt="Datalab Global" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
                 </a>
             </div>
@@ -2027,7 +2045,7 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
         <p class="text-slate-400 text-lg md:text-xl font-light tracking-wide max-w-2xl mx-auto">
             Selecione a instituição financeira abaixo e descubra quanto você economiza ao fazer amortizações — em qualquer prazo, de meses a anos.
         </p>
-        <a href="comparador-bancos.html" class="inline-flex items-center gap-2 mt-6 text-emerald-400 hover:text-emerald-300 text-sm font-medium underline underline-offset-4">
+        <a href="comparador-bancos" class="inline-flex items-center gap-2 mt-6 text-emerald-400 hover:text-emerald-300 text-sm font-medium underline underline-offset-4">
             Ou veja o comparativo de taxas entre os {len(BANCOS)} bancos {icone('arrow-right', 'text-xs')}
         </a>
     </div>
@@ -2047,7 +2065,7 @@ def gerar_sitemap(urls, pasta_saida, dominio, data_ultima_atualizacao):
     # Ver obter_data_ultima_atualizacao(): "lastmod sempre = hoje" é tratado
     # pelo Google como sinal de frescor falso.
     xml_content = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-    xml_content += f"  <url>\n    <loc>{dominio}/index.html</loc>\n    <lastmod>{data_ultima_atualizacao}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>1.0</priority>\n  </url>\n"
+    xml_content += f"  <url>\n    <loc>{dominio}/</loc>\n    <lastmod>{data_ultima_atualizacao}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>1.0</priority>\n  </url>\n"
     for url in urls:
         xml_content += f"  <url>\n    <loc>{url}</loc>\n    <lastmod>{data_ultima_atualizacao}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.8</priority>\n  </url>\n"
     xml_content += '</urlset>'
@@ -2080,19 +2098,24 @@ def gerar_llms_txt(pasta_saida, dominio, total_paginas, data_ultima_atualizacao)
     """llms.txt: padrão emergente (2025+) que resume o site pra engines de
     IA/LLM que buscam contexto rápido antes de citar uma página — análogo
     ao robots.txt, mas descritivo em vez de regra de acesso."""
+    # Lista de bancos montada a partir de BANCOS (não hardcoded) — achado
+    # real (06/set/2026): esse texto ainda citava os 4 bancos de home
+    # equity (C6 Bank, Bari, Cash Me, Daycoval) removidos do produto,
+    # igual ao "mais de 15 bancos" que já tinha sido corrigido na home.
+    lista_bancos = ", ".join(dados["nome_exibicao"] for dados in BANCOS.values())
     conteudo = f"""# Datalab Global
 
-> Hub financeiro com simuladores de financiamento imobiliário para mais de 15 instituições brasileiras (Caixa, Banco do Brasil, Itaú, Bradesco, Santander, Banco Inter, Sicredi, Sicoob, Banrisul, BRB, Poupex, C6 Bank, Bari, Cash Me, Daycoval). Calcula parcelas nos sistemas SAC e PRICE, e simula a economia de juros ao antecipar amortizações.
+> Hub financeiro com simuladores de financiamento imobiliário para {len(BANCOS)} instituições brasileiras ({lista_bancos}). Calcula parcelas nos sistemas SAC e PRICE, e simula a economia de juros ao antecipar amortizações.
 
 Dados atualizados em: {data_ultima_atualizacao}
 Total de páginas de simulação: {total_paginas}
 
 ## Páginas
-- [Home / lista de bancos]({dominio}/index.html)
+- [Home / lista de bancos]({dominio}/)
 - [Sitemap completo]({dominio}/sitemap.xml)
 
 ## Sobre os dados
-Taxas de juros, LTV (percentual mínimo de entrada) e prazo máximo são específicos de cada instituição financeira e atualizados mensalmente. Cada página de simulador (padrão de URL: /simulador-{{banco}}-{{valor}}-mil-{{prazo}}-meses.html) traz cálculo de parcelas, custo total e comparativo real entre os sistemas SAC e PRICE para o cenário daquele banco/valor/prazo específico.
+Taxas de juros, LTV (percentual mínimo de entrada) e prazo máximo são específicos de cada instituição financeira e atualizados mensalmente. Cada página de simulador (padrão de URL: /simulador-{{banco}}-{{valor}}-mil-{{prazo}}-meses, sem extensão) traz cálculo de parcelas, custo total e comparativo real entre os sistemas SAC e PRICE para o cenário daquele banco/valor/prazo específico.
 """
     with open(os.path.join(pasta_saida, 'llms.txt'), "w", encoding="utf-8") as f:
         f.write(conteudo)

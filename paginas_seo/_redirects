@@ -9,11 +9,18 @@
 # indexação. 301 preserva o valor de SEO acumulado nessas páginas em
 # vez de simplesmente perdê-lo, e manda o visitante pra algo útil (o
 # comparador geral) em vez de uma página morta.
-/simulador-c6-bank-*      /comparador-bancos.html   301
-/simulador-bari-*         /comparador-bancos.html   301
-/simulador-cash-me-*      /comparador-bancos.html   301
-/simulador-daycoval-*     /comparador-bancos.html   301
-/banco-c6-bank.html       /comparador-bancos.html   301
-/banco-bari.html          /comparador-bancos.html   301
-/banco-cash-me.html       /comparador-bancos.html   301
-/banco-daycoval.html      /comparador-bancos.html   301
+#
+# Destino sem ".html" (achado real, 06/set/2026: o Cloudflare Pages já
+# remove a extensão automaticamente via outro 308 — apontar direto pra
+# versão sem extensão evita um segundo salto de redirecionamento em
+# cima deste). O padrão de origem com "*" já cobre tanto a URL antiga
+# com ".html" quanto sem, então não precisa de uma linha extra pra cada
+# variante da origem.
+/simulador-c6-bank-*      /comparador-bancos   301
+/simulador-bari-*         /comparador-bancos   301
+/simulador-cash-me-*      /comparador-bancos   301
+/simulador-daycoval-*     /comparador-bancos   301
+/banco-c6-bank*           /comparador-bancos   301
+/banco-bari*              /comparador-bancos   301
+/banco-cash-me*           /comparador-bancos   301
+/banco-daycoval*          /comparador-bancos   301
