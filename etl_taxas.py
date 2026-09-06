@@ -79,7 +79,13 @@ TAXA_MAXIMA_PLAUSIVEL = 25.0
 #
 # Página humana equivalente (pra conferência manual):
 # https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201
-FONTE_BACEN_API_URL = "https://www.bcb.gov.br/api/servico/sitebcb/historicotaxajurosdiario/atual"
+FONTE_BACEN_API_DADOS = "https://www.bcb.gov.br/api/servico/sitebcb/historicotaxajurosdiario/atual"
+# Endpoint que lista os períodos disponíveis (achado durante a pesquisa
+# do produto de veículos, set/2026) — devolve todo período já publicado
+# de uma vez, cada um marcado com tipoModalidade "M" (mensal) ou "D"
+# (semanal). Usado aqui pra descobrir o período mensal mais recente sem
+# precisar adivinhar mês a mês (ver _buscar_bacen_json).
+FONTE_BACEN_API_DATAS = "https://www.bcb.gov.br/api/servico/sitebcb/HistoricoTaxaJurosDiario/ConsultaDatas"
 FONTE_BACEN_PAGINA_HUMANA = "https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201"
 FONTE_BACEN_CODIGO_MODALIDADE = "903201"
 
@@ -129,77 +135,189 @@ def _normalizar_nome_instituicao(texto):
     return normalizar_chave(sem_espaco_duplo).upper()
 
 
-def _buscar_taxas_bacen_oficial():
+def _extrair_conteudo_ou_avisar_schema(corpo_json, nome_endpoint):
     """
-    Consulta o relatório oficial do BACEN (ver FONTE_BACEN_API_URL acima).
-    É mensal — tenta o mês corrente e recua até 2 meses se ainda não
-    tiver sido publicado (normalmente sai com poucos dias de atraso após
-    o fechamento do mês). Retorna {banco: {"taxa": float, "fonte": url}}
-    só com o que encontrou; bancos não cobertos por esta modalidade
-    (BRB, Poupex, os 4 de home equity) simplesmente não aparecem — quem
-    chama decide o fallback.
+    Segunda revisão de código (set/2026): antes, ler resp.json().get(
+    "conteudo", []) tratava "a chave 'conteudo' não existe mais" (a API
+    do BACEN mudou de formato) exatamente igual a "esse período não tem
+    dado ainda" — os dois casos silenciosamente viravam lista vazia, sem
+    nenhum jeito de diferenciar um do outro nos logs. Isso importa: se a
+    API mudar de formato, o ETL ficaria rodando mês após mês achando
+    "ainda não publicado" pra sempre, sem nenhum alarme distinto de "a
+    integração quebrou de verdade". Aqui, a chave ausente vira um aviso
+    🛑 (schema mudou) separado do ⚠️ normal (período vazio) — quem lê o
+    log consegue diferenciar os dois na hora.
     """
-    hoje = date.today()
-    for meses_atras in range(3):
-        ano, mes = hoje.year, hoje.month - meses_atras
-        while mes <= 0:
-            mes += 12
-            ano -= 1
-        inicio_periodo = f"{ano:04d}-{mes:02d}-01"
-        filtro = (
-            f"(codigoSegmento eq '1') and (codigoModalidade eq '{FONTE_BACEN_CODIGO_MODALIDADE}') "
-            f"and (InicioPeriodo eq '{inicio_periodo}')"
+    if "conteudo" not in corpo_json:
+        print(
+            f"🛑 BACEN: resposta de {nome_endpoint} mudou de formato — chave 'conteudo' não "
+            f"existe (chaves recebidas: {list(corpo_json.keys())}). A API pode ter mudado; "
+            f"confira manualmente {FONTE_BACEN_PAGINA_HUMANA}."
         )
+        return None
+    return corpo_json["conteudo"]
+
+
+def _buscar_bacen_json(fonte):
+    """
+    Estratégia de busca pro tipo "bacen_json" em FONTES_TAXA_TIPICA (só
+    existe uma entrada desse tipo: o relatório oficial). Retorna
+    {banco: {"taxa": float, "fonte": url}}.
+
+    Terceira revisão de código (set/2026): a versão anterior tentava até
+    3 meses pra trás às cegas (mês atual, -1, -2), uma requisição HTTP
+    bloqueante separada por tentativa — na prática, quase sempre as 2
+    primeiras vinham vazias (o mês corrente e o anterior raramente já
+    foram publicados) e só a 3ª tinha dado. Cheguei a cogitar juntar tudo
+    numa reqisição só trocando o operador do filtro de 'eq' pra 'ge'
+    (>=) — TESTEI ao vivo antes de trocar, não troquei às cegas: funciona
+    e devolve vários meses de uma vez, só que cada linha da resposta vem
+    SEM o campo InicioPeriodo — ganharia velocidade mas perderia a
+    certeza de qual mês cada taxa é de verdade (risco real de misturar
+    taxa de um mês mais velho sem ninguém perceber). Descartei essa
+    opção por esse motivo.
+
+    Em vez disso, uso FONTE_BACEN_API_DATAS (achado durante a pesquisa
+    do produto de veículos): ele lista TODOS os períodos já publicados
+    numa chamada só, cada um marcado com o tipo (mensal/semanal) — dá
+    pra descobrir o período mensal mais recente direto, sem adivinhar, e
+    fazer só MAIS UMA chamada pra buscar os dados desse período exato.
+    2 requisições sempre, nunca mais — e sem abrir mão de saber
+    exatamente de qual mês cada taxa é.
+    """
+    try:
+        resp_datas = requests.get(
+            FONTE_BACEN_API_DATAS,
+            params={"codigoSegmento": "1", "codigoModalidade": FONTE_BACEN_CODIGO_MODALIDADE},
+            headers=_HEADERS, timeout=20,
+        )
+        resp_datas.raise_for_status()
+        corpo_datas = resp_datas.json()
+    except (requests.RequestException, ValueError) as e:
+        print(f"⚠️  BACEN: falha ao consultar períodos disponíveis: {e}")
+        return {}
+
+    periodos = _extrair_conteudo_ou_avisar_schema(corpo_datas, "ConsultaDatas")
+    if periodos is None:
+        return {}
+
+    periodos_mensais = [p for p in periodos if p.get("tipoModalidade") == "M"]
+    if not periodos_mensais:
+        print("⚠️  BACEN: nenhum período mensal (tipoModalidade='M') encontrado em ConsultaDatas")
+        return {}
+    inicio_periodo = periodos_mensais[0]["InicioPeriodo"]  # o mais recente vem primeiro na lista
+
+    filtro = (
+        f"(codigoSegmento eq '1') and (codigoModalidade eq '{FONTE_BACEN_CODIGO_MODALIDADE}') "
+        f"and (InicioPeriodo eq '{inicio_periodo}')"
+    )
+    try:
+        resp = requests.get(FONTE_BACEN_API_DADOS, params={"filtro": filtro}, headers=_HEADERS, timeout=20)
+        resp.raise_for_status()
+        corpo = resp.json()
+    except (requests.RequestException, ValueError) as e:
+        print(f"⚠️  BACEN: falha ao consultar período {inicio_periodo}: {e}")
+        return {}
+
+    linhas = _extrair_conteudo_ou_avisar_schema(corpo, "historicotaxajurosdiario/atual")
+    if linhas is None:
+        return {}
+    if not linhas:
+        # Raro: ConsultaDatas apontou esse período como publicado, mas
+        # veio vazio na busca de verdade. Não insiste — o mês anterior
+        # já teria aparecido em ConsultaDatas como o mais recente se
+        # fosse esse o caso.
+        print(f"⚠️  BACEN: período {inicio_periodo} (apontado por ConsultaDatas) veio vazio — confira {FONTE_BACEN_PAGINA_HUMANA}")
+        return {}
+
+    resultado = {}
+    for linha in linhas:
+        nome_bacen_norm = _normalizar_nome_instituicao(str(linha.get("InstituicaoFinanceira", "")))
         try:
-            resp = requests.get(FONTE_BACEN_API_URL, params={"filtro": filtro}, headers=_HEADERS, timeout=20)
-            resp.raise_for_status()
-            linhas = resp.json().get("conteudo", [])
-        except (requests.RequestException, ValueError) as e:
-            print(f"⚠️  BACEN: falha ao consultar período {inicio_periodo}: {e}")
+            taxa_aa = float(str(linha["TaxaJurosAoAno"]).replace(",", "."))
+        except (KeyError, ValueError, TypeError):
             continue
-
-        if not linhas:
-            continue  # período ainda não publicado — tenta o mês anterior
-
-        resultado = {}
-        for linha in linhas:
-            nome_bacen_norm = _normalizar_nome_instituicao(str(linha.get("InstituicaoFinanceira", "")))
-            try:
-                taxa_aa = float(str(linha["TaxaJurosAoAno"]).replace(",", "."))
-            except (KeyError, ValueError, TypeError):
+        if not (TAXA_MINIMA_PLAUSIVEL <= taxa_aa <= TAXA_MAXIMA_PLAUSIVEL):
+            continue
+        for banco, aliases in ALIASES_BACEN_IMOVEL.items():
+            if not any(_normalizar_nome_instituicao(alias) in nome_bacen_norm for alias in aliases):
                 continue
-            if not (TAXA_MINIMA_PLAUSIVEL <= taxa_aa <= TAXA_MAXIMA_PLAUSIVEL):
+            if banco in resultado:
+                # Mais de uma linha do relatório bateu no mesmo banco
+                # (ex: duas entidades do mesmo grupo) — mantém a
+                # primeira, mas avisa em vez de trocar em silêncio, pra
+                # não arriscar pegar a taxa da entidade errada sem
+                # ninguém perceber.
+                print(f"⚠️  BACEN: mais de uma linha bateu no alias de {banco} — mantendo a primeira encontrada, ignorando '{linha.get('InstituicaoFinanceira')}'")
                 continue
-            for banco, aliases in ALIASES_BACEN_IMOVEL.items():
-                if not any(_normalizar_nome_instituicao(alias) in nome_bacen_norm for alias in aliases):
-                    continue
-                if banco in resultado:
-                    # Mais de uma linha do relatório bateu no mesmo banco
-                    # (ex: duas entidades do mesmo grupo) — mantém a
-                    # primeira, mas avisa em vez de trocar em silêncio, pra
-                    # não arriscar pegar a taxa da entidade errada sem
-                    # ninguém perceber.
-                    print(f"⚠️  BACEN: mais de uma linha bateu no alias de {banco} — mantendo a primeira encontrada, ignorando '{linha.get('InstituicaoFinanceira')}'")
-                    continue
-                resultado[banco] = {"taxa": taxa_aa, "fonte": FONTE_BACEN_PAGINA_HUMANA}
+            resultado[banco] = {"taxa": taxa_aa, "fonte": FONTE_BACEN_PAGINA_HUMANA}
 
-        if resultado:
-            print(f"✅ BACEN: {len(resultado)} banco(s) encontrados pro período {inicio_periodo} ({FONTE_BACEN_PAGINA_HUMANA})")
-            return resultado
-
-    print("⚠️  BACEN: nenhum dos últimos 3 meses tinha relatório publicado")
-    return {}
+    if resultado:
+        print(f"✅ BACEN: {len(resultado)} banco(s) encontrados pro período {inicio_periodo} ({FONTE_BACEN_PAGINA_HUMANA})")
+    return resultado
 
 
-# Fontes secundárias (blog) — funcionam como fallback. Na prática, hoje
-# só BRB e Poupex DEPENDEM delas (é o único par que o BACEN não cobre
-# nessa modalidade); Sicoob/Sicredi/Banrisul também aparecem nos aliases
-# abaixo, mas o BACEN já resolve os três primeiro — não remover esses
-# três achando que são redundantes: são a rede de segurança pro dia em
-# que o casamento de alias do BACEN quebrar pra algum deles (ver
-# _normalizar_nome_instituicao) sem que ninguém perceba na hora.
+def _buscar_html_tabela(fonte):
+    """
+    Estratégia de busca pro tipo "html_tabela" em FONTES_TAXA_TIPICA (as
+    fontes de blog): baixa a página e extrai taxa de uma <table> de
+    verdade via _extrair_taxa_da_tabela — nunca texto solto (ver
+    docstring do módulo, lição do Banco Inter). Retorna
+    {banco: {"taxa": float, "fonte": url}}.
+    """
+    url = fonte["url"]
+    try:
+        resp = requests.get(url, headers=_HEADERS, timeout=20)
+        resp.raise_for_status()
+    except requests.RequestException as e:
+        print(f"⚠️  Não foi possível acessar {url}: {e}")
+        return {}
+    try:
+        achadas = _extrair_taxa_da_tabela(resp.text, fonte["aliases"])
+    except Exception as e:
+        print(f"⚠️  Falha ao interpretar a tabela de {url}: {e}")
+        return {}
+    return {banco: {"taxa": taxa, "fonte": url} for banco, taxa in achadas.items()}
+
+
+# Primeira revisão de código (set/2026): antes, o BACEN era uma função
+# chamada À PARTE, ANTES do loop de FONTES_TAXA_TIPICA — funcionava,
+# mas criava uma segunda noção de "prioridade de fonte" fora da lista, e
+# a próxima fonte não-HTML que precisasse ser adicionada (ex: uma
+# modalidade de home equity, se um dia cobrirmos C6/Bari/Cash Me/
+# Daycoval) ia ter que decidir de novo se vira mais um caso especial
+# solto no código ou se generaliza a lista. Unificado aqui: cada entrada
+# de FONTES_TAXA_TIPICA declara um "tipo", e esta tabela decide qual
+# função sabe buscar aquele tipo — adicionar uma fonte nova (de
+# qualquer tipo já suportado) é só acrescentar uma entrada na lista.
+_ESTRATEGIAS_BUSCA = {
+    "bacen_json": _buscar_bacen_json,
+    "html_tabela": _buscar_html_tabela,
+}
+
+
+# Lista unificada de fontes, na ordem de prioridade em que são
+# consultadas — a primeira que achar um banco "ganha" (ver
+# _buscar_taxas_nas_fontes). O BACEN oficial vem primeiro (é a fonte
+# regulatória, mais autoritativa) e cobre a maioria dos bancos; as
+# fontes de blog abaixo existem só pra preencher quem o BACEN não cobre
+# nessa modalidade (hoje: BRB, Poupex). Sicoob/Sicredi/Banrisul também
+# aparecem nos aliases das fontes de blog, mas o BACEN já resolve os
+# três primeiro — não remover esses três achando que são redundantes:
+# são a rede de segurança pro dia em que o casamento de alias do BACEN
+# quebrar pra algum deles (ver _normalizar_nome_instituicao) sem que
+# ninguém perceba na hora.
+#
+# Cada entrada declara um "tipo", que _ESTRATEGIAS_BUSCA usa pra saber
+# qual função sabe buscar aquele formato de fonte — adicionar uma fonte
+# nova (de qualquer tipo já suportado) é só acrescentar uma entrada
+# aqui, sem mexer no loop de _buscar_taxas_nas_fontes.
 FONTES_TAXA_TIPICA = [
     {
+        "tipo": "bacen_json",
+    },
+    {
+        "tipo": "html_tabela",
         "url": "https://larya.com.br/blog/qual-banco-tem-a-menor-taxa-para-financiamento-imobiliario-em-2026/",
         "aliases": {
             "Caixa": ["caixa"],
@@ -212,6 +330,7 @@ FONTES_TAXA_TIPICA = [
         },
     },
     {
+        "tipo": "html_tabela",
         "url": "https://www.idinheiro.com.br/financiamentos/imobiliario/melhor-taxa-financiamento-imobiliario/",
         "aliases": {
             "Sicoob": ["sicoob"],
@@ -259,40 +378,29 @@ def _extrair_taxa_da_tabela(html, aliases_por_banco):
 
 def _buscar_taxas_nas_fontes():
     """
-    Tenta primeiro o BACEN oficial (_buscar_taxas_bacen_oficial —
-    prioridade máxima, é a fonte regulatória), depois percorre
-    FONTES_TAXA_TIPICA (blog) só pros bancos que o BACEN não cobriu
-    nessa modalidade (hoje: BRB, Poupex). Uma fonte que falhar (rede
-    fora do ar, HTML/API mudou de estrutura) não derruba as outras —
-    cada requisição é isolada em try/except. Retorna um dict
-    {banco: {"taxa": float, "fonte": url}} com tudo que conseguiu, de
-    qualquer fonte.
+    Percorre FONTES_TAXA_TIPICA em ordem (BACEN oficial primeiro, depois
+    as fontes de blog), despachando cada uma pra sua função de busca via
+    _ESTRATEGIAS_BUSCA["tipo"]. Uma fonte que falhar (rede fora do ar,
+    HTML/API mudou de estrutura) não derruba as outras — cada uma é
+    isolada em try/except aqui em cima, além do try/except interno que
+    cada função de busca já tem pros seus próprios passos. Retorna um
+    dict {banco: {"taxa": float, "fonte": url}} com tudo que conseguiu,
+    de qualquer fonte; a primeira fonte da lista que achar um banco
+    "ganha" — as seguintes só preenchem o que ainda falta.
     """
     resultado = {}
 
-    try:
-        resultado.update(_buscar_taxas_bacen_oficial())
-    except Exception as e:
-        print(f"⚠️  Falha inesperada consultando o BACEN: {e}")
-
     for fonte in FONTES_TAXA_TIPICA:
-        url = fonte["url"]
+        buscar = _ESTRATEGIAS_BUSCA[fonte["tipo"]]
         try:
-            resp = requests.get(url, headers=_HEADERS, timeout=20)
-            resp.raise_for_status()
-        except requests.RequestException as e:
-            print(f"⚠️  Não foi possível acessar {url}: {e}")
-            continue
-
-        try:
-            achadas = _extrair_taxa_da_tabela(resp.text, fonte["aliases"])
+            achadas = buscar(fonte)
         except Exception as e:
-            print(f"⚠️  Falha ao interpretar a tabela de {url}: {e}")
+            print(f"⚠️  Falha inesperada buscando fonte do tipo '{fonte['tipo']}' ({fonte.get('url', 'BACEN')}): {e}")
             continue
 
-        for banco, taxa in achadas.items():
+        for banco, dados in achadas.items():
             if banco not in resultado:  # primeira fonte que achar um banco "ganha"
-                resultado[banco] = {"taxa": taxa, "fonte": url}
+                resultado[banco] = dados
 
     return resultado
 
