@@ -375,6 +375,40 @@ def comparar_todos_bancos(valor_imovel, prazo_alvo, lookup_paginas, taxas_atuais
     return resultados
 
 
+def calcular_marcador_posicao_mercado(ranking_ordenado, banco):
+    """Posição (0-100) do marcador nas barras "Faixa/Posição no Mercado":
+    fração do RANKING do banco (índice / (n-1)), não interpolação linear
+    do valor de CET contra o mínimo/máximo da faixa.
+
+    Achado real (06/set/2026, print do usuário comparando a barra do
+    Banco Inter): com poucos bancos rastreados (hoje 11), é comum 1-2
+    outliers isolados definirem sozinhos o mínimo e o máximo da faixa —
+    ex.: pra R$500 mil em 360 meses, Banrisul sozinho no mínimo (10,61%)
+    e Banco do Brasil sozinho no máximo (16,21%), enquanto os outros 9
+    bancos ficam todos espremidos entre 12,10% e 14,04%. Com
+    interpolação de VALOR, esse espremimento jogava o marcador de um
+    banco comum (ex: Banco Inter, CET 14,04%, 9º colocado de 11) pra
+    ~61% da barra — visualmente "mais perto do pior que do melhor",
+    mesmo o banco estando no meio do pelotão. Rank-based resolve isso: o
+    nome do próprio widget é "Posição no Mercado" — posição/colocação é
+    semanticamente um RANKING, não uma proporção de valor — e fica
+    imune a um único outlier isolado esticar a régua e comprimir todo
+    mundo perto do centro.
+
+    ranking_ordenado precisa já estar ordenado por CET crescente (é o
+    retorno de comparar_todos_bancos). Se o banco não aparece na lista
+    (não deveria acontecer, mas defensivamente) ou a lista tem 0-1
+    elemento, cai no centro (50%) em vez de quebrar."""
+    n = len(ranking_ordenado)
+    if n <= 1:
+        return 50
+    indice = next((i for i, r in enumerate(ranking_ordenado) if r["banco"] == banco), None)
+    if indice is None:
+        return 50
+    marcador_pct = round((indice / (n - 1)) * 100)
+    return max(2, min(98, marcador_pct))  # nunca cola nas bordas (marcador cortado)
+
+
 def svg_donut_capital_juros(capital, juros):
     """Gráfico donut SVG puro (sem lib externa) mostrando a proporção
     Capital vs Juros do custo total — visualização de dado real em vez de
@@ -667,9 +701,7 @@ def gerar_paginas_pseo():
                 cet_min_fmt = f"{cet_min:.2f}".replace('.', ',')
                 cet_max_fmt = f"{cet_max:.2f}".replace('.', ',')
 
-                spread = cet_max - cet_min
-                marcador_pct = round(((cet_atual - cet_min) / spread) * 100) if spread > 0 else 50
-                marcador_pct = max(2, min(98, marcador_pct))  # nunca cola nas bordas (marcador cortado)
+                marcador_pct = calcular_marcador_posicao_mercado(ranking_bancos, banco)
 
                 grafico_html = f'''<div class="space-y-2" id="grafico_comparacao_mercado">
                     <div class="relative h-2 rounded-full bg-gradient-to-r from-emerald-500 via-amber-400 to-rose-500">
@@ -882,7 +914,7 @@ def gerar_paginas_pseo():
             <span id="label_anos" class="font-medium text-white">{anos} anos</span>), com entrada mínima de
             {(perc_entrada_minima*100):.0f}% e taxa estimada de {taxa_fmt}% a.a. Ajuste os valores abaixo para o seu caso.
         </p>
-        <p class="text-slate-600 text-[10px] uppercase tracking-widest mt-4">Taxas atualizadas em {data_ultima_atualizacao_br}</p>
+        <p class="text-slate-600 text-[10px] uppercase tracking-widest mt-4">Taxas atualizadas em {data_ultima_atualizacao_br} · Fonte: Banco Central do Brasil (BACEN)</p>
     </header>
 
     <!-- Ritmo vertical entre zonas: cada zona abaixo declara seu próprio
@@ -1134,8 +1166,8 @@ def gerar_paginas_pseo():
                     <p class="text-slate-300 text-sm font-light leading-relaxed">SAC amortiza um valor fixo por mês (parcelas decrescentes, menos juros no total). PRICE mantém a parcela fixa (mais previsível, mas mais juros ao longo do contrato).</p>
                 </div>
                 <div class="py-5 md:border-b md:border-white/10">
-                    <p class="text-emerald-400 font-bold text-xs uppercase tracking-widest mb-2 flex items-center">{icone('home', 'mr-2')} Taxa de Vitrine</p>
-                    <p class="text-slate-300 text-sm font-light leading-relaxed">A taxa de {taxa_fmt}% a.a. mostrada aqui é a taxa padrão anunciada pelo {banco_exib}. Sua taxa final depende do seu relacionamento com o banco e da análise de crédito.</p>
+                    <p class="text-emerald-400 font-bold text-xs uppercase tracking-widest mb-2 flex items-center">{icone('home', 'mr-2')} De Onde Vem essa Taxa</p>
+                    <p class="text-slate-300 text-sm font-light leading-relaxed">A taxa de {taxa_fmt}% a.a. mostrada aqui é a taxa média efetivamente contratada pelo {banco_exib} no financiamento imobiliário com taxas de mercado, apurada mensalmente pelo Banco Central (BACEN) — não é uma taxa promocional "a partir de". Sua taxa final depende do seu relacionamento com o banco e da análise de crédito.</p>
                 </div>
                 <div class="py-5 pb-0 md:pb-0">
                     <p class="text-emerald-400 font-bold text-xs uppercase tracking-widest mb-2 flex items-center">{icone('trending-up', 'mr-2')} TR (Taxa Referencial)</p>
@@ -1356,9 +1388,17 @@ def gerar_paginas_pseo():
             return resultados;
         }}
 
-        // Espelha o bloco Python "Faixa de CET no Mercado": só precisa do
-        // menor/maior CET do ranking (não mais do nome de cada banco), e o
-        // CTA sempre aponta pra Financia Tudo — nunca pra um concorrente.
+        // Espelha o bloco Python "Faixa de CET no Mercado" (e
+        // calcular_marcador_posicao_mercado): a posição do marcador é a
+        // FRAÇÃO DO RANKING (índice/(n-1)) do banco atual, não a
+        // interpolação linear do CET dele contra o mínimo/máximo da
+        // faixa — achado real de 06/set/2026, ver docstring da função
+        // Python irmã pro raciocínio completo (um outlier isolado no
+        // mínimo/máximo estica a régua e espreme os demais bancos perto
+        // do centro, dando a impressão errada de "mais perto do pior").
+        // Só precisa do menor/maior CET do ranking pros rótulos das
+        // pontas (não mais do nome de cada banco), e o CTA sempre aponta
+        // pra Financia Tudo — nunca pra um concorrente.
         function renderizarComparacaoMercado(vImovelLive, prazoLive, cetAtualLive, nomeBancoAtual) {{
             const elGrafico = document.getElementById('grafico_comparacao_mercado');
             const elTexto = document.getElementById('texto_resumo_mercado');
@@ -1369,8 +1409,9 @@ def gerar_paginas_pseo():
 
             const cetMin = ranking[0].cet;
             const cetMax = ranking[ranking.length - 1].cet;
-            const spread = cetMax - cetMin;
-            let marcadorPct = spread > 0 ? Math.round(((cetAtualLive - cetMin) / spread) * 100) : 50;
+            const n = ranking.length;
+            const indiceAtual = ranking.findIndex(r => r.ehAtual);
+            let marcadorPct = (n > 1 && indiceAtual !== -1) ? Math.round((indiceAtual / (n - 1)) * 100) : 50;
             marcadorPct = Math.max(2, Math.min(98, marcadorPct));
 
             const cetAtualFmt = cetAtualLive.toLocaleString('pt-BR', {{minimumFractionDigits: 2, maximumFractionDigits: 2}});
@@ -1618,8 +1659,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
 
         faixa_html = ""
         if cet_banco_ref is not None and cet_max_mercado > cet_min_mercado:
-            marcador_pct = round(((cet_banco_ref - cet_min_mercado) / (cet_max_mercado - cet_min_mercado)) * 100)
-            marcador_pct = max(2, min(98, marcador_pct))
+            marcador_pct = calcular_marcador_posicao_mercado(ranking_ref, banco)
             cet_banco_fmt = f"{cet_banco_ref:.2f}".replace('.', ',')
             cet_min_fmt = f"{cet_min_mercado:.2f}".replace('.', ',')
             cet_max_fmt = f"{cet_max_mercado:.2f}".replace('.', ',')
@@ -1734,7 +1774,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
         <p class="text-slate-400 text-base md:text-lg font-light tracking-wide max-w-3xl mx-auto px-4">
             Visão geral das condições do {banco_exib} — taxa de juros, entrada mínima e prazo — e o índice completo das nossas simulações prontas pra esse banco.
         </p>
-        <p class="text-slate-600 text-[10px] uppercase tracking-widest mt-4">Taxas atualizadas em {date.fromisoformat(data_ultima_atualizacao).strftime('%d/%m/%Y')}</p>
+        <p class="text-slate-600 text-[10px] uppercase tracking-widest mt-4">Taxas atualizadas em {date.fromisoformat(data_ultima_atualizacao).strftime('%d/%m/%Y')} · Fonte: Banco Central do Brasil (BACEN)</p>
     </header>
 
     <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 flex-grow w-full relative z-10">
@@ -1920,7 +1960,7 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
         <p class="text-slate-400 text-base md:text-lg font-light tracking-wide max-w-3xl mx-auto px-4">
             CET simulado para {formatar_reais(VALOR_REF)} em {PRAZO_REF} meses, na mesma condição para os {len(ranking_ref)} bancos e fintechs que acompanhamos — ordenado do menor pro maior custo efetivo total.
         </p>
-        <p class="text-slate-600 text-[10px] uppercase tracking-widest mt-4">Taxas atualizadas em {date.fromisoformat(data_ultima_atualizacao).strftime('%d/%m/%Y')}</p>
+        <p class="text-slate-600 text-[10px] uppercase tracking-widest mt-4">Taxas atualizadas em {date.fromisoformat(data_ultima_atualizacao).strftime('%d/%m/%Y')} · Fonte: Banco Central do Brasil (BACEN)</p>
     </header>
 
     <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 flex-grow w-full relative z-10">
