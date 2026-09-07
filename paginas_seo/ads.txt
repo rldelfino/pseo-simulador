@@ -1,0 +1,13 @@
+# Autoriza a AdSense (ca-pub-5414184968223405, ver o script do adsbygoogle
+# em render_head_boilerplate no gerador.py) a vender inventário de anúncio
+# neste domínio. Achado real (07/set/2026, verificação final do produto):
+# o site roda AdSense desde a implementação inicial mas nunca teve este
+# arquivo — sem ele, o Google trata o inventário como não-verificado, o
+# que reduz a demanda de compradores dispostos a dar lance (risco de
+# receita, não só um aviso cosmético no painel do AdSense).
+#
+# Formato e ID de certificação exatos da documentação oficial do Google
+# (support.google.com/adsense/answer/12171612) — f08c47fec0942fa0 é uma
+# constante fixa do Google, igual pra todo publisher AdSense do mundo,
+# não é específica desta conta.
+google.com, pub-5414184968223405, DIRECT, f08c47fec0942fa0

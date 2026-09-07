@@ -162,8 +162,22 @@ def test_sitemap_lista_todas_as_paginas_e_sem_html():
 
 
 def test_arquivos_de_infraestrutura_existem():
-    for nome in ("sitemap.xml", "robots.txt", "llms.txt", "_headers", "_redirects", "404.html", "styles.css", "logo.svg", "favicon.svg"):
+    for nome in ("sitemap.xml", "robots.txt", "llms.txt", "_headers", "_redirects", "404.html", "styles.css", "logo.svg", "favicon.svg", "ads.txt"):
         assert os.path.isfile(os.path.join(PASTA_SAIDA, nome)), f"{nome} não existe em paginas_seo/"
+
+
+def test_ads_txt_autoriza_o_publisher_certo():
+    """Achado real (07/set/2026, verificação final do produto): o site
+    roda AdSense (ca-pub-5414184968223405) desde a implementação
+    inicial mas nunca teve ads.txt — sem ele o Google trata o
+    inventário como não-verificado, o que reduz a demanda de
+    compradores dispostos a dar lance (risco de receita real, não só
+    aviso cosmético no painel). Trava de regressão pro publisher ID
+    nunca ficar dessincronizado do script do adsbygoogle."""
+    with open(os.path.join(PASTA_SAIDA, "ads.txt"), encoding="utf-8") as f:
+        conteudo = f.read()
+    assert "pub-5414184968223405" in conteudo, "ads.txt sem o publisher ID do AdSense usado no site"
+    assert "DIRECT" in conteudo, "ads.txt sem a relação DIRECT esperada"
 
 
 def test_pagina_404_tem_noindex():
