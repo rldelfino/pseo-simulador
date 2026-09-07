@@ -185,6 +185,23 @@ def render_head_boilerplate(titulo_pagina, meta_description, url_canonica, domin
         f'    <meta name="description" content="{meta_description}">',
         f'    <meta name="keywords" content="{meta_keywords}">' if meta_keywords else None,
         f'    <link rel="canonical" href="{url_canonica}" />',
+        # Achado real (06/set/2026, print do usuário comparando nosso
+        # resultado de busca com o de um concorrente): o site nunca teve
+        # NENHUM <link rel="icon">, então o Google mostrava o domínio cru
+        # (datalabglobal.com) com um ícone genérico em vez do nome
+        # amigável ("Datalab Global", que o og:site_name abaixo já
+        # declarava) + o ícone da marca. SVG primeiro (nítido em qualquer
+        # tamanho, suportado por todo navegador atual e pelo Google);
+        # .ico depois como fallback pra crawler/navegador antigo que não
+        # entende favicon SVG (ver gerar_favicon_svg/rasterizar_favicon_png).
+        # Sem "/" na frente (igual a href="logo.svg"/"styles.css" já
+        # usados no resto do <head>): o site inteiro é flat (nenhuma
+        # página mora em subpasta), então o relativo resolve certo pra
+        # raiz a partir de qualquer URL — manter a mesma convenção em
+        # vez de introduzir um caminho absoluto isolado.
+        '    <link rel="icon" type="image/svg+xml" href="favicon.svg">',
+        '    <link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48">',
+        '    <link rel="apple-touch-icon" href="apple-touch-icon.png">',
     ]
     linhas_topo_html = "\n".join(l for l in linhas_topo if l is not None)
     return f'''{linhas_topo_html}
@@ -485,6 +502,147 @@ def gerar_logo_svg(pasta_saida):
 </svg>"""
     with open(os.path.join(pasta_saida, 'logo.svg'), "w", encoding="utf-8") as f:
         f.write(svg_transparente)
+
+
+def gerar_favicon_svg(pasta_saida):
+    """Ícone quadrado (só o cubo/losango, sem o texto "Datalab" + "GLOBAL"
+    de logo.svg) pra usar como favicon — achado real (06/set/2026, print
+    do usuário comparando o resultado de busca do nosso site com o de um
+    concorrente): o site nunca teve NENHUM <link rel="icon">, então o
+    Google mostrava o domínio cru (datalabglobal.com) com um ícone
+    genérico em vez do nome amigável + ícone da marca, do jeito que
+    outros sites bem indexados aparecem.
+
+    Reaproveita exatamente as mesmas cores/gradientes/formas do cubo de
+    gerar_logo_svg (é o mesmo ícone da marca, só recortado pra um
+    viewBox quadrado e sem o texto) — não é um ícone novo, é o mesmo
+    elemento visual que já aparece no cabeçalho de toda página, só que
+    isolado pra caber num favicon pequeno. As elipses decorativas
+    (órbita tracejada bem fina, baixa opacidade) do logo.svg foram
+    deixadas de fora aqui de propósito: em 16-32px elas viram ruído
+    ilegível, então o favicon usa só o cubo sólido + os pontos
+    brilhantes nos vértices, que continuam reconhecíveis em tamanho
+    pequeno.
+
+    Gera tanto o .svg (favicon moderno, nítido em qualquer resolução,
+    suportado por todo navegador atual e pelo Google) quanto, via
+    rasterizar_favicon_png (chamada por quem invoca esta função), os
+    fallbacks .ico/.png pra compatibilidade ampla."""
+    # Duas simplificações em relação ao ícone de logo.svg, cada uma por
+    # um motivo diferente e testado ao vivo, não suposição:
+    #
+    # 1. Sem filter="url(#glowMedium)" (glow via feGaussianBlur): um
+    #    blur suave some visualmente num ícone de 16-48px, só vira
+    #    ruído nesse tamanho — puramente uma escolha de legibilidade.
+    #
+    # 2. Cores SÓLIDAS em vez de linearGradient nas faces do cubo: essa
+    #    troca não é escolha de design, é uma limitação real da
+    #    biblioteca de rasterização (svglib 2.2.0 + reportlab 5 com
+    #    backend rlPyCairo, usada por rasterizar_favicon_png pra gerar
+    #    o .ico/.png a partir deste .svg): path com fill="url(#gradiente)"
+    #    quebra a conversão (AttributeError: 'NoneType' object has no
+    #    attribute 'moveTo' em svglib._shape_to_pdf_path), MESMO sem
+    #    opacity e MESMO com um SVG minimalista de 1 path — isolei o
+    #    bug testando incrementalmente (retângulo simples OK, gradiente
+    #    sozinho quebra, fill sólido com opacity OK). Como não tem
+    #    workaround simples na versão atual da lib, troquei os 2
+    #    gradientes por 3 tons sólidos de emerald que preservam a
+    #    mesma ilusão de cubo isométrico (topo claro, lateral esquerda
+    #    média, lateral direita escura) sem depender de gradiente.
+    svg_favicon = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 -10 100 100" width="100%" height="100%">
+    <rect x="-10" y="-10" width="100" height="100" fill="#022c22"/>
+    <path d="M 40 80 L 40 40 L 5 20 L 5 60 Z" fill="#065f46" opacity="0.85"/><path d="M 40 80 L 40 40 L 75 20 L 75 60 Z" fill="#064e3b" opacity="0.9"/><path d="M 40 40 L 75 20 L 40 0 L 5 20 Z" fill="#34d399"/>
+    <line x1="40" y1="40" x2="40" y2="80" stroke="#022c22" stroke-width="1.5" /><line x1="40" y1="40" x2="5" y2="20" stroke="#34d399" stroke-width="1" opacity="0.5" /><line x1="40" y1="40" x2="75" y2="20" stroke="#34d399" stroke-width="1" opacity="0.5" />
+    <line x1="40" y1="0" x2="5" y2="20" stroke="#fef08a" stroke-width="2"/><line x1="40" y1="0" x2="75" y2="20" stroke="#fef08a" stroke-width="2"/><line x1="40" y1="0" x2="40" y2="40" stroke="#fef08a" stroke-width="2.5"/><line x1="5" y1="20" x2="40" y2="40" stroke="#10b981" stroke-width="1.5" /><line x1="75" y1="20" x2="40" y2="40" stroke="#10b981" stroke-width="1.5" />
+    <circle cx="40" cy="0" r="4.5" fill="#fef08a"/><circle cx="40" cy="0" r="2" fill="#ffffff"/><circle cx="5" cy="20" r="3.5" fill="#34d399"/><circle cx="75" cy="20" r="3.5" fill="#34d399"/><circle cx="40" cy="40" r="4.5" fill="#fef08a"/><circle cx="40" cy="40" r="2" fill="#ffffff"/><circle cx="40" cy="80" r="3" fill="#059669"/>
+</svg>"""
+    with open(os.path.join(pasta_saida, 'favicon.svg'), "w", encoding="utf-8") as f:
+        f.write(svg_favicon)
+    return svg_favicon
+
+
+def rasterizar_favicon_png(pasta_saida):
+    """Converte favicon.svg em PNG/ICO — fallback pra navegadores/crawlers
+    antigos que não entendem favicon SVG (o link rel="icon" no <head>
+    declara os dois, moderno primeiro). Usa svglib+reportlab (Python
+    puro, sem depender de libs nativas tipo Cairo — que são um problema
+    conhecido de instalar no Windows) só nesta função de build; não é
+    dependência do site em si, só da geração.
+
+    Gera:
+      - favicon.ico (16/32/48px combinados — o formato mais compatível
+        que existe, ainda o mínimo esperado por navegadores/crawlers
+        muito antigos)
+      - apple-touch-icon.png (180x180 — tamanho recomendado pela Apple
+        pra ícone de atalho na tela inicial do iOS/Android)
+      - logo-schema.png (512x512 — usado como "logo" no schema.org
+        Organization; o Google recomenda uma imagem raster real, não
+        SVG, com no mínimo 112x112px, pra aparecer no card de marca da
+        busca)
+
+    Se as libs de rasterização não estiverem instaladas, avisa e segue
+    sem quebrar a geração (o favicon.svg sozinho já cobre navegador
+    moderno + Google, que suporta SVG — o .ico/.png são reforço de
+    compatibilidade, não bloqueio)."""
+    try:
+        from svglib.svglib import svg2rlg
+        from reportlab.graphics import renderPM
+    except ImportError:
+        print("⚠️  svglib/reportlab não instalados — pulando favicon.ico/apple-touch-icon.png (favicon.svg sozinho já funciona em navegador moderno e no Google, mas sem fallback pra crawler antigo). Rode: pip install svglib reportlab")
+        return
+
+    caminho_svg = os.path.join(pasta_saida, 'favicon.svg')
+
+    def _renderizar_png(tamanho_px, caminho_saida):
+        # Recarrega o SVG do zero a cada tamanho, em vez de reaproveitar
+        # um único Drawing com scale()/scale(1/fator) pra "desfazer" —
+        # essa abordagem parecia mais eficiente, mas Group.scale() do
+        # reportlab EMPILHA a transformação em vez de substituí-la, e a
+        # sequência scale/unscale repetida corrompia o estado interno de
+        # clip-path do Drawing (achado real: quebrava com
+        # "AttributeError: 'NoneType' object has no attribute 'moveTo'"
+        # em _shape_to_pdf_path, mesmo depois de eu já ter descartado a
+        # hipótese inicial de que o culpado fosse o filter="url(#glow)").
+        # Recarregar do zero é mais lento (reparseia o SVG 5x), mas o
+        # favicon só é gerado 1x por build do site inteiro — custo
+        # irrelevante — e elimina a classe de bug por completo.
+        desenho = svg2rlg(caminho_svg)
+        fator = tamanho_px / desenho.width  # svg2rlg lê o viewBox (100x100) como width/height
+        desenho.width = desenho.height = tamanho_px
+        desenho.scale(fator, fator)
+        renderPM.drawToFile(desenho, caminho_saida, fmt="PNG", bg=0x022c22)
+
+    caminho_180 = os.path.join(pasta_saida, 'apple-touch-icon.png')
+    caminho_512 = os.path.join(pasta_saida, 'logo-schema.png')
+    _renderizar_png(180, caminho_180)
+    _renderizar_png(512, caminho_512)
+
+    from PIL import Image
+    tamanhos_ico = [16, 32, 48]
+    caminhos_tmp = []
+    for tamanho in tamanhos_ico:
+        caminho_tmp = os.path.join(pasta_saida, f'_favicon_tmp_{tamanho}.png')
+        _renderizar_png(tamanho, caminho_tmp)
+        caminhos_tmp.append(caminho_tmp)
+    # .load() força o PIL a ler todos os pixels agora (em vez de leitura
+    # preguiçosa do arquivo) e fecha o handle do arquivo em seguida —
+    # sem isso, o Windows recusa o os.remove() logo abaixo com
+    # PermissionError ("arquivo já está sendo usado por outro processo"),
+    # porque o .save() do ICO ainda tinha os PNGs temporários abertos.
+    imagens = []
+    for c in caminhos_tmp:
+        img = Image.open(c)
+        img.load()
+        imagens.append(img)
+    imagens[0].save(
+        os.path.join(pasta_saida, 'favicon.ico'),
+        format='ICO',
+        sizes=[(t, t) for t in tamanhos_ico],
+        append_images=imagens[1:],
+    )
+    for c in caminhos_tmp:
+        os.remove(c)
+    print("✅ favicon.ico, apple-touch-icon.png e logo-schema.png gerados a partir de favicon.svg.")
 
 
 def formatar_valor_curto(valor_imovel):
@@ -1610,6 +1768,20 @@ def gerar_paginas_pseo():
     gerar_sitemap(urls_sitemap + urls_hub + [url_comparador], pasta_saida, dominio, data_ultima_atualizacao)
     gerar_robots_txt(pasta_saida, dominio)
     gerar_logo_svg(pasta_saida)
+    gerar_favicon_svg(pasta_saida)
+    # rasterizar_favicon_png() NÃO roda aqui: ela depende de
+    # svglib/reportlab/pycairo (instaladas só localmente pra esta tarefa
+    # pontual, não em requirements.txt) — colocar essa dependência no
+    # pipeline automático mensal (.github/workflows/atualiza_taxas.yml,
+    # ubuntu-latest) arriscaria quebrar o deploy inteiro por causa de um
+    # asset que não muda mês a mês (o ícone da marca não depende da
+    # taxa de juros). favicon.ico/apple-touch-icon.png/logo-schema.png
+    # são gerados manualmente (rode rasterizar_favicon_png(pasta_saida)
+    # à mão quando o desenho do ícone mudar) e ficam comitados como
+    # arquivo estático em paginas_seo/, no mesmo espírito de _headers/
+    # _redirects/404.html — esta função nunca sobrescreve nem apaga
+    # esses 3 arquivos, só o favicon.svg (puro código, sem dependência
+    # nova, seguro rodar sempre).
     gerar_llms_txt(pasta_saida, dominio, len(urls_sitemap), data_ultima_atualizacao)
     print(f"✅ {len(urls_sitemap)} páginas geradas em '{pasta_saida}/'.")
     print(f"✅ {len(urls_hub)} páginas-hub por banco + 1 página comparativa geradas.")
@@ -2055,6 +2227,23 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
       "dateModified": "{data_ultima_atualizacao}"
     }}'''
 
+    # Schema "Logo" (achado real, 06/set/2026: sem isso, junto do favicon
+    # que não existia, o Google mostrava o domínio cru + ícone genérico
+    # em vez do nome/ícone da marca — ver print do usuário comparando com
+    # o resultado de outro site). Formato exato recomendado pela
+    # documentação do Google (developers.google.com/search/docs/appearance/
+    # structured-data/logo): Organization com "logo" apontando pra uma
+    # imagem RASTER real (não SVG) de pelo menos 112x112px — por isso
+    # aponta pro logo-schema.png (512x512) gerado por
+    # rasterizar_favicon_png, não pro favicon.svg.
+    schema_organization = f'''{{
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Datalab Global",
+      "url": "{url_home}",
+      "logo": "{DOMINIO}/logo-schema.png"
+    }}'''
+
     titulo_home = "Simulador de Financiamento e Amortização (Meses ou Anos) | Datalab Global"
     # og:title/twitter:title deliberadamente mais curto que o <title> —
     # comportamento original de antes do render_head_boilerplate existir,
@@ -2065,7 +2254,7 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
     html_home = f'''<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-{render_head_boilerplate(titulo_home, descricao_home, url_home, DOMINIO, [schema_website], titulo_social=titulo_home_social)}
+{render_head_boilerplate(titulo_home, descricao_home, url_home, DOMINIO, [schema_website, schema_organization], titulo_social=titulo_home_social)}
 </head>
 <body class="antialiased min-h-screen flex flex-col">
     <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">

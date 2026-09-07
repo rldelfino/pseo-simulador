@@ -71,7 +71,8 @@ def test_todo_link_interno_resolve_para_pagina_existente():
     no disco — ou ser "/" (raiz), "styles.css", "logo.svg", "sitemap.xml",
     externo (http/https), ou um dos arquivos estáticos conhecidos."""
     slugs_validos = _slugs_validos()
-    arquivos_estaticos = {"styles.css", "logo.svg", "sitemap.xml", "robots.txt", "llms.txt", "/", "404.html"}
+    arquivos_estaticos = {"styles.css", "logo.svg", "sitemap.xml", "robots.txt", "llms.txt", "/", "404.html",
+                          "favicon.svg", "favicon.ico", "apple-touch-icon.png", "logo-schema.png"}
     faltando = []
     for nome_arquivo in _arquivos_html():
         with open(os.path.join(PASTA_SAIDA, nome_arquivo), encoding="utf-8") as f:
@@ -161,7 +162,7 @@ def test_sitemap_lista_todas_as_paginas_e_sem_html():
 
 
 def test_arquivos_de_infraestrutura_existem():
-    for nome in ("sitemap.xml", "robots.txt", "llms.txt", "_headers", "_redirects", "404.html", "styles.css", "logo.svg"):
+    for nome in ("sitemap.xml", "robots.txt", "llms.txt", "_headers", "_redirects", "404.html", "styles.css", "logo.svg", "favicon.svg"):
         assert os.path.isfile(os.path.join(PASTA_SAIDA, nome)), f"{nome} não existe em paginas_seo/"
 
 
@@ -169,3 +170,31 @@ def test_pagina_404_tem_noindex():
     with open(os.path.join(PASTA_SAIDA, "404.html"), encoding="utf-8") as f:
         conteudo = f.read()
     assert 'name="robots" content="noindex"' in conteudo, "404.html sem noindex — Google poderia tentar indexar a página de erro"
+
+
+def test_toda_pagina_tem_favicon():
+    """Achado real (06/set/2026, print do usuário): o site nunca teve
+    NENHUM <link rel="icon">, e o Google mostrava o domínio cru
+    (datalabglobal.com) com ícone genérico em vez do nome amigável +
+    ícone da marca. Trava de regressão pra essa classe de bug nunca
+    voltar — toda página HTML (menos 404, que é intencionalmente sem
+    boilerplate de indexação) precisa declarar o favicon SVG."""
+    faltando = []
+    for nome_arquivo in _arquivos_html():
+        with open(os.path.join(PASTA_SAIDA, nome_arquivo), encoding="utf-8") as f:
+            conteudo = f.read()
+        if 'rel="icon"' not in conteudo:
+            faltando.append(nome_arquivo)
+    assert not faltando, f"{len(faltando)} página(s) sem <link rel=\"icon\">: {faltando[:10]}"
+
+
+def test_home_tem_schema_organization_com_logo():
+    """Achado real (06/set/2026): o Google recomenda um schema.org
+    Organization com "logo" (imagem raster real, não SVG) pra decidir
+    qual ícone/nome de marca mostrar nos resultados de busca — sem
+    isso, o card mostrava só o domínio cru. Trava que a home continua
+    declarando isso depois de qualquer refactor futuro."""
+    with open(os.path.join(PASTA_SAIDA, "index.html"), encoding="utf-8") as f:
+        conteudo = f.read()
+    assert '"@type": "Organization"' in conteudo, "home sem schema.org Organization"
+    assert '"logo": "https://simulador.datalabglobal.com/logo-schema.png"' in conteudo, "schema Organization sem logo raster apontando pro domínio certo"
