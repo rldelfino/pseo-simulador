@@ -394,35 +394,36 @@ def comparar_todos_bancos(valor_imovel, prazo_alvo, lookup_paginas, taxas_atuais
 
 def calcular_marcador_posicao_mercado(ranking_ordenado, banco):
     """Posição (0-100) do marcador nas barras "Faixa/Posição no Mercado":
-    fração do RANKING do banco (índice / (n-1)), não interpolação linear
-    do valor de CET contra o mínimo/máximo da faixa.
+    interpolação linear do CET real deste banco contra o mínimo/máximo
+    real da faixa (valor, não ranking).
 
-    Achado real (06/set/2026, print do usuário comparando a barra do
-    Banco Inter): com poucos bancos rastreados (hoje 11), é comum 1-2
-    outliers isolados definirem sozinhos o mínimo e o máximo da faixa —
-    ex.: pra R$500 mil em 360 meses, Banrisul sozinho no mínimo (10,61%)
-    e Banco do Brasil sozinho no máximo (16,21%), enquanto os outros 9
-    bancos ficam todos espremidos entre 12,10% e 14,04%. Com
-    interpolação de VALOR, esse espremimento jogava o marcador de um
-    banco comum (ex: Banco Inter, CET 14,04%, 9º colocado de 11) pra
-    ~61% da barra — visualmente "mais perto do pior que do melhor",
-    mesmo o banco estando no meio do pelotão. Rank-based resolve isso: o
-    nome do próprio widget é "Posição no Mercado" — posição/colocação é
-    semanticamente um RANKING, não uma proporção de valor — e fica
-    imune a um único outlier isolado esticar a régua e comprimir todo
-    mundo perto do centro.
+    Achado real (07/set/2026, pedido explícito do usuário no projeto
+    irmão, aplicado aqui pra manter os dois consistentes): uma versão
+    anterior desta função usava fração do ranking (índice/(n-1)) — cada
+    marcador ficava igualmente espaçado dos vizinhos, independente da
+    distância real entre as taxas, "parece uma fila indiana" (palavras
+    do usuário). Isso resolvia um problema (outlier isolado esticando a
+    régua e comprimindo o resto perto do centro — ver histórico de
+    04-06/set/2026 se precisar do caso do Banco Inter), mas criava outro
+    pior: nenhuma noção real de o quanto os bancos se aproximam ou se
+    distanciam uns dos outros. Voltado pra escala de valor: dois bancos
+    com CET bem próximo aparecem próximos no marcador; um banco isolado
+    longe dos outros aparece isolado — a informação que "Posição no
+    Mercado" deveria mostrar.
 
     ranking_ordenado precisa já estar ordenado por CET crescente (é o
-    retorno de comparar_todos_bancos). Se o banco não aparece na lista
-    (não deveria acontecer, mas defensivamente) ou a lista tem 0-1
-    elemento, cai no centro (50%) em vez de quebrar."""
-    n = len(ranking_ordenado)
-    if n <= 1:
+    retorno de comparar_todos_bancos) e cada item precisa ter a chave
+    "cet". Se o banco não aparece na lista (não deveria acontecer, mas
+    defensivamente) ou a lista tem 0-1 elemento, cai no centro (50%) em
+    vez de quebrar."""
+    if len(ranking_ordenado) <= 1:
         return 50
-    indice = next((i for i, r in enumerate(ranking_ordenado) if r["banco"] == banco), None)
-    if indice is None:
+    entrada = next((r for r in ranking_ordenado if r["banco"] == banco), None)
+    if entrada is None:
         return 50
-    marcador_pct = round((indice / (n - 1)) * 100)
+    cet_min, cet_max = ranking_ordenado[0]["cet"], ranking_ordenado[-1]["cet"]
+    spread = cet_max - cet_min
+    marcador_pct = round(((entrada["cet"] - cet_min) / spread) * 100) if spread > 0 else 50
     return max(2, min(98, marcador_pct))  # nunca cola nas bordas (marcador cortado)
 
 
@@ -1409,9 +1410,12 @@ def gerar_paginas_pseo():
     <footer class="border-t border-white/5 py-8 mt-10">
         <div class="max-w-7xl mx-auto px-4 text-center">
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
-            <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
-                {icone('whatsapp', 'mr-1')} Falar com o suporte
-            </a>
+            <div class="flex items-center justify-center gap-4">
+                <a href="/sobre" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
+                <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
+                    {icone('whatsapp', 'mr-1')} Falar com o suporte
+                </a>
+            </div>
         </div>
     </footer>
 
@@ -1547,16 +1551,17 @@ def gerar_paginas_pseo():
         }}
 
         // Espelha o bloco Python "Faixa de CET no Mercado" (e
-        // calcular_marcador_posicao_mercado): a posição do marcador é a
-        // FRAÇÃO DO RANKING (índice/(n-1)) do banco atual, não a
-        // interpolação linear do CET dele contra o mínimo/máximo da
-        // faixa — achado real de 06/set/2026, ver docstring da função
-        // Python irmã pro raciocínio completo (um outlier isolado no
-        // mínimo/máximo estica a régua e espreme os demais bancos perto
-        // do centro, dando a impressão errada de "mais perto do pior").
-        // Só precisa do menor/maior CET do ranking pros rótulos das
-        // pontas (não mais do nome de cada banco), e o CTA sempre aponta
-        // pra Financia Tudo — nunca pra um concorrente.
+        // calcular_marcador_posicao_mercado): a posição do marcador é
+        // interpolação linear do CET real do banco atual contra o
+        // mínimo/máximo real da faixa (valor, não ranking) — testado e
+        // revertido de "fração do ranking" no mesmo dia (07/set/2026), a
+        // pedido do usuário: com todo marcador igualmente espaçado a
+        // barra perdia a noção de o quanto os bancos realmente se
+        // aproximam ou distanciam uns dos outros em taxa — ver docstring
+        // da função Python irmã pro raciocínio completo. Só precisa do
+        // menor/maior CET do ranking pros rótulos das pontas (não mais
+        // do nome de cada banco), e o CTA sempre aponta pra Financia
+        // Tudo — nunca pra um concorrente.
         function renderizarComparacaoMercado(vImovelLive, prazoLive, cetAtualLive, nomeBancoAtual) {{
             const elGrafico = document.getElementById('grafico_comparacao_mercado');
             const elTexto = document.getElementById('texto_resumo_mercado');
@@ -1567,9 +1572,8 @@ def gerar_paginas_pseo():
 
             const cetMin = ranking[0].cet;
             const cetMax = ranking[ranking.length - 1].cet;
-            const n = ranking.length;
-            const indiceAtual = ranking.findIndex(r => r.ehAtual);
-            let marcadorPct = (n > 1 && indiceAtual !== -1) ? Math.round((indiceAtual / (n - 1)) * 100) : 50;
+            const spread = cetMax - cetMin;
+            let marcadorPct = spread > 0 ? Math.round(((cetAtualLive - cetMin) / spread) * 100) : 50;
             marcadorPct = Math.max(2, Math.min(98, marcadorPct));
 
             const cetAtualFmt = cetAtualLive.toLocaleString('pt-BR', {{minimumFractionDigits: 2, maximumFractionDigits: 2}});
@@ -1765,7 +1769,8 @@ def gerar_paginas_pseo():
     url_comparador = gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas_atuais_por_banco)
 
     gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao)
-    gerar_sitemap(urls_sitemap + urls_hub + [url_comparador], pasta_saida, dominio, data_ultima_atualizacao)
+    url_sobre = gerar_pagina_sobre(pasta_saida, dominio)
+    gerar_sitemap(urls_sitemap + urls_hub + [url_comparador, url_sobre], pasta_saida, dominio, data_ultima_atualizacao)
     gerar_robots_txt(pasta_saida, dominio)
     gerar_logo_svg(pasta_saida)
     gerar_favicon_svg(pasta_saida)
@@ -2033,9 +2038,12 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
     <footer class="border-t border-white/5 py-8 mt-10">
         <div class="max-w-7xl mx-auto px-4 text-center">
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
-            <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
-                {icone('whatsapp', 'mr-1')} Falar com o suporte
-            </a>
+            <div class="flex items-center justify-center gap-4">
+                <a href="/sobre" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
+                <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
+                    {icone('whatsapp', 'mr-1')} Falar com o suporte
+                </a>
+            </div>
         </div>
     </footer>
 
@@ -2171,9 +2179,12 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
     <footer class="border-t border-white/5 py-8 mt-10">
         <div class="max-w-7xl mx-auto px-4 text-center">
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
-            <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
-                {icone('whatsapp', 'mr-1')} Falar com o suporte
-            </a>
+            <div class="flex items-center justify-center gap-4">
+                <a href="/sobre" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
+                <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
+                    {icone('whatsapp', 'mr-1')} Falar com o suporte
+                </a>
+            </div>
         </div>
     </footer>
 </body>
@@ -2236,12 +2247,24 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
     # imagem RASTER real (não SVG) de pelo menos 112x112px — por isso
     # aponta pro logo-schema.png (512x512) gerado por
     # rasterizar_favicon_png, não pro favicon.svg.
+    # Achado real (12/set/2026, pedido do usuário depois de pesquisa sobre
+    # E-E-A-T/YMYL — conteúdo financeiro é avaliado pelo Google com padrão
+    # mais alto de confiança do que conteúdo comum): "founder" e
+    # "contactPoint" são sinais legíveis por máquina de que existe gente
+    # real, com contato real, por trás do site — não só um domínio
+    # anônimo gerando página automática. Rodolfo Delfino é o fundador
+    # real da Datalab Global (confirmado pelo próprio usuário); e-mail é
+    # o contato real usado pelo domínio (Google Workspace configurado em
+    # datalabglobal.com). Ver também gerar_pagina_sobre(), que reforça o
+    # mesmo Person como schema próprio na página /sobre.
     schema_organization = f'''{{
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "Datalab Global",
       "url": "{url_home}",
-      "logo": "{DOMINIO}/logo-schema.png"
+      "logo": "{DOMINIO}/logo-schema.png",
+      "founder": {{"@type": "Person", "name": "Rodolfo Delfino"}},
+      "contactPoint": {{"@type": "ContactPoint", "email": "contato@datalabglobal.com", "contactType": "customer service"}}
     }}'''
 
     titulo_home = "Simulador de Financiamento e Amortização (Meses ou Anos) | Datalab Global"
@@ -2283,10 +2306,115 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
             {blocos_html}
         </div>
     </main>
+    <footer class="border-t border-white/5 py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
+            <div class="flex items-center justify-center gap-4">
+                <a href="/sobre" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
+                <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
+                    {icone('whatsapp', 'mr-1')} Falar com o suporte
+                </a>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>'''
     with open(os.path.join(pasta_saida, 'index.html'), "w", encoding="utf-8") as f:
         f.write(html_home)
+
+
+def gerar_pagina_sobre(pasta_saida, dominio):
+    """Página institucional "Sobre" — achado real (12/set/2026, pesquisa
+    de práticas atuais do Google pedida pelo usuário): conteúdo
+    financeiro (YMYL — "Your Money or Your Life") é avaliado com padrão
+    de confiança mais alto que conteúdo comum, e "Author entities, Person
+    Schema, e presença no Knowledge Graph são sinais de confiança cada
+    vez mais importantes" pra esse tipo de conteúdo. Até esta página, o
+    site não tinha NENHUM lugar que dissesse quem está por trás dele —
+    só o texto genérico de rodapé "Datalab Global". Conteúdo (fundador,
+    missão, contato) é o texto real fornecido pelo usuário, não
+    inventado — nunca fabricar razão social/CNPJ/endereço que não foram
+    confirmados."""
+    url_canonica = f"{dominio}/sobre"
+    titulo_pagina = "Sobre a Datalab Global | Simulador de Financiamento Imobiliário"
+    meta_description = (
+        "Conheça a Datalab Global, criada por Rodolfo Delfino para usar dados e IA na resolução de "
+        "problemas reais — incluindo este simulador de financiamento com taxas reais do Banco Central."
+    )
+
+    schema_sobre = f'''{{
+      "@context": "https://schema.org",
+      "@type": "AboutPage",
+      "url": "{url_canonica}",
+      "mainEntity": {{
+        "@type": "Organization",
+        "name": "Datalab Global",
+        "url": "{dominio}/",
+        "founder": {{"@type": "Person", "name": "Rodolfo Delfino"}},
+        "contactPoint": {{"@type": "ContactPoint", "email": "contato@datalabglobal.com", "contactType": "customer service"}}
+      }}
+    }}'''
+
+    corpo = f'''<main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 relative z-10 w-full">
+        <h1 class="text-3xl md:text-5xl font-serif text-white mb-8 leading-tight">Sobre a Datalab Global</h1>
+
+        <div class="glass-panel rounded-2xl p-6 md:p-10 space-y-6 text-slate-300 leading-relaxed">
+            <p>A Datalab Global foi criada por <strong class="text-white">Rodolfo Delfino</strong> com um objetivo direto: usar dados e as melhores técnicas de inteligência artificial disponíveis hoje para facilitar a vida das pessoas. Isso já tomou forma de produtos bem diferentes entre si — de SaaS a jogos, de relatórios a sistemas de ERP — mas todos guiados pela mesma pergunta: <strong class="text-emerald-400">qual dor podemos resolver hoje?</strong></p>
+
+            <p>Este simulador de financiamento imobiliário nasceu dessa mesma lógica. Em vez de taxa promocional de material de marketing, usamos a taxa média <strong class="text-white">real</strong> apurada pelo Banco Central do Brasil — atualizada periodicamente, a mesma fonte que qualquer analista de crédito consultaria. O objetivo é simples: você saber, antes de entrar num banco, quanto um financiamento realmente custa.</p>
+
+            <div class="border-t border-white/10 pt-6">
+                <h2 class="font-serif text-xl text-white mb-3">Como funciona a Datalab Global</h2>
+                <p>Este site é mantido por indicação: quando você pede uma análise gratuita através dos nossos parceiros credenciados, podemos receber uma comissão — sem nenhum custo extra pra você. Não somos um banco nem instituição financeira, e nenhuma simulação aqui é uma oferta de crédito; é uma estimativa educativa baseada em dados reais de mercado.</p>
+            </div>
+
+            <div class="border-t border-white/10 pt-6">
+                <h2 class="font-serif text-xl text-white mb-3">Contato</h2>
+                <p>
+                    E-mail: <a href="mailto:contato@datalabglobal.com" class="text-emerald-400 hover:text-emerald-300 underline">contato@datalabglobal.com</a><br>
+                    WhatsApp: <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="text-emerald-400 hover:text-emerald-300 underline">falar com o suporte</a>
+                </p>
+            </div>
+        </div>
+
+        <div class="flex flex-wrap gap-3 mt-8">
+            <a href="/" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-6 py-3 rounded-full font-bold text-sm transition-all">Ir pro simulador</a>
+            <a href="comparador-bancos" class="border border-white/10 hover:border-emerald-500/50 px-6 py-3 rounded-full font-bold text-sm transition-all">Ver comparativo de bancos</a>
+        </div>
+    </main>'''
+
+    html = f'''<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+{render_head_boilerplate(titulo_pagina, meta_description, url_canonica, dominio, [schema_sobre])}
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+    <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <a href="/" class="flex items-center">
+                    <img src="logo.svg" alt="Datalab Global" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
+                </a>
+            </div>
+        </div>
+    </nav>
+    {corpo}
+    <footer class="border-t border-white/5 py-8 mt-10">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
+            <div class="flex items-center justify-center gap-4">
+                <a href="/sobre" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
+                <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
+                    {icone('whatsapp', 'mr-1')} Falar com o suporte
+                </a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>'''
+    with open(os.path.join(pasta_saida, 'sobre.html'), "w", encoding="utf-8") as f:
+        f.write(html)
+    return url_canonica
 
 
 def gerar_sitemap(urls, pasta_saida, dominio, data_ultima_atualizacao):
