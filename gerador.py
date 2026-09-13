@@ -33,6 +33,25 @@ LINK_FINANCIA_TUDO = "https://app.financiatudo.com.br/financiamento-de-imoveis/c
 DOMINIO = 'https://simulador.datalabglobal.com'
 ARQUIVO_ULTIMA_ATUALIZACAO = 'ultima_atualizacao_taxas.txt'
 
+_URL_GOOGLE_FONTS = (
+    "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700"
+    "&family=Inter:wght@300;400;500;600;700&display=swap"
+)
+# Achado real (13/set/2026, PageSpeed Insights mobile no projeto irmão de
+# veículos — mesmo template de <head>, corrigido aqui em paralelo): o
+# <link rel="stylesheet"> síncrono pro Google Fonts é o maior item de
+# "solicitações que bloqueiam a renderização" (o navegador para de
+# renderizar até baixar o CSS de um domínio terceiro). Troca pelo padrão
+# "loadCSS" (preload + media=print que vira media=all no onload): carrega
+# em paralelo sem bloquear o first paint, com <noscript> como rede de
+# segurança pra quem desabilita JS. O onload inline funciona sob o CSP
+# do site porque script-src já inclui 'unsafe-inline' (ver paginas_seo/_headers).
+GOOGLE_FONTS_LINK_ASSINCRONO = (
+    f'<link rel="preload" as="style" href="{_URL_GOOGLE_FONTS}">\n'
+    f'    <link rel="stylesheet" href="{_URL_GOOGLE_FONTS}" media="print" onload="this.media=\'all\'">\n'
+    f'    <noscript><link rel="stylesheet" href="{_URL_GOOGLE_FONTS}"></noscript>'
+)
+
 # URLs PÚBLICAS (canonical/sitemap/links/schema) NUNCA levam ".html" —
 # achado real (06/set/2026, Google Search Console: 1,49 mil páginas em
 # "Página com redirecionamento", quase o site inteiro). Causa raiz: o
@@ -223,7 +242,7 @@ def render_head_boilerplate(titulo_pagina, meta_description, url_canonica, domin
     <meta name="twitter:image" content="{dominio}/logo.svg">
 
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    {GOOGLE_FONTS_LINK_ASSINCRONO}
 
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5414184968223405" crossorigin="anonymous"></script>
 
@@ -1042,7 +1061,7 @@ def gerar_paginas_pseo():
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <a href="/" class="flex items-center">
-                    <img src="logo.svg" alt="Datalab Global" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
+                    <img src="logo.svg" alt="Datalab Global" width="144" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
                 </a>
                 <div class="hidden md:flex items-center space-x-3">
                     <a href="{LINK_FINANCIA_TUDO}" target="_blank" rel="noopener sponsored" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-6 py-2.5 rounded-full font-bold transition-all text-sm flex items-center shadow-[0_0_15px_rgba(16,185,129,0.3)]">
@@ -1928,7 +1947,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <a href="/" class="flex items-center">
-                    <img src="logo.svg" alt="Datalab Global" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
+                    <img src="logo.svg" alt="Datalab Global" width="144" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
                 </a>
                 <div class="hidden md:flex items-center space-x-3">
                     <a href="{LINK_FINANCIA_TUDO}" target="_blank" rel="noopener sponsored" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-6 py-2.5 rounded-full font-bold transition-all text-sm flex items-center shadow-[0_0_15px_rgba(16,185,129,0.3)]">
@@ -2122,7 +2141,7 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <a href="/" class="flex items-center">
-                    <img src="logo.svg" alt="Datalab Global" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
+                    <img src="logo.svg" alt="Datalab Global" width="144" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
                 </a>
                 <div class="hidden md:flex items-center space-x-3">
                     <a href="{LINK_FINANCIA_TUDO}" target="_blank" rel="noopener sponsored" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-6 py-2.5 rounded-full font-bold transition-all text-sm flex items-center shadow-[0_0_15px_rgba(16,185,129,0.3)]">
@@ -2284,7 +2303,7 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <a href="/" class="flex items-center">
-                    <img src="logo.svg" alt="Datalab Global" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
+                    <img src="logo.svg" alt="Datalab Global" width="144" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
                 </a>
             </div>
         </div>
@@ -2393,7 +2412,7 @@ def gerar_pagina_sobre(pasta_saida, dominio):
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <a href="/" class="flex items-center">
-                    <img src="logo.svg" alt="Datalab Global" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
+                    <img src="logo.svg" alt="Datalab Global" width="144" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
                 </a>
             </div>
         </div>

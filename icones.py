@@ -30,11 +30,19 @@ _ICONES = {
 
 
 def icone(nome, classes_extra=""):
+    """Achado real (13/set/2026, mesma auditoria PageSpeed Insights que
+    revelou o problema no projeto irmão de veículos — aqui corrigido em
+    paralelo por prevenção, mesmo sem confirmação direta via Lighthouse
+    nesta página): ícones decorativos (sempre ao lado de texto visível)
+    não devem ficar expostos à árvore de acessibilidade — aria-hidden
+    remove o SVG do cômputo de nome acessível do elemento pai, deixando o
+    texto adjacente ser a única fonte. Correção na raiz: cobre todas as
+    chamadas de icone() no site de uma vez."""
     svg = _ICONES.get(nome, "")
     if not svg:
         return ""
     classe = f'inline-block align-[-0.125em] {classes_extra}'.strip()
-    return svg.replace("<svg ", f'<svg class="{classe}" style="width:1em;height:1em" ', 1)
+    return svg.replace("<svg ", f'<svg class="{classe}" style="width:1em;height:1em" aria-hidden="true" focusable="false" ', 1)
 
 
 def tooltip(texto):
