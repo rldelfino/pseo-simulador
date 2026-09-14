@@ -907,38 +907,8 @@
         </div>
     </footer>
 
+    <script src="calculo.js"></script>
     <script>
-        function ajustarTooltips() {
-            const margem = 8;
-            // Achado real (06/set/2026, auditoria do projeto irmão de
-            // veículos): usar window.innerWidth aqui deixava o balão
-            // estourando a tela mesmo com ajustarTooltips() já rodando no
-            // window.onload — confirmado ao vivo (Playwright/navegador
-            // real, viewport 375px: scrollWidth 414 > clientWidth 375,
-            // tooltip do CET estourando). Causa: esta página tem
-            // overflow-x:hidden no <body>, e nesse caso window.innerWidth
-            // pode devolver um valor MAIOR que a área realmente visível.
-            // document.documentElement.clientWidth é a largura real
-            // renderizada e não sofre desse problema.
-            const larguraTela = document.documentElement.clientWidth;
-            document.querySelectorAll('.tooltip-box').forEach(box => {
-                const metade = box.offsetWidth / 2;
-                box.style.setProperty('--tt-shift', (-metade) + 'px');
-                const r = box.getBoundingClientRect();
-                let shift = 0;
-                if (r.right > larguraTela - margem) shift = (larguraTela - margem) - r.right;
-                else if (r.left < margem) shift = margem - r.left;
-                if (shift !== 0) box.style.setProperty('--tt-shift', (-metade + shift).toFixed(0) + 'px');
-            });
-        }
-        window.addEventListener('resize', ajustarTooltips);
-        // A posição do ícone pode mudar depois do primeiro cálculo (ex: a
-        // fonte do Google Fonts carrega depois e reflui o texto ao redor).
-        // Recalcula de novo assim que as fontes terminam de carregar, pra
-        // não travar um deslocamento calculado com o layout ainda "errado".
-        if (document.fonts && document.fonts.ready) {
-            document.fonts.ready.then(ajustarTooltips).catch(() => {});
-        }
         window.addEventListener('DOMContentLoaded', ajustarTooltips);
     </script>
 </body>
