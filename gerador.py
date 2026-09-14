@@ -2131,10 +2131,33 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
       ]
     }}'''
 
+    # Achado real (13/set/2026, auditoria de SEO — mesma sessão que revisou
+    # o irmão de veículos): esta página (e a home, mais abaixo) não tinha
+    # FAQPage, diferente da página individual e do hub por banco, que já
+    # tinham. São exatamente as páginas de MAIS valor de SEO (termos de
+    # cabeça, mais link equity) — cobertas agora, mesmo padrão (schema +
+    # bloco visível <details>, nunca um sem o outro).
+    faq_q1 = f"Qual banco tem a menor taxa de financiamento imobiliário em {ano_atual}?"
+    faq_a1 = f"No comparativo acima, com cenário de referência de {formatar_reais(VALOR_REF)} em {PRAZO_REF} meses, {ranking_ref[0]['banco_exib']} aparece com o menor CET entre os {len(ranking_ref)} bancos que acompanhamos. O CET real do seu financiamento pode variar conforme o valor, prazo e entrada que você escolher."
+    faq_q2 = "O que é CET e por que ele é melhor que só olhar a taxa de juros?"
+    faq_a2 = "CET (Custo Efetivo Total) já soma juros, seguros obrigatórios (MIP e DFI) e taxa de administração — diferente da taxa de juros anunciada sozinha, ele mostra o custo real do financiamento por ano, e é o número certo pra comparar bancos entre si."
+    faq_q3 = "Como vejo a simulação completa de um banco específico?"
+    faq_a3 = "Clique no banco desejado na lista acima pra ver a página completa dele, com taxa, entrada mínima, prazo máximo e o simulador pra calcular sua parcela exata."
+
+    schema_faq = f'''{{
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {{ "@type": "Question", "name": "{faq_q1}", "acceptedAnswer": {{ "@type": "Answer", "text": "{faq_a1}" }} }},
+        {{ "@type": "Question", "name": "{faq_q2}", "acceptedAnswer": {{ "@type": "Answer", "text": "{faq_a2}" }} }},
+        {{ "@type": "Question", "name": "{faq_q3}", "acceptedAnswer": {{ "@type": "Answer", "text": "{faq_a3}" }} }}
+      ]
+    }}'''
+
     html_comparador = f'''<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-{render_head_boilerplate(titulo_pagina, meta_description, url_canonica, dominio, [schema_breadcrumb])}
+{render_head_boilerplate(titulo_pagina, meta_description, url_canonica, dominio, [schema_breadcrumb, schema_faq])}
 </head>
 <body class="antialiased flex flex-col min-h-screen">
     <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
@@ -2191,6 +2214,33 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
                         <span class="relative z-10 flex items-center">Fazer Análise Grátis {icone('external-link', 'ml-3 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform')}</span>
                     </a>
                 </div>
+            </div>
+        </div>
+
+        <div class="mt-16 mb-8">
+            <h2 class="text-2xl font-serif text-white mb-6 text-center">Perguntas Frequentes</h2>
+            <div class="space-y-3 max-w-3xl mx-auto">
+                <details class="group bg-white/5 border border-white/10 rounded-xl overflow-hidden open:border-emerald-500/30 transition-colors">
+                    <summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4">
+                        <h3 class="text-emerald-400 font-bold text-sm">{faq_q1}</h3>
+                        <span class="faq-toggle-icon shrink-0 text-slate-500 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
+                    </summary>
+                    <p class="text-slate-300 text-sm font-light leading-relaxed px-5 pb-5">{faq_a1}</p>
+                </details>
+                <details class="group bg-white/5 border border-white/10 rounded-xl overflow-hidden open:border-emerald-500/30 transition-colors">
+                    <summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4">
+                        <h3 class="text-emerald-400 font-bold text-sm">{faq_q2}</h3>
+                        <span class="faq-toggle-icon shrink-0 text-slate-500 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
+                    </summary>
+                    <p class="text-slate-300 text-sm font-light leading-relaxed px-5 pb-5">{faq_a2}</p>
+                </details>
+                <details class="group bg-white/5 border border-white/10 rounded-xl overflow-hidden open:border-emerald-500/30 transition-colors">
+                    <summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4">
+                        <h3 class="text-emerald-400 font-bold text-sm">{faq_q3}</h3>
+                        <span class="faq-toggle-icon shrink-0 text-slate-500 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
+                    </summary>
+                    <p class="text-slate-300 text-sm font-light leading-relaxed px-5 pb-5">{faq_a3}</p>
+                </details>
             </div>
         </div>
     </main>
@@ -2293,10 +2343,33 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
     # tinha igualado os dois sem querer, mudando o texto que aparece ao
     # compartilhar a home no Facebook/LinkedIn/Twitter).
     titulo_home_social = "Simulador de Financiamento e Amortização | Datalab Global"
+
+    # Achado real (13/set/2026, auditoria de SEO): a home era a única
+    # página de alto valor sem FAQPage (individual, hub e agora
+    # comparador-bancos já tinham) — corrigida aqui com perguntas
+    # genéricas sobre o produto como um todo, não sobre um banco
+    # específico (essas já são respondidas nas páginas de banco).
+    faq_home_q1 = "Como funciona o simulador de financiamento imobiliário da Datalab?"
+    faq_home_a1 = "Você escolhe o banco, vê a taxa real dele e simula a parcela pro valor, prazo e entrada que quiser — incluindo quanto você economiza fazendo amortizações extras. Os dados de taxa vêm direto do Banco Central e são atualizados periodicamente."
+    faq_home_q2 = "As taxas mostradas são reais ou só uma estimativa de marketing?"
+    faq_home_a2 = "São a taxa padrão estimada de cada banco pra essa modalidade, com base em dados públicos — não é uma taxa promocional de vitrine. Sua taxa final aprovada depende do seu relacionamento com o banco e da análise de crédito."
+    faq_home_q3 = "O simulador cobra alguma coisa pra usar?"
+    faq_home_a3 = "Não, simular é 100% gratuito. A Datalab é remunerada pelo correspondente bancário quando você pede uma análise por aqui — isso não muda o valor da sua parcela nem qual banco você escolhe."
+
+    schema_faq_home = f'''{{
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {{ "@type": "Question", "name": "{faq_home_q1}", "acceptedAnswer": {{ "@type": "Answer", "text": "{faq_home_a1}" }} }},
+        {{ "@type": "Question", "name": "{faq_home_q2}", "acceptedAnswer": {{ "@type": "Answer", "text": "{faq_home_a2}" }} }},
+        {{ "@type": "Question", "name": "{faq_home_q3}", "acceptedAnswer": {{ "@type": "Answer", "text": "{faq_home_a3}" }} }}
+      ]
+    }}'''
+
     html_home = f'''<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-{render_head_boilerplate(titulo_home, descricao_home, url_home, DOMINIO, [schema_website, schema_organization], titulo_social=titulo_home_social)}
+{render_head_boilerplate(titulo_home, descricao_home, url_home, DOMINIO, [schema_website, schema_organization, schema_faq_home], titulo_social=titulo_home_social)}
 </head>
 <body class="antialiased min-h-screen flex flex-col">
     <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
@@ -2323,6 +2396,33 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-32 relative z-10 w-full">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {blocos_html}
+        </div>
+
+        <div class="mt-16 mb-8">
+            <h2 class="text-2xl font-serif text-white mb-6 text-center">Perguntas Frequentes</h2>
+            <div class="space-y-3 max-w-3xl mx-auto">
+                <details class="group bg-white/5 border border-white/10 rounded-xl overflow-hidden open:border-emerald-500/30 transition-colors">
+                    <summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4">
+                        <h3 class="text-emerald-400 font-bold text-sm">{faq_home_q1}</h3>
+                        <span class="faq-toggle-icon shrink-0 text-slate-500 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
+                    </summary>
+                    <p class="text-slate-300 text-sm font-light leading-relaxed px-5 pb-5">{faq_home_a1}</p>
+                </details>
+                <details class="group bg-white/5 border border-white/10 rounded-xl overflow-hidden open:border-emerald-500/30 transition-colors">
+                    <summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4">
+                        <h3 class="text-emerald-400 font-bold text-sm">{faq_home_q2}</h3>
+                        <span class="faq-toggle-icon shrink-0 text-slate-500 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
+                    </summary>
+                    <p class="text-slate-300 text-sm font-light leading-relaxed px-5 pb-5">{faq_home_a2}</p>
+                </details>
+                <details class="group bg-white/5 border border-white/10 rounded-xl overflow-hidden open:border-emerald-500/30 transition-colors">
+                    <summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4">
+                        <h3 class="text-emerald-400 font-bold text-sm">{faq_home_q3}</h3>
+                        <span class="faq-toggle-icon shrink-0 text-slate-500 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
+                    </summary>
+                    <p class="text-slate-300 text-sm font-light leading-relaxed px-5 pb-5">{faq_home_a3}</p>
+                </details>
+            </div>
         </div>
     </main>
     <footer class="border-t border-white/5 py-8">

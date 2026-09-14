@@ -43,6 +43,17 @@
       ]
     }
     </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "Qual banco tem a menor taxa de financiamento imobiliário em 2026?", "acceptedAnswer": { "@type": "Answer", "text": "No comparativo acima, com cenário de referência de R$ 500.000,00 em 360 meses, Banrisul aparece com o menor CET entre os 11 bancos que acompanhamos. O CET real do seu financiamento pode variar conforme o valor, prazo e entrada que você escolher." } },
+        { "@type": "Question", "name": "O que é CET e por que ele é melhor que só olhar a taxa de juros?", "acceptedAnswer": { "@type": "Answer", "text": "CET (Custo Efetivo Total) já soma juros, seguros obrigatórios (MIP e DFI) e taxa de administração — diferente da taxa de juros anunciada sozinha, ele mostra o custo real do financiamento por ano, e é o número certo pra comparar bancos entre si." } },
+        { "@type": "Question", "name": "Como vejo a simulação completa de um banco específico?", "acceptedAnswer": { "@type": "Answer", "text": "Clique no banco desejado na lista acima pra ver a página completa dele, com taxa, entrada mínima, prazo máximo e o simulador pra calcular sua parcela exata." } }
+      ]
+    }
+    </script>
 </head>
 <body class="antialiased flex flex-col min-h-screen">
     <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
@@ -264,6 +275,33 @@
                         <span class="relative z-10 flex items-center">Fazer Análise Grátis <svg class="inline-block align-[-0.125em] ml-3 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" style="width:1em;height:1em" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></span>
                     </a>
                 </div>
+            </div>
+        </div>
+
+        <div class="mt-16 mb-8">
+            <h2 class="text-2xl font-serif text-white mb-6 text-center">Perguntas Frequentes</h2>
+            <div class="space-y-3 max-w-3xl mx-auto">
+                <details class="group bg-white/5 border border-white/10 rounded-xl overflow-hidden open:border-emerald-500/30 transition-colors">
+                    <summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4">
+                        <h3 class="text-emerald-400 font-bold text-sm">Qual banco tem a menor taxa de financiamento imobiliário em 2026?</h3>
+                        <span class="faq-toggle-icon shrink-0 text-slate-500 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
+                    </summary>
+                    <p class="text-slate-300 text-sm font-light leading-relaxed px-5 pb-5">No comparativo acima, com cenário de referência de R$ 500.000,00 em 360 meses, Banrisul aparece com o menor CET entre os 11 bancos que acompanhamos. O CET real do seu financiamento pode variar conforme o valor, prazo e entrada que você escolher.</p>
+                </details>
+                <details class="group bg-white/5 border border-white/10 rounded-xl overflow-hidden open:border-emerald-500/30 transition-colors">
+                    <summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4">
+                        <h3 class="text-emerald-400 font-bold text-sm">O que é CET e por que ele é melhor que só olhar a taxa de juros?</h3>
+                        <span class="faq-toggle-icon shrink-0 text-slate-500 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
+                    </summary>
+                    <p class="text-slate-300 text-sm font-light leading-relaxed px-5 pb-5">CET (Custo Efetivo Total) já soma juros, seguros obrigatórios (MIP e DFI) e taxa de administração — diferente da taxa de juros anunciada sozinha, ele mostra o custo real do financiamento por ano, e é o número certo pra comparar bancos entre si.</p>
+                </details>
+                <details class="group bg-white/5 border border-white/10 rounded-xl overflow-hidden open:border-emerald-500/30 transition-colors">
+                    <summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4">
+                        <h3 class="text-emerald-400 font-bold text-sm">Como vejo a simulação completa de um banco específico?</h3>
+                        <span class="faq-toggle-icon shrink-0 text-slate-500 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
+                    </summary>
+                    <p class="text-slate-300 text-sm font-light leading-relaxed px-5 pb-5">Clique no banco desejado na lista acima pra ver a página completa dele, com taxa, entrada mínima, prazo máximo e o simulador pra calcular sua parcela exata.</p>
+                </details>
             </div>
         </div>
     </main>
