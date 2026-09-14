@@ -1430,6 +1430,7 @@ def gerar_paginas_pseo():
         <div class="max-w-7xl mx-auto px-4 text-center">
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
             <div class="flex items-center justify-center gap-4">
+                <a href="/aprenda" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
                 <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
                     {icone('whatsapp', 'mr-1')} Falar com o suporte
@@ -1789,7 +1790,15 @@ def gerar_paginas_pseo():
 
     gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao)
     url_sobre = gerar_pagina_sobre(pasta_saida, dominio)
-    gerar_sitemap(urls_sitemap + urls_hub + [url_comparador, url_sobre], pasta_saida, dominio, data_ultima_atualizacao)
+    urls_aprenda = [
+        gerar_pagina_aprenda(art, pasta_saida, dominio, data_ultima_atualizacao)
+        for art in ARTIGOS_APRENDA
+    ]
+    url_aprenda_hub = gerar_hub_aprenda(ARTIGOS_APRENDA, pasta_saida, dominio)
+    gerar_sitemap(
+        urls_sitemap + urls_hub + [url_comparador, url_sobre, url_aprenda_hub] + urls_aprenda,
+        pasta_saida, dominio, data_ultima_atualizacao,
+    )
     gerar_robots_txt(pasta_saida, dominio)
     gerar_logo_svg(pasta_saida)
     gerar_favicon_svg(pasta_saida)
@@ -2058,6 +2067,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
         <div class="max-w-7xl mx-auto px-4 text-center">
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
             <div class="flex items-center justify-center gap-4">
+                <a href="/aprenda" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
                 <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
                     {icone('whatsapp', 'mr-1')} Falar com o suporte
@@ -2249,6 +2259,7 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
         <div class="max-w-7xl mx-auto px-4 text-center">
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
             <div class="flex items-center justify-center gap-4">
+                <a href="/aprenda" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
                 <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
                     {icone('whatsapp', 'mr-1')} Falar com o suporte
@@ -2429,6 +2440,7 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
         <div class="max-w-7xl mx-auto px-4 text-center">
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
             <div class="flex items-center justify-center gap-4">
+                <a href="/aprenda" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
                 <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
                     {icone('whatsapp', 'mr-1')} Falar com o suporte
@@ -2522,6 +2534,7 @@ def gerar_pagina_sobre(pasta_saida, dominio):
         <div class="max-w-7xl mx-auto px-4 text-center">
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
             <div class="flex items-center justify-center gap-4">
+                <a href="/aprenda" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
                 <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
                     {icone('whatsapp', 'mr-1')} Falar com o suporte
@@ -2534,6 +2547,257 @@ def gerar_pagina_sobre(pasta_saida, dominio):
     with open(os.path.join(pasta_saida, 'sobre.html'), "w", encoding="utf-8") as f:
         f.write(html)
     return url_canonica
+
+
+def gerar_pagina_aprenda(art, pasta_saida, dominio, data_atualizacao):
+    """Página de conteúdo evergreen (educativo, sem calculadora) — segunda
+    camada de profundidade de conteúdo, mesmo padrão implementado em
+    paralelo no projeto irmão de veículos (13/set/2026, pedido explícito
+    do usuário depois da auditoria de SEO): o site só tinha página de
+    CÁLCULO, nenhuma prova de conhecimento real por trás da calculadora
+    — isso pesa no Helpful Content (avaliado no domínio inteiro) e na
+    experiência de quem busca "o que é CET" sem estar pronto pra simular
+    ainda. `art` é um dict de ARTIGOS_APRENDA (slug, títulos, corpo,
+    CTA) — Article schema (headline = o próprio tema, não inventado) +
+    link de volta pro simulador/comparador relevante no fim."""
+    url_canonica = f"{dominio}/{art['slug']}"
+    schema_article = f'''{{
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "{art['titulo_h1']}",
+      "url": "{url_canonica}",
+      "author": {{"@type": "Organization", "name": "Datalab Global"}},
+      "publisher": {{
+        "@type": "Organization", "name": "Datalab Global",
+        "logo": {{"@type": "ImageObject", "url": "{dominio}/logo-schema.png"}}
+      }},
+      "dateModified": "{data_atualizacao}",
+      "mainEntityOfPage": "{url_canonica}"
+    }}'''
+
+    corpo = f'''<main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 relative z-10 w-full">
+        <h1 class="text-3xl md:text-5xl font-serif text-white mb-8 leading-tight">{art['titulo_h1']}</h1>
+        <div class="glass-panel rounded-2xl p-6 md:p-10 space-y-6 text-slate-300 leading-relaxed">
+            {art['corpo_html']}
+        </div>
+        <div class="flex flex-wrap gap-3 mt-8">
+            <a href="{art['cta_href']}" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-6 py-3 rounded-full font-bold text-sm transition-all">{art['cta_texto']}</a>
+            <a href="aprenda" class="border border-white/10 hover:border-emerald-500/50 px-6 py-3 rounded-full font-bold text-sm transition-all">Ver todos os artigos</a>
+        </div>
+    </main>'''
+
+    html = f'''<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+{render_head_boilerplate(art['titulo_pagina'], art['meta_description'], url_canonica, dominio, [schema_article])}
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+    <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <a href="/" class="flex items-center">
+                    <img src="logo.svg" alt="Datalab Global" width="144" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
+                </a>
+            </div>
+        </div>
+    </nav>
+    {corpo}
+    <footer class="border-t border-white/5 py-8 mt-10">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
+            <div class="flex items-center justify-center gap-4">
+                <a href="/aprenda" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
+                <a href="/sobre" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
+                <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
+                    {icone('whatsapp', 'mr-1')} Falar com o suporte
+                </a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>'''
+    with open(os.path.join(pasta_saida, f"{art['slug']}.html"), "w", encoding="utf-8") as f:
+        f.write(html)
+    return url_canonica
+
+
+def gerar_hub_aprenda(artigos, pasta_saida, dominio):
+    """Índice /aprenda listando os artigos evergreen — único caminho de
+    navegação normal (clicando) até eles além do link no rodapé, mesmo
+    cuidado já tomado com as páginas de simulação (conteúdo só alcançável
+    via sitemap.xml é órfão de verdade pro visitante humano)."""
+    url_canonica = f"{dominio}/aprenda"
+    cards_html = "\n".join(
+        f'''<a href="{a['slug']}" class="glass-panel rounded-2xl p-6 hover:border-emerald-500/40 transition-all group">
+            <h2 class="font-serif text-lg font-bold mb-2 group-hover:text-emerald-400 transition-colors">{a['titulo_h1']}</h2>
+            <p class="text-sm text-slate-400">{a['resumo_card']}</p>
+        </a>'''
+        for a in artigos
+    )
+    corpo = f'''<main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 relative z-10 w-full">
+        <h1 class="text-3xl md:text-5xl font-serif text-white mb-2 leading-tight">Aprenda sobre financiamento imobiliário</h1>
+        <p class="text-slate-400 text-sm mb-10">Guias educativos, sem juridiquês, pra você entender o que está simulando antes de decidir.</p>
+        <div class="grid sm:grid-cols-2 gap-4">{cards_html}</div>
+    </main>'''
+    html = f'''<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+{render_head_boilerplate("Aprenda: guias sobre financiamento imobiliário | Datalab Global", "Guias educativos sobre financiamento imobiliário: SAC x Price, CET, IOF, amortização, FGTS, LTV e consórcio — explicados sem juridiquês, com base em dados reais do Banco Central.", url_canonica, dominio, [])}
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+    <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <a href="/" class="flex items-center">
+                    <img src="logo.svg" alt="Datalab Global" width="144" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
+                </a>
+            </div>
+        </div>
+    </nav>
+    {corpo}
+    <footer class="border-t border-white/5 py-8 mt-10">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
+            <div class="flex items-center justify-center gap-4">
+                <a href="/aprenda" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
+                <a href="/sobre" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
+                <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
+                    {icone('whatsapp', 'mr-1')} Falar com o suporte
+                </a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>'''
+    with open(os.path.join(pasta_saida, 'aprenda.html'), "w", encoding="utf-8") as f:
+        f.write(html)
+    return url_canonica
+
+
+# Conteúdo evergreen (educativo) — 2ª camada de profundidade além das
+# páginas de cálculo, ver docstring de gerar_pagina_aprenda(). Baseado em
+# definição técnica real e estabelecida (BACEN, legislação do IOF/FGTS,
+# mesma terminologia já usada no glossário de cada página do site) —
+# nunca inventado. Aprovado pelo usuário (13/set/2026) como a lista de
+# 6 temas antes de escrever.
+ARTIGOS_APRENDA = [
+    {
+        "slug": "aprenda-sac-x-price",
+        "titulo_h1": "SAC x Price no financiamento imobiliário: qual tabela escolher",
+        "titulo_pagina": "SAC x Price no financiamento imobiliário | Datalab Global",
+        "meta_description": "Entenda a diferença entre o sistema SAC (parcela decrescente) e a Tabela Price (parcela fixa) no financiamento imobiliário, e qual faz mais sentido pro seu planejamento financeiro.",
+        "resumo_card": "Parcela que começa alta e cai com o tempo, ou parcela fixa do início ao fim? As duas opções que todo financiamento imobiliário oferece.",
+        "corpo_html": '''<p>No financiamento imobiliário brasileiro, você normalmente escolhe entre dois sistemas de amortização: <strong class="text-white">SAC</strong> (Sistema de Amortização Constante) e <strong class="text-white">Tabela Price</strong> (sistema francês). Os dois calculam juros sobre o saldo devedor, mas organizam as parcelas de um jeito bem diferente.</p>
+        <div class="border-t border-white/10 pt-6">
+            <h2 class="font-serif text-xl text-white mb-3">SAC: parcela decrescente</h2>
+            <p>No SAC, o valor amortizado é <strong class="text-white">constante</strong> todo mês — mas como os juros incidem sobre um saldo devedor que vai encolhendo, a parcela total começa mais alta e vai diminuindo mês a mês até o fim do contrato. Quem escolhe SAC costuma pagar mais no começo, mas menos no total ao longo do financiamento.</p>
+        </div>
+        <div class="border-t border-white/10 pt-6">
+            <h2 class="font-serif text-xl text-white mb-3">Price: parcela fixa</h2>
+            <p>Na Tabela Price, a parcela é <strong class="text-white">igual</strong> do primeiro ao último mês — só a proporção entre juros e amortização dentro dela muda com o tempo (mais juros no início, mais amortização no fim). É mais previsível pro seu orçamento mensal, mas o total pago em juros ao longo do contrato costuma ser um pouco maior que no SAC.</p>
+        </div>
+        <div class="border-t border-white/10 pt-6">
+            <h2 class="font-serif text-xl text-white mb-3">Qual escolher</h2>
+            <p>Se sua renda é mais apertada agora e tende a crescer com o tempo, o SAC pode pesar demais logo no início. Se você prefere previsibilidade total no valor da parcela, a Price facilita o planejamento. Não existe "certo" — depende do seu momento financeiro e de quanto você valoriza pagar menos juros no total versus ter uma parcela sempre igual.</p>
+        </div>''',
+        "cta_href": "comparador-bancos",
+        "cta_texto": "Comparar bancos e simular",
+    },
+    {
+        "slug": "aprenda-cet-iof-financiamento-imobiliario",
+        "titulo_h1": "CET e IOF no financiamento imobiliário: o que entra na conta",
+        "titulo_pagina": "CET e IOF no financiamento imobiliário | Datalab Global",
+        "meta_description": "Entenda o que é o CET no financiamento imobiliário (juros, seguros MIP e DFI, taxa de administração) e como o IOF incide sobre a operação — o número certo pra comparar bancos.",
+        "resumo_card": "O custo real por trás da taxa anunciada: juros, seguros obrigatórios e taxa de administração, tudo somado num só número.",
+        "corpo_html": '''<p>CET — Custo Efetivo Total — é o custo real e completo do financiamento imobiliário, expresso em percentual ao ano. Diferente da taxa de juros anunciada isoladamente, o CET soma <strong class="text-white">tudo</strong> que você efetivamente paga: a taxa de juros em si, os seguros obrigatórios (MIP, que cobre morte e invalidez, e DFI, que cobre danos ao imóvel) e a taxa de administração cobrada pelo banco.</p>
+        <div class="border-t border-white/10 pt-6">
+            <h2 class="font-serif text-xl text-white mb-3">Onde entra o IOF</h2>
+            <p>O IOF (Imposto sobre Operações Financeiras) também incide sobre o financiamento imobiliário, cobrado uma única vez na contratação — diferente do IOF de outras modalidades de crédito, no financiamento imobiliário residencial a alíquota tende a ser bem menor, já que a legislação trata essa modalidade de forma diferenciada. Ainda assim, ele entra na conta do CET, então você não precisa calcular nada à parte.</p>
+        </div>
+        <div class="border-t border-white/10 pt-6">
+            <h2 class="font-serif text-xl text-white mb-3">Por que comparar pelo CET, não pela taxa</h2>
+            <p>Dois bancos podem anunciar taxas de juros parecidas e cobrar seguros e tarifas bem diferentes — o CET é o único número que já soma tudo isso, e por isso é a referência certa pra comparar propostas de bancos diferentes de forma justa. O CET mostrado neste simulador usa a taxa real apurada pelo Banco Central; sua taxa final aprovada ainda depende do seu relacionamento com o banco e da sua análise de crédito.</p>
+        </div>''',
+        "cta_href": "comparador-bancos",
+        "cta_texto": "Comparar CET entre bancos",
+    },
+    {
+        "slug": "aprenda-amortizacao-extraordinaria",
+        "titulo_h1": "Amortização extraordinária: como reduzir prazo ou parcela do financiamento imobiliário",
+        "titulo_pagina": "Amortização extraordinária no financiamento imobiliário | Datalab Global",
+        "meta_description": "Entenda como um pagamento extra fora do cronograma reduz o saldo devedor do financiamento imobiliário, e a diferença entre usar isso pra reduzir prazo ou reduzir o valor da parcela.",
+        "resumo_card": "Um pagamento fora do cronograma que ataca o saldo devedor direto — e pode cortar anos inteiros de financiamento.",
+        "corpo_html": '''<p>Amortização extraordinária é um pagamento feito <strong class="text-white">fora</strong> do cronograma normal de parcelas, com o objetivo específico de abater o saldo devedor do financiamento imobiliário — não é uma parcela adiantada, é um valor que reduz diretamente quanto você ainda deve ao banco.</p>
+        <div class="border-t border-white/10 pt-6">
+            <h2 class="font-serif text-xl text-white mb-3">Por que isso economiza mais do que parece</h2>
+            <p>Como os juros de um financiamento imobiliário incidem sobre o saldo devedor a cada mês, reduzir esse saldo mais cedo significa pagar juros sobre um valor menor em todos os meses seguintes — pelo resto de um contrato que pode durar 20, 30 anos. Num prazo tão longo, o efeito acumulado de uma amortização feita cedo é bem maior do que parece à primeira vista.</p>
+        </div>
+        <div class="border-t border-white/10 pt-6">
+            <h2 class="font-serif text-xl text-white mb-3">Reduzir prazo ou reduzir parcela?</h2>
+            <p>Ao amortizar, o banco costuma oferecer duas opções: manter a parcela igual e encurtar quantos meses faltam, ou manter o prazo original e diminuir o valor da parcela. Reduzir o prazo geralmente economiza mais juros no total ao longo de todo o contrato — mas reduzir a parcela alivia mais o orçamento mês a mês, o que pode fazer mais sentido dependendo do seu momento financeiro.</p>
+        </div>''',
+        "cta_href": "comparador-bancos",
+        "cta_texto": "Simular meu financiamento",
+    },
+    {
+        "slug": "aprenda-fgts-financiamento-imobiliario",
+        "titulo_h1": "FGTS no financiamento imobiliário: como usar pra entrada ou amortização",
+        "titulo_pagina": "FGTS no financiamento imobiliário: como usar | Datalab Global",
+        "meta_description": "Entenda como usar o saldo do FGTS no financiamento imobiliário: para dar entrada, amortizar o saldo devedor a cada 2 anos, ou quitar parte das parcelas — e quais as regras principais.",
+        "resumo_card": "O saldo que a maioria dos trabalhadores CLT já tem guardado — e pode usar pra pagar menos juros no financiamento.",
+        "corpo_html": '''<p>O FGTS (Fundo de Garantia do Tempo de Serviço) pode ser usado de mais de uma forma dentro de um financiamento imobiliário residencial, desde que o imóvel e o comprador atendam às regras do programa — normalmente, o imóvel precisa ser residencial urbano e usado pra moradia própria, e o comprador não pode ter outro financiamento ativo pelo Sistema Financeiro de Habitação.</p>
+        <div class="border-t border-white/10 pt-6">
+            <h2 class="font-serif text-xl text-white mb-3">As formas de uso mais comuns</h2>
+            <p>Você pode usar o FGTS pra dar parte da <strong class="text-white">entrada</strong> na compra, reduzindo o valor que precisa ser financiado (e, por consequência, o total de juros pagos). Também é possível usar o saldo pra <strong class="text-white">amortizar</strong> o saldo devedor a cada período (geralmente a cada 2 anos), ou pra complementar/quitar parcelas em situações específicas, como desemprego.</p>
+        </div>
+        <div class="border-t border-white/10 pt-6">
+            <h2 class="font-serif text-xl text-white mb-3">Por que isso muda sua simulação</h2>
+            <p>Quanto mais entrada você conseguir dar — usando FGTS ou não — menor o valor financiado, e menor o CET total pago em juros ao longo do contrato. Vale simular seu financiamento aqui já considerando o saldo de FGTS que você pretende usar como parte da entrada, pra ver o efeito real na sua parcela.</p>
+        </div>''',
+        "cta_href": "comparador-bancos",
+        "cta_texto": "Simular com entrada + FGTS",
+    },
+    {
+        "slug": "aprenda-ltv-financiamento-imobiliario",
+        "titulo_h1": "LTV (Loan-to-Value): o que é e como afeta sua taxa de juros",
+        "titulo_pagina": "O que é LTV no financiamento imobiliário? | Datalab Global",
+        "meta_description": "Entenda o que é LTV (Loan-to-Value) no financiamento imobiliário: a proporção entre o valor financiado e o valor do imóvel, e por que dar mais entrada costuma render uma taxa menor.",
+        "resumo_card": "A proporção entre quanto você financia e quanto vale o imóvel — e por que ela pesa direto na taxa que o banco te oferece.",
+        "corpo_html": '''<p>LTV — Loan-to-Value — é a proporção entre o valor financiado e o valor total do imóvel. Um LTV de 80%, por exemplo, significa que o banco está financiando 80% do valor do imóvel, e você está entrando com os outros 20% como entrada.</p>
+        <div class="border-t border-white/10 pt-6">
+            <h2 class="font-serif text-xl text-white mb-3">Por que o banco olha pra isso</h2>
+            <p>Quanto maior o LTV (ou seja, quanto menor a sua entrada em relação ao valor do imóvel), maior o risco que o banco assume — se o financiamento não for pago, o imóvel pode valer menos que o saldo devedor. Por isso, bancos costumam oferecer taxas de juros melhores pra quem tem um LTV menor, ou seja, pra quem dá uma entrada maior.</p>
+        </div>
+        <div class="border-t border-white/10 pt-6">
+            <h2 class="font-serif text-xl text-white mb-3">O que isso significa na prática</h2>
+            <p>Cada banco tem seu próprio LTV máximo (o quanto ele aceita financiar) e sua própria política de taxa por faixa de LTV — é por isso que aumentar sua entrada, mesmo que pareça pouco, pode te colocar numa faixa de taxa melhor, além de reduzir o valor total financiado. Vale simular com valores de entrada diferentes pra ver esse efeito na sua taxa e na sua parcela.</p>
+        </div>''',
+        "cta_href": "comparador-bancos",
+        "cta_texto": "Simular com entrada diferente",
+    },
+    {
+        "slug": "aprenda-financiamento-x-consorcio-imobiliario",
+        "titulo_h1": "Financiamento x Consórcio imobiliário: qual a diferença",
+        "titulo_pagina": "Financiamento x Consórcio imobiliário: diferenças | Datalab Global",
+        "meta_description": "Compare financiamento e consórcio de imóvel: quem entra no imóvel primeiro, quem paga juros, e em que situação cada modalidade faz mais sentido pra comprar sua casa ou apartamento.",
+        "resumo_card": "Um te dá o imóvel agora com juros; o outro é mais barato, mas sem data certa. Veja qual combina com seu momento.",
+        "corpo_html": '''<p>Financiamento e consórcio resolvem o mesmo problema — comprar um imóvel sem pagar tudo à vista — de formas bem diferentes, e a escolha certa depende principalmente de uma coisa: você precisa do imóvel <strong class="text-white">agora</strong>, ou pode esperar?</p>
+        <div class="border-t border-white/10 pt-6">
+            <h2 class="font-serif text-xl text-white mb-3">Financiamento: imóvel já, com juros</h2>
+            <p>No financiamento, o banco libera o valor, você compra o imóvel de imediato, e paga de volta em parcelas (SAC ou Price) com juros — é o que este simulador calcula. A certeza de já poder morar ou usar o imóvel tem um custo: o CET (juros + seguros + taxas) que você vê em cada simulação.</p>
+        </div>
+        <div class="border-t border-white/10 pt-6">
+            <h2 class="font-serif text-xl text-white mb-3">Consórcio: sem juros, mas sem data certa</h2>
+            <p>No consórcio, você entra num grupo de pessoas que pagam mensalidades numa espécie de poupança coletiva, sem juros — só correção monetária e uma taxa de administração. Você só recebe a carta de crédito pra comprar o imóvel quando é sorteado ou dá um lance vencedor num dos encontros mensais do grupo, o que pode acontecer logo no início ou só perto do fim do prazo contratado. O custo total costuma ser menor que o do financiamento, em troca de não saber exatamente quando o imóvel sai do papel.</p>
+        </div>
+        <div class="border-t border-white/10 pt-6">
+            <h2 class="font-serif text-xl text-white mb-3">Qual escolher</h2>
+            <p>Se você precisa do imóvel pra morar logo, o financiamento resolve isso — o CET é, na prática, o preço de não esperar. Se você tem flexibilidade de tempo e quer pagar menos no total, o consórcio tende a sair mais barato.</p>
+        </div>''',
+        "cta_href": "comparador-bancos",
+        "cta_texto": "Simular financiamento imobiliário",
+    },
+]
 
 
 def gerar_sitemap(urls, pasta_saida, dominio, data_ultima_atualizacao):
