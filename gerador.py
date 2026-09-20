@@ -1577,12 +1577,23 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
         faq_q3 = f"Qual o prazo máximo de financiamento no {banco_exib}?"
         faq_a3 = f"O {banco_exib} financia em até {prazo_max} meses ({anos_max} anos)."
 
-        titulo_pagina = f"Financiamento Imobiliário {banco_exib}: Taxas e Simulador {ano_atual} | Datalab Global"
+        # Achado real (20/set/2026, Search Console — Consultas dos últimos 28
+        # dias): TODAS as consultas que já geram impressão pro simulador são
+        # da forma "simulador <banco>" ("simulador inter", "simulador
+        # sicredi", "simulador santander financiamento", "poupex
+        # simulador"...). O <title> e o <h1> desta página de banco NÃO
+        # continham a palavra "simulador" — na prática o título ao vivo era
+        # o fallback "<Banco>: Taxas de Financiamento Imobiliário 2026",
+        # porque a versão longa passava de 60 caracteres. A palavra que a
+        # pessoa digita agora abre o título (e o H1), que é onde o Google
+        # mais pesa relevância; o fallback sem marca continua existindo
+        # pra nome de banco longo.
+        titulo_pagina = f"Simulador {banco_exib}: Financiamento Imobiliário {ano_atual} | Datalab Global"
         if len(titulo_pagina) > 60:
-            titulo_pagina = f"{banco_exib}: Taxas de Financiamento Imobiliário {ano_atual}"
+            titulo_pagina = f"Simulador {banco_exib}: Financiamento Imobiliário {ano_atual}"
         meta_description = (
-            f"Taxa de juros, entrada mínima e prazo máximo do {regra['mod'].lower()} {banco_exib} em {ano_atual}: "
-            f"{taxa_fmt}% a.a., entrada a partir de {entrada_min_pct}%, até {prazo_max} meses. Veja o simulador completo."
+            f"Simulador de {regra['mod'].lower()} {banco_exib} em {ano_atual}: taxa de {taxa_fmt}% a.a., "
+            f"entrada a partir de {entrada_min_pct}%, até {prazo_max} meses. Calcule parcela e CET."
         )[:160]
 
         schema_breadcrumb = f'''{{
@@ -1634,7 +1645,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
             <span class="text-[10px] text-slate-500 uppercase tracking-widest border-l border-white/10 pl-2">{regra['mod']}</span>
         </div>
         <h1 class="text-3xl md:text-5xl font-serif text-white mb-4 leading-tight px-4">
-            Financiamento Imobiliário {banco_exib}: Taxas e Condições
+            Simulador de Financiamento Imobiliário {banco_exib}: Taxas e Condições
         </h1>
         <p class="text-slate-400 text-base md:text-lg font-light tracking-wide max-w-3xl mx-auto px-4">
             Visão geral das condições do {banco_exib} — taxa de juros, entrada mínima e prazo — e o índice completo das nossas simulações prontas pra esse banco.
