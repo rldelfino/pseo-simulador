@@ -153,6 +153,17 @@ def render_head_boilerplate(titulo_pagina, meta_description, url_canonica, domin
     schemas, pra não precisar reescrever schema_faq/schema_breadcrumb/etc
     de uma vez."""
     titulo_social = titulo_social or titulo_pagina
+    # Achado real (21/set/2026, auditoria de SEO das ~1.700 páginas): home,
+    # /sobre, comparador e os artigos de /aprenda saíam com <title> de
+    # 63-73 caracteres e meta description de 175-183 — o Google corta em
+    # ~60 e ~160, e o corte cai no meio da frase. Aparar aqui (função
+    # compartilhada por todo template) em vez de página por página: a
+    # marca sai do title só quando não cabe, e a description corta na
+    # última palavra inteira.
+    if len(titulo_pagina) > 60 and titulo_pagina.endswith(" | Datalab Global"):
+        titulo_pagina = titulo_pagina[: -len(" | Datalab Global")]
+    if len(meta_description) > 160:
+        meta_description = meta_description[:157].rsplit(" ", 1)[0].rstrip(" ,;:—-") + "…"
     scripts_json_ld = "\n".join(
         f'    <script type="application/ld+json">\n    {bloco}\n    </script>'
         for bloco in json_ld_blocos
@@ -633,7 +644,14 @@ def formatar_valor_curto(valor_imovel):
     para casar com a forma como as pessoas realmente digitam a busca."""
     if valor_imovel >= 1_000_000:
         milhoes = valor_imovel / 1_000_000
-        texto = f"{milhoes:.1f}".replace(".0", "").replace(".", ",")
+        # Achado real (21/set/2026, auditoria de SEO): com 1 casa decimal,
+        # R$ 1.050.000, 1.100.000 e 1.150.000 viravam TODOS "1,1 milhões" —
+        # 480 páginas com <title> e meta description idênticos (180 grupos
+        # de 2-3 páginas), que o Google trata como quase-duplicata e
+        # escolhe UMA pra mostrar. A grade anda de R$ 50 mil em R$ 50 mil,
+        # então 2 casas decimais (sem zero à direita) deixam cada valor
+        # único: 1,05 | 1,1 | 1,15 | 1,2 ...
+        texto = f"{milhoes:.2f}".rstrip("0").rstrip(".").replace(".", ",")
         return f"{texto} milhão" if milhoes == 1 else f"{texto} milhões"
     milhares = int(round(valor_imovel / 1000))
     return f"{milhares} mil"
@@ -1396,6 +1414,7 @@ def gerar_paginas_pseo():
         <div class="max-w-7xl mx-auto px-4 text-center">
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
             <div class="flex items-center justify-center gap-4">
+                <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="/aprenda" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
                 <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
@@ -1738,6 +1757,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
         <div class="max-w-7xl mx-auto px-4 text-center">
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
             <div class="flex items-center justify-center gap-4">
+                <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="/aprenda" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
                 <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
@@ -1933,6 +1953,7 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
         <div class="max-w-7xl mx-auto px-4 text-center">
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
             <div class="flex items-center justify-center gap-4">
+                <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="/aprenda" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
                 <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
@@ -1989,6 +2010,7 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
       "@type": "WebSite",
       "name": "Datalab Global",
       "url": "{url_home}",
+      "publisher": {{"@type": "Organization", "name": "Datalab Global", "url": "https://www.datalabglobal.com/"}},
       "dateModified": "{data_ultima_atualizacao}"
     }}'''
 
@@ -2015,7 +2037,7 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "Datalab Global",
-      "url": "{url_home}",
+      "url": "https://www.datalabglobal.com/",
       "logo": "{DOMINIO}/logo-schema.png",
       "founder": {{"@type": "Person", "name": "Rodolfo Delfino"}},
       "contactPoint": {{"@type": "ContactPoint", "email": "contato@datalabglobal.com", "contactType": "customer service"}}
@@ -2115,6 +2137,7 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
         <div class="max-w-7xl mx-auto px-4 text-center">
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
             <div class="flex items-center justify-center gap-4">
+                <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="/aprenda" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
                 <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
@@ -2155,7 +2178,7 @@ def gerar_pagina_sobre(pasta_saida, dominio):
       "mainEntity": {{
         "@type": "Organization",
         "name": "Datalab Global",
-        "url": "{dominio}/",
+        "url": "https://www.datalabglobal.com/",
         "founder": {{"@type": "Person", "name": "Rodolfo Delfino"}},
         "contactPoint": {{"@type": "ContactPoint", "email": "contato@datalabglobal.com", "contactType": "customer service"}}
       }}
@@ -2210,6 +2233,7 @@ def gerar_pagina_sobre(pasta_saida, dominio):
         <div class="max-w-7xl mx-auto px-4 text-center">
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
             <div class="flex items-center justify-center gap-4">
+                <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="/aprenda" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
                 <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
@@ -2283,6 +2307,7 @@ def gerar_pagina_aprenda(art, pasta_saida, dominio, data_atualizacao):
         <div class="max-w-7xl mx-auto px-4 text-center">
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
             <div class="flex items-center justify-center gap-4">
+                <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="/aprenda" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
                 <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
@@ -2337,6 +2362,7 @@ def gerar_hub_aprenda(artigos, pasta_saida, dominio):
         <div class="max-w-7xl mx-auto px-4 text-center">
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
             <div class="flex items-center justify-center gap-4">
+                <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="/aprenda" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
                 <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
