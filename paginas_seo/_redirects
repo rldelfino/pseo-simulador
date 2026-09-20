@@ -24,3 +24,22 @@
 /banco-bari*              /comparador-bancos   301
 /banco-cash-me*           /comparador-bancos   301
 /banco-daycoval*          /comparador-bancos   301
+
+# Achado real (20/set/2026, Search Console — Insights dos últimos 28
+# dias + git log): as páginas que de fato receberam os cliques e o pico
+# de impressões de 30/08–03/09 eram páginas de 420 meses de bancos cujo
+# prazo máximo é 360 (Itaú, Bradesco, Inter, Sicredi, Sicoob, Banrisul).
+# O gerador foi corrigido (31/08, "correcao das regras de financiamento
+# por banco") pra nunca gerar 420 onde o banco não oferece — certo pela
+# precisão (conteúdo financeiro), mas as URLs antigas viraram 404 e o
+# Google perdeu, de uma vez, as páginas que já tinham histórico de
+# ranking. 301 pra página equivalente de 360 meses (mesmo banco, mesmo
+# valor de imóvel — o gerador já colapsa 420 em 360 nesses bancos)
+# devolve esse histórico pra uma página que existe e é correta, em vez
+# de deixar em 404 ou jogar num destino genérico.
+/simulador-itau-*-mil-420-meses         /simulador-itau-:splat-mil-360-meses         301
+/simulador-bradesco-*-mil-420-meses     /simulador-bradesco-:splat-mil-360-meses     301
+/simulador-banco-inter-*-mil-420-meses  /simulador-banco-inter-:splat-mil-360-meses  301
+/simulador-sicredi-*-mil-420-meses      /simulador-sicredi-:splat-mil-360-meses      301
+/simulador-sicoob-*-mil-420-meses       /simulador-sicoob-:splat-mil-360-meses       301
+/simulador-banrisul-*-mil-420-meses     /simulador-banrisul-:splat-mil-360-meses     301
