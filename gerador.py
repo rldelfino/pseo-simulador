@@ -2010,7 +2010,7 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
       "@type": "WebSite",
       "name": "Datalab Global",
       "url": "{url_home}",
-      "publisher": {{"@type": "Organization", "name": "Datalab Global", "url": "https://www.datalabglobal.com/"}},
+      "publisher": {{"@type": "Organization", "@id": "https://www.datalabglobal.com/#organization", "name": "Datalab Global", "url": "https://www.datalabglobal.com/"}},
       "dateModified": "{data_ultima_atualizacao}"
     }}'''
 
@@ -2036,6 +2036,7 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
     schema_organization = f'''{{
       "@context": "https://schema.org",
       "@type": "Organization",
+      "@id": "https://www.datalabglobal.com/#organization",
       "name": "Datalab Global",
       "url": "https://www.datalabglobal.com/",
       "logo": "{DOMINIO}/logo-schema.png",
@@ -2177,6 +2178,7 @@ def gerar_pagina_sobre(pasta_saida, dominio):
       "url": "{url_canonica}",
       "mainEntity": {{
         "@type": "Organization",
+        "@id": "https://www.datalabglobal.com/#organization",
         "name": "Datalab Global",
         "url": "https://www.datalabglobal.com/",
         "founder": {{"@type": "Person", "name": "Rodolfo Delfino"}},
