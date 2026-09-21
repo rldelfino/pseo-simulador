@@ -192,8 +192,9 @@ def render_head_boilerplate(titulo_pagina, meta_description, url_canonica, domin
         # página mora em subpasta), então o relativo resolve certo pra
         # raiz a partir de qualquer URL — manter a mesma convenção em
         # vez de introduzir um caminho absoluto isolado.
-        '    <link rel="icon" type="image/svg+xml" href="favicon.svg">',
-        '    <link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48">',
+        '    <link rel="icon" href="favicon.ico" sizes="any">',
+        '    <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">',
+        '    <link rel="icon" href="favicon-192.png" type="image/png" sizes="192x192">',
         '    <link rel="apple-touch-icon" href="apple-touch-icon.png">',
     ]
     linhas_topo_html = "\n".join(l for l in linhas_topo if l is not None)
@@ -209,11 +210,11 @@ def render_head_boilerplate(titulo_pagina, meta_description, url_canonica, domin
     <meta property="og:title" content="{titulo_social}">
     <meta property="og:description" content="{meta_description}">
     <meta property="og:url" content="{url_canonica}">
-    <meta property="og:image" content="{dominio}/logo.svg">
+    <meta property="og:image" content="{dominio}/og-image.png">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="{titulo_social}">
     <meta name="twitter:description" content="{meta_description}">
-    <meta name="twitter:image" content="{dominio}/logo.svg">
+    <meta name="twitter:image" content="{dominio}/og-image.png">
 
     <link rel="stylesheet" href="styles.css">
     {GOOGLE_FONTS_LINK_ASSINCRONO}
@@ -1042,7 +1043,7 @@ def gerar_paginas_pseo():
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <a href="/" class="flex items-center">
-                    <img src="logo.svg" alt="Datalab Global" width="144" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
+                    <img src="logo-full.png" alt="Datalab Global" width="171" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
                 </a>
                 <div class="flex items-center gap-1">
                     <a href="/aprenda" aria-label="Aprenda" class="inline-flex items-center gap-1.5 -my-2.5 p-2.5 text-xs text-slate-400 hover:text-emerald-400 transition-colors">{icone('book-open')} <span class="hidden sm:inline">Aprenda</span></a>
@@ -1476,8 +1477,9 @@ def gerar_paginas_pseo():
     gerar_robots_txt(pasta_saida, dominio)
     with open(os.path.join(pasta_saida, "calculo.js"), "w", encoding="utf-8") as f:
         f.write(gerar_calculo_js())
-    gerar_logo_svg(pasta_saida)
-    gerar_favicon_svg(pasta_saida)
+    # Logo oficial (21/set/2026): logo-full.png, favicon*.png/.ico, apple-touch-icon.png, logo-schema.png e og-image.png sao
+    # arquivos ESTATICOS comitados em paginas_seo/ (gerados a partir do logo original, ver projeto datalab-global-hub/
+    # make_logo_assets.py). O logo.svg/favicon.svg desenhados a mao foram aposentados.
     # rasterizar_favicon_png() NÃO roda aqui: ela depende de
     # svglib/reportlab/pycairo (instaladas só localmente pra esta tarefa
     # pontual, não em requirements.txt) — colocar essa dependência no
@@ -1643,7 +1645,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <a href="/" class="flex items-center">
-                    <img src="logo.svg" alt="Datalab Global" width="144" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
+                    <img src="logo-full.png" alt="Datalab Global" width="171" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
                 </a>
                 <div class="flex items-center gap-1">
                     <a href="/aprenda" aria-label="Aprenda" class="inline-flex items-center gap-1.5 -my-2.5 p-2.5 text-xs text-slate-400 hover:text-emerald-400 transition-colors">{icone('book-open')} <span class="hidden sm:inline">Aprenda</span></a>
@@ -1865,7 +1867,7 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <a href="/" class="flex items-center">
-                    <img src="logo.svg" alt="Datalab Global" width="144" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
+                    <img src="logo-full.png" alt="Datalab Global" width="171" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
                 </a>
                 <div class="flex items-center gap-1">
                     <a href="/aprenda" aria-label="Aprenda" class="inline-flex items-center gap-1.5 -my-2.5 p-2.5 text-xs text-slate-400 hover:text-emerald-400 transition-colors">{icone('book-open')} <span class="hidden sm:inline">Aprenda</span></a>
@@ -2084,7 +2086,7 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <a href="/" class="flex items-center">
-                    <img src="logo.svg" alt="Datalab Global" width="144" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
+                    <img src="logo-full.png" alt="Datalab Global" width="171" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
                 </a>
                 <a href="/aprenda" aria-label="Aprenda" class="inline-flex items-center gap-1.5 -my-2.5 p-2.5 text-xs text-slate-400 hover:text-emerald-400 transition-colors">{icone('book-open')} <span class="hidden sm:inline">Aprenda</span></a>
             </div>
@@ -2224,7 +2226,7 @@ def gerar_pagina_sobre(pasta_saida, dominio):
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <a href="/" class="flex items-center">
-                    <img src="logo.svg" alt="Datalab Global" width="144" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
+                    <img src="logo-full.png" alt="Datalab Global" width="171" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
                 </a>
                 <a href="/aprenda" aria-label="Aprenda" class="inline-flex items-center gap-1.5 -my-2.5 p-2.5 text-xs text-slate-400 hover:text-emerald-400 transition-colors">{icone('book-open')} <span class="hidden sm:inline">Aprenda</span></a>
             </div>
@@ -2298,7 +2300,7 @@ def gerar_pagina_aprenda(art, pasta_saida, dominio, data_atualizacao):
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <a href="/" class="flex items-center">
-                    <img src="logo.svg" alt="Datalab Global" width="144" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
+                    <img src="logo-full.png" alt="Datalab Global" width="171" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
                 </a>
                 <a href="/aprenda" aria-label="Aprenda" class="inline-flex items-center gap-1.5 -my-2.5 p-2.5 text-xs text-slate-400 hover:text-emerald-400 transition-colors">{icone('book-open')} <span class="hidden sm:inline">Aprenda</span></a>
             </div>
@@ -2353,7 +2355,7 @@ def gerar_hub_aprenda(artigos, pasta_saida, dominio):
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <a href="/" class="flex items-center">
-                    <img src="logo.svg" alt="Datalab Global" width="144" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
+                    <img src="logo-full.png" alt="Datalab Global" width="171" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
                 </a>
                 <a href="/aprenda" aria-label="Aprenda" class="inline-flex items-center gap-1.5 -my-2.5 p-2.5 text-xs text-slate-400 hover:text-emerald-400 transition-colors">{icone('book-open')} <span class="hidden sm:inline">Aprenda</span></a>
             </div>

@@ -71,8 +71,8 @@ def test_todo_link_interno_resolve_para_pagina_existente():
     no disco — ou ser "/" (raiz), "styles.css", "logo.svg", "sitemap.xml",
     externo (http/https), ou um dos arquivos estáticos conhecidos."""
     slugs_validos = _slugs_validos()
-    arquivos_estaticos = {"styles.css", "logo.svg", "sitemap.xml", "robots.txt", "llms.txt", "/", "404.html",
-                          "favicon.svg", "favicon.ico", "apple-touch-icon.png", "logo-schema.png"}
+    arquivos_estaticos = {"styles.css", "logo-full.png", "sitemap.xml", "robots.txt", "llms.txt", "/", "404.html",
+                          "favicon-32.png", "favicon-192.png", "favicon.ico", "apple-touch-icon.png", "og-image.png", "logo-schema.png"}
     faltando = []
     for nome_arquivo in _arquivos_html():
         with open(os.path.join(PASTA_SAIDA, nome_arquivo), encoding="utf-8") as f:
@@ -162,7 +162,7 @@ def test_sitemap_lista_todas_as_paginas_e_sem_html():
 
 
 def test_arquivos_de_infraestrutura_existem():
-    for nome in ("sitemap.xml", "robots.txt", "llms.txt", "_headers", "_redirects", "404.html", "styles.css", "logo.svg", "favicon.svg", "ads.txt"):
+    for nome in ("sitemap.xml", "robots.txt", "llms.txt", "_headers", "_redirects", "404.html", "styles.css", "logo-full.png", "favicon.ico", "favicon-32.png", "favicon-192.png", "apple-touch-icon.png", "logo-schema.png", "og-image.png", "ads.txt"):
         assert os.path.isfile(os.path.join(PASTA_SAIDA, nome)), f"{nome} não existe em paginas_seo/"
 
 
