@@ -929,6 +929,10 @@ def gerar_paginas_pseo():
             n = len(grupo_banco)
             idx_atual = next(i for i, pag in enumerate(grupo_banco) if pag["slug"] == slug)
 
+            # Achado real (26/set/2026, auditoria de SEO): o sorteio mudava a cada geração, então toda atualização mensal de
+            # taxas reembaralhava os ~6.800 links internos do site inteiro — o Google revia um grafo de links diferente a
+            # cada rodada. Sorteio com semente fixa por página: os mesmos links em toda geração.
+            rng = random.Random(slug)
             paginas_sorteadas = []
             if n > 1:
                 proximo = grupo_banco[(idx_atual + 1) % n]
@@ -941,18 +945,18 @@ def gerar_paginas_pseo():
             faltam = 4 - len(paginas_sorteadas)
             if candidatos_mesmo_banco and faltam > 0:
                 paginas_sorteadas.extend(
-                    random.sample(candidatos_mesmo_banco, min(faltam, len(candidatos_mesmo_banco)))
+                    rng.sample(candidatos_mesmo_banco, min(faltam, len(candidatos_mesmo_banco)))
                 )
 
             faltam = 4 - len(paginas_sorteadas)
             if faltam > 0:
                 outras_paginas = [pag for pag in todas_as_paginas if pag["slug"] != slug and pag['banco'] != banco]
                 if outras_paginas:
-                    paginas_sorteadas.extend(random.sample(outras_paginas, min(faltam, len(outras_paginas))))
+                    paginas_sorteadas.extend(rng.sample(outras_paginas, min(faltam, len(outras_paginas))))
 
             links_internos_html = ""
             for pag_sorteada in paginas_sorteadas:
-                termo = random.choice(termos_variados)
+                termo = rng.choice(termos_variados)
                 links_internos_html += f"""
                 <a href="{pag_sorteada['slug']}" class="block p-4 bg-white/5 rounded-xl border border-white/10 hover:border-emerald-500/50 hover:bg-white/10 transition-all">
                     <span class="text-xs text-emerald-500 font-bold uppercase tracking-wider block mb-1">{termo}</span>
@@ -1416,6 +1420,7 @@ def gerar_paginas_pseo():
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
+                <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
                 <a href="/aprenda" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
                 <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
@@ -1760,6 +1765,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
+                <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
                 <a href="/aprenda" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
                 <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
@@ -1956,6 +1962,7 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
+                <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
                 <a href="/aprenda" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
                 <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
@@ -2141,6 +2148,7 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
+                <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
                 <a href="/aprenda" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
                 <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
@@ -2238,6 +2246,7 @@ def gerar_pagina_sobre(pasta_saida, dominio):
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
+                <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
                 <a href="/aprenda" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
                 <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
@@ -2312,6 +2321,7 @@ def gerar_pagina_aprenda(art, pasta_saida, dominio, data_atualizacao):
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
+                <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
                 <a href="/aprenda" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
                 <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
@@ -2367,6 +2377,7 @@ def gerar_hub_aprenda(artigos, pasta_saida, dominio):
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
+                <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
                 <a href="/aprenda" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
                 <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
