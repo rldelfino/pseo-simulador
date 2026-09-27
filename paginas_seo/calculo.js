@@ -160,7 +160,7 @@
                 <div class="relative h-2 rounded-full bg-gradient-to-r from-emerald-500 via-amber-400 to-rose-500">
                     <div class="absolute top-1/2 h-4 w-4 rounded-full bg-white border-2 border-emerald-950 shadow-[0_0_0_3px_rgba(16,185,129,0.35)]" style="left:${marcadorPct}%; transform:translate(-50%,-50%)" title="${nomeBancoAtual}: ${cetAtualFmt}%"></div>
                 </div>
-                <div class="flex justify-between text-[10px] text-slate-500 uppercase tracking-wide">
+                <div class="flex justify-between text-[10px] text-slate-400 uppercase tracking-wide">
                     <span>${cetMinFmt}% menor CET</span>
                     <span>${cetMaxFmt}% maior CET</span>
                 </div>`;

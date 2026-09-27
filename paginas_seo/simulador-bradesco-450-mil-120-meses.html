@@ -115,7 +115,7 @@
         <span class="favicon-fallback w-6 h-6 rounded bg-white/10 text-emerald-400 items-center justify-center absolute inset-0"><svg class="inline-block align-[-0.125em]" style="width:1em;height:1em" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"></path><path d="M5 21V10"></path><path d="M19 21V10"></path><path d="M9 21V10"></path><path d="M15 21V10"></path><path d="M3 10l9-6 9 6"></path></svg></span>
     </span>
             <span class="text-xs font-bold text-slate-200 group-hover:text-emerald-400 tracking-wide transition-colors">Bradesco</span>
-            <span class="text-[10px] text-slate-500 uppercase tracking-widest border-l border-white/10 pl-2">Financiamento Imobiliário</span>
+            <span class="text-[10px] text-slate-400 uppercase tracking-widest border-l border-white/10 pl-2">Financiamento Imobiliário</span>
             <span class="text-[10px] text-emerald-500/70 group-hover:text-emerald-400 uppercase tracking-widest border-l border-white/10 pl-2 transition-colors">Ver taxas e condições →</span>
         </a>
         <h1 class="text-4xl md:text-5xl font-serif text-white mb-4 leading-tight px-4">
@@ -145,57 +145,57 @@
             <h2 class="text-xs font-bold text-slate-300 uppercase tracking-widest mb-1 flex items-center relative z-10">
                 <svg class="inline-block align-[-0.125em] mr-3" style="width:1em;height:1em" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2h11l5 5v13a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"></path><path d="M14 2v5h5"></path><line x1="8" y1="13" x2="16" y2="13"></line><line x1="8" y1="17" x2="13" y2="17"></line></svg> 1. Estratégia
             </h2>
-            <p class="text-slate-500 text-[11px] mb-8 pb-4 border-b border-white/10 relative z-10">Defina os parâmetros do seu financiamento bradesco.</p>
+            <p class="text-slate-400 text-[11px] mb-8 pb-4 border-b border-white/10 relative z-10">Defina os parâmetros do seu financiamento bradesco.</p>
             <div class="flex flex-col lg:flex-row lg:items-start gap-10 relative z-10">
                 <div class="w-full lg:w-1/2 space-y-4">
                     <div class="bg-slate-800/60 p-5 rounded-2xl border border-white/10 shadow-md shadow-black/20 hover:border-emerald-500/30 transition-colors">
                         <div class="flex justify-between items-end mb-2">
                             <label class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest flex items-center">
-                                <svg class="inline-block align-[-0.125em] mr-1.5 text-slate-500" style="width:1em;height:1em" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5"></path><path d="M5 9v11a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9"></path></svg> Valor do Imóvel / Garantia
+                                <svg class="inline-block align-[-0.125em] mr-1.5 text-slate-400" style="width:1em;height:1em" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5"></path><path d="M5 9v11a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9"></path></svg> Valor do Imóvel / Garantia
                                 <span class="tooltip-wrap relative inline-flex items-center justify-center ml-0.5 -my-2.5 p-2.5 align-middle" tabindex="0">
         <svg class="inline-block align-[-0.125em] text-slate-500 hover:text-emerald-400 transition-colors" style="width:1em;height:1em" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="11"></line><circle cx="12" cy="7.5" r="0.9" fill="currentColor" stroke="none"></circle></svg>
         <span class="tooltip-box absolute z-20 bottom-full mb-1 w-56 max-w-[calc(100vw-2rem)] p-3 rounded-lg bg-slate-800 border border-white/10 text-[11px] leading-relaxed font-normal text-slate-300 shadow-2xl normal-case tracking-normal">É o valor total do bem que você quer financiar. A partir dele calculamos a entrada mínima exigida pelo banco (regra de LTV) e o crédito liberado.</span>
     </span>
                             </label>
-                            <input type="text" id="input_imovel" class="currency-input w-40 text-right bg-transparent font-medium text-white text-2xl outline-none border-b border-transparent focus:border-emerald-500 transition-colors" value="">
+                            <input type="text" id="input_imovel" aria-label="Valor do imóvel em reais" class="currency-input w-40 text-right bg-transparent font-medium text-white text-2xl outline-none border-b border-transparent focus:border-emerald-500 transition-colors" value="">
                         </div>
-                        <input type="range" id="slider_imovel" min="100000" max="2000000" step="10000" value="450000.0" class="w-full mt-2">
+                        <input type="range" id="slider_imovel" aria-label="Valor do imóvel" min="100000" max="2000000" step="10000" value="450000.0" class="w-full mt-2">
                     </div>
                     <div class="bg-slate-800/60 p-5 rounded-2xl border border-white/10 shadow-md shadow-black/20 hover:border-emerald-500/30 transition-colors">
                         <div class="flex justify-between items-end mb-2">
                             <label class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest flex items-center">
-                                <svg class="inline-block align-[-0.125em] mr-1.5 text-slate-500" style="width:1em;height:1em" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="5" x2="5" y2="19"></line><circle cx="6.5" cy="6.5" r="2.5"></circle><circle cx="17.5" cy="17.5" r="2.5"></circle></svg> Entrada / Margem Retida
+                                <svg class="inline-block align-[-0.125em] mr-1.5 text-slate-400" style="width:1em;height:1em" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="5" x2="5" y2="19"></line><circle cx="6.5" cy="6.5" r="2.5"></circle><circle cx="17.5" cy="17.5" r="2.5"></circle></svg> Entrada / Margem Retida
                                 <span class="tooltip-wrap relative inline-flex items-center justify-center ml-0.5 -my-2.5 p-2.5 align-middle" tabindex="0">
         <svg class="inline-block align-[-0.125em] text-slate-500 hover:text-emerald-400 transition-colors" style="width:1em;height:1em" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="11"></line><circle cx="12" cy="7.5" r="0.9" fill="currentColor" stroke="none"></circle></svg>
         <span class="tooltip-box absolute z-20 bottom-full mb-1 w-56 max-w-[calc(100vw-2rem)] p-3 rounded-lg bg-slate-800 border border-white/10 text-[11px] leading-relaxed font-normal text-slate-300 shadow-2xl normal-case tracking-normal">Quanto você paga à vista de imediato. Todo banco exige um mínimo (aqui, 20% pela regra de LTV do Bradesco) e o mercado considera pouco usual passar de 80% — acima disso, geralmente compensa mais comprar à vista.</span>
     </span>
                             </label>
-                            <input type="text" id="input_entrada" class="currency-input w-40 text-right bg-transparent font-medium text-white text-2xl outline-none border-b border-transparent focus:border-emerald-500 transition-colors" value="">
+                            <input type="text" id="input_entrada" aria-label="Valor da entrada em reais" class="currency-input w-40 text-right bg-transparent font-medium text-white text-2xl outline-none border-b border-transparent focus:border-emerald-500 transition-colors" value="">
                         </div>
-                        <input type="range" id="slider_entrada" min="89999" max="1000000" step="5000" value="90000" class="w-full mt-2">
-                        <p class="text-[9px] text-slate-500 mt-1 text-right">Mínimo exigido: 20% do valor</p>
+                        <input type="range" id="slider_entrada" aria-label="Valor da entrada" min="89999" max="1000000" step="5000" value="90000" class="w-full mt-2">
+                        <p class="text-[9px] text-slate-400 mt-1 text-right">Mínimo exigido: 20% do valor</p>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div class="bg-slate-800/60 p-5 rounded-2xl border border-white/10 shadow-md shadow-black/20 hover:border-emerald-500/30 transition-colors">
                             <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 flex items-center">
-                                <svg class="inline-block align-[-0.125em] mr-1.5 text-slate-500" style="width:1em;height:1em" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> Prazo
+                                <svg class="inline-block align-[-0.125em] mr-1.5 text-slate-400" style="width:1em;height:1em" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> Prazo
                                 <span class="tooltip-wrap relative inline-flex items-center justify-center ml-0.5 -my-2.5 p-2.5 align-middle" tabindex="0">
         <svg class="inline-block align-[-0.125em] text-slate-500 hover:text-emerald-400 transition-colors" style="width:1em;height:1em" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="11"></line><circle cx="12" cy="7.5" r="0.9" fill="currentColor" stroke="none"></circle></svg>
         <span class="tooltip-box absolute z-20 bottom-full mb-1 w-56 max-w-[calc(100vw-2rem)] p-3 rounded-lg bg-slate-800 border border-white/10 text-[11px] leading-relaxed font-normal text-slate-300 shadow-2xl normal-case tracking-normal">Quantidade de parcelas mensais do financiamento. O Bradesco permite no máximo 360 meses (30 anos) nessa modalidade.</span>
     </span>
                             </label>
-                            <div class="flex items-center"><input type="number" id="input_prazo" min="12" max="360" class="w-full bg-transparent font-medium text-white text-lg outline-none" value="120"><span class="text-xs text-slate-500 ml-2">meses</span></div>
-                            <p class="text-[9px] text-slate-500 mt-1">Equivale a <span id="hint_anos">10</span> anos</p>
+                            <div class="flex items-center"><input type="number" id="input_prazo" aria-label="Prazo em meses" min="12" max="360" class="w-full bg-transparent font-medium text-white text-lg outline-none" value="120"><span class="text-xs text-slate-400 ml-2">meses</span></div>
+                            <p class="text-[9px] text-slate-400 mt-1">Equivale a <span id="hint_anos">10</span> anos</p>
                         </div>
                         <div class="bg-slate-800/60 p-5 rounded-2xl border border-white/10 shadow-md shadow-black/20 hover:border-emerald-500/30 transition-colors">
                             <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 flex items-center">
-                                <svg class="inline-block align-[-0.125em] mr-1.5 text-slate-500" style="width:1em;height:1em" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 17 9 11 13 15 21 6"></polyline><polyline points="15 6 21 6 21 12"></polyline></svg> Taxa Estimada
+                                <svg class="inline-block align-[-0.125em] mr-1.5 text-slate-400" style="width:1em;height:1em" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 17 9 11 13 15 21 6"></polyline><polyline points="15 6 21 6 21 12"></polyline></svg> Taxa Estimada
                                 <span class="tooltip-wrap relative inline-flex items-center justify-center ml-0.5 -my-2.5 p-2.5 align-middle" tabindex="0">
         <svg class="inline-block align-[-0.125em] text-slate-500 hover:text-emerald-400 transition-colors" style="width:1em;height:1em" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="11"></line><circle cx="12" cy="7.5" r="0.9" fill="currentColor" stroke="none"></circle></svg>
         <span class="tooltip-box absolute z-20 bottom-full mb-1 w-56 max-w-[calc(100vw-2rem)] p-3 rounded-lg bg-slate-800 border border-white/10 text-[11px] leading-relaxed font-normal text-slate-300 shadow-2xl normal-case tracking-normal">Taxa de juros anual estimada, aplicada mensalmente sobre o saldo devedor. É a "taxa de vitrine" — sua taxa final aprovada depende da sua análise de crédito.</span>
     </span>
                             </label>
-                            <div class="flex items-center"><input type="number" id="input_taxa" step="0.01" class="w-full bg-transparent font-medium text-white text-lg outline-none" value="12.29"><span class="text-xs text-slate-500 ml-2">% a.a.</span></div>
+                            <div class="flex items-center"><input type="number" id="input_taxa" aria-label="Taxa de juros ao ano" step="0.01" class="w-full bg-transparent font-medium text-white text-lg outline-none" value="12.29"><span class="text-xs text-slate-400 ml-2">% a.a.</span></div>
                         </div>
                     </div>
                     <div class="pt-2">
@@ -246,11 +246,11 @@
                             <div><p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-2">Última Parcela</p><p class="text-slate-300 text-2xl font-light tracking-tight currency-input break-words" id="res_pU">R$ 0,00</p></div>
                         </div>
                         <div class="pt-6 border-t border-white/5 grid grid-cols-1 gap-6">
-                            <div><p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1.5">Crédito Liberado (Sem Juros)</p><p class="text-white font-medium text-lg currency-input" id="res_capital">R$ 0,00</p></div>
-                            <div><p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1.5 flex items-center">Custo Total Final (Capital + Juros)</p><p class="text-white font-medium text-xl currency-input" id="res_total_pago">R$ 0,00</p></div>
+                            <div><p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1.5">Crédito Liberado (Sem Juros)</p><p class="text-white font-medium text-lg currency-input" id="res_capital">R$ 0,00</p></div>
+                            <div><p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1.5 flex items-center">Custo Total Final (Capital + Juros)</p><p class="text-white font-medium text-xl currency-input" id="res_total_pago">R$ 0,00</p></div>
                         </div>
                         <div class="pt-6 border-t border-white/5">
-                            <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-3">Composição do custo total (cenário padrão)</p>
+                            <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-3">Composição do custo total (cenário padrão)</p>
                             <div class="flex items-center gap-6">
         <svg viewBox="0 0 100 100" class="w-24 h-24 shrink-0" style="transform: rotate(-90deg)">
             <circle cx="50" cy="50" r="42" fill="none" stroke="#1e293b" stroke-width="12"></circle>
@@ -283,7 +283,7 @@
                     <div class="relative h-2 rounded-full bg-gradient-to-r from-emerald-500 via-amber-400 to-rose-500">
                         <div class="absolute top-1/2 h-4 w-4 rounded-full bg-white border-2 border-emerald-950 shadow-[0_0_0_3px_rgba(16,185,129,0.35)]" style="left:57%; transform:translate(-50%,-50%)" title="Bradesco: 13,92%"></div>
                     </div>
-                    <div class="flex justify-between text-[10px] text-slate-500 uppercase tracking-wide">
+                    <div class="flex justify-between text-[10px] text-slate-400 uppercase tracking-wide">
                         <span>10,73% menor CET</span>
                         <span>16,33% maior CET</span>
                     </div>
@@ -312,15 +312,15 @@
                     </label>
                     <div class="relative mb-6">
                         <span class="absolute left-4 top-1/2 -translate-y-1/2 font-light text-emerald-500/50 text-3xl">R$</span>
-                        <input type="text" id="input_amortizar" class="currency-input w-full bg-black/50 border border-emerald-500/30 rounded-2xl pl-16 pr-4 py-5 focus:border-emerald-400 font-medium text-emerald-400 text-4xl outline-none transition-all shadow-[inset_0_2px_10px_rgba(0,0,0,0.5)]" value="18.000,00">
+                        <input type="text" id="input_amortizar" aria-label="Valor da amortização extra em reais" class="currency-input w-full bg-black/50 border border-emerald-500/30 rounded-2xl pl-16 pr-4 py-5 focus:border-emerald-400 font-medium text-emerald-400 text-4xl outline-none transition-all shadow-[inset_0_2px_10px_rgba(0,0,0,0.5)]" value="18.000,00">
                     </div>
-                    <input type="range" id="slider_amortizar" min="0" max="500000" step="5000" value="18000" class="w-full mb-6">
+                    <input type="range" id="slider_amortizar" aria-label="Valor da amortização extra" min="0" max="500000" step="5000" value="18000" class="w-full mb-6">
                     <div class="bg-slate-800/60 p-4 rounded-2xl border border-white/10">
                         <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 flex items-center">
-                            <svg class="inline-block align-[-0.125em] mr-1.5 text-slate-500" style="width:1em;height:1em" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg> A Cada Quantos Meses?
+                            <svg class="inline-block align-[-0.125em] mr-1.5 text-slate-400" style="width:1em;height:1em" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg> A Cada Quantos Meses?
                         </label>
                         <div class="flex items-center gap-3">
-                            <input type="range" id="slider_periodicidade" min="1" max="24" step="1" value="6" class="w-full">
+                            <input type="range" id="slider_periodicidade" aria-label="A cada quantos meses" min="1" max="24" step="1" value="6" class="w-full">
                             <span class="text-white font-medium text-sm whitespace-nowrap w-24 text-right" id="label_periodicidade">a cada 6 meses</span>
                         </div>
                     </div>
@@ -361,7 +361,7 @@
         <span class="tooltip-box absolute z-20 bottom-full mb-1 w-56 max-w-[calc(100vw-2rem)] p-3 rounded-lg bg-slate-800 border border-white/10 text-[11px] leading-relaxed font-normal text-slate-300 shadow-2xl normal-case tracking-normal">CET = Custo Efetivo Total. É o custo real do financiamento por ano, somando juros + seguros obrigatórios (MIP e DFI) + taxa de administração — sempre maior que a taxa de juros anunciada, e é o número certo para comparar bancos entre si.</span>
     </span>
             </h2>
-            <p class="text-slate-500 text-[11px] mb-6">
+            <p class="text-slate-400 text-[11px] mb-6">
                 Para 450 mil financiados pelo Bradesco em 120 meses, com entrada de R$ 90.000,00 e taxa de 12,29% a.a.:
             </p>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -415,7 +415,7 @@
         </div>
 
 
-        <div class="mt-8 glass-panel p-8 md:p-10 rounded-3xl"><h2 class="text-xs font-bold text-slate-300 uppercase tracking-widest mb-1">Análise desta simulação</h2><p class="text-slate-500 text-[11px] mb-6 pb-4 border-b border-white/10">As contas deste cenário, em números.</p><p class="text-slate-300 text-sm font-light leading-relaxed">Financiando R$ 360.000,00 de um imóvel de R$ 450.000,00 em 120 meses (10 anos) no Bradesco, com entrada de R$ 90.000,00, a primeira parcela na SAC é de <strong class="text-white font-medium">R$ 6.687,00</strong> e cai até R$ 3.030,72; na PRICE, fica fixa em R$ 5.225,49. Os juros somam R$ 223.063,50 na SAC e R$ 267.058,28 na PRICE: R$ 43.994,78 de diferença.</p><p class="text-slate-300 text-sm font-light leading-relaxed mt-3">Esticar para 180 meses (15 anos) baixa a primeira parcela para R$ 5.687,00, mas soma R$ 110.610,00 de juros.</p><p class="text-slate-300 text-sm font-light leading-relaxed mt-3">Com 30% de entrada (R$ 135.000,00) em vez de 20%, a primeira parcela cai para R$ 5.851,12 e você paga R$ 27.882,94 a menos de juros. Para a primeira parcela caber na regra de 30% de comprometimento, a renda familiar precisa ser de pelo menos R$ 22.300,00 por mês.</p></div>
+        <div class="mt-8 glass-panel p-8 md:p-10 rounded-3xl"><h2 class="text-xs font-bold text-slate-300 uppercase tracking-widest mb-1">Análise desta simulação</h2><p class="text-slate-400 text-[11px] mb-6 pb-4 border-b border-white/10">As contas deste cenário, em números.</p><p class="text-slate-300 text-sm font-light leading-relaxed">Financiando R$ 360.000,00 de um imóvel de R$ 450.000,00 em 120 meses (10 anos) no Bradesco, com entrada de R$ 90.000,00, a primeira parcela na SAC é de <strong class="text-white font-medium">R$ 6.687,00</strong> e cai até R$ 3.030,72; na PRICE, fica fixa em R$ 5.225,49. Os juros somam R$ 223.063,50 na SAC e R$ 267.058,28 na PRICE: R$ 43.994,78 de diferença.</p><p class="text-slate-300 text-sm font-light leading-relaxed mt-3">Esticar para 180 meses (15 anos) baixa a primeira parcela para R$ 5.687,00, mas soma R$ 110.610,00 de juros.</p><p class="text-slate-300 text-sm font-light leading-relaxed mt-3">Com 30% de entrada (R$ 135.000,00) em vez de 20%, a primeira parcela cai para R$ 5.851,12 e você paga R$ 27.882,94 a menos de juros. Para a primeira parcela caber na regra de 30% de comprometimento, a renda familiar precisa ser de pelo menos R$ 22.300,00 por mês.</p></div>
 
         <!-- ZONA E: GLOSSÁRIO / HUB DE AJUDA -->
         <div class="mt-16">
@@ -423,7 +423,7 @@
                 <svg class="inline-block align-[-0.125em] text-emerald-500 text-xl" style="width:1em;height:1em" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 5h7a3 3 0 0 1 3 3v12a2.5 2.5 0 0 0-2.5-2.5H2z"></path><path d="M22 5h-7a3 3 0 0 0-3 3v12a2.5 2.5 0 0 1 2.5-2.5H22z"></path></svg>
                 <h3 class="text-2xl font-serif text-white text-center">Entenda os Termos Antes de Decidir</h3>
             </div>
-            <p class="text-slate-500 text-sm text-center max-w-2xl mx-auto mb-8">
+            <p class="text-slate-400 text-sm text-center max-w-2xl mx-auto mb-8">
                 Mais do que uma calculadora: reunimos aqui o que cada termo do seu financiamento bradesco significa na prática.
             </p>
             <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 md:gap-x-12 divide-y divide-white/10 md:divide-y-0">
@@ -526,21 +526,21 @@
                 <details class="group bg-white/5 border border-white/10 rounded-xl overflow-hidden open:border-emerald-500/30 transition-colors">
                     <summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4">
                         <h4 class="text-emerald-400 font-bold text-sm">Qual a primeira parcela de 450 mil em 120 meses no Bradesco?</h4>
-                        <span class="faq-toggle-icon shrink-0 text-slate-500 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
+                        <span class="faq-toggle-icon shrink-0 text-slate-400 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
                     </summary>
                     <p class="text-slate-300 text-sm font-light leading-relaxed px-5 pb-5">Com entrada de R$ 90.000,00, o valor financiado é R$ 360.000,00. Na tabela SAC, a primeira parcela é R$ 6.687,00 e a última R$ 3.030,72; na PRICE, a parcela é fixa em R$ 5.225,49, com a taxa estimada de 12,29% ao ano.</p>
                 </details>
                 <details class="group bg-white/5 border border-white/10 rounded-xl overflow-hidden open:border-emerald-500/30 transition-colors">
                     <summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4">
                         <h4 class="text-emerald-400 font-bold text-sm">Quanto pago de juros financiando 450 mil em 10 anos: SAC ou PRICE?</h4>
-                        <span class="faq-toggle-icon shrink-0 text-slate-500 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
+                        <span class="faq-toggle-icon shrink-0 text-slate-400 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
                     </summary>
                     <p class="text-slate-300 text-sm font-light leading-relaxed px-5 pb-5">Na SAC, os juros somam R$ 223.063,50 e o total pago é R$ 583.063,50. Na PRICE, os juros somam R$ 267.058,28. A SAC economiza R$ 43.994,78, mas começa com parcelas maiores.</p>
                 </details>
                 <details class="group bg-white/5 border border-white/10 rounded-xl overflow-hidden open:border-emerald-500/30 transition-colors">
                     <summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4">
                         <h4 class="text-emerald-400 font-bold text-sm">Qual renda preciso para financiar 450 mil no Bradesco?</h4>
-                        <span class="faq-toggle-icon shrink-0 text-slate-500 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
+                        <span class="faq-toggle-icon shrink-0 text-slate-400 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
                     </summary>
                     <p class="text-slate-300 text-sm font-light leading-relaxed px-5 pb-5">Os bancos costumam limitar a parcela a 30% da renda bruta. Para a primeira parcela de R$ 6.687,00 na SAC, a renda familiar precisa ser de pelo menos R$ 22.300,00 por mês. Dá para somar a renda do cônjuge ou companheiro(a).</p>
                 </details>
@@ -554,11 +554,11 @@
         <div class="max-w-7xl mx-auto px-4 text-center">
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
             <div class="flex items-center justify-center gap-4">
-                <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
-                <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
-                <a href="/aprenda" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
-                <a href="/sobre" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
-                <a href="https://wa.me/5527995051571?text=Ol%C3%A1%2C%20preciso%20de%20ajuda%20com%20o%20simulador" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
+                <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
+                <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
+                <a href="/aprenda" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
+                <a href="/sobre" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
+                <a href="https://wa.me/5527995051571?text=Ol%C3%A1%2C%20preciso%20de%20ajuda%20com%20o%20simulador" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
                     <svg class="inline-block align-[-0.125em] mr-1" style="width:1em;height:1em" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15l-1.4 5 5.1-1.4A10 10 0 1 0 12 2zm5.6 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-1.7-.1-.4-.1-.9-.3-1.6-.6-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9 0-1.4.7-2 1-2.3.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.4.2.5.7 1.7.8 1.8.1.2.1.3 0 .5-.1.2-.1.3-.3.5l-.4.5c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.6-.1.2-.2.7-.8.9-1.1.2-.3.4-.2.6-.1.2.1 1.5.7 1.7.8.2.1.4.2.5.3.1.2.1.9-.1 1.5z"></path></svg> Falar com o suporte
                 </a>
             </div>

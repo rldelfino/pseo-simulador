@@ -867,7 +867,7 @@ def gerar_paginas_pseo():
                     <div class="relative h-2 rounded-full bg-gradient-to-r from-emerald-500 via-amber-400 to-rose-500">
                         <div class="absolute top-1/2 h-4 w-4 rounded-full bg-white border-2 border-emerald-950 shadow-[0_0_0_3px_rgba(16,185,129,0.35)]" style="left:{marcador_pct}%; transform:translate(-50%,-50%)" title="{banco_exib}: {cet_atual_fmt}%"></div>
                     </div>
-                    <div class="flex justify-between text-[10px] text-slate-500 uppercase tracking-wide">
+                    <div class="flex justify-between text-[10px] text-slate-400 uppercase tracking-wide">
                         <span>{cet_min_fmt}% menor CET</span>
                         <span>{cet_max_fmt}% maior CET</span>
                     </div>
@@ -990,7 +990,7 @@ def gerar_paginas_pseo():
             analise_html = (
                 '<div class="mt-8 glass-panel p-8 md:p-10 rounded-3xl">'
                 '<h2 class="text-xs font-bold text-slate-300 uppercase tracking-widest mb-1">Análise desta simulação</h2>'
-                '<p class="text-slate-500 text-[11px] mb-6 pb-4 border-b border-white/10">As contas deste cenário, em números.</p>'
+                '<p class="text-slate-400 text-[11px] mb-6 pb-4 border-b border-white/10">As contas deste cenário, em números.</p>'
                 f'<p class="text-slate-300 text-sm font-light leading-relaxed">Financiando {formatar_reais(financiado_p)} de um imóvel de '
                 f'{valor_amigavel} em {prazo} meses ({anos} anos) no {banco_exib}, com entrada de {formatar_reais(entrada_padrao)}, '
                 f'a primeira parcela na SAC é de <strong class="text-white font-medium">{formatar_reais(comparativo["p1_sac"])}</strong> '
@@ -1117,7 +1117,7 @@ def gerar_paginas_pseo():
         <a href="{slug_hub_banco(banco)}" class="inline-flex items-center gap-2.5 bg-white/5 border border-white/10 hover:border-emerald-500/40 hover:bg-white/10 rounded-full pl-2 pr-4 py-1.5 mb-6 transition-colors group">
             {favicon_com_fallback(url_logo_banco, banco_exib, "w-6 h-6")}
             <span class="text-xs font-bold text-slate-200 group-hover:text-emerald-400 tracking-wide transition-colors">{banco_exib}</span>
-            <span class="text-[10px] text-slate-500 uppercase tracking-widest border-l border-white/10 pl-2">{regra['mod']}</span>
+            <span class="text-[10px] text-slate-400 uppercase tracking-widest border-l border-white/10 pl-2">{regra['mod']}</span>
             <span class="text-[10px] text-emerald-500/70 group-hover:text-emerald-400 uppercase tracking-widest border-l border-white/10 pl-2 transition-colors">Ver taxas e condições →</span>
         </a>
         <h1 class="text-4xl md:text-5xl font-serif text-white mb-4 leading-tight px-4">
@@ -1147,45 +1147,45 @@ def gerar_paginas_pseo():
             <h2 class="text-xs font-bold text-slate-300 uppercase tracking-widest mb-1 flex items-center relative z-10">
                 {icone('invoice', 'mr-3')} 1. Estratégia
             </h2>
-            <p class="text-slate-500 text-[11px] mb-8 pb-4 border-b border-white/10 relative z-10">Defina os parâmetros do seu financiamento {banco_exib.lower()}.</p>
+            <p class="text-slate-400 text-[11px] mb-8 pb-4 border-b border-white/10 relative z-10">Defina os parâmetros do seu financiamento {banco_exib.lower()}.</p>
             <div class="flex flex-col lg:flex-row lg:items-start gap-10 relative z-10">
                 <div class="w-full lg:w-1/2 space-y-4">
                     <div class="bg-slate-800/60 p-5 rounded-2xl border border-white/10 shadow-md shadow-black/20 hover:border-emerald-500/30 transition-colors">
                         <div class="flex justify-between items-end mb-2">
                             <label class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest flex items-center">
-                                {icone('home', 'mr-1.5 text-slate-500')} Valor do Imóvel / Garantia
+                                {icone('home', 'mr-1.5 text-slate-400')} Valor do Imóvel / Garantia
                                 {tooltip('É o valor total do bem que você quer financiar. A partir dele calculamos a entrada mínima exigida pelo banco (regra de LTV) e o crédito liberado.')}
                             </label>
-                            <input type="text" id="input_imovel" class="currency-input w-40 text-right bg-transparent font-medium text-white text-2xl outline-none border-b border-transparent focus:border-emerald-500 transition-colors" value="">
+                            <input type="text" id="input_imovel" aria-label="Valor do imóvel em reais" class="currency-input w-40 text-right bg-transparent font-medium text-white text-2xl outline-none border-b border-transparent focus:border-emerald-500 transition-colors" value="">
                         </div>
-                        <input type="range" id="slider_imovel" min="100000" max="2000000" step="10000" value="{valor_imovel}" class="w-full mt-2">
+                        <input type="range" id="slider_imovel" aria-label="Valor do imóvel" min="100000" max="2000000" step="10000" value="{valor_imovel}" class="w-full mt-2">
                     </div>
                     <div class="bg-slate-800/60 p-5 rounded-2xl border border-white/10 shadow-md shadow-black/20 hover:border-emerald-500/30 transition-colors">
                         <div class="flex justify-between items-end mb-2">
                             <label class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest flex items-center">
-                                {icone('percent', 'mr-1.5 text-slate-500')} Entrada / Margem Retida
+                                {icone('percent', 'mr-1.5 text-slate-400')} Entrada / Margem Retida
                                 {tooltip(f'Quanto você paga à vista de imediato. Todo banco exige um mínimo (aqui, {(perc_entrada_minima*100):.0f}% pela regra de LTV do {banco_exib}) e o mercado considera pouco usual passar de 80% — acima disso, geralmente compensa mais comprar à vista.')}
                             </label>
-                            <input type="text" id="input_entrada" class="currency-input w-40 text-right bg-transparent font-medium text-white text-2xl outline-none border-b border-transparent focus:border-emerald-500 transition-colors" value="">
+                            <input type="text" id="input_entrada" aria-label="Valor da entrada em reais" class="currency-input w-40 text-right bg-transparent font-medium text-white text-2xl outline-none border-b border-transparent focus:border-emerald-500 transition-colors" value="">
                         </div>
-                        <input type="range" id="slider_entrada" min="{int(entrada_minima_valor)}" max="1000000" step="5000" value="{int(entrada_padrao)}" class="w-full mt-2">
-                        <p class="text-[9px] text-slate-500 mt-1 text-right">Mínimo exigido: {(perc_entrada_minima*100):.0f}% do valor</p>
+                        <input type="range" id="slider_entrada" aria-label="Valor da entrada" min="{int(entrada_minima_valor)}" max="1000000" step="5000" value="{int(entrada_padrao)}" class="w-full mt-2">
+                        <p class="text-[9px] text-slate-400 mt-1 text-right">Mínimo exigido: {(perc_entrada_minima*100):.0f}% do valor</p>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div class="bg-slate-800/60 p-5 rounded-2xl border border-white/10 shadow-md shadow-black/20 hover:border-emerald-500/30 transition-colors">
                             <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 flex items-center">
-                                {icone('calendar', 'mr-1.5 text-slate-500')} Prazo
+                                {icone('calendar', 'mr-1.5 text-slate-400')} Prazo
                                 {tooltip(f'Quantidade de parcelas mensais do financiamento. O {banco_exib} permite no máximo {prazo_max_banco} meses ({prazo_max_banco // 12} anos) nessa modalidade.')}
                             </label>
-                            <div class="flex items-center"><input type="number" id="input_prazo" min="12" max="{prazo_max_banco}" class="w-full bg-transparent font-medium text-white text-lg outline-none" value="{prazo}"><span class="text-xs text-slate-500 ml-2">meses</span></div>
-                            <p class="text-[9px] text-slate-500 mt-1">Equivale a <span id="hint_anos">{anos}</span> anos</p>
+                            <div class="flex items-center"><input type="number" id="input_prazo" aria-label="Prazo em meses" min="12" max="{prazo_max_banco}" class="w-full bg-transparent font-medium text-white text-lg outline-none" value="{prazo}"><span class="text-xs text-slate-400 ml-2">meses</span></div>
+                            <p class="text-[9px] text-slate-400 mt-1">Equivale a <span id="hint_anos">{anos}</span> anos</p>
                         </div>
                         <div class="bg-slate-800/60 p-5 rounded-2xl border border-white/10 shadow-md shadow-black/20 hover:border-emerald-500/30 transition-colors">
                             <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 flex items-center">
-                                {icone('trending-up', 'mr-1.5 text-slate-500')} Taxa Estimada
+                                {icone('trending-up', 'mr-1.5 text-slate-400')} Taxa Estimada
                                 {tooltip('Taxa de juros anual estimada, aplicada mensalmente sobre o saldo devedor. É a "taxa de vitrine" — sua taxa final aprovada depende da sua análise de crédito.')}
                             </label>
-                            <div class="flex items-center"><input type="number" id="input_taxa" step="0.01" class="w-full bg-transparent font-medium text-white text-lg outline-none" value="{taxa}"><span class="text-xs text-slate-500 ml-2">% a.a.</span></div>
+                            <div class="flex items-center"><input type="number" id="input_taxa" aria-label="Taxa de juros ao ano" step="0.01" class="w-full bg-transparent font-medium text-white text-lg outline-none" value="{taxa}"><span class="text-xs text-slate-400 ml-2">% a.a.</span></div>
                         </div>
                     </div>
                     <div class="pt-2">
@@ -1227,11 +1227,11 @@ def gerar_paginas_pseo():
                             <div><p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-2">Última Parcela</p><p class="text-slate-300 text-2xl font-light tracking-tight currency-input break-words" id="res_pU">R$ 0,00</p></div>
                         </div>
                         <div class="pt-6 border-t border-white/5 grid grid-cols-1 gap-6">
-                            <div><p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1.5">Crédito Liberado (Sem Juros)</p><p class="text-white font-medium text-lg currency-input" id="res_capital">R$ 0,00</p></div>
-                            <div><p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1.5 flex items-center">Custo Total Final (Capital + Juros)</p><p class="text-white font-medium text-xl currency-input" id="res_total_pago">R$ 0,00</p></div>
+                            <div><p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1.5">Crédito Liberado (Sem Juros)</p><p class="text-white font-medium text-lg currency-input" id="res_capital">R$ 0,00</p></div>
+                            <div><p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1.5 flex items-center">Custo Total Final (Capital + Juros)</p><p class="text-white font-medium text-xl currency-input" id="res_total_pago">R$ 0,00</p></div>
                         </div>
                         <div class="pt-6 border-t border-white/5">
-                            <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-3">Composição do custo total (cenário padrão)</p>
+                            <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-3">Composição do custo total (cenário padrão)</p>
                             {svg_donut_capital_juros(vfinanciado_padrao, comparativo['total_sac'] - vfinanciado_padrao)}
                         </div>
                     </div>
@@ -1253,15 +1253,15 @@ def gerar_paginas_pseo():
                     </label>
                     <div class="relative mb-6">
                         <span class="absolute left-4 top-1/2 -translate-y-1/2 font-light text-emerald-500/50 text-3xl">R$</span>
-                        <input type="text" id="input_amortizar" class="currency-input w-full bg-black/50 border border-emerald-500/30 rounded-2xl pl-16 pr-4 py-5 focus:border-emerald-400 font-medium text-emerald-400 text-4xl outline-none transition-all shadow-[inset_0_2px_10px_rgba(0,0,0,0.5)]" value="{aporte_padrao_fmt}">
+                        <input type="text" id="input_amortizar" aria-label="Valor da amortização extra em reais" class="currency-input w-full bg-black/50 border border-emerald-500/30 rounded-2xl pl-16 pr-4 py-5 focus:border-emerald-400 font-medium text-emerald-400 text-4xl outline-none transition-all shadow-[inset_0_2px_10px_rgba(0,0,0,0.5)]" value="{aporte_padrao_fmt}">
                     </div>
-                    <input type="range" id="slider_amortizar" min="0" max="{slider_amortizar_max}" step="5000" value="{aporte_padrao}" class="w-full mb-6">
+                    <input type="range" id="slider_amortizar" aria-label="Valor da amortização extra" min="0" max="{slider_amortizar_max}" step="5000" value="{aporte_padrao}" class="w-full mb-6">
                     <div class="bg-slate-800/60 p-4 rounded-2xl border border-white/10">
                         <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 flex items-center">
-                            {icone('repeat', 'mr-1.5 text-slate-500')} A Cada Quantos Meses?
+                            {icone('repeat', 'mr-1.5 text-slate-400')} A Cada Quantos Meses?
                         </label>
                         <div class="flex items-center gap-3">
-                            <input type="range" id="slider_periodicidade" min="1" max="24" step="1" value="{periodicidade_padrao}" class="w-full">
+                            <input type="range" id="slider_periodicidade" aria-label="A cada quantos meses" min="1" max="24" step="1" value="{periodicidade_padrao}" class="w-full">
                             <span class="text-white font-medium text-sm whitespace-nowrap w-24 text-right" id="label_periodicidade">a cada {periodicidade_padrao} meses</span>
                         </div>
                     </div>
@@ -1296,7 +1296,7 @@ def gerar_paginas_pseo():
                 {icone('trending-up', 'mr-3 text-emerald-500')} Comparativo Real: SAC vs. PRICE
                 {tooltip('CET = Custo Efetivo Total. É o custo real do financiamento por ano, somando juros + seguros obrigatórios (MIP e DFI) + taxa de administração — sempre maior que a taxa de juros anunciada, e é o número certo para comparar bancos entre si.')}
             </h2>
-            <p class="text-slate-500 text-[11px] mb-6">
+            <p class="text-slate-400 text-[11px] mb-6">
                 Para {valor_curto} financiados pelo {banco_exib} em {prazo} meses, com entrada de {formatar_reais(entrada_padrao)} e taxa de {taxa_fmt}% a.a.:
             </p>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1358,7 +1358,7 @@ def gerar_paginas_pseo():
                 {icone('book-open', 'text-emerald-500 text-xl')}
                 <h3 class="text-2xl font-serif text-white text-center">Entenda os Termos Antes de Decidir</h3>
             </div>
-            <p class="text-slate-500 text-sm text-center max-w-2xl mx-auto mb-8">
+            <p class="text-slate-400 text-sm text-center max-w-2xl mx-auto mb-8">
                 Mais do que uma calculadora: reunimos aqui o que cada termo do seu financiamento {banco_exib.lower()} significa na prática.
             </p>
             <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 md:gap-x-12 divide-y divide-white/10 md:divide-y-0">
@@ -1441,21 +1441,21 @@ def gerar_paginas_pseo():
                 <details class="group bg-white/5 border border-white/10 rounded-xl overflow-hidden open:border-emerald-500/30 transition-colors">
                     <summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4">
                         <h4 class="text-emerald-400 font-bold text-sm">{faq_q1}</h4>
-                        <span class="faq-toggle-icon shrink-0 text-slate-500 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
+                        <span class="faq-toggle-icon shrink-0 text-slate-400 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
                     </summary>
                     <p class="text-slate-300 text-sm font-light leading-relaxed px-5 pb-5">{faq_a1}</p>
                 </details>
                 <details class="group bg-white/5 border border-white/10 rounded-xl overflow-hidden open:border-emerald-500/30 transition-colors">
                     <summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4">
                         <h4 class="text-emerald-400 font-bold text-sm">{faq_q2}</h4>
-                        <span class="faq-toggle-icon shrink-0 text-slate-500 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
+                        <span class="faq-toggle-icon shrink-0 text-slate-400 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
                     </summary>
                     <p class="text-slate-300 text-sm font-light leading-relaxed px-5 pb-5">{faq_a2}</p>
                 </details>
                 <details class="group bg-white/5 border border-white/10 rounded-xl overflow-hidden open:border-emerald-500/30 transition-colors">
                     <summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4">
                         <h4 class="text-emerald-400 font-bold text-sm">{faq_q3}</h4>
-                        <span class="faq-toggle-icon shrink-0 text-slate-500 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
+                        <span class="faq-toggle-icon shrink-0 text-slate-400 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
                     </summary>
                     <p class="text-slate-300 text-sm font-light leading-relaxed px-5 pb-5">{faq_a3}</p>
                 </details>
@@ -1469,11 +1469,11 @@ def gerar_paginas_pseo():
         <div class="max-w-7xl mx-auto px-4 text-center">
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
             <div class="flex items-center justify-center gap-4">
-                <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
-                <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
-                <a href="/aprenda" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
-                <a href="/sobre" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
-                <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
+                <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
+                <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
+                <a href="/aprenda" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
+                <a href="/sobre" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
+                <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
                     {icone('whatsapp', 'mr-1')} Falar com o suporte
                 </a>
             </div>
@@ -1612,7 +1612,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
                     <div class="relative h-2 rounded-full bg-gradient-to-r from-emerald-500 via-amber-400 to-rose-500">
                         <div class="absolute top-1/2 h-4 w-4 rounded-full bg-white border-2 border-emerald-950 shadow-[0_0_0_3px_rgba(16,185,129,0.35)]" style="left:{marcador_pct}%; transform:translate(-50%,-50%)" title="{banco_exib}: {cet_banco_fmt}%"></div>
                     </div>
-                    <div class="flex justify-between text-[10px] text-slate-500 uppercase tracking-wide">
+                    <div class="flex justify-between text-[10px] text-slate-400 uppercase tracking-wide">
                         <span>{cet_min_fmt}% menor CET</span>
                         <span>{cet_max_fmt}% maior CET</span>
                     </div>
@@ -1718,7 +1718,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
         <div class="inline-flex items-center gap-2.5 bg-white/5 border border-white/10 rounded-full pl-2 pr-4 py-1.5 mb-6">
             {favicon_com_fallback(url_logo_banco, banco_exib, "w-6 h-6")}
             <span class="text-xs font-bold text-slate-200 tracking-wide">{banco_exib}</span>
-            <span class="text-[10px] text-slate-500 uppercase tracking-widest border-l border-white/10 pl-2">{regra['mod']}</span>
+            <span class="text-[10px] text-slate-400 uppercase tracking-widest border-l border-white/10 pl-2">{regra['mod']}</span>
         </div>
         <h1 class="text-3xl md:text-5xl font-serif text-white mb-4 leading-tight px-4">
             Simulador de Financiamento Imobiliário {banco_exib}: Taxas e Condições
@@ -1733,18 +1733,18 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div class="glass-panel-emerald rounded-2xl p-6 text-center">
                 <span class="text-emerald-400 text-2xl">{icone('percent')}</span>
-                <p class="text-slate-500 text-[10px] uppercase tracking-widest mt-3 mb-1">Taxa de Juros</p>
-                <p class="text-2xl font-serif text-white">{taxa_fmt}% <span class="text-sm text-slate-500 font-sans">a.a.</span></p>
+                <p class="text-slate-400 text-[10px] uppercase tracking-widest mt-3 mb-1">Taxa de Juros</p>
+                <p class="text-2xl font-serif text-white">{taxa_fmt}% <span class="text-sm text-slate-400 font-sans">a.a.</span></p>
             </div>
             <div class="glass-panel-emerald rounded-2xl p-6 text-center">
                 <span class="text-emerald-400 text-2xl">{icone('trending-up')}</span>
-                <p class="text-slate-500 text-[10px] uppercase tracking-widest mt-3 mb-1">Entrada Mínima</p>
+                <p class="text-slate-400 text-[10px] uppercase tracking-widest mt-3 mb-1">Entrada Mínima</p>
                 <p class="text-2xl font-serif text-white">{entrada_min_pct}%</p>
             </div>
             <div class="glass-panel-emerald rounded-2xl p-6 text-center">
                 <span class="text-emerald-400 text-2xl">{icone('calendar')}</span>
-                <p class="text-slate-500 text-[10px] uppercase tracking-widest mt-3 mb-1">Prazo Máximo</p>
-                <p class="text-2xl font-serif text-white">{prazo_max}x <span class="text-sm text-slate-500 font-sans">({anos_max} anos)</span></p>
+                <p class="text-slate-400 text-[10px] uppercase tracking-widest mt-3 mb-1">Prazo Máximo</p>
+                <p class="text-2xl font-serif text-white">{prazo_max}x <span class="text-sm text-slate-400 font-sans">({anos_max} anos)</span></p>
             </div>
         </div>
 
@@ -1785,21 +1785,21 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
                 <details class="group bg-white/5 border border-white/10 rounded-xl overflow-hidden open:border-emerald-500/30 transition-colors">
                     <summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4">
                         <h3 class="text-emerald-400 font-bold text-sm">{faq_q1}</h3>
-                        <span class="faq-toggle-icon shrink-0 text-slate-500 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
+                        <span class="faq-toggle-icon shrink-0 text-slate-400 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
                     </summary>
                     <p class="text-slate-300 text-sm font-light leading-relaxed px-5 pb-5">{faq_a1}</p>
                 </details>
                 <details class="group bg-white/5 border border-white/10 rounded-xl overflow-hidden open:border-emerald-500/30 transition-colors">
                     <summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4">
                         <h3 class="text-emerald-400 font-bold text-sm">{faq_q2}</h3>
-                        <span class="faq-toggle-icon shrink-0 text-slate-500 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
+                        <span class="faq-toggle-icon shrink-0 text-slate-400 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
                     </summary>
                     <p class="text-slate-300 text-sm font-light leading-relaxed px-5 pb-5">{faq_a2}</p>
                 </details>
                 <details class="group bg-white/5 border border-white/10 rounded-xl overflow-hidden open:border-emerald-500/30 transition-colors">
                     <summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4">
                         <h3 class="text-emerald-400 font-bold text-sm">{faq_q3}</h3>
-                        <span class="faq-toggle-icon shrink-0 text-slate-500 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
+                        <span class="faq-toggle-icon shrink-0 text-slate-400 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
                     </summary>
                     <p class="text-slate-300 text-sm font-light leading-relaxed px-5 pb-5">{faq_a3}</p>
                 </details>
@@ -1814,11 +1814,11 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
         <div class="max-w-7xl mx-auto px-4 text-center">
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
             <div class="flex items-center justify-center gap-4">
-                <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
-                <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
-                <a href="/aprenda" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
-                <a href="/sobre" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
-                <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
+                <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
+                <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
+                <a href="/aprenda" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
+                <a href="/sobre" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
+                <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
                     {icone('whatsapp', 'mr-1')} Falar com o suporte
                 </a>
             </div>
@@ -1871,7 +1871,7 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
             </span>
             <span class="text-right md:text-center text-xs text-slate-400">{taxa_exibida:.2f}%<span class="hidden md:inline"> a.a.</span></span>
             <span class="hidden md:block text-center text-xs text-slate-400">{r['entrada_perc']}% entrada</span>
-            <span class="text-right text-sm font-bold text-emerald-400">{cet_fmt}% <span class="hidden md:inline text-[10px] text-slate-500 font-normal">CET</span></span>
+            <span class="text-right text-sm font-bold text-emerald-400">{cet_fmt}% <span class="hidden md:inline text-[10px] text-slate-400 font-normal">CET</span></span>
         </a>'''
 
     url_canonica = f"{dominio}/comparador-bancos"
@@ -1948,13 +1948,13 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
     </header>
 
     <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 flex-grow w-full relative z-10">
-        <div class="flex items-center gap-2 mb-4 text-[11px] text-slate-500 uppercase tracking-widest px-4">
+        <div class="flex items-center gap-2 mb-4 text-[11px] text-slate-400 uppercase tracking-widest px-4">
             <span class="w-8"></span><span class="flex-1">Banco</span><span class="hidden md:block flex-1 text-center">Taxa</span><span class="hidden md:block flex-1 text-center">Entrada</span><span class="flex-1 text-right">CET (referência)</span>
         </div>
         <div class="space-y-2">
             {linhas_tabela}
         </div>
-        <p class="text-slate-500 text-xs font-light leading-relaxed mt-6 max-w-2xl">
+        <p class="text-slate-400 text-xs font-light leading-relaxed mt-6 max-w-2xl">
             O CET (Custo Efetivo Total) já soma juros, seguros obrigatórios (MIP e DFI) e taxa de administração — é o número certo pra comparar bancos entre si, diferente da taxa de juros anunciada sozinha. Os valores acima são uma referência para {formatar_reais(VALOR_REF)} em {PRAZO_REF} meses; o CET real do seu financiamento depende do valor, prazo e entrada que você escolher — clique num banco acima pra ver as condições completas e simular o seu cenário.
         </p>
 
@@ -1985,21 +1985,21 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
                 <details class="group bg-white/5 border border-white/10 rounded-xl overflow-hidden open:border-emerald-500/30 transition-colors">
                     <summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4">
                         <h3 class="text-emerald-400 font-bold text-sm">{faq_q1}</h3>
-                        <span class="faq-toggle-icon shrink-0 text-slate-500 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
+                        <span class="faq-toggle-icon shrink-0 text-slate-400 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
                     </summary>
                     <p class="text-slate-300 text-sm font-light leading-relaxed px-5 pb-5">{faq_a1}</p>
                 </details>
                 <details class="group bg-white/5 border border-white/10 rounded-xl overflow-hidden open:border-emerald-500/30 transition-colors">
                     <summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4">
                         <h3 class="text-emerald-400 font-bold text-sm">{faq_q2}</h3>
-                        <span class="faq-toggle-icon shrink-0 text-slate-500 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
+                        <span class="faq-toggle-icon shrink-0 text-slate-400 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
                     </summary>
                     <p class="text-slate-300 text-sm font-light leading-relaxed px-5 pb-5">{faq_a2}</p>
                 </details>
                 <details class="group bg-white/5 border border-white/10 rounded-xl overflow-hidden open:border-emerald-500/30 transition-colors">
                     <summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4">
                         <h3 class="text-emerald-400 font-bold text-sm">{faq_q3}</h3>
-                        <span class="faq-toggle-icon shrink-0 text-slate-500 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
+                        <span class="faq-toggle-icon shrink-0 text-slate-400 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
                     </summary>
                     <p class="text-slate-300 text-sm font-light leading-relaxed px-5 pb-5">{faq_a3}</p>
                 </details>
@@ -2011,11 +2011,11 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
         <div class="max-w-7xl mx-auto px-4 text-center">
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
             <div class="flex items-center justify-center gap-4">
-                <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
-                <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
-                <a href="/aprenda" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
-                <a href="/sobre" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
-                <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
+                <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
+                <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
+                <a href="/aprenda" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
+                <a href="/sobre" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
+                <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
                     {icone('whatsapp', 'mr-1')} Falar com o suporte
                 </a>
             </div>
@@ -2031,27 +2031,32 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
 
 
 def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
-    blocos_html = ""
+    # Achado real (27/set/2026, revisão de SEO/desempenho): cada um dos ~1.680 links da home levava um <svg> de seta
+    # próprio — a home tinha 1,1 MB de HTML. A seta vira um caractere (›) e as ~10 classes repetidas em cada link viram
+    # uma classe só (.lk), definida uma vez: mesmo visual, uma fração do peso.
+    blocos_html = """<style>
+        .lk{display:flex;align-items:center;justify-content:space-between;padding:.75rem;border-radius:.5rem;border:1px solid transparent;transition:background-color .15s,border-color .15s}
+        .lk:hover{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.1)}
+        .lk span:first-child{font-size:.75rem;line-height:1rem;font-weight:300;color:#cbd5e1}
+        .lk:hover span:first-child{color:#fff}
+        .lk span:last-child{color:#10b981;font-size:.875rem;line-height:1}
+        </style>"""
     for banco, links in links_por_banco.items():
         regra = obter_regra(banco)
         banco_exib = nome_exibicao(banco)
         url_logo = f"https://www.google.com/s2/favicons?domain={regra['dominio_favicon']}&sz=128"
         ancora_id = banco.lower().replace(" ", "-")
-        links_html = "".join([f'''
-            <li>
-                <a href="{item["slug"]}" class="group flex items-center justify-between p-3 rounded-lg hover:bg-white/5 transition-colors border border-transparent hover:border-white/10">
-                    <span class="text-xs font-light text-slate-300 group-hover:text-white">{item["texto"]}</span>
-                    <svg class="w-3 h-3 text-emerald-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                </a>
-            </li>
-        ''' for item in links])
+        links_html = "".join(
+            f'<li><a href="{item["slug"]}" class="lk"><span>{item["texto"]}</span><span aria-hidden="true">›</span></a></li>'
+            for item in links
+        )
 
         blocos_html += f'''
         <div id="{ancora_id}" class="bg-slate-900/40 backdrop-blur-md rounded-2xl shadow-2xl border border-white/5 overflow-hidden transition-all duration-300 hover:border-emerald-500/30 hover:shadow-[0_0_30px_rgba(16,185,129,0.1)] scroll-mt-24">
             <a href="{slug_hub_banco(banco)}" class="group/h2 border-b border-white/5 px-6 py-5 flex items-center gap-4 bg-black/40 hover:bg-black/60 transition-colors">
                 {favicon_com_fallback(url_logo, banco_exib)}
                 <h2 class="text-xl font-serif text-white tracking-wide group-hover/h2:text-emerald-400 transition-colors">{banco_exib}</h2>
-                <span class="ml-auto text-[10px] text-slate-500 group-hover/h2:text-emerald-400 uppercase tracking-widest transition-colors">Ver taxas →</span>
+                <span class="ml-auto text-[10px] text-slate-400 group-hover/h2:text-emerald-400 uppercase tracking-widest transition-colors">Ver taxas →</span>
             </a>
             <div class="p-4">
                 <ul class="space-y-1 h-64 overflow-y-auto pr-2 custom-scrollbar">
@@ -2172,21 +2177,21 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
                 <details class="group bg-white/5 border border-white/10 rounded-xl overflow-hidden open:border-emerald-500/30 transition-colors">
                     <summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4">
                         <h3 class="text-emerald-400 font-bold text-sm">{faq_home_q1}</h3>
-                        <span class="faq-toggle-icon shrink-0 text-slate-500 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
+                        <span class="faq-toggle-icon shrink-0 text-slate-400 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
                     </summary>
                     <p class="text-slate-300 text-sm font-light leading-relaxed px-5 pb-5">{faq_home_a1}</p>
                 </details>
                 <details class="group bg-white/5 border border-white/10 rounded-xl overflow-hidden open:border-emerald-500/30 transition-colors">
                     <summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4">
                         <h3 class="text-emerald-400 font-bold text-sm">{faq_home_q2}</h3>
-                        <span class="faq-toggle-icon shrink-0 text-slate-500 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
+                        <span class="faq-toggle-icon shrink-0 text-slate-400 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
                     </summary>
                     <p class="text-slate-300 text-sm font-light leading-relaxed px-5 pb-5">{faq_home_a2}</p>
                 </details>
                 <details class="group bg-white/5 border border-white/10 rounded-xl overflow-hidden open:border-emerald-500/30 transition-colors">
                     <summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4">
                         <h3 class="text-emerald-400 font-bold text-sm">{faq_home_q3}</h3>
-                        <span class="faq-toggle-icon shrink-0 text-slate-500 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
+                        <span class="faq-toggle-icon shrink-0 text-slate-400 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
                     </summary>
                     <p class="text-slate-300 text-sm font-light leading-relaxed px-5 pb-5">{faq_home_a3}</p>
                 </details>
@@ -2197,11 +2202,11 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
         <div class="max-w-7xl mx-auto px-4 text-center">
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
             <div class="flex items-center justify-center gap-4">
-                <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
-                <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
-                <a href="/aprenda" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
-                <a href="/sobre" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
-                <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
+                <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
+                <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
+                <a href="/aprenda" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
+                <a href="/sobre" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
+                <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
                     {icone('whatsapp', 'mr-1')} Falar com o suporte
                 </a>
             </div>
@@ -2295,11 +2300,11 @@ def gerar_pagina_sobre(pasta_saida, dominio):
         <div class="max-w-7xl mx-auto px-4 text-center">
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
             <div class="flex items-center justify-center gap-4">
-                <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
-                <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
-                <a href="/aprenda" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
-                <a href="/sobre" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
-                <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
+                <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
+                <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
+                <a href="/aprenda" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
+                <a href="/sobre" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
+                <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
                     {icone('whatsapp', 'mr-1')} Falar com o suporte
                 </a>
             </div>
@@ -2370,11 +2375,11 @@ def gerar_pagina_aprenda(art, pasta_saida, dominio, data_atualizacao):
         <div class="max-w-7xl mx-auto px-4 text-center">
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
             <div class="flex items-center justify-center gap-4">
-                <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
-                <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
-                <a href="/aprenda" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
-                <a href="/sobre" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
-                <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
+                <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
+                <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
+                <a href="/aprenda" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
+                <a href="/sobre" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
+                <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
                     {icone('whatsapp', 'mr-1')} Falar com o suporte
                 </a>
             </div>
@@ -2426,11 +2431,11 @@ def gerar_hub_aprenda(artigos, pasta_saida, dominio):
         <div class="max-w-7xl mx-auto px-4 text-center">
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
             <div class="flex items-center justify-center gap-4">
-                <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
-                <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
-                <a href="/aprenda" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
-                <a href="/sobre" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
-                <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-500 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
+                <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
+                <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
+                <a href="/aprenda" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
+                <a href="/sobre" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
+                <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
                     {icone('whatsapp', 'mr-1')} Falar com o suporte
                 </a>
             </div>
@@ -2747,7 +2752,7 @@ def gerar_calculo_js():
                 <div class="relative h-2 rounded-full bg-gradient-to-r from-emerald-500 via-amber-400 to-rose-500">
                     <div class="absolute top-1/2 h-4 w-4 rounded-full bg-white border-2 border-emerald-950 shadow-[0_0_0_3px_rgba(16,185,129,0.35)]" style="left:${marcadorPct}%; transform:translate(-50%,-50%)" title="${nomeBancoAtual}: ${cetAtualFmt}%"></div>
                 </div>
-                <div class="flex justify-between text-[10px] text-slate-500 uppercase tracking-wide">
+                <div class="flex justify-between text-[10px] text-slate-400 uppercase tracking-wide">
                     <span>${cetMinFmt}% menor CET</span>
                     <span>${cetMaxFmt}% maior CET</span>
                 </div>`;

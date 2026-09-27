@@ -41,7 +41,7 @@ BANCOS = {
     "Poupex": {
         "nome_exibicao": "Poupex",
         "taxa_padrao": 10.80, "ltv": 0.90, "prazo_max": 420,
-        "mod": "Financiamento Imobiliário", "dominio_favicon": "poupex.com.br",
+        "mod": "Financiamento Imobiliário", "dominio_favicon": "www.poupex.com.br",
     },
     "Itau": {
         "nome_exibicao": "Itaú",
