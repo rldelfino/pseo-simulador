@@ -43,3 +43,12 @@
 /simulador-sicredi-*-mil-420-meses      /simulador-sicredi-:splat-mil-360-meses      301
 /simulador-sicoob-*-mil-420-meses       /simulador-sicoob-:splat-mil-360-meses       301
 /simulador-banrisul-*-mil-420-meses     /simulador-banrisul-:splat-mil-360-meses     301
+
+# Achado real (26/set/2026, Search Console "Não encontrado (404)"): as regras acima casam só a URL SEM extensão; a antiga
+# com ".html" (a que o Google guardou antes de 06/set) não casava e seguia em 404. Mesma troca 420 -> 360, versão .html.
+/simulador-itau-*-mil-420-meses.html         /simulador-itau-:splat-mil-360-meses         301
+/simulador-bradesco-*-mil-420-meses.html     /simulador-bradesco-:splat-mil-360-meses     301
+/simulador-banco-inter-*-mil-420-meses.html  /simulador-banco-inter-:splat-mil-360-meses  301
+/simulador-sicredi-*-mil-420-meses.html      /simulador-sicredi-:splat-mil-360-meses      301
+/simulador-sicoob-*-mil-420-meses.html       /simulador-sicoob-:splat-mil-360-meses       301
+/simulador-banrisul-*-mil-420-meses.html     /simulador-banrisul-:splat-mil-360-meses     301
