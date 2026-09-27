@@ -964,12 +964,60 @@ def gerar_paginas_pseo():
                 </a>
                 """
 
-            faq_q1 = f"Vale a pena amortizar o {regra['mod'].lower()} no {banco_exib}?"
-            faq_a1 = f"Sim! Ao fazer amortizações extras no {banco_exib}, você reduz diretamente o saldo devedor. Isso significa que você foge dos juros compostos cobrados ao longo dos {prazo} meses ({anos} anos), podendo economizar milhares de reais e quitar muito antes do previsto."
-            faq_q2 = f"Qual a diferença entre a Tabela SAC e PRICE na simulação do {banco_exib}?"
-            faq_a2 = f"Na Tabela SAC, a amortização é constante e o valor das parcelas do {banco_exib} diminui com o tempo. Já na Tabela PRICE, as parcelas são fixas do início ao fim do contrato. A escolha ideal depende do seu planejamento financeiro mensal."
-            faq_q3 = f"É possível simular {valor_curto} em {anos} anos ({prazo} meses) com a taxa atual de {taxa_fmt}% a.a.?"
-            faq_a3 = f"Sim. Nossa calculadora já utiliza a taxa de juros anual estimada em {taxa_fmt}% ao ano para o {banco_exib}, aplicada a um financiamento de {valor_amigavel} em {prazo} meses (equivalente a {anos} anos). Você pode ajustar os valores de entrada (margem de garantia) e prazo no simulador acima para ver o Custo Efetivo Total (CET) aproximado para o seu perfil e solicitar uma análise."
+            # Achado real (27/set/2026, medição de texto + Search Console): duas páginas quaisquer eram 92% idênticas e as 3
+            # perguntas frequentes eram as mesmas em toda página do banco (só o nome mudava). Cada página ganha uma análise
+            # com as contas dela (prazo ±5 anos, +10% de entrada, renda) e perguntas com os números dela. Sem ranking nomeado
+            # de bancos: foi retirado de propósito (ver "Caixinha Dica" acima) para não mandar o visitante ao concorrente.
+            financiado_p = vfinanciado_padrao
+            juros_sac = comparativo["total_sac"] - financiado_p
+            juros_price = comparativo["total_price"] - financiado_p
+            prazo_alt = prazo + 60 if prazo + 60 <= prazo_max_banco else (prazo - 60 if prazo - 60 >= 60 else None)
+            frase_prazo_imovel = ""
+            if prazo_alt:
+                comp_alt = calcular_sac_price(financiado_p, prazo_alt, taxa)
+                juros_alt = comp_alt["total_sac"] - financiado_p
+                anos_alt = prazo_alt // 12
+                if prazo_alt > prazo:
+                    frase_prazo_imovel = (f"Esticar para {prazo_alt} meses ({anos_alt} anos) baixa a primeira parcela para "
+                                          f"{formatar_reais(comp_alt['p1_sac'])}, mas soma {formatar_reais(juros_alt - juros_sac)} de juros.")
+                else:
+                    frase_prazo_imovel = (f"Encurtar para {prazo_alt} meses ({anos_alt} anos) sobe a primeira parcela para "
+                                          f"{formatar_reais(comp_alt['p1_sac'])} e economiza {formatar_reais(juros_sac - juros_alt)} de juros.")
+            perc_entrada_atual = entrada_padrao / valor_imovel
+            entrada_mais = valor_imovel * min(perc_entrada_atual + 0.10, 0.9)
+            comp_mais = calcular_sac_price(valor_imovel - entrada_mais, prazo, taxa)
+            juros_mais = comp_mais["total_sac"] - (valor_imovel - entrada_mais)
+            analise_html = (
+                '<div class="mt-8 glass-panel p-8 md:p-10 rounded-3xl">'
+                '<h2 class="text-xs font-bold text-slate-300 uppercase tracking-widest mb-1">Análise desta simulação</h2>'
+                '<p class="text-slate-500 text-[11px] mb-6 pb-4 border-b border-white/10">As contas deste cenário, em números.</p>'
+                f'<p class="text-slate-300 text-sm font-light leading-relaxed">Financiando {formatar_reais(financiado_p)} de um imóvel de '
+                f'{valor_amigavel} em {prazo} meses ({anos} anos) no {banco_exib}, com entrada de {formatar_reais(entrada_padrao)}, '
+                f'a primeira parcela na SAC é de <strong class="text-white font-medium">{formatar_reais(comparativo["p1_sac"])}</strong> '
+                f'e cai até {formatar_reais(comparativo["pU_sac"])}; na PRICE, fica fixa em {formatar_reais(comparativo["p1_price"])}. '
+                f'Os juros somam {formatar_reais(juros_sac)} na SAC e {formatar_reais(juros_price)} na PRICE: '
+                f'{formatar_reais(comparativo["economia_sac"])} de diferença.</p>'
+                + (f'<p class="text-slate-300 text-sm font-light leading-relaxed mt-3">{frase_prazo_imovel}</p>' if frase_prazo_imovel else '')
+                + f'<p class="text-slate-300 text-sm font-light leading-relaxed mt-3">Com {round(min(perc_entrada_atual + 0.10, 0.9) * 100)}% '
+                f'de entrada ({formatar_reais(entrada_mais)}) em vez de {round(perc_entrada_atual * 100)}%, a primeira parcela cai para '
+                f'{formatar_reais(comp_mais["p1_sac"])} e você paga {formatar_reais(juros_sac - juros_mais)} a menos de juros. '
+                f'Para a primeira parcela caber na regra de 30% de comprometimento, a renda familiar precisa ser de pelo menos '
+                f'{formatar_reais(comparativo["renda_sugerida"])} por mês.</p>'
+                '</div>'
+            )
+
+            faq_q1 = f"Qual a primeira parcela de {valor_curto} em {prazo} meses no {banco_exib}?"
+            faq_a1 = (f"Com entrada de {formatar_reais(entrada_padrao)}, o valor financiado é {formatar_reais(financiado_p)}. Na tabela SAC, "
+                      f"a primeira parcela é {formatar_reais(comparativo['p1_sac'])} e a última {formatar_reais(comparativo['pU_sac'])}; "
+                      f"na PRICE, a parcela é fixa em {formatar_reais(comparativo['p1_price'])}, com a taxa estimada de {taxa_fmt}% ao ano.")
+            faq_q2 = f"Quanto pago de juros financiando {valor_curto} em {anos} anos: SAC ou PRICE?"
+            faq_a2 = (f"Na SAC, os juros somam {formatar_reais(juros_sac)} e o total pago é {formatar_reais(comparativo['total_sac'])}. "
+                      f"Na PRICE, os juros somam {formatar_reais(juros_price)}. A SAC economiza {formatar_reais(comparativo['economia_sac'])}, "
+                      f"mas começa com parcelas maiores.")
+            faq_q3 = f"Qual renda preciso para financiar {valor_curto} no {banco_exib}?"
+            faq_a3 = (f"Os bancos costumam limitar a parcela a 30% da renda bruta. Para a primeira parcela de "
+                      f"{formatar_reais(comparativo['p1_sac'])} na SAC, a renda familiar precisa ser de pelo menos "
+                      f"{formatar_reais(comparativo['renda_sugerida'])} por mês. Dá para somar a renda do cônjuge ou companheiro(a).")
 
             titulo_pagina = montar_titulo(banco_exib, valor_curto, prazo, anos)
             meta_description_completa = (
@@ -1301,6 +1349,8 @@ def gerar_paginas_pseo():
             </div>
         </div>
 
+
+        {analise_html}
 
         <!-- ZONA E: GLOSSÁRIO / HUB DE AJUDA -->
         <div class="mt-16">
