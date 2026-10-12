@@ -1095,7 +1095,7 @@ def gerar_paginas_pseo():
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <a href="/" class="flex items-center">
-                    <img src="logo-full.png" alt="Datalab Global" width="171" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
+                    <img src="logo-full.png" alt="Datalab Global" width="122" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
                 </a>
                 <div class="flex items-center gap-1">
                     <a href="/aprenda" aria-label="Aprenda" class="inline-flex items-center gap-1.5 -my-2.5 p-2.5 text-xs text-slate-400 hover:text-emerald-400 transition-colors">{icone('book-open')} <span class="hidden sm:inline">Aprenda</span></a>
@@ -1701,7 +1701,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <a href="/" class="flex items-center">
-                    <img src="logo-full.png" alt="Datalab Global" width="171" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
+                    <img src="logo-full.png" alt="Datalab Global" width="122" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
                 </a>
                 <div class="flex items-center gap-1">
                     <a href="/aprenda" aria-label="Aprenda" class="inline-flex items-center gap-1.5 -my-2.5 p-2.5 text-xs text-slate-400 hover:text-emerald-400 transition-colors">{icone('book-open')} <span class="hidden sm:inline">Aprenda</span></a>
@@ -1925,7 +1925,7 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <a href="/" class="flex items-center">
-                    <img src="logo-full.png" alt="Datalab Global" width="171" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
+                    <img src="logo-full.png" alt="Datalab Global" width="122" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
                 </a>
                 <div class="flex items-center gap-1">
                     <a href="/aprenda" aria-label="Aprenda" class="inline-flex items-center gap-1.5 -my-2.5 p-2.5 text-xs text-slate-400 hover:text-emerald-400 transition-colors">{icone('book-open')} <span class="hidden sm:inline">Aprenda</span></a>
@@ -2151,7 +2151,7 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <a href="/" class="flex items-center">
-                    <img src="logo-full.png" alt="Datalab Global" width="171" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
+                    <img src="logo-full.png" alt="Datalab Global" width="122" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
                 </a>
                 <a href="/aprenda" aria-label="Aprenda" class="inline-flex items-center gap-1.5 -my-2.5 p-2.5 text-xs text-slate-400 hover:text-emerald-400 transition-colors">{icone('book-open')} <span class="hidden sm:inline">Aprenda</span></a>
             </div>
@@ -2293,7 +2293,7 @@ def gerar_pagina_sobre(pasta_saida, dominio):
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <a href="/" class="flex items-center">
-                    <img src="logo-full.png" alt="Datalab Global" width="171" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
+                    <img src="logo-full.png" alt="Datalab Global" width="122" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
                 </a>
                 <a href="/aprenda" aria-label="Aprenda" class="inline-flex items-center gap-1.5 -my-2.5 p-2.5 text-xs text-slate-400 hover:text-emerald-400 transition-colors">{icone('book-open')} <span class="hidden sm:inline">Aprenda</span></a>
             </div>
@@ -2369,7 +2369,7 @@ def gerar_pagina_aprenda(art, pasta_saida, dominio, data_atualizacao):
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <a href="/" class="flex items-center">
-                    <img src="logo-full.png" alt="Datalab Global" width="171" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
+                    <img src="logo-full.png" alt="Datalab Global" width="122" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
                 </a>
                 <a href="/aprenda" aria-label="Aprenda" class="inline-flex items-center gap-1.5 -my-2.5 p-2.5 text-xs text-slate-400 hover:text-emerald-400 transition-colors">{icone('book-open')} <span class="hidden sm:inline">Aprenda</span></a>
             </div>
@@ -2426,7 +2426,7 @@ def gerar_hub_aprenda(artigos, pasta_saida, dominio):
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <a href="/" class="flex items-center">
-                    <img src="logo-full.png" alt="Datalab Global" width="171" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
+                    <img src="logo-full.png" alt="Datalab Global" width="122" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
                 </a>
                 <a href="/aprenda" aria-label="Aprenda" class="inline-flex items-center gap-1.5 -my-2.5 p-2.5 text-xs text-slate-400 hover:text-emerald-400 transition-colors">{icone('book-open')} <span class="hidden sm:inline">Aprenda</span></a>
             </div>
