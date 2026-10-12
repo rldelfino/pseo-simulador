@@ -192,10 +192,10 @@ def render_head_boilerplate(titulo_pagina, meta_description, url_canonica, domin
         # página mora em subpasta), então o relativo resolve certo pra
         # raiz a partir de qualquer URL — manter a mesma convenção em
         # vez de introduzir um caminho absoluto isolado.
-        '    <link rel="icon" href="favicon.ico" sizes="any">',
-        '    <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">',
-        '    <link rel="icon" href="favicon-192.png" type="image/png" sizes="192x192">',
-        '    <link rel="apple-touch-icon" href="apple-touch-icon.png">',
+        '    <link rel="icon" href="favicon.ico?v=20261012" sizes="any">',
+        '    <link rel="icon" href="favicon-32.png?v=20261012" type="image/png" sizes="32x32">',
+        '    <link rel="icon" href="favicon-192.png?v=20261012" type="image/png" sizes="192x192">',
+        '    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261012">',
     ]
     linhas_topo_html = "\n".join(l for l in linhas_topo if l is not None)
     return f'''{linhas_topo_html}
