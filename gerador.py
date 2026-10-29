@@ -26,12 +26,13 @@ import math
 import random
 from datetime import date, datetime
 
-from bancos import BANCOS, obter_regra, nome_exibicao
+from bancos import BANCOS, obter_regra, nome_exibicao, corrigir_concordancia, eh_feminino
 from icones import icone, tooltip
 
 LINK_FINANCIA_TUDO = "https://app.financiatudo.com.br/financiamento-de-imoveis/chave/8940d282b765cbf97b6df55fd1eb0b52b18b2f6e"
 DOMINIO = 'https://simulador.datalabglobal.com'
 ARQUIVO_ULTIMA_ATUALIZACAO = 'ultima_atualizacao_taxas.txt'
+ARQUIVO_CACHE_TAXAS = 'taxas_cache.json'
 
 _URL_GOOGLE_FONTS = (
     "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700"
@@ -69,6 +70,40 @@ GOOGLE_FONTS_LINK_ASSINCRONO = (
 # URLs que este arquivo CONSTRÓI (canonical, sitemap, JSON-LD, <a href>)
 # é que não levam mais a extensão, pra bater exatamente com o que o
 # Cloudflare serve como resposta final (200), sem nenhum salto no meio.
+
+def _banco_tem_taxa_bacen(banco):
+    """True só se a taxa gravada pelo ETL para este banco veio de fato do
+    BACEN (url da fonte no taxas_cache.json contém bcb.gov.br).
+
+    Achado real (auditoria de SEO, 29/out/2026): o rodapé de TODA página
+    dizia "Fonte: Banco Central do Brasil (BACEN)", mas o relatório do ETL
+    mostra que o BRB vem de um artigo de blog e a Poupex nem tem fonte
+    (usa o taxa_padrao estático de bancos.py). Num tema YMYL (dinheiro),
+    atribuir ao BACEN um número que não é do BACEN é o tipo de afirmação
+    imprecisa que derruba confiança (E-E-A-T) e pode ser lida como
+    publicidade enganosa. Sem o cache (ou sem entrada pro banco), assume
+    "não é BACEN" — o erro seguro é subatribuir, nunca superatribuir."""
+    try:
+        with open(ARQUIVO_CACHE_TAXAS, encoding='utf-8') as f:
+            cache = json.load(f)
+    except (FileNotFoundError, ValueError):
+        return False
+    return 'bcb.gov.br' in str(cache.get(banco, {}).get('fonte', ''))
+
+
+def texto_fonte_taxa(banco=None):
+    """Texto de fonte exibido no rodapé do cabeçalho das páginas.
+    banco=None -> página que cobre todos os bancos (home/comparador)."""
+    if banco is not None:
+        if _banco_tem_taxa_bacen(banco):
+            return "Fonte: Banco Central do Brasil (BACEN)"
+        return "Taxa estimada com base em referências públicas de mercado — não é taxa oficial do BACEN"
+    fora = [nome_exibicao(b) for b in BANCOS if not _banco_tem_taxa_bacen(b)]
+    if not fora:
+        return "Fonte: Banco Central do Brasil (BACEN)"
+    lista = fora[0] if len(fora) == 1 else ", ".join(fora[:-1]) + " e " + fora[-1]
+    return f"Fonte: Banco Central do Brasil (BACEN), exceto {lista}, com taxa estimada de referências públicas de mercado"
+
 
 def taxas_atuais_de(links_por_banco):
     """Extrai {banco: taxa_atual_float} a partir da própria grade de
@@ -117,7 +152,8 @@ def construir_bancos_json(taxas_atuais):
     return json.dumps([
         {"chave": chave, "nome": dados["nome_exibicao"],
          "taxa": taxas_atuais.get(chave, dados["taxa_padrao"]),
-         "ltv": dados["ltv"], "prazoMax": dados["prazo_max"]}
+         "ltv": dados["ltv"], "prazoMax": dados["prazo_max"],
+         "fem": eh_feminino(chave)}
         for chave, dados in BANCOS.items()
     ], ensure_ascii=False)
 
@@ -1076,7 +1112,7 @@ def gerar_paginas_pseo():
             schema_howto = f'''{{
       "@context": "https://schema.org",
       "@type": "HowTo",
-      "name": "Como simular o financiamento {regra['mod'].lower()} do {banco_exib}",
+      "name": "Como simular o {regra['mod'].lower()} do {banco_exib}",
       "step": [
         {{ "@type": "HowToStep", "name": "Informe o valor do imóvel", "text": "Digite ou arraste o slider até o valor do imóvel ou garantia que você quer financiar." }},
         {{ "@type": "HowToStep", "name": "Ajuste a entrada", "text": "Defina quanto você vai pagar à vista — o simulador trava automaticamente no mínimo exigido pelo {banco_exib} e no teto de mercado de 80%." }},
@@ -1129,7 +1165,7 @@ def gerar_paginas_pseo():
             <span id="label_anos" class="font-medium text-white">{anos} anos</span>), com entrada mínima de
             {(perc_entrada_minima*100):.0f}% e taxa estimada de {taxa_fmt}% a.a. Ajuste os valores abaixo para o seu caso.
         </p>
-        <p class="text-slate-600 text-[10px] uppercase tracking-widest mt-4">Taxas atualizadas em {data_ultima_atualizacao_br} · Fonte: Banco Central do Brasil (BACEN)</p>
+        <p class="text-slate-600 text-[10px] uppercase tracking-widest mt-4">Taxas atualizadas em {data_ultima_atualizacao_br} · {texto_fonte_taxa(banco)}</p>
     </header>
 
     <!-- Ritmo vertical entre zonas: cada zona abaixo declara seu próprio
@@ -1506,7 +1542,7 @@ def gerar_paginas_pseo():
 </html>'''
             caminho_arquivo = os.path.join(pasta_saida, f"{slug}.html")
             with open(caminho_arquivo, "w", encoding="utf-8") as f:
-                f.write(html_content)
+                f.write(corrigir_concordancia(html_content))
             urls_sitemap.append(url_canonica)
 
     # Páginas-hub por banco + página comparativa entre os 15 — capturam
@@ -1727,7 +1763,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
         <p class="text-slate-400 text-base md:text-lg font-light tracking-wide max-w-3xl mx-auto px-4">
             Visão geral das condições do {banco_exib} — taxa de juros, entrada mínima e prazo — e o índice completo das nossas simulações prontas pra esse banco.
         </p>
-        <p class="text-slate-600 text-[10px] uppercase tracking-widest mt-4">Taxas atualizadas em {date.fromisoformat(data_ultima_atualizacao).strftime('%d/%m/%Y')} · Fonte: Banco Central do Brasil (BACEN)</p>
+        <p class="text-slate-600 text-[10px] uppercase tracking-widest mt-4">Taxas atualizadas em {date.fromisoformat(data_ultima_atualizacao).strftime('%d/%m/%Y')} · {texto_fonte_taxa(banco)}</p>
     </header>
 
     <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 flex-grow w-full relative z-10">
@@ -1835,7 +1871,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
 </html>'''
 
         with open(os.path.join(pasta_saida, f"{slug_hub}.html"), "w", encoding="utf-8") as f:
-            f.write(html_hub)
+            f.write(corrigir_concordancia(html_hub))
         urls.append(url_canonica)
 
     return urls
@@ -1946,7 +1982,7 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
         <p class="text-slate-400 text-base md:text-lg font-light tracking-wide max-w-3xl mx-auto px-4">
             CET simulado para {formatar_reais(VALOR_REF)} em {PRAZO_REF} meses, na mesma condição para os {len(ranking_ref)} bancos e fintechs que acompanhamos — ordenado do menor pro maior custo efetivo total.
         </p>
-        <p class="text-slate-600 text-[10px] uppercase tracking-widest mt-4">Taxas atualizadas em {date.fromisoformat(data_ultima_atualizacao).strftime('%d/%m/%Y')} · Fonte: Banco Central do Brasil (BACEN)</p>
+        <p class="text-slate-600 text-[10px] uppercase tracking-widest mt-4">Taxas atualizadas em {date.fromisoformat(data_ultima_atualizacao).strftime('%d/%m/%Y')} · {texto_fonte_taxa()}</p>
     </header>
 
     <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 flex-grow w-full relative z-10">
@@ -2028,7 +2064,7 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
 </html>'''
 
     with open(os.path.join(pasta_saida, 'comparador-bancos.html'), "w", encoding="utf-8") as f:
-        f.write(html_comparador)
+        f.write(corrigir_concordancia(html_comparador))
 
     return url_canonica
 
@@ -2070,7 +2106,7 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
         '''
 
     url_home = f"{DOMINIO}/"
-    descricao_home = f"A ferramenta definitiva para simular seu financiamento imobiliário em meses ou anos e descobrir quanto economizar antecipando parcelas, com taxas reais de {len(BANCOS)} instituições financeiras."
+    descricao_home = f"Simule seu financiamento imobiliário em meses ou anos, compare parcela e CET entre {len(BANCOS)} bancos e veja quanto economiza antecipando parcelas."
 
     schema_website = f'''{{
       "@context": "https://schema.org",
@@ -2111,7 +2147,7 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
       "contactPoint": {{"@type": "ContactPoint", "email": "contato@datalabglobal.com", "contactType": "customer service"}}
     }}'''
 
-    titulo_home = "Simulador de Financiamento e Amortização (Meses ou Anos) | Datalab Global"
+    titulo_home = "Simulador de Financiamento Imobiliário: Parcela e CET 2026 | Datalab Global"
     # og:title/twitter:title deliberadamente mais curto que o <title> —
     # comportamento original de antes do render_head_boilerplate existir,
     # preservado explicitamente aqui (achado da auditoria: a extração
@@ -2219,7 +2255,7 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
 </body>
 </html>'''
     with open(os.path.join(pasta_saida, 'index.html'), "w", encoding="utf-8") as f:
-        f.write(html_home)
+        f.write(corrigir_concordancia(html_home))
 
 
 def gerar_pagina_sobre(pasta_saida, dominio):
@@ -2237,8 +2273,8 @@ def gerar_pagina_sobre(pasta_saida, dominio):
     url_canonica = f"{dominio}/sobre"
     titulo_pagina = "Sobre a Datalab Global | Simulador de Financiamento Imobiliário"
     meta_description = (
-        "Conheça a Datalab Global, criada por Rodolfo Delfino para usar dados e IA na resolução de "
-        "problemas reais — incluindo este simulador de financiamento com taxas reais do Banco Central."
+        "Conheça a Datalab Global, criada por Rodolfo Delfino para resolver problemas reais com dados e IA, "
+        "incluindo este simulador de financiamento imobiliário."
     )
 
     schema_sobre = f'''{{
@@ -2419,7 +2455,7 @@ def gerar_hub_aprenda(artigos, pasta_saida, dominio):
     html = f'''<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-{render_head_boilerplate("Aprenda: guias sobre financiamento imobiliário | Datalab Global", "Guias educativos sobre financiamento imobiliário: SAC x Price, CET, IOF, amortização, FGTS, LTV e consórcio — explicados sem juridiquês, com base em dados reais do Banco Central.", url_canonica, dominio, [])}
+{render_head_boilerplate("Aprenda: guias sobre financiamento imobiliário | Datalab Global", "Guias sobre financiamento imobiliário: SAC x Price, CET, IOF, amortização, FGTS, LTV e consórcio, explicados sem juridiquês e com dados do Banco Central.", url_canonica, dominio, [])}
 </head>
 <body class="antialiased min-h-screen flex flex-col">
     <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
@@ -2466,7 +2502,7 @@ ARTIGOS_APRENDA = [
         "slug": "aprenda-sac-x-price",
         "titulo_h1": "SAC x Price no financiamento imobiliário: qual tabela escolher",
         "titulo_pagina": "SAC x Price no financiamento imobiliário | Datalab Global",
-        "meta_description": "Entenda a diferença entre o sistema SAC (parcela decrescente) e a Tabela Price (parcela fixa) no financiamento imobiliário, e qual faz mais sentido pro seu planejamento financeiro.",
+        "meta_description": "SAC (parcela decrescente) ou Price (parcela fixa)? Entenda a diferença no financiamento imobiliário e qual combina mais com o seu planejamento.",
         "resumo_card": "Parcela que começa alta e cai com o tempo, ou parcela fixa do início ao fim? As duas opções que todo financiamento imobiliário oferece.",
         "corpo_html": '''<p>No financiamento imobiliário brasileiro, você normalmente escolhe entre dois sistemas de amortização: <strong class="text-white">SAC</strong> (Sistema de Amortização Constante) e <strong class="text-white">Tabela Price</strong> (sistema francês). Os dois calculam juros sobre o saldo devedor, mas organizam as parcelas de um jeito bem diferente.</p>
         <div class="border-t border-white/10 pt-6">
@@ -2488,7 +2524,7 @@ ARTIGOS_APRENDA = [
         "slug": "aprenda-cet-iof-financiamento-imobiliario",
         "titulo_h1": "CET e IOF no financiamento imobiliário: o que entra na conta",
         "titulo_pagina": "CET e IOF no financiamento imobiliário | Datalab Global",
-        "meta_description": "Entenda o que é o CET no financiamento imobiliário (juros, seguros MIP e DFI, taxa de administração) e como o IOF incide sobre a operação — o número certo pra comparar bancos.",
+        "meta_description": "O que é o CET no financiamento imobiliário: juros, seguros MIP e DFI, taxa de administração e IOF. É o número certo para comparar bancos.",
         "resumo_card": "O custo real por trás da taxa anunciada: juros, seguros obrigatórios e taxa de administração, tudo somado num só número.",
         "corpo_html": '''<p>CET — Custo Efetivo Total — é o custo real e completo do financiamento imobiliário, expresso em percentual ao ano. Diferente da taxa de juros anunciada isoladamente, o CET soma <strong class="text-white">tudo</strong> que você efetivamente paga: a taxa de juros em si, os seguros obrigatórios (MIP, que cobre morte e invalidez, e DFI, que cobre danos ao imóvel) e a taxa de administração cobrada pelo banco.</p>
         <div class="border-t border-white/10 pt-6">
@@ -2506,7 +2542,7 @@ ARTIGOS_APRENDA = [
         "slug": "aprenda-amortizacao-extraordinaria",
         "titulo_h1": "Amortização extraordinária: como reduzir prazo ou parcela do financiamento imobiliário",
         "titulo_pagina": "Amortização extraordinária no financiamento imobiliário | Datalab Global",
-        "meta_description": "Entenda como um pagamento extra fora do cronograma reduz o saldo devedor do financiamento imobiliário, e a diferença entre usar isso pra reduzir prazo ou reduzir o valor da parcela.",
+        "meta_description": "Como um pagamento extra reduz o saldo devedor do financiamento imobiliário e quando vale mais a pena diminuir o prazo ou o valor da parcela.",
         "resumo_card": "Um pagamento fora do cronograma que ataca o saldo devedor direto — e pode cortar anos inteiros de financiamento.",
         "corpo_html": '''<p>Amortização extraordinária é um pagamento feito <strong class="text-white">fora</strong> do cronograma normal de parcelas, com o objetivo específico de abater o saldo devedor do financiamento imobiliário — não é uma parcela adiantada, é um valor que reduz diretamente quanto você ainda deve ao banco.</p>
         <div class="border-t border-white/10 pt-6">
@@ -2524,7 +2560,7 @@ ARTIGOS_APRENDA = [
         "slug": "aprenda-fgts-financiamento-imobiliario",
         "titulo_h1": "FGTS no financiamento imobiliário: como usar pra entrada ou amortização",
         "titulo_pagina": "FGTS no financiamento imobiliário: como usar | Datalab Global",
-        "meta_description": "Entenda como usar o saldo do FGTS no financiamento imobiliário: para dar entrada, amortizar o saldo devedor a cada 2 anos, ou quitar parte das parcelas — e quais as regras principais.",
+        "meta_description": "Como usar o FGTS no financiamento imobiliário: dar entrada, amortizar o saldo devedor a cada 2 anos ou quitar parte das parcelas. Veja as regras.",
         "resumo_card": "O saldo que a maioria dos trabalhadores CLT já tem guardado — e pode usar pra pagar menos juros no financiamento.",
         "corpo_html": '''<p>O FGTS (Fundo de Garantia do Tempo de Serviço) pode ser usado de mais de uma forma dentro de um financiamento imobiliário residencial, desde que o imóvel e o comprador atendam às regras do programa — normalmente, o imóvel precisa ser residencial urbano e usado pra moradia própria, e o comprador não pode ter outro financiamento ativo pelo Sistema Financeiro de Habitação.</p>
         <div class="border-t border-white/10 pt-6">
@@ -2542,7 +2578,7 @@ ARTIGOS_APRENDA = [
         "slug": "aprenda-ltv-financiamento-imobiliario",
         "titulo_h1": "LTV (Loan-to-Value): o que é e como afeta sua taxa de juros",
         "titulo_pagina": "O que é LTV no financiamento imobiliário? | Datalab Global",
-        "meta_description": "Entenda o que é LTV (Loan-to-Value) no financiamento imobiliário: a proporção entre o valor financiado e o valor do imóvel, e por que dar mais entrada costuma render uma taxa menor.",
+        "meta_description": "O que é LTV (Loan-to-Value) no financiamento imobiliário: a proporção entre valor financiado e valor do imóvel e por que mais entrada reduz a taxa.",
         "resumo_card": "A proporção entre quanto você financia e quanto vale o imóvel — e por que ela pesa direto na taxa que o banco te oferece.",
         "corpo_html": '''<p>LTV — Loan-to-Value — é a proporção entre o valor financiado e o valor total do imóvel. Um LTV de 80%, por exemplo, significa que o banco está financiando 80% do valor do imóvel, e você está entrando com os outros 20% como entrada.</p>
         <div class="border-t border-white/10 pt-6">
@@ -2560,7 +2596,7 @@ ARTIGOS_APRENDA = [
         "slug": "aprenda-financiamento-x-consorcio-imobiliario",
         "titulo_h1": "Financiamento x Consórcio imobiliário: qual a diferença",
         "titulo_pagina": "Financiamento x Consórcio imobiliário: diferenças | Datalab Global",
-        "meta_description": "Compare financiamento e consórcio de imóvel: quem entra no imóvel primeiro, quem paga juros, e em que situação cada modalidade faz mais sentido pra comprar sua casa ou apartamento.",
+        "meta_description": "Financiamento ou consórcio de imóvel? Compare quem entra primeiro no imóvel, quem paga juros e quando cada modalidade faz mais sentido.",
         "resumo_card": "Um te dá o imóvel agora com juros; o outro é mais barato, mas sem data certa. Veja qual combina com seu momento.",
         "corpo_html": '''<p>Financiamento e consórcio resolvem o mesmo problema — comprar um imóvel sem pagar tudo à vista — de formas bem diferentes, e a escolha certa depende principalmente de uma coisa: você precisa do imóvel <strong class="text-white">agora</strong>, ou pode esperar?</p>
         <div class="border-t border-white/10 pt-6">
@@ -2742,6 +2778,9 @@ def gerar_calculo_js():
             const elTexto = document.getElementById('texto_resumo_mercado');
             if (!elGrafico || !elTexto) return; // página sem ranking (nenhum banco elegível na geração)
 
+            // "a Caixa", "a Poupex": artigo feminino (flag "fem" vem de bancos.py via BANCOS_JS)
+            const bancoFem = !!(BANCOS_JS.find(b => b.nome === nomeBancoAtual) || {}).fem;
+
             const ranking = calcularRankingBancosLive(vImovelLive, prazoLive, cetAtualLive);
             if (ranking.length === 0) return;
 
@@ -2767,10 +2806,10 @@ def gerar_calculo_js():
             const hrefFinanciaTudo = 'https://app.financiatudo.com.br/financiamento-de-imoveis/chave/8940d282b765cbf97b6df55fd1eb0b52b18b2f6e';
 
             if (marcadorPct <= 15) {
-                elTexto.innerHTML = `O ${nomeBancoAtual} está entre as condições <strong class="text-emerald-400">mais competitivas</strong> que acompanhamos (${cetAtualFmt}% de CET, na faixa de ${cetMinFmt}% a ${cetMaxFmt}% do mercado). Vale confirmar essa condição e agilizar a aprovação sem custo.
+                elTexto.innerHTML = `${bancoFem ? 'A' : 'O'} ${nomeBancoAtual} está entre as condições <strong class="text-emerald-400">mais competitivas</strong> que acompanhamos (${cetAtualFmt}% de CET, na faixa de ${cetMinFmt}% a ${cetMaxFmt}% do mercado). Vale confirmar essa condição e agilizar a aprovação sem custo.
                     <a href="${hrefFinanciaTudo}" target="_blank" rel="noopener sponsored" class="text-emerald-400 underline hover:text-emerald-300 block mt-2 font-semibold">Falar com a Financia Tudo →</a>`;
             } else {
-                elTexto.innerHTML = `Nas condições simuladas, o CET no mercado costuma variar entre <strong class="text-emerald-400">${cetMinFmt}%</strong> e <strong class="text-emerald-400">${cetMaxFmt}%</strong> — aqui no ${nomeBancoAtual} está em ${cetAtualFmt}%. Encontrar e negociar manualmente a melhor condição pode levar semanas de idas e vindas ao banco.
+                elTexto.innerHTML = `Nas condições simuladas, o CET no mercado costuma variar entre <strong class="text-emerald-400">${cetMinFmt}%</strong> e <strong class="text-emerald-400">${cetMaxFmt}%</strong> — aqui ${bancoFem ? 'na' : 'no'} ${nomeBancoAtual} está em ${cetAtualFmt}%. Encontrar e negociar manualmente a melhor condição pode levar semanas de idas e vindas ao banco.
                     <a href="${hrefFinanciaTudo}" target="_blank" rel="noopener sponsored" class="text-emerald-400 underline hover:text-emerald-300 block mt-2 font-semibold">É esse trabalho que a Financia Tudo faz por você, sem custo →</a>`;
             }
         }

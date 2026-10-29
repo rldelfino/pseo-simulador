@@ -66,14 +66,14 @@
       "operatingSystem": "Web",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "BRL" },
       "url": "https://simulador.datalabglobal.com/simulador-banco-do-brasil-1300-mil-120-meses",
-      "dateModified": "2026-09-06"
+      "dateModified": "2026-10-05"
     }
     </script>
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "HowTo",
-      "name": "Como simular o financiamento financiamento imobiliário do Banco do Brasil",
+      "name": "Como simular o financiamento imobiliário do Banco do Brasil",
       "step": [
         { "@type": "HowToStep", "name": "Informe o valor do imóvel", "text": "Digite ou arraste o slider até o valor do imóvel ou garantia que você quer financiar." },
         { "@type": "HowToStep", "name": "Ajuste a entrada", "text": "Defina quanto você vai pagar à vista — o simulador trava automaticamente no mínimo exigido pelo Banco do Brasil e no teto de mercado de 80%." },
@@ -127,7 +127,7 @@
             <span id="label_anos" class="font-medium text-white">10 anos</span>), com entrada mínima de
             20% e taxa estimada de 14,51% a.a. Ajuste os valores abaixo para o seu caso.
         </p>
-        <p class="text-slate-600 text-[10px] uppercase tracking-widest mt-4">Taxas atualizadas em 06/09/2026 · Fonte: Banco Central do Brasil (BACEN)</p>
+        <p class="text-slate-600 text-[10px] uppercase tracking-widest mt-4">Taxas atualizadas em 05/10/2026 · Fonte: Banco Central do Brasil (BACEN)</p>
     </header>
 
     <!-- Ritmo vertical entre zonas: cada zona abaixo declara seu próprio
@@ -569,7 +569,7 @@
     <script>
         const REGRA_PRAZO_MAX = 420;
         const REGRA_PERC_ENTRADA_MIN = 0.19999999999999996;
-        const BANCOS_JS = [{"chave": "Caixa", "nome": "Caixa", "taxa": 12.12, "ltv": 0.8, "prazoMax": 420}, {"chave": "Banco do Brasil", "nome": "Banco do Brasil", "taxa": 14.51, "ltv": 0.8, "prazoMax": 420}, {"chave": "Santander", "nome": "Santander", "taxa": 12.29, "ltv": 0.8, "prazoMax": 420}, {"chave": "BRB", "nome": "BRB", "taxa": 11.36, "ltv": 0.8, "prazoMax": 420}, {"chave": "Poupex", "nome": "Poupex", "taxa": 10.8, "ltv": 0.9, "prazoMax": 420}, {"chave": "Itau", "nome": "Itaú", "taxa": 12.06, "ltv": 0.8, "prazoMax": 360}, {"chave": "Bradesco", "nome": "Bradesco", "taxa": 12.3, "ltv": 0.8, "prazoMax": 360}, {"chave": "Banco Inter", "nome": "Banco Inter", "taxa": 12.47, "ltv": 0.8, "prazoMax": 360}, {"chave": "Sicredi", "nome": "Sicredi", "taxa": 11.45, "ltv": 0.8, "prazoMax": 360}, {"chave": "Sicoob", "nome": "Sicoob", "taxa": 10.89, "ltv": 0.8, "prazoMax": 360}, {"chave": "Banrisul", "nome": "Banrisul", "taxa": 9.56, "ltv": 0.75, "prazoMax": 360}];
+        const BANCOS_JS = [{"chave": "Caixa", "nome": "Caixa", "taxa": 12.12, "ltv": 0.8, "prazoMax": 420, "fem": true}, {"chave": "Banco do Brasil", "nome": "Banco do Brasil", "taxa": 14.51, "ltv": 0.8, "prazoMax": 420, "fem": false}, {"chave": "Santander", "nome": "Santander", "taxa": 12.29, "ltv": 0.8, "prazoMax": 420, "fem": false}, {"chave": "BRB", "nome": "BRB", "taxa": 11.36, "ltv": 0.8, "prazoMax": 420, "fem": false}, {"chave": "Poupex", "nome": "Poupex", "taxa": 10.8, "ltv": 0.9, "prazoMax": 420, "fem": true}, {"chave": "Itau", "nome": "Itaú", "taxa": 12.06, "ltv": 0.8, "prazoMax": 360, "fem": false}, {"chave": "Bradesco", "nome": "Bradesco", "taxa": 12.3, "ltv": 0.8, "prazoMax": 360, "fem": false}, {"chave": "Banco Inter", "nome": "Banco Inter", "taxa": 12.47, "ltv": 0.8, "prazoMax": 360, "fem": false}, {"chave": "Sicredi", "nome": "Sicredi", "taxa": 11.45, "ltv": 0.8, "prazoMax": 360, "fem": false}, {"chave": "Sicoob", "nome": "Sicoob", "taxa": 10.89, "ltv": 0.8, "prazoMax": 360, "fem": false}, {"chave": "Banrisul", "nome": "Banrisul", "taxa": 9.56, "ltv": 0.75, "prazoMax": 360, "fem": false}];
         const BANCO_ATUAL_CHAVE = "Banco do Brasil";
     </script>
     <script src="calculo.js"></script>
