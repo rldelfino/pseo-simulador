@@ -2,7 +2,7 @@
 
 > Hub financeiro com simuladores de financiamento imobiliário para 11 instituições brasileiras (Caixa, Banco do Brasil, Santander, BRB, Poupex, Itaú, Bradesco, Banco Inter, Sicredi, Sicoob, Banrisul). Calcula parcelas nos sistemas SAC e PRICE, e simula a economia de juros ao antecipar amortizações.
 
-Dados atualizados em: 2026-09-06
+Dados atualizados em: 2026-10-05
 Total de páginas de simulação: 1680
 
 ## Páginas

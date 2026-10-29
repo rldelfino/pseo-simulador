@@ -122,3 +122,44 @@ def obter_regra(nome_banco):
 def nome_exibicao(nome_banco):
     regra = obter_regra(nome_banco)
     return regra["nome_exibicao"] or nome_banco
+
+
+# Bancos de gênero feminino em português ("a Caixa", "a Poupex"). O gerador
+# monta os textos com artigo masculino fixo ("pelo", "do", "no", "O") porque
+# quase todos os nomes são masculinos (o Itaú, o Sicredi, o BRB...) — o que
+# gerava "pelo Caixa", "O Poupex" etc. em ~170 páginas. Achado real
+# (auditoria de SEO, 29/out/2026): erro de concordância repetido em
+# centenas de páginas é um sinal editorial ruim num tema YMYL (dinheiro).
+# Fica aqui, ao lado de BANCOS, pra um banco novo ser uma linha só.
+BANCOS_FEMININOS = ("Caixa", "Poupex")
+
+_ARTIGO_FEMININO = {"pelo": "pela", "do": "da", "no": "na", "ao": "à", "o": "a"}
+_REGEX_CONCORDANCIA = None
+
+
+def corrigir_concordancia(texto):
+    """Troca artigo masculino por feminino diante dos bancos de
+    BANCOS_FEMININOS ("pelo Caixa" -> "pela Caixa", "O Poupex" -> "A Poupex").
+    Preserva maiúscula inicial. Só casa palavra inteira com o nome do banco
+    em maiúscula, então slugs/URLs ("simulador-caixa-...") não são tocados."""
+    global _REGEX_CONCORDANCIA
+    import re
+    if _REGEX_CONCORDANCIA is None:
+        nomes = "|".join(re.escape(n) for n in BANCOS_FEMININOS)
+        _REGEX_CONCORDANCIA = re.compile(rf"\b(pelo|do|no|ao|o)(\s+)({nomes})\b", re.IGNORECASE)
+
+    def trocar(m):
+        artigo, espaco, nome = m.group(1), m.group(2), m.group(3)
+        # só troca se o nome está com a grafia exata (ex: "Caixa", não "CAIXA")
+        if nome not in BANCOS_FEMININOS:
+            return m.group(0)
+        novo = _ARTIGO_FEMININO[artigo.lower()]
+        if artigo[0].isupper():
+            novo = novo[0].upper() + novo[1:]
+        return f"{novo}{espaco}{nome}"
+
+    return _REGEX_CONCORDANCIA.sub(trocar, texto)
+
+
+def eh_feminino(nome_banco):
+    return nome_exibicao(nome_banco) in BANCOS_FEMININOS

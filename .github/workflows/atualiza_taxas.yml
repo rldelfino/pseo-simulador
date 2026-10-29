@@ -62,6 +62,12 @@ jobs:
           # (regra pedida pelo Rodolfo). Sem commitar, cada execução do
           # Actions parte de um checkout limpo e o cache nasce vazio de
           # novo — a regra de fallback nunca funcionaria de verdade.
-          git add dados.csv paginas_seo taxas_cache.json relatorio_atualizacao_taxas.txt
+          # ultima_atualizacao_taxas.txt TAMBÉM precisa ser commitado (achado de
+          # auditoria, 29/out/2026): sem ele, o robô regerava as páginas com a
+          # data nova, mas o arquivo ficava só no runner — a próxima geração
+          # local/CI lia a data antiga (06/set) e as 1.701 páginas voltavam a
+          # dizer "Taxas atualizadas em 06/09/2026" com lastmod parado no
+          # sitemap. O projeto irmão (veículos) já fazia o git add dele.
+          git add dados.csv paginas_seo taxas_cache.json relatorio_atualizacao_taxas.txt ultima_atualizacao_taxas.txt
           git commit -m "auto: atualização mensal de taxas e rebuild do site" || echo "Sem mudanças"
           git push

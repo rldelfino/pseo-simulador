@@ -66,14 +66,14 @@
       "operatingSystem": "Web",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "BRL" },
       "url": "https://simulador.datalabglobal.com/simulador-santander-200-mil-240-meses",
-      "dateModified": "2026-09-06"
+      "dateModified": "2026-10-05"
     }
     </script>
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "HowTo",
-      "name": "Como simular o financiamento financiamento imobiliário do Santander",
+      "name": "Como simular o financiamento imobiliário do Santander",
       "step": [
         { "@type": "HowToStep", "name": "Informe o valor do imóvel", "text": "Digite ou arraste o slider até o valor do imóvel ou garantia que você quer financiar." },
         { "@type": "HowToStep", "name": "Ajuste a entrada", "text": "Defina quanto você vai pagar à vista — o simulador trava automaticamente no mínimo exigido pelo Santander e no teto de mercado de 80%." },
@@ -127,7 +127,7 @@
             <span id="label_anos" class="font-medium text-white">20 anos</span>), com entrada mínima de
             20% e taxa estimada de 12,29% a.a. Ajuste os valores abaixo para o seu caso.
         </p>
-        <p class="text-slate-600 text-[10px] uppercase tracking-widest mt-4">Taxas atualizadas em 06/09/2026 · Fonte: Banco Central do Brasil (BACEN)</p>
+        <p class="text-slate-600 text-[10px] uppercase tracking-widest mt-4">Taxas atualizadas em 05/10/2026 · Fonte: Banco Central do Brasil (BACEN)</p>
     </header>
 
     <!-- Ritmo vertical entre zonas: cada zona abaixo declara seu próprio
@@ -552,7 +552,7 @@
     <!-- FOOTER COM SUPORTE HUMANO DISCRETO -->
     <footer class="border-t border-white/5 py-8 mt-10">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
+            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de Satori Soluções Comerciais LTDA · CNPJ 63.998.502/0001-73.</p>
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
@@ -569,7 +569,7 @@
     <script>
         const REGRA_PRAZO_MAX = 420;
         const REGRA_PERC_ENTRADA_MIN = 0.19999999999999996;
-        const BANCOS_JS = [{"chave": "Caixa", "nome": "Caixa", "taxa": 12.12, "ltv": 0.8, "prazoMax": 420}, {"chave": "Banco do Brasil", "nome": "Banco do Brasil", "taxa": 14.51, "ltv": 0.8, "prazoMax": 420}, {"chave": "Santander", "nome": "Santander", "taxa": 12.29, "ltv": 0.8, "prazoMax": 420}, {"chave": "BRB", "nome": "BRB", "taxa": 11.36, "ltv": 0.8, "prazoMax": 420}, {"chave": "Poupex", "nome": "Poupex", "taxa": 10.8, "ltv": 0.9, "prazoMax": 420}, {"chave": "Itau", "nome": "Itaú", "taxa": 12.06, "ltv": 0.8, "prazoMax": 360}, {"chave": "Bradesco", "nome": "Bradesco", "taxa": 12.3, "ltv": 0.8, "prazoMax": 360}, {"chave": "Banco Inter", "nome": "Banco Inter", "taxa": 12.47, "ltv": 0.8, "prazoMax": 360}, {"chave": "Sicredi", "nome": "Sicredi", "taxa": 11.45, "ltv": 0.8, "prazoMax": 360}, {"chave": "Sicoob", "nome": "Sicoob", "taxa": 10.89, "ltv": 0.8, "prazoMax": 360}, {"chave": "Banrisul", "nome": "Banrisul", "taxa": 9.56, "ltv": 0.75, "prazoMax": 360}];
+        const BANCOS_JS = [{"chave": "Caixa", "nome": "Caixa", "taxa": 12.12, "ltv": 0.8, "prazoMax": 420, "fem": true}, {"chave": "Banco do Brasil", "nome": "Banco do Brasil", "taxa": 14.51, "ltv": 0.8, "prazoMax": 420, "fem": false}, {"chave": "Santander", "nome": "Santander", "taxa": 12.29, "ltv": 0.8, "prazoMax": 420, "fem": false}, {"chave": "BRB", "nome": "BRB", "taxa": 11.36, "ltv": 0.8, "prazoMax": 420, "fem": false}, {"chave": "Poupex", "nome": "Poupex", "taxa": 10.8, "ltv": 0.9, "prazoMax": 420, "fem": true}, {"chave": "Itau", "nome": "Itaú", "taxa": 12.06, "ltv": 0.8, "prazoMax": 360, "fem": false}, {"chave": "Bradesco", "nome": "Bradesco", "taxa": 12.3, "ltv": 0.8, "prazoMax": 360, "fem": false}, {"chave": "Banco Inter", "nome": "Banco Inter", "taxa": 12.47, "ltv": 0.8, "prazoMax": 360, "fem": false}, {"chave": "Sicredi", "nome": "Sicredi", "taxa": 11.45, "ltv": 0.8, "prazoMax": 360, "fem": false}, {"chave": "Sicoob", "nome": "Sicoob", "taxa": 10.89, "ltv": 0.8, "prazoMax": 360, "fem": false}, {"chave": "Banrisul", "nome": "Banrisul", "taxa": 9.56, "ltv": 0.75, "prazoMax": 360, "fem": false}];
         const BANCO_ATUAL_CHAVE = "Santander";
     </script>
     <script src="calculo.js"></script>

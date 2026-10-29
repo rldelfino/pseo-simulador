@@ -143,6 +143,9 @@
             const elTexto = document.getElementById('texto_resumo_mercado');
             if (!elGrafico || !elTexto) return; // página sem ranking (nenhum banco elegível na geração)
 
+            // "a Caixa", "a Poupex": artigo feminino (flag "fem" vem de bancos.py via BANCOS_JS)
+            const bancoFem = !!(BANCOS_JS.find(b => b.nome === nomeBancoAtual) || {}).fem;
+
             const ranking = calcularRankingBancosLive(vImovelLive, prazoLive, cetAtualLive);
             if (ranking.length === 0) return;
 
@@ -168,10 +171,10 @@
             const hrefFinanciaTudo = 'https://app.financiatudo.com.br/financiamento-de-imoveis/chave/8940d282b765cbf97b6df55fd1eb0b52b18b2f6e';
 
             if (marcadorPct <= 15) {
-                elTexto.innerHTML = `O ${nomeBancoAtual} está entre as condições <strong class="text-emerald-400">mais competitivas</strong> que acompanhamos (${cetAtualFmt}% de CET, na faixa de ${cetMinFmt}% a ${cetMaxFmt}% do mercado). Vale confirmar essa condição e agilizar a aprovação sem custo.
+                elTexto.innerHTML = `${bancoFem ? 'A' : 'O'} ${nomeBancoAtual} está entre as condições <strong class="text-emerald-400">mais competitivas</strong> que acompanhamos (${cetAtualFmt}% de CET, na faixa de ${cetMinFmt}% a ${cetMaxFmt}% do mercado). Vale confirmar essa condição e agilizar a aprovação sem custo.
                     <a href="${hrefFinanciaTudo}" target="_blank" rel="noopener sponsored" class="text-emerald-400 underline hover:text-emerald-300 block mt-2 font-semibold">Falar com a Financia Tudo →</a>`;
             } else {
-                elTexto.innerHTML = `Nas condições simuladas, o CET no mercado costuma variar entre <strong class="text-emerald-400">${cetMinFmt}%</strong> e <strong class="text-emerald-400">${cetMaxFmt}%</strong> — aqui no ${nomeBancoAtual} está em ${cetAtualFmt}%. Encontrar e negociar manualmente a melhor condição pode levar semanas de idas e vindas ao banco.
+                elTexto.innerHTML = `Nas condições simuladas, o CET no mercado costuma variar entre <strong class="text-emerald-400">${cetMinFmt}%</strong> e <strong class="text-emerald-400">${cetMaxFmt}%</strong> — aqui ${bancoFem ? 'na' : 'no'} ${nomeBancoAtual} está em ${cetAtualFmt}%. Encontrar e negociar manualmente a melhor condição pode levar semanas de idas e vindas ao banco.
                     <a href="${hrefFinanciaTudo}" target="_blank" rel="noopener sponsored" class="text-emerald-400 underline hover:text-emerald-300 block mt-2 font-semibold">É esse trabalho que a Financia Tudo faz por você, sem custo →</a>`;
             }
         }
