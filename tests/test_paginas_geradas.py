@@ -157,9 +157,17 @@ def test_sitemap_lista_todas_as_paginas_e_sem_html():
         sitemap = f.read()
     assert ".html</loc>" not in sitemap, "sitemap ainda tem alguma URL terminando em .html"
     urls_no_sitemap = set(re.findall(r"<loc>(.*?)</loc>", sitemap))
-    esperadas = {f"{DOMINIO_ESPERADO}/"} | {f"{DOMINIO_ESPERADO}/{s}" for s in _slugs_validos() if s and s != "404"}
+    # páginas com <meta robots noindex> (prazos curtos, ver PRAZOS_INDEXAVEIS em
+    # gerador.py) NÃO entram no sitemap de propósito.
+    def _indexavel(slug):
+        with open(os.path.join(PASTA_SAIDA, (slug or "index") + ".html"), encoding="utf-8") as f:
+            return 'name="robots" content="noindex' not in f.read()
+    esperadas = {f"{DOMINIO_ESPERADO}/"} | {f"{DOMINIO_ESPERADO}/{s}" for s in _slugs_validos() if s and s != "404" and _indexavel(s)}
     faltando = esperadas - urls_no_sitemap
     assert not faltando, f"{len(faltando)} página(s) gerada(s) mas ausente(s) do sitemap: {list(faltando)[:10]}"
+    # e o inverso: nenhuma página noindex pode estar no sitemap
+    noindex_no_sitemap = [u for u in urls_no_sitemap if u != f"{DOMINIO_ESPERADO}/" and not _indexavel(u.replace(DOMINIO_ESPERADO + "/", ""))]
+    assert not noindex_no_sitemap, f"página(s) noindex listada(s) no sitemap: {noindex_no_sitemap[:10]}"
 
 
 def test_arquivos_de_infraestrutura_existem():
