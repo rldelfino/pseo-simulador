@@ -1608,6 +1608,7 @@ def gerar_paginas_pseo():
     urls_hub = gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, dominio, taxas_atuais_por_banco)
     url_comparador = gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas_atuais_por_banco)
     urls_comparacao = gerar_paginas_comparacao(pasta_saida, dominio, data_ultima_atualizacao, taxas_atuais_por_banco, lookup_paginas)
+    urls_comparacao += gerar_dados_abertos(pasta_saida, dominio, data_ultima_atualizacao)
 
     gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao)
     url_sobre = gerar_pagina_sobre(pasta_saida, dominio)
@@ -1931,6 +1932,263 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
     return urls
 
 
+# ---------------------------------------------------------------------------
+# Histórico de taxas (BACEN) e dados abertos
+#
+# A série vem de historico_taxas.csv (ver historico_taxas.py): taxa média
+# mensal efetivamente contratada por banco, modalidade 903201 do BACEN. Só
+# bancos que o BACEN cobre — BRB e Poupex (taxa estimada) ficam de fora de
+# propósito, para não redistribuir como dado oficial um número que não é.
+# ---------------------------------------------------------------------------
+
+MESES_PT = ["janeiro", "fevereiro", "março", "abril", "maio", "junho",
+            "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"]
+MESES_PT_ABREV = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"]
+FONTE_BACEN_URL = "https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201"
+LICENCA_DADOS = "CC BY 4.0"
+LICENCA_DADOS_URL = "https://creativecommons.org/licenses/by/4.0/deed.pt-br"
+MESES_NA_TABELA_EVOLUCAO = 6
+
+
+def carregar_historico():
+    """Linhas do historico_taxas.csv (lista vazia se não existir)."""
+    from historico_taxas import ler_historico
+    return ler_historico()
+
+
+def _rotulo_mes(inicio_periodo):
+    ano, mes = inicio_periodo[:4], int(inicio_periodo[5:7])
+    return f"{MESES_PT_ABREV[mes - 1]}/{ano[2:]}"
+
+
+def _pct2(v):
+    return f"{v:.2f}".replace(".", ",")
+
+
+def _sinal_pp(v):
+    return ("+" if v > 0 else "−" if v < 0 else "") + f"{abs(v):.2f}".replace(".", ",")
+
+
+def resumo_historico(historico):
+    """Estrutura pronta pra renderizar: meses (mais antigos -> mais recentes),
+    linhas por banco e a maior alta/queda. None se houver menos de 2 meses."""
+    meses = sorted({r["inicio_periodo"] for r in historico})[-MESES_NA_TABELA_EVOLUCAO:]
+    if len(meses) < 2:
+        return None
+    por_banco = {}
+    for r in historico:
+        if r["inicio_periodo"] in meses:
+            por_banco.setdefault(r["banco"], {})[r["inicio_periodo"]] = r["taxa_aa"]
+    linhas = []
+    for banco, serie in por_banco.items():
+        if meses[0] in serie and meses[-1] in serie:
+            linhas.append({"banco": banco, "banco_exib": nome_exibicao(banco), "serie": serie,
+                           "variacao": serie[meses[-1]] - serie[meses[0]], "atual": serie[meses[-1]]})
+    if not linhas:
+        return None
+    linhas.sort(key=lambda x: x["atual"])
+    return {"meses": meses, "linhas": linhas,
+            "maior_queda": min(linhas, key=lambda x: x["variacao"]),
+            "maior_alta": max(linhas, key=lambda x: x["variacao"])}
+
+
+def html_evolucao_taxas(resumo):
+    """Tabela banco x meses (taxa média contratada, % a.a.) + variação."""
+    if not resumo:
+        return ""
+    cab = "".join(f'<th scope="col" class="px-2 py-2 text-right font-medium whitespace-nowrap">{_rotulo_mes(m)}</th>' for m in resumo["meses"])
+    corpo = ""
+    for x in resumo["linhas"]:
+        celulas = ""
+        for m in resumo["meses"]:
+            valor = _pct2(x["serie"][m]) if m in x["serie"] else "–"
+            celulas += f'<td class="px-2 py-2 text-right whitespace-nowrap">{valor}</td>'
+        cor = "text-emerald-400" if x["variacao"] < 0 else "text-rose-400" if x["variacao"] > 0 else "text-slate-400"
+        corpo += (f'<tr class="border-t border-white/5"><th scope="row" class="px-2 py-2 text-left font-medium text-white whitespace-nowrap">{x["banco_exib"]}</th>'
+                  f'{celulas}<td class="px-2 py-2 text-right font-bold whitespace-nowrap {cor}">{_sinal_pp(x["variacao"])} p.p.</td></tr>')
+    return f'''<section class="mt-16">
+            <h2 class="text-2xl font-serif text-white mb-2">Como as taxas evoluíram nos últimos {len(resumo["meses"])} meses</h2>
+            <p class="text-slate-400 text-xs font-light leading-relaxed mb-4">Taxa média mensal de juros efetivamente contratada no financiamento imobiliário (% ao ano), por banco, segundo o Banco Central. É a taxa praticada, não uma oferta: a sua proposta pode ser diferente.</p>
+            <div class="overflow-x-auto rounded-xl border border-white/10">
+                <table class="w-full text-xs text-slate-300">
+                    <thead class="text-[10px] uppercase tracking-widest text-slate-400"><tr><th scope="col" class="px-2 py-2 text-left font-medium">Banco</th>{cab}<th scope="col" class="px-2 py-2 text-right font-medium whitespace-nowrap">Variação</th></tr></thead>
+                    <tbody>{corpo}</tbody>
+                </table>
+            </div>
+            <p class="text-slate-500 text-[11px] mt-3">Bancos que o BACEN não cobre nesta modalidade (BRB e Poupex) não entram na série. Fonte: <a href="{FONTE_BACEN_URL}" rel="noopener" class="underline">Banco Central do Brasil</a>.</p>
+        </section>'''
+
+
+def texto_variacao(resumo):
+    """Frase com os números do período, pro FAQ (None sem histórico)."""
+    if not resumo:
+        return None
+    m0, m1 = resumo["meses"][0], resumo["meses"][-1]
+    q, a = resumo["maior_queda"], resumo["maior_alta"]
+    frase = (f"Entre {_rotulo_mes(m0)} e {_rotulo_mes(m1)}, a maior queda na taxa média contratada foi a de {q['banco_exib']} "
+             f"({_sinal_pp(q['variacao'])} p.p., de {_pct2(q['serie'][m0])}% para {_pct2(q['serie'][m1])}% a.a.)")
+    if a["variacao"] > 0:
+        frase += (f" e a maior alta, a de {a['banco_exib']} ({_sinal_pp(a['variacao'])} p.p., "
+                  f"de {_pct2(a['serie'][m0])}% para {_pct2(a['serie'][m1])}% a.a.)")
+    return frase + ". São médias mensais do Banco Central, não ofertas."
+
+
+def gerar_dados_abertos(pasta_saida, dominio, data_ultima_atualizacao):
+    """Publica a série histórica como dados abertos em /dados/ (CSV, JSON,
+    datapackage.json e README.md) e a página /dados-abertos. Só linhas do
+    BACEN. Retorna a lista de URLs de página (pro sitemap)."""
+    historico = carregar_historico()
+    if not historico:
+        return []
+    pasta_dados = os.path.join(pasta_saida, "dados")
+    os.makedirs(pasta_dados, exist_ok=True)
+    meses = sorted({r["inicio_periodo"] for r in historico})
+    ini, fim = meses[0], max(r["fim_periodo"] for r in historico)
+    campos = ["periodo_inicio", "periodo_fim", "instituicao", "taxa_juros_aa_pct"]
+    linhas = [{"periodo_inicio": r["inicio_periodo"], "periodo_fim": r["fim_periodo"],
+               "instituicao": nome_exibicao(r["banco"]), "taxa_juros_aa_pct": round(r["taxa_aa"], 2)} for r in historico]
+
+    import csv as _csv
+    with open(os.path.join(pasta_dados, "taxas-financiamento-imobiliario.csv"), "w", encoding="utf-8", newline="") as f:
+        w = _csv.DictWriter(f, fieldnames=campos, lineterminator="\n")
+        w.writeheader()
+        w.writerows(linhas)
+    with open(os.path.join(pasta_dados, "taxas-financiamento-imobiliario.json"), "w", encoding="utf-8") as f:
+        json.dump({
+            "titulo": "Taxas médias de juros do financiamento imobiliário por banco (BACEN)",
+            "fonte": FONTE_BACEN_URL, "licenca": LICENCA_DADOS, "atualizado_em": data_ultima_atualizacao,
+            "organizacao": "Datalab Global", "dados": linhas,
+        }, f, ensure_ascii=False, indent=1)
+
+    url_pagina = f"{dominio}/dados-abertos"
+    descricao = ("Taxa média mensal de juros efetivamente contratada no financiamento imobiliário (aquisição de imóveis, "
+                 "pessoa física, taxa pré-fixada), por banco, em % ao ano, segundo o Banco Central do Brasil. "
+                 f"Cobre {len(meses)} meses ({_rotulo_mes(ini)} a {_rotulo_mes(meses[-1])}) e {len({r['banco'] for r in historico})} instituições.")
+    citacao = f"Datalab Global. Taxas médias de juros do financiamento imobiliário por banco (dados do BACEN). {url_pagina}, acesso em {{data}}."
+    with open(os.path.join(pasta_dados, "datapackage.json"), "w", encoding="utf-8") as f:
+        json.dump({
+            "name": "taxas-financiamento-imobiliario", "title": "Taxas médias de juros do financiamento imobiliário por banco (BACEN)",
+            "description": descricao, "licenses": [{"name": "CC-BY-4.0", "path": LICENCA_DADOS_URL, "title": LICENCA_DADOS}],
+            "sources": [{"title": "Banco Central do Brasil — Taxas de juros por instituição financeira", "path": FONTE_BACEN_URL}],
+            "contributors": [{"title": "Datalab Global", "role": "publisher", "path": f"{dominio}/"}],
+            "resources": [{"name": "taxas", "path": "taxas-financiamento-imobiliario.csv", "format": "csv", "mediatype": "text/csv", "encoding": "utf-8",
+                           "schema": {"fields": [
+                               {"name": "periodo_inicio", "type": "date", "description": "Primeiro dia do mês de referência"},
+                               {"name": "periodo_fim", "type": "date", "description": "Último dia do mês de referência"},
+                               {"name": "instituicao", "type": "string", "description": "Banco (nome comercial)"},
+                               {"name": "taxa_juros_aa_pct", "type": "number", "description": "Taxa média de juros contratada, % ao ano"}]}}],
+        }, f, ensure_ascii=False, indent=1)
+    with open(os.path.join(pasta_dados, "README.md"), "w", encoding="utf-8") as f:
+        f.write(f"""# Taxas médias de juros do financiamento imobiliário por banco
+
+{descricao}
+
+- **Fonte original:** [Banco Central do Brasil]({FONTE_BACEN_URL}), modalidade 903201.
+- **Licença:** {LICENCA_DADOS} ({LICENCA_DADOS_URL}). Pode usar, copiar e adaptar, citando a fonte.
+- **Atualização:** mensal. Última atualização: {data_ultima_atualizacao}.
+- **Arquivos:** `taxas-financiamento-imobiliario.csv`, `taxas-financiamento-imobiliario.json`, `datapackage.json`.
+- **Colunas:** `periodo_inicio`, `periodo_fim`, `instituicao`, `taxa_juros_aa_pct`.
+- **Limites:** são médias do que foi efetivamente contratado, não ofertas. BRB e Poupex não constam porque o BACEN não os cobre nesta modalidade.
+
+## Como citar
+
+{citacao.format(data="AAAA-MM-DD")}
+
+Publicado por Datalab Global ({dominio}/), marca de {EMPRESA_RODAPE}.
+""")
+
+    schema_dataset = json.dumps({
+        "@context": "https://schema.org", "@type": "Dataset",
+        "name": "Taxas médias de juros do financiamento imobiliário por banco (BACEN)",
+        "description": descricao, "url": url_pagina, "inLanguage": "pt-BR",
+        "license": LICENCA_DADOS_URL, "isAccessibleForFree": True,
+        "creator": {"@type": "Organization", "name": "Datalab Global", "url": f"{dominio}/"},
+        "isBasedOn": FONTE_BACEN_URL, "dateModified": data_ultima_atualizacao,
+        "temporalCoverage": f"{ini}/{fim}", "spatialCoverage": {"@type": "Country", "name": "Brasil"},
+        "variableMeasured": ["Taxa média de juros contratada (% ao ano)"],
+        "distribution": [
+            {"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": f"{dominio}/dados/taxas-financiamento-imobiliario.csv"},
+            {"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": f"{dominio}/dados/taxas-financiamento-imobiliario.json"},
+        ],
+    }, ensure_ascii=False)
+    schema_breadcrumb = json.dumps({
+        "@context": "https://schema.org", "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Datalab Global", "item": f"{dominio}/"},
+            {"@type": "ListItem", "position": 2, "name": "Dados abertos", "item": url_pagina},
+        ],
+    }, ensure_ascii=False)
+    titulo_pagina = "Dados abertos: taxas de financiamento imobiliário por banco | Datalab Global"
+    meta_description = f"Baixe grátis a série de {len(meses)} meses de taxas de juros do financiamento imobiliário por banco, do Banco Central, em CSV e JSON ({LICENCA_DADOS})."
+    resumo = resumo_historico(historico)
+    html_pagina = f'''<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+{render_head_boilerplate(titulo_pagina, meta_description, url_pagina, dominio, [schema_breadcrumb, schema_dataset])}
+</head>
+<body class="antialiased flex flex-col min-h-screen">
+    {_nav_comparacao()}
+
+    <header class="py-12 md:py-16 relative z-10 text-center">
+        <h1 class="text-3xl md:text-5xl font-serif text-white mb-4 leading-tight px-4">Dados abertos: taxas de financiamento imobiliário</h1>
+        <p class="text-slate-400 text-base md:text-lg font-light tracking-wide max-w-3xl mx-auto px-4">
+            Série mensal de {len(meses)} meses, por banco, com dados do Banco Central. Livre para usar, com citação da fonte ({LICENCA_DADOS}).
+        </p>
+    </header>
+
+    <main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 flex-grow w-full relative z-10">
+        <section>
+            <h2 class="text-2xl font-serif text-white mb-3">Baixar</h2>
+            <ul class="space-y-2 text-sm">
+                <li><a href="dados/taxas-financiamento-imobiliario.csv" download class="text-emerald-400 underline">taxas-financiamento-imobiliario.csv</a> <span class="text-slate-400">· planilha (UTF-8, vírgula)</span></li>
+                <li><a href="dados/taxas-financiamento-imobiliario.json" download class="text-emerald-400 underline">taxas-financiamento-imobiliario.json</a> <span class="text-slate-400">· para programação</span></li>
+                <li><a href="dados/datapackage.json" download class="text-emerald-400 underline">datapackage.json</a> <span class="text-slate-400">· metadados (Frictionless Data)</span></li>
+                <li><a href="dados/README.md" class="text-emerald-400 underline">README.md</a> <span class="text-slate-400">· descrição e como citar</span></li>
+            </ul>
+        </section>
+
+        <section class="mt-10">
+            <h2 class="text-2xl font-serif text-white mb-3">O que há nos dados</h2>
+            <p class="text-slate-300 text-sm font-light leading-relaxed">{descricao}</p>
+            <table class="w-full text-xs text-slate-300 mt-4 rounded-xl border border-white/10">
+                <thead class="text-[10px] uppercase tracking-widest text-slate-400"><tr><th scope="col" class="px-3 py-2 text-left font-medium">Coluna</th><th scope="col" class="px-3 py-2 text-left font-medium">Descrição</th></tr></thead>
+                <tbody>
+                    <tr class="border-t border-white/5"><th scope="row" class="px-3 py-2 text-left font-mono font-normal">periodo_inicio</th><td class="px-3 py-2">Primeiro dia do mês de referência (AAAA-MM-DD)</td></tr>
+                    <tr class="border-t border-white/5"><th scope="row" class="px-3 py-2 text-left font-mono font-normal">periodo_fim</th><td class="px-3 py-2">Último dia do mês de referência</td></tr>
+                    <tr class="border-t border-white/5"><th scope="row" class="px-3 py-2 text-left font-mono font-normal">instituicao</th><td class="px-3 py-2">Banco (nome comercial)</td></tr>
+                    <tr class="border-t border-white/5"><th scope="row" class="px-3 py-2 text-left font-mono font-normal">taxa_juros_aa_pct</th><td class="px-3 py-2">Taxa média de juros contratada, em % ao ano</td></tr>
+                </tbody>
+            </table>
+            <p class="text-slate-400 text-xs font-light leading-relaxed mt-3">São médias do que foi efetivamente contratado, não ofertas: a sua proposta pode ser diferente. BRB e Poupex não constam porque o Banco Central não os cobre nesta modalidade.</p>
+        </section>
+
+        <section class="mt-10">
+            <h2 class="text-2xl font-serif text-white mb-3">Como citar</h2>
+            <p class="text-slate-300 text-sm font-light leading-relaxed bg-white/5 border border-white/10 rounded-xl p-4">{citacao.format(data="AAAA-MM-DD")}</p>
+            <p class="text-slate-400 text-xs font-light mt-3">Licença <a href="{LICENCA_DADOS_URL}" rel="noopener" class="underline">{LICENCA_DADOS}</a>. Fonte original: <a href="{FONTE_BACEN_URL}" rel="noopener" class="underline">Banco Central do Brasil</a>. Atualizado em {date.fromisoformat(data_ultima_atualizacao).strftime('%d/%m/%Y')}.</p>
+        </section>
+
+        <section class="mt-10">
+            <h2 class="text-2xl font-serif text-white mb-3">Exemplo em Python</h2>
+            <pre class="bg-slate-900/60 border border-white/10 rounded-xl p-4 text-xs text-slate-300 overflow-x-auto"><code>import pandas as pd
+df = pd.read_csv("{dominio}/dados/taxas-financiamento-imobiliario.csv", parse_dates=["periodo_inicio"])
+df.pivot(index="periodo_inicio", columns="instituicao", values="taxa_juros_aa_pct").tail(6)</code></pre>
+        </section>
+
+        {html_evolucao_taxas(resumo)}
+
+        <p class="mt-10 text-center text-xs text-slate-400"><a href="comparador-bancos" class="text-emerald-400 underline">Ver o comparativo de taxas entre os {len(BANCOS)} bancos →</a></p>
+    </main>
+
+    {_footer_comparacao()}
+</body>
+</html>'''
+    with open(os.path.join(pasta_saida, "dados-abertos.html"), "w", encoding="utf-8") as f:
+        f.write(corrigir_concordancia(html_pagina))
+    return [url_pagina]
+
+
+
 def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas_atuais=None):
     """Gera comparador-bancos.html: tabela com todos os bancos lado a lado
     (taxa, entrada mínima, prazo máximo, CET num cenário de referência
@@ -1943,6 +2201,10 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
     comparador ficava com a taxa estática de bancos.py mesmo depois do
     ETL atualizar dados.csv (achado real, 06/set/2026)."""
     ano_atual = date.today().year
+    d_atual = date.fromisoformat(data_ultima_atualizacao)
+    mes_ano = f"{MESES_PT[d_atual.month - 1]} de {d_atual.year}"
+    mes_ano_curto = f"{MESES_PT_ABREV[d_atual.month - 1]}/{d_atual.year}"
+    resumo_hist = resumo_historico(carregar_historico())
     VALOR_REF, PRAZO_REF = 500_000, 360
     ranking_ref = comparar_todos_bancos(VALOR_REF, PRAZO_REF, {}, taxas_atuais)
 
@@ -1967,10 +2229,12 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
         </a>'''
 
     url_canonica = f"{dominio}/comparador-bancos"
-    titulo_pagina = f"Comparativo de Taxas: Financiamento Imobiliário {ano_atual} | Datalab Global"
+    # Mês no título e no H1: a busca real é "taxa de financiamento imobiliário
+    # {mês} {ano}". Abreviado no <title> pra caber em 60 caracteres.
+    titulo_pagina = f"Taxas de financiamento imobiliário por banco: {mes_ano_curto} | Datalab Global"
     meta_description = (
-        f"Compare a taxa de juros, entrada mínima e CET de {len(ranking_ref)} bancos e fintechs de financiamento "
-        f"imobiliário em {ano_atual}, simulados nas mesmas condições. Veja quem tem a menor taxa hoje."
+        f"Compare taxa, entrada mínima e CET de {len(ranking_ref)} bancos de financiamento imobiliário em {mes_ano} "
+        f"e veja como as taxas evoluíram nos últimos meses."
     )[:160]
 
     schema_breadcrumb = f'''{{
@@ -1995,6 +2259,19 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
     faq_q3 = "Como vejo a simulação completa de um banco específico?"
     faq_a3 = "Clique no banco desejado na lista acima pra ver a página completa dele, com taxa, entrada mínima, prazo máximo e o simulador pra calcular sua parcela exata."
 
+    texto_var = texto_variacao(resumo_hist)
+    faq_q4 = "Como as taxas de financiamento imobiliário variaram nos últimos meses?"
+    faq4_html = ""
+    if texto_var:
+        faq4_html = f'''
+                <details class="group bg-white/5 border border-white/10 rounded-xl overflow-hidden open:border-emerald-500/30 transition-colors">
+                    <summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4">
+                        <h3 class="text-emerald-400 font-bold text-sm">{faq_q4}</h3>
+                        <span class="faq-toggle-icon shrink-0 text-slate-400 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
+                    </summary>
+                    <p class="text-slate-300 text-sm font-light leading-relaxed px-5 pb-5">{texto_var}</p>
+                </details>'''
+
     schema_faq = f'''{{
       "@context": "https://schema.org",
       "@type": "FAQPage",
@@ -2004,6 +2281,11 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
         {{ "@type": "Question", "name": "{faq_q3}", "acceptedAnswer": {{ "@type": "Answer", "text": "{faq_a3}" }} }}
       ]
     }}'''
+
+    if texto_var:
+        _obj_faq = json.loads(schema_faq)
+        _obj_faq["mainEntity"].append({"@type": "Question", "name": faq_q4, "acceptedAnswer": {"@type": "Answer", "text": texto_var}})
+        schema_faq = json.dumps(_obj_faq, ensure_ascii=False)
 
     html_comparador = f'''<!DOCTYPE html>
 <html lang="pt-BR">
@@ -2031,7 +2313,7 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
 
     <header class="py-12 md:py-16 relative z-10 text-center">
         <h1 class="text-3xl md:text-5xl font-serif text-white mb-4 leading-tight px-4">
-            Comparativo de Taxas entre Bancos
+            Taxas de financiamento imobiliário por banco em {mes_ano}
         </h1>
         <p class="text-slate-400 text-base md:text-lg font-light tracking-wide max-w-3xl mx-auto px-4">
             CET simulado para {formatar_reais(VALOR_REF)} em {PRAZO_REF} meses, na mesma condição para os {len(ranking_ref)} bancos e fintechs que acompanhamos — ordenado do menor pro maior custo efetivo total.
@@ -2053,6 +2335,16 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
         <p class="text-slate-300 text-sm font-light leading-relaxed mt-6 max-w-2xl">
             Quer ver o comparativo para o seu valor e prazo? Consulte a <a href="financiamento-imobiliario" class="text-emerald-400 underline">tabela de financiamento imobiliário por valor e prazo</a>, de R$ 150 mil a R$ 1 milhão, em 10 a 35 anos.
         </p>
+
+        {html_evolucao_taxas(resumo_hist)}
+
+        <section class="mt-12">
+            <h2 class="text-2xl font-serif text-white mb-3">Como calculamos e de onde vêm os dados</h2>
+            <p class="text-slate-300 text-sm font-light leading-relaxed">
+                As taxas vêm do relatório de taxas de juros por instituição financeira do Banco Central (modalidade "aquisição de imóveis, pessoa física, pré-fixada"): são médias do que cada banco efetivamente contratou, não ofertas. O CET é calculado por nós a partir dessa taxa, com seguros (MIP e DFI) e taxa de administração estimados, para o mesmo valor, prazo e a entrada mínima de cada banco. BRB e Poupex não constam no relatório do Banco Central nesta modalidade; para eles usamos uma estimativa de referências públicas de mercado.
+                A série histórica está disponível em <a href="dados-abertos" class="text-emerald-400 underline">dados abertos</a> (CSV e JSON).
+            </p>
+        </section>
 
         <div class="mt-16 bg-gradient-to-r from-emerald-600 to-emerald-900 rounded-3xl p-8 md:p-12 relative overflow-hidden shadow-[0_20px_50px_rgba(16,185,129,0.3)] border border-emerald-400/50">
             <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-[80px]"></div>
@@ -2098,7 +2390,7 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
                         <span class="faq-toggle-icon shrink-0 text-slate-400 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
                     </summary>
                     <p class="text-slate-300 text-sm font-light leading-relaxed px-5 pb-5">{faq_a3}</p>
-                </details>
+                </details>{faq4_html}
             </div>
         </div>
     </main>
@@ -3487,6 +3779,7 @@ Total de páginas de simulação: {total_paginas}
 - [Home / lista de bancos]({dominio}/)
 - [Comparativo de taxas entre os {len(BANCOS)} bancos]({dominio}/comparador-bancos)
 - [Financiamento imobiliário: parcela por valor e prazo]({dominio}/financiamento-imobiliario)
+- [Dados abertos: taxas de financiamento por banco, série mensal em CSV e JSON]({dominio}/dados-abertos)
 - [Sitemap completo]({dominio}/sitemap.xml)
 
 ## Sobre os dados

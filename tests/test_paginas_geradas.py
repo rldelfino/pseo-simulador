@@ -88,6 +88,9 @@ def test_todo_link_interno_resolve_para_pagina_existente():
             href_normalizado = href.lstrip("/")  # "/comparador-bancos" == "comparador-bancos"
             if href in arquivos_estaticos or href_normalizado in slugs_validos or href in slugs_validos:
                 continue
+            # arquivos de dados abertos publicados em dados/ (csv, json, md)
+            if href_normalizado.startswith("dados/") and os.path.isfile(os.path.join(PASTA_SAIDA, href_normalizado)):
+                continue
             faltando.append(f"{nome_arquivo} -> {href}")
     assert not faltando, f"{len(faltando)} link(s) interno(s) quebrado(s): {faltando[:20]}"
 

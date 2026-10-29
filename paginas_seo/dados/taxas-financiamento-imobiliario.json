@@ -1,0 +1,1263 @@
+{
+ "titulo": "Taxas médias de juros do financiamento imobiliário por banco (BACEN)",
+ "fonte": "https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201",
+ "licenca": "CC BY 4.0",
+ "atualizado_em": "2026-10-05",
+ "organizacao": "Datalab Global",
+ "dados": [
+  {
+   "periodo_inicio": "2024-10-01",
+   "periodo_fim": "2024-10-31",
+   "instituicao": "Banco Inter",
+   "taxa_juros_aa_pct": 11.19
+  },
+  {
+   "periodo_inicio": "2024-10-01",
+   "periodo_fim": "2024-10-31",
+   "instituicao": "Banco do Brasil",
+   "taxa_juros_aa_pct": 10.44
+  },
+  {
+   "periodo_inicio": "2024-10-01",
+   "periodo_fim": "2024-10-31",
+   "instituicao": "Banrisul",
+   "taxa_juros_aa_pct": 10.45
+  },
+  {
+   "periodo_inicio": "2024-10-01",
+   "periodo_fim": "2024-10-31",
+   "instituicao": "Bradesco",
+   "taxa_juros_aa_pct": 10.66
+  },
+  {
+   "periodo_inicio": "2024-10-01",
+   "periodo_fim": "2024-10-31",
+   "instituicao": "Caixa",
+   "taxa_juros_aa_pct": 10.23
+  },
+  {
+   "periodo_inicio": "2024-10-01",
+   "periodo_fim": "2024-10-31",
+   "instituicao": "Itaú",
+   "taxa_juros_aa_pct": 10.48
+  },
+  {
+   "periodo_inicio": "2024-10-01",
+   "periodo_fim": "2024-10-31",
+   "instituicao": "Santander",
+   "taxa_juros_aa_pct": 11.18
+  },
+  {
+   "periodo_inicio": "2024-10-01",
+   "periodo_fim": "2024-10-31",
+   "instituicao": "Sicoob",
+   "taxa_juros_aa_pct": 11.35
+  },
+  {
+   "periodo_inicio": "2024-10-01",
+   "periodo_fim": "2024-10-31",
+   "instituicao": "Sicredi",
+   "taxa_juros_aa_pct": 14.89
+  },
+  {
+   "periodo_inicio": "2024-11-01",
+   "periodo_fim": "2024-11-30",
+   "instituicao": "Banco Inter",
+   "taxa_juros_aa_pct": 11.14
+  },
+  {
+   "periodo_inicio": "2024-11-01",
+   "periodo_fim": "2024-11-30",
+   "instituicao": "Banco do Brasil",
+   "taxa_juros_aa_pct": 10.58
+  },
+  {
+   "periodo_inicio": "2024-11-01",
+   "periodo_fim": "2024-11-30",
+   "instituicao": "Banrisul",
+   "taxa_juros_aa_pct": 10.65
+  },
+  {
+   "periodo_inicio": "2024-11-01",
+   "periodo_fim": "2024-11-30",
+   "instituicao": "Bradesco",
+   "taxa_juros_aa_pct": 10.65
+  },
+  {
+   "periodo_inicio": "2024-11-01",
+   "periodo_fim": "2024-11-30",
+   "instituicao": "Caixa",
+   "taxa_juros_aa_pct": 10.21
+  },
+  {
+   "periodo_inicio": "2024-11-01",
+   "periodo_fim": "2024-11-30",
+   "instituicao": "Itaú",
+   "taxa_juros_aa_pct": 10.52
+  },
+  {
+   "periodo_inicio": "2024-11-01",
+   "periodo_fim": "2024-11-30",
+   "instituicao": "Santander",
+   "taxa_juros_aa_pct": 11.27
+  },
+  {
+   "periodo_inicio": "2024-11-01",
+   "periodo_fim": "2024-11-30",
+   "instituicao": "Sicoob",
+   "taxa_juros_aa_pct": 11.19
+  },
+  {
+   "periodo_inicio": "2024-11-01",
+   "periodo_fim": "2024-11-30",
+   "instituicao": "Sicredi",
+   "taxa_juros_aa_pct": 10.36
+  },
+  {
+   "periodo_inicio": "2024-12-01",
+   "periodo_fim": "2024-12-31",
+   "instituicao": "Banco do Brasil",
+   "taxa_juros_aa_pct": 10.97
+  },
+  {
+   "periodo_inicio": "2024-12-01",
+   "periodo_fim": "2024-12-31",
+   "instituicao": "Bradesco",
+   "taxa_juros_aa_pct": 10.55
+  },
+  {
+   "periodo_inicio": "2024-12-01",
+   "periodo_fim": "2024-12-31",
+   "instituicao": "Caixa",
+   "taxa_juros_aa_pct": 9.71
+  },
+  {
+   "periodo_inicio": "2024-12-01",
+   "periodo_fim": "2024-12-31",
+   "instituicao": "Itaú",
+   "taxa_juros_aa_pct": 10.69
+  },
+  {
+   "periodo_inicio": "2024-12-01",
+   "periodo_fim": "2024-12-31",
+   "instituicao": "Santander",
+   "taxa_juros_aa_pct": 11.59
+  },
+  {
+   "periodo_inicio": "2024-12-01",
+   "periodo_fim": "2024-12-31",
+   "instituicao": "Sicredi",
+   "taxa_juros_aa_pct": 10.72
+  },
+  {
+   "periodo_inicio": "2025-01-01",
+   "periodo_fim": "2025-01-31",
+   "instituicao": "Banco Inter",
+   "taxa_juros_aa_pct": 11.33
+  },
+  {
+   "periodo_inicio": "2025-01-01",
+   "periodo_fim": "2025-01-31",
+   "instituicao": "Banco do Brasil",
+   "taxa_juros_aa_pct": 11.6
+  },
+  {
+   "periodo_inicio": "2025-01-01",
+   "periodo_fim": "2025-01-31",
+   "instituicao": "Banrisul",
+   "taxa_juros_aa_pct": 10.57
+  },
+  {
+   "periodo_inicio": "2025-01-01",
+   "periodo_fim": "2025-01-31",
+   "instituicao": "Bradesco",
+   "taxa_juros_aa_pct": 10.93
+  },
+  {
+   "periodo_inicio": "2025-01-01",
+   "periodo_fim": "2025-01-31",
+   "instituicao": "Caixa",
+   "taxa_juros_aa_pct": 10.87
+  },
+  {
+   "periodo_inicio": "2025-01-01",
+   "periodo_fim": "2025-01-31",
+   "instituicao": "Itaú",
+   "taxa_juros_aa_pct": 10.9
+  },
+  {
+   "periodo_inicio": "2025-01-01",
+   "periodo_fim": "2025-01-31",
+   "instituicao": "Santander",
+   "taxa_juros_aa_pct": 12.15
+  },
+  {
+   "periodo_inicio": "2025-01-01",
+   "periodo_fim": "2025-01-31",
+   "instituicao": "Sicredi",
+   "taxa_juros_aa_pct": 10.41
+  },
+  {
+   "periodo_inicio": "2025-02-01",
+   "periodo_fim": "2025-02-28",
+   "instituicao": "Banco Inter",
+   "taxa_juros_aa_pct": 12.38
+  },
+  {
+   "periodo_inicio": "2025-02-01",
+   "periodo_fim": "2025-02-28",
+   "instituicao": "Banco do Brasil",
+   "taxa_juros_aa_pct": 12.39
+  },
+  {
+   "periodo_inicio": "2025-02-01",
+   "periodo_fim": "2025-02-28",
+   "instituicao": "Banrisul",
+   "taxa_juros_aa_pct": 10.87
+  },
+  {
+   "periodo_inicio": "2025-02-01",
+   "periodo_fim": "2025-02-28",
+   "instituicao": "Bradesco",
+   "taxa_juros_aa_pct": 10.93
+  },
+  {
+   "periodo_inicio": "2025-02-01",
+   "periodo_fim": "2025-02-28",
+   "instituicao": "Caixa",
+   "taxa_juros_aa_pct": 11.01
+  },
+  {
+   "periodo_inicio": "2025-02-01",
+   "periodo_fim": "2025-02-28",
+   "instituicao": "Itaú",
+   "taxa_juros_aa_pct": 11.66
+  },
+  {
+   "periodo_inicio": "2025-02-01",
+   "periodo_fim": "2025-02-28",
+   "instituicao": "Santander",
+   "taxa_juros_aa_pct": 12.74
+  },
+  {
+   "periodo_inicio": "2025-02-01",
+   "periodo_fim": "2025-02-28",
+   "instituicao": "Sicredi",
+   "taxa_juros_aa_pct": 11.52
+  },
+  {
+   "periodo_inicio": "2025-03-01",
+   "periodo_fim": "2025-03-31",
+   "instituicao": "Banco Inter",
+   "taxa_juros_aa_pct": 10.93
+  },
+  {
+   "periodo_inicio": "2025-03-01",
+   "periodo_fim": "2025-03-31",
+   "instituicao": "Banco do Brasil",
+   "taxa_juros_aa_pct": 13.15
+  },
+  {
+   "periodo_inicio": "2025-03-01",
+   "periodo_fim": "2025-03-31",
+   "instituicao": "Banrisul",
+   "taxa_juros_aa_pct": 10.31
+  },
+  {
+   "periodo_inicio": "2025-03-01",
+   "periodo_fim": "2025-03-31",
+   "instituicao": "Bradesco",
+   "taxa_juros_aa_pct": 11.5
+  },
+  {
+   "periodo_inicio": "2025-03-01",
+   "periodo_fim": "2025-03-31",
+   "instituicao": "Caixa",
+   "taxa_juros_aa_pct": 11.01
+  },
+  {
+   "periodo_inicio": "2025-03-01",
+   "periodo_fim": "2025-03-31",
+   "instituicao": "Itaú",
+   "taxa_juros_aa_pct": 12.03
+  },
+  {
+   "periodo_inicio": "2025-03-01",
+   "periodo_fim": "2025-03-31",
+   "instituicao": "Santander",
+   "taxa_juros_aa_pct": 13.09
+  },
+  {
+   "periodo_inicio": "2025-03-01",
+   "periodo_fim": "2025-03-31",
+   "instituicao": "Sicredi",
+   "taxa_juros_aa_pct": 10.92
+  },
+  {
+   "periodo_inicio": "2025-04-01",
+   "periodo_fim": "2025-04-30",
+   "instituicao": "Banco Inter",
+   "taxa_juros_aa_pct": 11.41
+  },
+  {
+   "periodo_inicio": "2025-04-01",
+   "periodo_fim": "2025-04-30",
+   "instituicao": "Banco do Brasil",
+   "taxa_juros_aa_pct": 13.61
+  },
+  {
+   "periodo_inicio": "2025-04-01",
+   "periodo_fim": "2025-04-30",
+   "instituicao": "Banrisul",
+   "taxa_juros_aa_pct": 10.29
+  },
+  {
+   "periodo_inicio": "2025-04-01",
+   "periodo_fim": "2025-04-30",
+   "instituicao": "Bradesco",
+   "taxa_juros_aa_pct": 11.74
+  },
+  {
+   "periodo_inicio": "2025-04-01",
+   "periodo_fim": "2025-04-30",
+   "instituicao": "Caixa",
+   "taxa_juros_aa_pct": 10.19
+  },
+  {
+   "periodo_inicio": "2025-04-01",
+   "periodo_fim": "2025-04-30",
+   "instituicao": "Itaú",
+   "taxa_juros_aa_pct": 12.27
+  },
+  {
+   "periodo_inicio": "2025-04-01",
+   "periodo_fim": "2025-04-30",
+   "instituicao": "Santander",
+   "taxa_juros_aa_pct": 13.09
+  },
+  {
+   "periodo_inicio": "2025-04-01",
+   "periodo_fim": "2025-04-30",
+   "instituicao": "Sicoob",
+   "taxa_juros_aa_pct": 11.2
+  },
+  {
+   "periodo_inicio": "2025-04-01",
+   "periodo_fim": "2025-04-30",
+   "instituicao": "Sicredi",
+   "taxa_juros_aa_pct": 11.99
+  },
+  {
+   "periodo_inicio": "2025-05-01",
+   "periodo_fim": "2025-05-31",
+   "instituicao": "Banco Inter",
+   "taxa_juros_aa_pct": 11.86
+  },
+  {
+   "periodo_inicio": "2025-05-01",
+   "periodo_fim": "2025-05-31",
+   "instituicao": "Banco do Brasil",
+   "taxa_juros_aa_pct": 14.3
+  },
+  {
+   "periodo_inicio": "2025-05-01",
+   "periodo_fim": "2025-05-31",
+   "instituicao": "Banrisul",
+   "taxa_juros_aa_pct": 10.51
+  },
+  {
+   "periodo_inicio": "2025-05-01",
+   "periodo_fim": "2025-05-31",
+   "instituicao": "Bradesco",
+   "taxa_juros_aa_pct": 11.86
+  },
+  {
+   "periodo_inicio": "2025-05-01",
+   "periodo_fim": "2025-05-31",
+   "instituicao": "Caixa",
+   "taxa_juros_aa_pct": 11.15
+  },
+  {
+   "periodo_inicio": "2025-05-01",
+   "periodo_fim": "2025-05-31",
+   "instituicao": "Itaú",
+   "taxa_juros_aa_pct": 12.41
+  },
+  {
+   "periodo_inicio": "2025-05-01",
+   "periodo_fim": "2025-05-31",
+   "instituicao": "Santander",
+   "taxa_juros_aa_pct": 13.23
+  },
+  {
+   "periodo_inicio": "2025-05-01",
+   "periodo_fim": "2025-05-31",
+   "instituicao": "Sicoob",
+   "taxa_juros_aa_pct": 11.06
+  },
+  {
+   "periodo_inicio": "2025-05-01",
+   "periodo_fim": "2025-05-31",
+   "instituicao": "Sicredi",
+   "taxa_juros_aa_pct": 11.79
+  },
+  {
+   "periodo_inicio": "2025-06-01",
+   "periodo_fim": "2025-06-30",
+   "instituicao": "Banco Inter",
+   "taxa_juros_aa_pct": 11.57
+  },
+  {
+   "periodo_inicio": "2025-06-01",
+   "periodo_fim": "2025-06-30",
+   "instituicao": "Banco do Brasil",
+   "taxa_juros_aa_pct": 14.57
+  },
+  {
+   "periodo_inicio": "2025-06-01",
+   "periodo_fim": "2025-06-30",
+   "instituicao": "Banrisul",
+   "taxa_juros_aa_pct": 10.76
+  },
+  {
+   "periodo_inicio": "2025-06-01",
+   "periodo_fim": "2025-06-30",
+   "instituicao": "Bradesco",
+   "taxa_juros_aa_pct": 12.35
+  },
+  {
+   "periodo_inicio": "2025-06-01",
+   "periodo_fim": "2025-06-30",
+   "instituicao": "Caixa",
+   "taxa_juros_aa_pct": 11.29
+  },
+  {
+   "periodo_inicio": "2025-06-01",
+   "periodo_fim": "2025-06-30",
+   "instituicao": "Itaú",
+   "taxa_juros_aa_pct": 12.44
+  },
+  {
+   "periodo_inicio": "2025-06-01",
+   "periodo_fim": "2025-06-30",
+   "instituicao": "Santander",
+   "taxa_juros_aa_pct": 13.28
+  },
+  {
+   "periodo_inicio": "2025-06-01",
+   "periodo_fim": "2025-06-30",
+   "instituicao": "Sicoob",
+   "taxa_juros_aa_pct": 11.16
+  },
+  {
+   "periodo_inicio": "2025-06-01",
+   "periodo_fim": "2025-06-30",
+   "instituicao": "Sicredi",
+   "taxa_juros_aa_pct": 12.19
+  },
+  {
+   "periodo_inicio": "2025-07-01",
+   "periodo_fim": "2025-07-31",
+   "instituicao": "Banco Inter",
+   "taxa_juros_aa_pct": 12.24
+  },
+  {
+   "periodo_inicio": "2025-07-01",
+   "periodo_fim": "2025-07-31",
+   "instituicao": "Banco do Brasil",
+   "taxa_juros_aa_pct": 14.99
+  },
+  {
+   "periodo_inicio": "2025-07-01",
+   "periodo_fim": "2025-07-31",
+   "instituicao": "Banrisul",
+   "taxa_juros_aa_pct": 10.08
+  },
+  {
+   "periodo_inicio": "2025-07-01",
+   "periodo_fim": "2025-07-31",
+   "instituicao": "Bradesco",
+   "taxa_juros_aa_pct": 12.9
+  },
+  {
+   "periodo_inicio": "2025-07-01",
+   "periodo_fim": "2025-07-31",
+   "instituicao": "Caixa",
+   "taxa_juros_aa_pct": 11.23
+  },
+  {
+   "periodo_inicio": "2025-07-01",
+   "periodo_fim": "2025-07-31",
+   "instituicao": "Itaú",
+   "taxa_juros_aa_pct": 12.47
+  },
+  {
+   "periodo_inicio": "2025-07-01",
+   "periodo_fim": "2025-07-31",
+   "instituicao": "Santander",
+   "taxa_juros_aa_pct": 13.44
+  },
+  {
+   "periodo_inicio": "2025-07-01",
+   "periodo_fim": "2025-07-31",
+   "instituicao": "Sicoob",
+   "taxa_juros_aa_pct": 11.26
+  },
+  {
+   "periodo_inicio": "2025-07-01",
+   "periodo_fim": "2025-07-31",
+   "instituicao": "Sicredi",
+   "taxa_juros_aa_pct": 11.86
+  },
+  {
+   "periodo_inicio": "2025-08-01",
+   "periodo_fim": "2025-08-31",
+   "instituicao": "Banco Inter",
+   "taxa_juros_aa_pct": 12.31
+  },
+  {
+   "periodo_inicio": "2025-08-01",
+   "periodo_fim": "2025-08-31",
+   "instituicao": "Banco do Brasil",
+   "taxa_juros_aa_pct": 15.14
+  },
+  {
+   "periodo_inicio": "2025-08-01",
+   "periodo_fim": "2025-08-31",
+   "instituicao": "Banrisul",
+   "taxa_juros_aa_pct": 10.28
+  },
+  {
+   "periodo_inicio": "2025-08-01",
+   "periodo_fim": "2025-08-31",
+   "instituicao": "Bradesco",
+   "taxa_juros_aa_pct": 13.21
+  },
+  {
+   "periodo_inicio": "2025-08-01",
+   "periodo_fim": "2025-08-31",
+   "instituicao": "Caixa",
+   "taxa_juros_aa_pct": 11.33
+  },
+  {
+   "periodo_inicio": "2025-08-01",
+   "periodo_fim": "2025-08-31",
+   "instituicao": "Itaú",
+   "taxa_juros_aa_pct": 12.42
+  },
+  {
+   "periodo_inicio": "2025-08-01",
+   "periodo_fim": "2025-08-31",
+   "instituicao": "Santander",
+   "taxa_juros_aa_pct": 13.34
+  },
+  {
+   "periodo_inicio": "2025-08-01",
+   "periodo_fim": "2025-08-31",
+   "instituicao": "Sicoob",
+   "taxa_juros_aa_pct": 11.11
+  },
+  {
+   "periodo_inicio": "2025-08-01",
+   "periodo_fim": "2025-08-31",
+   "instituicao": "Sicredi",
+   "taxa_juros_aa_pct": 11.99
+  },
+  {
+   "periodo_inicio": "2025-09-01",
+   "periodo_fim": "2025-09-30",
+   "instituicao": "Banco Inter",
+   "taxa_juros_aa_pct": 12.62
+  },
+  {
+   "periodo_inicio": "2025-09-01",
+   "periodo_fim": "2025-09-30",
+   "instituicao": "Banco do Brasil",
+   "taxa_juros_aa_pct": 15.3
+  },
+  {
+   "periodo_inicio": "2025-09-01",
+   "periodo_fim": "2025-09-30",
+   "instituicao": "Banrisul",
+   "taxa_juros_aa_pct": 10.62
+  },
+  {
+   "periodo_inicio": "2025-09-01",
+   "periodo_fim": "2025-09-30",
+   "instituicao": "Bradesco",
+   "taxa_juros_aa_pct": 13.21
+  },
+  {
+   "periodo_inicio": "2025-09-01",
+   "periodo_fim": "2025-09-30",
+   "instituicao": "Caixa",
+   "taxa_juros_aa_pct": 11.46
+  },
+  {
+   "periodo_inicio": "2025-09-01",
+   "periodo_fim": "2025-09-30",
+   "instituicao": "Itaú",
+   "taxa_juros_aa_pct": 12.45
+  },
+  {
+   "periodo_inicio": "2025-09-01",
+   "periodo_fim": "2025-09-30",
+   "instituicao": "Santander",
+   "taxa_juros_aa_pct": 13.32
+  },
+  {
+   "periodo_inicio": "2025-09-01",
+   "periodo_fim": "2025-09-30",
+   "instituicao": "Sicoob",
+   "taxa_juros_aa_pct": 11.12
+  },
+  {
+   "periodo_inicio": "2025-09-01",
+   "periodo_fim": "2025-09-30",
+   "instituicao": "Sicredi",
+   "taxa_juros_aa_pct": 12.06
+  },
+  {
+   "periodo_inicio": "2025-10-01",
+   "periodo_fim": "2025-10-31",
+   "instituicao": "Banco do Brasil",
+   "taxa_juros_aa_pct": 15.36
+  },
+  {
+   "periodo_inicio": "2025-10-01",
+   "periodo_fim": "2025-10-31",
+   "instituicao": "Banrisul",
+   "taxa_juros_aa_pct": 10.74
+  },
+  {
+   "periodo_inicio": "2025-10-01",
+   "periodo_fim": "2025-10-31",
+   "instituicao": "Bradesco",
+   "taxa_juros_aa_pct": 13.13
+  },
+  {
+   "periodo_inicio": "2025-10-01",
+   "periodo_fim": "2025-10-31",
+   "instituicao": "Caixa",
+   "taxa_juros_aa_pct": 11.48
+  },
+  {
+   "periodo_inicio": "2025-10-01",
+   "periodo_fim": "2025-10-31",
+   "instituicao": "Itaú",
+   "taxa_juros_aa_pct": 12.47
+  },
+  {
+   "periodo_inicio": "2025-10-01",
+   "periodo_fim": "2025-10-31",
+   "instituicao": "Santander",
+   "taxa_juros_aa_pct": 13.24
+  },
+  {
+   "periodo_inicio": "2025-10-01",
+   "periodo_fim": "2025-10-31",
+   "instituicao": "Sicoob",
+   "taxa_juros_aa_pct": 11.08
+  },
+  {
+   "periodo_inicio": "2025-10-01",
+   "periodo_fim": "2025-10-31",
+   "instituicao": "Sicredi",
+   "taxa_juros_aa_pct": 11.36
+  },
+  {
+   "periodo_inicio": "2025-11-01",
+   "periodo_fim": "2025-11-30",
+   "instituicao": "Banco Inter",
+   "taxa_juros_aa_pct": 10.79
+  },
+  {
+   "periodo_inicio": "2025-11-01",
+   "periodo_fim": "2025-11-30",
+   "instituicao": "Banco do Brasil",
+   "taxa_juros_aa_pct": 15.34
+  },
+  {
+   "periodo_inicio": "2025-11-01",
+   "periodo_fim": "2025-11-30",
+   "instituicao": "Banrisul",
+   "taxa_juros_aa_pct": 11.07
+  },
+  {
+   "periodo_inicio": "2025-11-01",
+   "periodo_fim": "2025-11-30",
+   "instituicao": "Bradesco",
+   "taxa_juros_aa_pct": 12.73
+  },
+  {
+   "periodo_inicio": "2025-11-01",
+   "periodo_fim": "2025-11-30",
+   "instituicao": "Caixa",
+   "taxa_juros_aa_pct": 11.63
+  },
+  {
+   "periodo_inicio": "2025-11-01",
+   "periodo_fim": "2025-11-30",
+   "instituicao": "Itaú",
+   "taxa_juros_aa_pct": 12.52
+  },
+  {
+   "periodo_inicio": "2025-11-01",
+   "periodo_fim": "2025-11-30",
+   "instituicao": "Santander",
+   "taxa_juros_aa_pct": 13.22
+  },
+  {
+   "periodo_inicio": "2025-11-01",
+   "periodo_fim": "2025-11-30",
+   "instituicao": "Sicoob",
+   "taxa_juros_aa_pct": 11.35
+  },
+  {
+   "periodo_inicio": "2025-11-01",
+   "periodo_fim": "2025-11-30",
+   "instituicao": "Sicredi",
+   "taxa_juros_aa_pct": 11.88
+  },
+  {
+   "periodo_inicio": "2025-12-01",
+   "periodo_fim": "2025-12-31",
+   "instituicao": "Banco Inter",
+   "taxa_juros_aa_pct": 11.98
+  },
+  {
+   "periodo_inicio": "2025-12-01",
+   "periodo_fim": "2025-12-31",
+   "instituicao": "Banco do Brasil",
+   "taxa_juros_aa_pct": 15.4
+  },
+  {
+   "periodo_inicio": "2025-12-01",
+   "periodo_fim": "2025-12-31",
+   "instituicao": "Banrisul",
+   "taxa_juros_aa_pct": 10.65
+  },
+  {
+   "periodo_inicio": "2025-12-01",
+   "periodo_fim": "2025-12-31",
+   "instituicao": "Bradesco",
+   "taxa_juros_aa_pct": 12.62
+  },
+  {
+   "periodo_inicio": "2025-12-01",
+   "periodo_fim": "2025-12-31",
+   "instituicao": "Caixa",
+   "taxa_juros_aa_pct": 11.71
+  },
+  {
+   "periodo_inicio": "2025-12-01",
+   "periodo_fim": "2025-12-31",
+   "instituicao": "Itaú",
+   "taxa_juros_aa_pct": 12.4
+  },
+  {
+   "periodo_inicio": "2025-12-01",
+   "periodo_fim": "2025-12-31",
+   "instituicao": "Santander",
+   "taxa_juros_aa_pct": 13.22
+  },
+  {
+   "periodo_inicio": "2025-12-01",
+   "periodo_fim": "2025-12-31",
+   "instituicao": "Sicoob",
+   "taxa_juros_aa_pct": 11.15
+  },
+  {
+   "periodo_inicio": "2025-12-01",
+   "periodo_fim": "2025-12-31",
+   "instituicao": "Sicredi",
+   "taxa_juros_aa_pct": 12.28
+  },
+  {
+   "periodo_inicio": "2026-01-01",
+   "periodo_fim": "2026-01-31",
+   "instituicao": "Banco Inter",
+   "taxa_juros_aa_pct": 10.49
+  },
+  {
+   "periodo_inicio": "2026-01-01",
+   "periodo_fim": "2026-01-31",
+   "instituicao": "Banco do Brasil",
+   "taxa_juros_aa_pct": 15.38
+  },
+  {
+   "periodo_inicio": "2026-01-01",
+   "periodo_fim": "2026-01-31",
+   "instituicao": "Banrisul",
+   "taxa_juros_aa_pct": 10.72
+  },
+  {
+   "periodo_inicio": "2026-01-01",
+   "periodo_fim": "2026-01-31",
+   "instituicao": "Bradesco",
+   "taxa_juros_aa_pct": 12.47
+  },
+  {
+   "periodo_inicio": "2026-01-01",
+   "periodo_fim": "2026-01-31",
+   "instituicao": "Caixa",
+   "taxa_juros_aa_pct": 11.83
+  },
+  {
+   "periodo_inicio": "2026-01-01",
+   "periodo_fim": "2026-01-31",
+   "instituicao": "Itaú",
+   "taxa_juros_aa_pct": 12.35
+  },
+  {
+   "periodo_inicio": "2026-01-01",
+   "periodo_fim": "2026-01-31",
+   "instituicao": "Santander",
+   "taxa_juros_aa_pct": 12.9
+  },
+  {
+   "periodo_inicio": "2026-01-01",
+   "periodo_fim": "2026-01-31",
+   "instituicao": "Sicoob",
+   "taxa_juros_aa_pct": 11.2
+  },
+  {
+   "periodo_inicio": "2026-01-01",
+   "periodo_fim": "2026-01-31",
+   "instituicao": "Sicredi",
+   "taxa_juros_aa_pct": 12.08
+  },
+  {
+   "periodo_inicio": "2026-02-01",
+   "periodo_fim": "2026-02-28",
+   "instituicao": "Banco Inter",
+   "taxa_juros_aa_pct": 11.62
+  },
+  {
+   "periodo_inicio": "2026-02-01",
+   "periodo_fim": "2026-02-28",
+   "instituicao": "Banco do Brasil",
+   "taxa_juros_aa_pct": 15.35
+  },
+  {
+   "periodo_inicio": "2026-02-01",
+   "periodo_fim": "2026-02-28",
+   "instituicao": "Banrisul",
+   "taxa_juros_aa_pct": 10.75
+  },
+  {
+   "periodo_inicio": "2026-02-01",
+   "periodo_fim": "2026-02-28",
+   "instituicao": "Bradesco",
+   "taxa_juros_aa_pct": 12.36
+  },
+  {
+   "periodo_inicio": "2026-02-01",
+   "periodo_fim": "2026-02-28",
+   "instituicao": "Caixa",
+   "taxa_juros_aa_pct": 11.98
+  },
+  {
+   "periodo_inicio": "2026-02-01",
+   "periodo_fim": "2026-02-28",
+   "instituicao": "Itaú",
+   "taxa_juros_aa_pct": 12.25
+  },
+  {
+   "periodo_inicio": "2026-02-01",
+   "periodo_fim": "2026-02-28",
+   "instituicao": "Santander",
+   "taxa_juros_aa_pct": 12.71
+  },
+  {
+   "periodo_inicio": "2026-02-01",
+   "periodo_fim": "2026-02-28",
+   "instituicao": "Sicoob",
+   "taxa_juros_aa_pct": 11.64
+  },
+  {
+   "periodo_inicio": "2026-02-01",
+   "periodo_fim": "2026-02-28",
+   "instituicao": "Sicredi",
+   "taxa_juros_aa_pct": 11.59
+  },
+  {
+   "periodo_inicio": "2026-03-01",
+   "periodo_fim": "2026-03-31",
+   "instituicao": "Banco Inter",
+   "taxa_juros_aa_pct": 11.97
+  },
+  {
+   "periodo_inicio": "2026-03-01",
+   "periodo_fim": "2026-03-31",
+   "instituicao": "Banco do Brasil",
+   "taxa_juros_aa_pct": 15.27
+  },
+  {
+   "periodo_inicio": "2026-03-01",
+   "periodo_fim": "2026-03-31",
+   "instituicao": "Banrisul",
+   "taxa_juros_aa_pct": 11.98
+  },
+  {
+   "periodo_inicio": "2026-03-01",
+   "periodo_fim": "2026-03-31",
+   "instituicao": "Bradesco",
+   "taxa_juros_aa_pct": 12.23
+  },
+  {
+   "periodo_inicio": "2026-03-01",
+   "periodo_fim": "2026-03-31",
+   "instituicao": "Caixa",
+   "taxa_juros_aa_pct": 12.02
+  },
+  {
+   "periodo_inicio": "2026-03-01",
+   "periodo_fim": "2026-03-31",
+   "instituicao": "Itaú",
+   "taxa_juros_aa_pct": 12.16
+  },
+  {
+   "periodo_inicio": "2026-03-01",
+   "periodo_fim": "2026-03-31",
+   "instituicao": "Santander",
+   "taxa_juros_aa_pct": 12.2
+  },
+  {
+   "periodo_inicio": "2026-03-01",
+   "periodo_fim": "2026-03-31",
+   "instituicao": "Sicoob",
+   "taxa_juros_aa_pct": 11.87
+  },
+  {
+   "periodo_inicio": "2026-03-01",
+   "periodo_fim": "2026-03-31",
+   "instituicao": "Sicredi",
+   "taxa_juros_aa_pct": 11.52
+  },
+  {
+   "periodo_inicio": "2026-04-01",
+   "periodo_fim": "2026-04-30",
+   "instituicao": "Banco Inter",
+   "taxa_juros_aa_pct": 11.79
+  },
+  {
+   "periodo_inicio": "2026-04-01",
+   "periodo_fim": "2026-04-30",
+   "instituicao": "Banco do Brasil",
+   "taxa_juros_aa_pct": 15.52
+  },
+  {
+   "periodo_inicio": "2026-04-01",
+   "periodo_fim": "2026-04-30",
+   "instituicao": "Banrisul",
+   "taxa_juros_aa_pct": 10.71
+  },
+  {
+   "periodo_inicio": "2026-04-01",
+   "periodo_fim": "2026-04-30",
+   "instituicao": "Bradesco",
+   "taxa_juros_aa_pct": 12.28
+  },
+  {
+   "periodo_inicio": "2026-04-01",
+   "periodo_fim": "2026-04-30",
+   "instituicao": "Caixa",
+   "taxa_juros_aa_pct": 12.04
+  },
+  {
+   "periodo_inicio": "2026-04-01",
+   "periodo_fim": "2026-04-30",
+   "instituicao": "Itaú",
+   "taxa_juros_aa_pct": 12.1
+  },
+  {
+   "periodo_inicio": "2026-04-01",
+   "periodo_fim": "2026-04-30",
+   "instituicao": "Santander",
+   "taxa_juros_aa_pct": 12.5
+  },
+  {
+   "periodo_inicio": "2026-04-01",
+   "periodo_fim": "2026-04-30",
+   "instituicao": "Sicoob",
+   "taxa_juros_aa_pct": 11.69
+  },
+  {
+   "periodo_inicio": "2026-04-01",
+   "periodo_fim": "2026-04-30",
+   "instituicao": "Sicredi",
+   "taxa_juros_aa_pct": 11.72
+  },
+  {
+   "periodo_inicio": "2026-05-01",
+   "periodo_fim": "2026-05-31",
+   "instituicao": "Banco Inter",
+   "taxa_juros_aa_pct": 12.74
+  },
+  {
+   "periodo_inicio": "2026-05-01",
+   "periodo_fim": "2026-05-31",
+   "instituicao": "Banco do Brasil",
+   "taxa_juros_aa_pct": 14.76
+  },
+  {
+   "periodo_inicio": "2026-05-01",
+   "periodo_fim": "2026-05-31",
+   "instituicao": "Banrisul",
+   "taxa_juros_aa_pct": 10.52
+  },
+  {
+   "periodo_inicio": "2026-05-01",
+   "periodo_fim": "2026-05-31",
+   "instituicao": "Bradesco",
+   "taxa_juros_aa_pct": 12.27
+  },
+  {
+   "periodo_inicio": "2026-05-01",
+   "periodo_fim": "2026-05-31",
+   "instituicao": "Caixa",
+   "taxa_juros_aa_pct": 12.0
+  },
+  {
+   "periodo_inicio": "2026-05-01",
+   "periodo_fim": "2026-05-31",
+   "instituicao": "Itaú",
+   "taxa_juros_aa_pct": 12.04
+  },
+  {
+   "periodo_inicio": "2026-05-01",
+   "periodo_fim": "2026-05-31",
+   "instituicao": "Santander",
+   "taxa_juros_aa_pct": 12.54
+  },
+  {
+   "periodo_inicio": "2026-05-01",
+   "periodo_fim": "2026-05-31",
+   "instituicao": "Sicoob",
+   "taxa_juros_aa_pct": 11.84
+  },
+  {
+   "periodo_inicio": "2026-05-01",
+   "periodo_fim": "2026-05-31",
+   "instituicao": "Sicredi",
+   "taxa_juros_aa_pct": 11.27
+  },
+  {
+   "periodo_inicio": "2026-06-01",
+   "periodo_fim": "2026-06-30",
+   "instituicao": "Banco Inter",
+   "taxa_juros_aa_pct": 12.93
+  },
+  {
+   "periodo_inicio": "2026-06-01",
+   "periodo_fim": "2026-06-30",
+   "instituicao": "Banco do Brasil",
+   "taxa_juros_aa_pct": 14.38
+  },
+  {
+   "periodo_inicio": "2026-06-01",
+   "periodo_fim": "2026-06-30",
+   "instituicao": "Banrisul",
+   "taxa_juros_aa_pct": 9.78
+  },
+  {
+   "periodo_inicio": "2026-06-01",
+   "periodo_fim": "2026-06-30",
+   "instituicao": "Bradesco",
+   "taxa_juros_aa_pct": 10.82
+  },
+  {
+   "periodo_inicio": "2026-06-01",
+   "periodo_fim": "2026-06-30",
+   "instituicao": "Caixa",
+   "taxa_juros_aa_pct": 12.05
+  },
+  {
+   "periodo_inicio": "2026-06-01",
+   "periodo_fim": "2026-06-30",
+   "instituicao": "Itaú",
+   "taxa_juros_aa_pct": 11.98
+  },
+  {
+   "periodo_inicio": "2026-06-01",
+   "periodo_fim": "2026-06-30",
+   "instituicao": "Santander",
+   "taxa_juros_aa_pct": 12.67
+  },
+  {
+   "periodo_inicio": "2026-06-01",
+   "periodo_fim": "2026-06-30",
+   "instituicao": "Sicoob",
+   "taxa_juros_aa_pct": 11.51
+  },
+  {
+   "periodo_inicio": "2026-06-01",
+   "periodo_fim": "2026-06-30",
+   "instituicao": "Sicredi",
+   "taxa_juros_aa_pct": 11.13
+  },
+  {
+   "periodo_inicio": "2026-07-01",
+   "periodo_fim": "2026-07-31",
+   "instituicao": "Banco Inter",
+   "taxa_juros_aa_pct": 12.5
+  },
+  {
+   "periodo_inicio": "2026-07-01",
+   "periodo_fim": "2026-07-31",
+   "instituicao": "Banco do Brasil",
+   "taxa_juros_aa_pct": 14.42
+  },
+  {
+   "periodo_inicio": "2026-07-01",
+   "periodo_fim": "2026-07-31",
+   "instituicao": "Banrisul",
+   "taxa_juros_aa_pct": 9.37
+  },
+  {
+   "periodo_inicio": "2026-07-01",
+   "periodo_fim": "2026-07-31",
+   "instituicao": "Bradesco",
+   "taxa_juros_aa_pct": 12.29
+  },
+  {
+   "periodo_inicio": "2026-07-01",
+   "periodo_fim": "2026-07-31",
+   "instituicao": "Caixa",
+   "taxa_juros_aa_pct": 12.12
+  },
+  {
+   "periodo_inicio": "2026-07-01",
+   "periodo_fim": "2026-07-31",
+   "instituicao": "Itaú",
+   "taxa_juros_aa_pct": 12.01
+  },
+  {
+   "periodo_inicio": "2026-07-01",
+   "periodo_fim": "2026-07-31",
+   "instituicao": "Santander",
+   "taxa_juros_aa_pct": 12.29
+  },
+  {
+   "periodo_inicio": "2026-07-01",
+   "periodo_fim": "2026-07-31",
+   "instituicao": "Sicoob",
+   "taxa_juros_aa_pct": 10.84
+  },
+  {
+   "periodo_inicio": "2026-07-01",
+   "periodo_fim": "2026-07-31",
+   "instituicao": "Sicredi",
+   "taxa_juros_aa_pct": 11.13
+  },
+  {
+   "periodo_inicio": "2026-08-01",
+   "periodo_fim": "2026-08-31",
+   "instituicao": "Banco Inter",
+   "taxa_juros_aa_pct": 12.47
+  },
+  {
+   "periodo_inicio": "2026-08-01",
+   "periodo_fim": "2026-08-31",
+   "instituicao": "Banco do Brasil",
+   "taxa_juros_aa_pct": 14.51
+  },
+  {
+   "periodo_inicio": "2026-08-01",
+   "periodo_fim": "2026-08-31",
+   "instituicao": "Banrisul",
+   "taxa_juros_aa_pct": 9.56
+  },
+  {
+   "periodo_inicio": "2026-08-01",
+   "periodo_fim": "2026-08-31",
+   "instituicao": "Bradesco",
+   "taxa_juros_aa_pct": 12.3
+  },
+  {
+   "periodo_inicio": "2026-08-01",
+   "periodo_fim": "2026-08-31",
+   "instituicao": "Caixa",
+   "taxa_juros_aa_pct": 12.12
+  },
+  {
+   "periodo_inicio": "2026-08-01",
+   "periodo_fim": "2026-08-31",
+   "instituicao": "Itaú",
+   "taxa_juros_aa_pct": 12.06
+  },
+  {
+   "periodo_inicio": "2026-08-01",
+   "periodo_fim": "2026-08-31",
+   "instituicao": "Santander",
+   "taxa_juros_aa_pct": 12.29
+  },
+  {
+   "periodo_inicio": "2026-08-01",
+   "periodo_fim": "2026-08-31",
+   "instituicao": "Sicoob",
+   "taxa_juros_aa_pct": 10.89
+  },
+  {
+   "periodo_inicio": "2026-08-01",
+   "periodo_fim": "2026-08-31",
+   "instituicao": "Sicredi",
+   "taxa_juros_aa_pct": 11.45
+  },
+  {
+   "periodo_inicio": "2026-09-01",
+   "periodo_fim": "2026-09-30",
+   "instituicao": "Banco Inter",
+   "taxa_juros_aa_pct": 12.91
+  },
+  {
+   "periodo_inicio": "2026-09-01",
+   "periodo_fim": "2026-09-30",
+   "instituicao": "Banco do Brasil",
+   "taxa_juros_aa_pct": 14.49
+  },
+  {
+   "periodo_inicio": "2026-09-01",
+   "periodo_fim": "2026-09-30",
+   "instituicao": "Banrisul",
+   "taxa_juros_aa_pct": 9.39
+  },
+  {
+   "periodo_inicio": "2026-09-01",
+   "periodo_fim": "2026-09-30",
+   "instituicao": "Bradesco",
+   "taxa_juros_aa_pct": 12.24
+  },
+  {
+   "periodo_inicio": "2026-09-01",
+   "periodo_fim": "2026-09-30",
+   "instituicao": "Caixa",
+   "taxa_juros_aa_pct": 12.05
+  },
+  {
+   "periodo_inicio": "2026-09-01",
+   "periodo_fim": "2026-09-30",
+   "instituicao": "Itaú",
+   "taxa_juros_aa_pct": 12.14
+  },
+  {
+   "periodo_inicio": "2026-09-01",
+   "periodo_fim": "2026-09-30",
+   "instituicao": "Santander",
+   "taxa_juros_aa_pct": 12.31
+  },
+  {
+   "periodo_inicio": "2026-09-01",
+   "periodo_fim": "2026-09-30",
+   "instituicao": "Sicoob",
+   "taxa_juros_aa_pct": 10.79
+  },
+  {
+   "periodo_inicio": "2026-09-01",
+   "periodo_fim": "2026-09-30",
+   "instituicao": "Sicredi",
+   "taxa_juros_aa_pct": 11.56
+  }
+ ]
+}
