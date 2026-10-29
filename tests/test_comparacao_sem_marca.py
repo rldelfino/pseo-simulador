@@ -97,3 +97,57 @@ def test_pagina_de_comparacao_tem_titulo_unico_e_numeros_proprios():
             assert len(t) <= 60 and len(d) <= 160 and not d.endswith(("...", "…")), (t, d)
             titulos.add(t); descs.add(d)
     assert len(titulos) == len(descs) and len(titulos) > 100
+
+
+# ---------------------------------------------------------------------------
+# Histórico de taxas, comparador com evolução e dados abertos
+# ---------------------------------------------------------------------------
+
+@pytest.mark.skipif(not gerada, reason="paginas_seo/ não gerada")
+def test_dados_abertos_so_tem_linhas_do_bacen_e_batem_com_o_historico():
+    import csv
+    from historico_taxas import ler_historico
+    from bancos import nome_exibicao
+    hist = ler_historico()
+    assert hist, "historico_taxas.csv vazio"
+    assert {r["banco"] for r in hist} <= {"Caixa", "Banco do Brasil", "Santander", "Itau", "Bradesco", "Banco Inter", "Sicredi", "Sicoob", "Banrisul"}
+    with open(os.path.join(PASTA_SAIDA, "dados", "taxas-financiamento-imobiliario.csv"), encoding="utf-8") as f:
+        linhas = list(csv.DictReader(f))
+    assert len(linhas) == len(hist)
+    nomes = {l["instituicao"] for l in linhas}
+    assert "BRB" not in nomes and "Poupex" not in nomes  # taxa estimada, não é dado do BACEN
+    assert all(2.0 <= float(l["taxa_juros_aa_pct"]) <= 40.0 for l in linhas)
+    for nome in ("taxas-financiamento-imobiliario.json", "datapackage.json", "README.md"):
+        assert os.path.isfile(os.path.join(PASTA_SAIDA, "dados", nome)), nome
+
+
+@pytest.mark.skipif(not gerada, reason="paginas_seo/ não gerada")
+def test_pagina_dados_abertos_tem_schema_dataset_e_esta_no_sitemap():
+    import json
+    html = open(os.path.join(PASTA_SAIDA, "dados-abertos.html"), encoding="utf-8").read()
+    blocos = [json.loads(b) for b in re.findall(r'<script type="application/ld\+json">\s*(.*?)\s*</script>', html, re.S)]
+    ds = [b for b in blocos if b.get("@type") == "Dataset"]
+    assert ds and ds[0]["license"] and ds[0]["distribution"] and ds[0]["temporalCoverage"]
+    sitemap = open(os.path.join(PASTA_SAIDA, "sitemap.xml"), encoding="utf-8").read()
+    assert "/dados-abertos</loc>" in sitemap
+
+
+@pytest.mark.skipif(not gerada, reason="paginas_seo/ não gerada")
+def test_comparador_tem_mes_no_titulo_evolucao_e_faq_com_numeros():
+    html = open(os.path.join(PASTA_SAIDA, "comparador-bancos.html"), encoding="utf-8").read()
+    titulo = re.search(r"<title>(.*?)</title>", html).group(1)
+    assert len(titulo) <= 60 and re.search(r"[a-z]{3}/\d{4}", titulo), titulo
+    assert "Como as taxas evoluíram" in html
+    assert "maior queda na taxa média contratada" in html
+
+
+def test_resumo_historico_calcula_variacao_e_extremos():
+    from gerador import resumo_historico
+    h = []
+    for i, (mes, a, b) in enumerate([("2026-01-01", 10.0, 12.0), ("2026-02-01", 9.5, 12.5)]):
+        h += [{"inicio_periodo": mes, "fim_periodo": mes, "banco": "Caixa", "taxa_aa": a},
+              {"inicio_periodo": mes, "fim_periodo": mes, "banco": "Itau", "taxa_aa": b}]
+    r = resumo_historico(h)
+    assert r["maior_queda"]["banco"] == "Caixa" and r["maior_queda"]["variacao"] == pytest.approx(-0.5)
+    assert r["maior_alta"]["banco"] == "Itau" and r["maior_alta"]["variacao"] == pytest.approx(0.5)
+    assert resumo_historico(h[:2]) is None  # um mês só: sem evolução

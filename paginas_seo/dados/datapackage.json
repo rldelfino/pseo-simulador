@@ -1,0 +1,58 @@
+{
+ "name": "taxas-financiamento-imobiliario",
+ "title": "Taxas médias de juros do financiamento imobiliário por banco (BACEN)",
+ "description": "Taxa média mensal de juros efetivamente contratada no financiamento imobiliário (aquisição de imóveis, pessoa física, taxa pré-fixada), por banco, em % ao ano, segundo o Banco Central do Brasil. Cobre 24 meses (out/24 a set/26) e 9 instituições.",
+ "licenses": [
+  {
+   "name": "CC-BY-4.0",
+   "path": "https://creativecommons.org/licenses/by/4.0/deed.pt-br",
+   "title": "CC BY 4.0"
+  }
+ ],
+ "sources": [
+  {
+   "title": "Banco Central do Brasil — Taxas de juros por instituição financeira",
+   "path": "https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201"
+  }
+ ],
+ "contributors": [
+  {
+   "title": "Datalab Global",
+   "role": "publisher",
+   "path": "https://simulador.datalabglobal.com/"
+  }
+ ],
+ "resources": [
+  {
+   "name": "taxas",
+   "path": "taxas-financiamento-imobiliario.csv",
+   "format": "csv",
+   "mediatype": "text/csv",
+   "encoding": "utf-8",
+   "schema": {
+    "fields": [
+     {
+      "name": "periodo_inicio",
+      "type": "date",
+      "description": "Primeiro dia do mês de referência"
+     },
+     {
+      "name": "periodo_fim",
+      "type": "date",
+      "description": "Último dia do mês de referência"
+     },
+     {
+      "name": "instituicao",
+      "type": "string",
+      "description": "Banco (nome comercial)"
+     },
+     {
+      "name": "taxa_juros_aa_pct",
+      "type": "number",
+      "description": "Taxa média de juros contratada, % ao ano"
+     }
+    ]
+   }
+  }
+ ]
+}

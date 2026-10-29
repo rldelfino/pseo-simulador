@@ -9,6 +9,7 @@ Total de páginas de simulação: 448
 - [Home / lista de bancos](https://simulador.datalabglobal.com/)
 - [Comparativo de taxas entre os 11 bancos](https://simulador.datalabglobal.com/comparador-bancos)
 - [Financiamento imobiliário: parcela por valor e prazo](https://simulador.datalabglobal.com/financiamento-imobiliario)
+- [Dados abertos: taxas de financiamento por banco, série mensal em CSV e JSON](https://simulador.datalabglobal.com/dados-abertos)
 - [Sitemap completo](https://simulador.datalabglobal.com/sitemap.xml)
 
 ## Sobre os dados

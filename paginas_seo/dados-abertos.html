@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dados abertos: taxas de financiamento imobiliário por banco</title>
+    <meta name="description" content="Baixe grátis a série de 24 meses de taxas de juros do financiamento imobiliário por banco, do Banco Central, em CSV e JSON (CC BY 4.0).">
+    <link rel="canonical" href="https://simulador.datalabglobal.com/dados-abertos" />
+    <link rel="icon" href="favicon.ico?v=20261012" sizes="any">
+    <link rel="icon" href="favicon-32.png?v=20261012" type="image/png" sizes="32x32">
+    <link rel="icon" href="favicon-192.png?v=20261012" type="image/png" sizes="192x192">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261012">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="Datalab Global">
+    <meta property="og:title" content="Dados abertos: taxas de financiamento imobiliário por banco | Datalab Global">
+    <meta property="og:description" content="Baixe grátis a série de 24 meses de taxas de juros do financiamento imobiliário por banco, do Banco Central, em CSV e JSON (CC BY 4.0).">
+    <meta property="og:url" content="https://simulador.datalabglobal.com/dados-abertos">
+    <meta property="og:image" content="https://simulador.datalabglobal.com/og-image.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Dados abertos: taxas de financiamento imobiliário por banco | Datalab Global">
+    <meta name="twitter:description" content="Baixe grátis a série de 24 meses de taxas de juros do financiamento imobiliário por banco, do Banco Central, em CSV e JSON (CC BY 4.0).">
+    <meta name="twitter:image" content="https://simulador.datalabglobal.com/og-image.png">
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap"></noscript>
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5414184968223405" crossorigin="anonymous"></script>
+
+    <script type="application/ld+json">
+    {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Datalab Global", "item": "https://simulador.datalabglobal.com/"}, {"@type": "ListItem", "position": 2, "name": "Dados abertos", "item": "https://simulador.datalabglobal.com/dados-abertos"}]}
+    </script>
+    <script type="application/ld+json">
+    {"@context": "https://schema.org", "@type": "Dataset", "name": "Taxas médias de juros do financiamento imobiliário por banco (BACEN)", "description": "Taxa média mensal de juros efetivamente contratada no financiamento imobiliário (aquisição de imóveis, pessoa física, taxa pré-fixada), por banco, em % ao ano, segundo o Banco Central do Brasil. Cobre 24 meses (out/24 a set/26) e 9 instituições.", "url": "https://simulador.datalabglobal.com/dados-abertos", "inLanguage": "pt-BR", "license": "https://creativecommons.org/licenses/by/4.0/deed.pt-br", "isAccessibleForFree": true, "creator": {"@type": "Organization", "name": "Datalab Global", "url": "https://simulador.datalabglobal.com/"}, "isBasedOn": "https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201", "dateModified": "2026-10-05", "temporalCoverage": "2024-10-01/2026-09-30", "spatialCoverage": {"@type": "Country", "name": "Brasil"}, "variableMeasured": ["Taxa média de juros contratada (% ao ano)"], "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://simulador.datalabglobal.com/dados/taxas-financiamento-imobiliario.csv"}, {"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://simulador.datalabglobal.com/dados/taxas-financiamento-imobiliario.json"}]}
+    </script>
+</head>
+<body class="antialiased flex flex-col min-h-screen">
+    <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <a href="/" class="flex items-center">
+                    <img src="logo-full.png" alt="Datalab Global" width="122" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
+                </a>
+                <div class="flex items-center gap-1">
+                    <a href="/aprenda" aria-label="Aprenda" class="inline-flex items-center gap-1.5 -my-2.5 p-2.5 text-xs text-slate-400 hover:text-emerald-400 transition-colors"><svg class="inline-block align-[-0.125em]" style="width:1em;height:1em" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 5h7a3 3 0 0 1 3 3v12a2.5 2.5 0 0 0-2.5-2.5H2z"></path><path d="M22 5h-7a3 3 0 0 0-3 3v12a2.5 2.5 0 0 1 2.5-2.5H22z"></path></svg> <span class="hidden sm:inline">Aprenda</span></a>
+                    <div class="hidden md:flex items-center">
+                        <a href="https://app.financiatudo.com.br/financiamento-de-imoveis/chave/8940d282b765cbf97b6df55fd1eb0b52b18b2f6e" target="_blank" rel="noopener sponsored" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-6 py-2.5 rounded-full font-bold transition-all text-sm flex items-center">
+                            Fazer Análise Grátis <svg class="inline-block align-[-0.125em] ml-2 text-sm" style="width:1em;height:1em" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="py-12 md:py-16 relative z-10 text-center">
+        <h1 class="text-3xl md:text-5xl font-serif text-white mb-4 leading-tight px-4">Dados abertos: taxas de financiamento imobiliário</h1>
+        <p class="text-slate-400 text-base md:text-lg font-light tracking-wide max-w-3xl mx-auto px-4">
+            Série mensal de 24 meses, por banco, com dados do Banco Central. Livre para usar, com citação da fonte (CC BY 4.0).
+        </p>
+    </header>
+
+    <main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 flex-grow w-full relative z-10">
+        <section>
+            <h2 class="text-2xl font-serif text-white mb-3">Baixar</h2>
+            <ul class="space-y-2 text-sm">
+                <li><a href="dados/taxas-financiamento-imobiliario.csv" download class="text-emerald-400 underline">taxas-financiamento-imobiliario.csv</a> <span class="text-slate-400">· planilha (UTF-8, vírgula)</span></li>
+                <li><a href="dados/taxas-financiamento-imobiliario.json" download class="text-emerald-400 underline">taxas-financiamento-imobiliario.json</a> <span class="text-slate-400">· para programação</span></li>
+                <li><a href="dados/datapackage.json" download class="text-emerald-400 underline">datapackage.json</a> <span class="text-slate-400">· metadados (Frictionless Data)</span></li>
+                <li><a href="dados/README.md" class="text-emerald-400 underline">README.md</a> <span class="text-slate-400">· descrição e como citar</span></li>
+            </ul>
+        </section>
+
+        <section class="mt-10">
+            <h2 class="text-2xl font-serif text-white mb-3">O que há nos dados</h2>
+            <p class="text-slate-300 text-sm font-light leading-relaxed">Taxa média mensal de juros efetivamente contratada no financiamento imobiliário (aquisição de imóveis, pessoa física, taxa pré-fixada), por banco, em % ao ano, segundo o Banco Central do Brasil. Cobre 24 meses (out/24 a set/26) e 9 instituições.</p>
+            <table class="w-full text-xs text-slate-300 mt-4 rounded-xl border border-white/10">
+                <thead class="text-[10px] uppercase tracking-widest text-slate-400"><tr><th scope="col" class="px-3 py-2 text-left font-medium">Coluna</th><th scope="col" class="px-3 py-2 text-left font-medium">Descrição</th></tr></thead>
+                <tbody>
+                    <tr class="border-t border-white/5"><th scope="row" class="px-3 py-2 text-left font-mono font-normal">periodo_inicio</th><td class="px-3 py-2">Primeiro dia do mês de referência (AAAA-MM-DD)</td></tr>
+                    <tr class="border-t border-white/5"><th scope="row" class="px-3 py-2 text-left font-mono font-normal">periodo_fim</th><td class="px-3 py-2">Último dia do mês de referência</td></tr>
+                    <tr class="border-t border-white/5"><th scope="row" class="px-3 py-2 text-left font-mono font-normal">instituicao</th><td class="px-3 py-2">Banco (nome comercial)</td></tr>
+                    <tr class="border-t border-white/5"><th scope="row" class="px-3 py-2 text-left font-mono font-normal">taxa_juros_aa_pct</th><td class="px-3 py-2">Taxa média de juros contratada, em % ao ano</td></tr>
+                </tbody>
+            </table>
+            <p class="text-slate-400 text-xs font-light leading-relaxed mt-3">São médias do que foi efetivamente contratado, não ofertas: a sua proposta pode ser diferente. BRB e Poupex não constam porque o Banco Central não os cobre nesta modalidade.</p>
+        </section>
+
+        <section class="mt-10">
+            <h2 class="text-2xl font-serif text-white mb-3">Como citar</h2>
+            <p class="text-slate-300 text-sm font-light leading-relaxed bg-white/5 border border-white/10 rounded-xl p-4">Datalab Global. Taxas médias de juros do financiamento imobiliário por banco (dados do BACEN). https://simulador.datalabglobal.com/dados-abertos, acesso em AAAA-MM-DD.</p>
+            <p class="text-slate-400 text-xs font-light mt-3">Licença <a href="https://creativecommons.org/licenses/by/4.0/deed.pt-br" rel="noopener" class="underline">CC BY 4.0</a>. Fonte original: <a href="https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201" rel="noopener" class="underline">Banco Central do Brasil</a>. Atualizado em 05/10/2026.</p>
+        </section>
+
+        <section class="mt-10">
+            <h2 class="text-2xl font-serif text-white mb-3">Exemplo em Python</h2>
+            <pre class="bg-slate-900/60 border border-white/10 rounded-xl p-4 text-xs text-slate-300 overflow-x-auto"><code>import pandas as pd
+df = pd.read_csv("https://simulador.datalabglobal.com/dados/taxas-financiamento-imobiliario.csv", parse_dates=["periodo_inicio"])
+df.pivot(index="periodo_inicio", columns="instituicao", values="taxa_juros_aa_pct").tail(6)</code></pre>
+        </section>
+
+        <section class="mt-16">
+            <h2 class="text-2xl font-serif text-white mb-2">Como as taxas evoluíram nos últimos 6 meses</h2>
+            <p class="text-slate-400 text-xs font-light leading-relaxed mb-4">Taxa média mensal de juros efetivamente contratada no financiamento imobiliário (% ao ano), por banco, segundo o Banco Central. É a taxa praticada, não uma oferta: a sua proposta pode ser diferente.</p>
+            <div class="overflow-x-auto rounded-xl border border-white/10">
+                <table class="w-full text-xs text-slate-300">
+                    <thead class="text-[10px] uppercase tracking-widest text-slate-400"><tr><th scope="col" class="px-2 py-2 text-left font-medium">Banco</th><th scope="col" class="px-2 py-2 text-right font-medium whitespace-nowrap">abr/26</th><th scope="col" class="px-2 py-2 text-right font-medium whitespace-nowrap">mai/26</th><th scope="col" class="px-2 py-2 text-right font-medium whitespace-nowrap">jun/26</th><th scope="col" class="px-2 py-2 text-right font-medium whitespace-nowrap">jul/26</th><th scope="col" class="px-2 py-2 text-right font-medium whitespace-nowrap">ago/26</th><th scope="col" class="px-2 py-2 text-right font-medium whitespace-nowrap">set/26</th><th scope="col" class="px-2 py-2 text-right font-medium whitespace-nowrap">Variação</th></tr></thead>
+                    <tbody><tr class="border-t border-white/5"><th scope="row" class="px-2 py-2 text-left font-medium text-white whitespace-nowrap">Banrisul</th><td class="px-2 py-2 text-right whitespace-nowrap">10,71</td><td class="px-2 py-2 text-right whitespace-nowrap">10,52</td><td class="px-2 py-2 text-right whitespace-nowrap">9,78</td><td class="px-2 py-2 text-right whitespace-nowrap">9,37</td><td class="px-2 py-2 text-right whitespace-nowrap">9,56</td><td class="px-2 py-2 text-right whitespace-nowrap">9,39</td><td class="px-2 py-2 text-right font-bold whitespace-nowrap text-emerald-400">−1,32 p.p.</td></tr><tr class="border-t border-white/5"><th scope="row" class="px-2 py-2 text-left font-medium text-white whitespace-nowrap">Sicoob</th><td class="px-2 py-2 text-right whitespace-nowrap">11,69</td><td class="px-2 py-2 text-right whitespace-nowrap">11,84</td><td class="px-2 py-2 text-right whitespace-nowrap">11,51</td><td class="px-2 py-2 text-right whitespace-nowrap">10,84</td><td class="px-2 py-2 text-right whitespace-nowrap">10,89</td><td class="px-2 py-2 text-right whitespace-nowrap">10,79</td><td class="px-2 py-2 text-right font-bold whitespace-nowrap text-emerald-400">−0,90 p.p.</td></tr><tr class="border-t border-white/5"><th scope="row" class="px-2 py-2 text-left font-medium text-white whitespace-nowrap">Sicredi</th><td class="px-2 py-2 text-right whitespace-nowrap">11,72</td><td class="px-2 py-2 text-right whitespace-nowrap">11,27</td><td class="px-2 py-2 text-right whitespace-nowrap">11,13</td><td class="px-2 py-2 text-right whitespace-nowrap">11,13</td><td class="px-2 py-2 text-right whitespace-nowrap">11,45</td><td class="px-2 py-2 text-right whitespace-nowrap">11,56</td><td class="px-2 py-2 text-right font-bold whitespace-nowrap text-emerald-400">−0,16 p.p.</td></tr><tr class="border-t border-white/5"><th scope="row" class="px-2 py-2 text-left font-medium text-white whitespace-nowrap">Caixa</th><td class="px-2 py-2 text-right whitespace-nowrap">12,04</td><td class="px-2 py-2 text-right whitespace-nowrap">12,00</td><td class="px-2 py-2 text-right whitespace-nowrap">12,05</td><td class="px-2 py-2 text-right whitespace-nowrap">12,12</td><td class="px-2 py-2 text-right whitespace-nowrap">12,12</td><td class="px-2 py-2 text-right whitespace-nowrap">12,05</td><td class="px-2 py-2 text-right font-bold whitespace-nowrap text-rose-400">+0,01 p.p.</td></tr><tr class="border-t border-white/5"><th scope="row" class="px-2 py-2 text-left font-medium text-white whitespace-nowrap">Itaú</th><td class="px-2 py-2 text-right whitespace-nowrap">12,10</td><td class="px-2 py-2 text-right whitespace-nowrap">12,04</td><td class="px-2 py-2 text-right whitespace-nowrap">11,98</td><td class="px-2 py-2 text-right whitespace-nowrap">12,01</td><td class="px-2 py-2 text-right whitespace-nowrap">12,06</td><td class="px-2 py-2 text-right whitespace-nowrap">12,14</td><td class="px-2 py-2 text-right font-bold whitespace-nowrap text-rose-400">+0,04 p.p.</td></tr><tr class="border-t border-white/5"><th scope="row" class="px-2 py-2 text-left font-medium text-white whitespace-nowrap">Bradesco</th><td class="px-2 py-2 text-right whitespace-nowrap">12,28</td><td class="px-2 py-2 text-right whitespace-nowrap">12,27</td><td class="px-2 py-2 text-right whitespace-nowrap">10,82</td><td class="px-2 py-2 text-right whitespace-nowrap">12,29</td><td class="px-2 py-2 text-right whitespace-nowrap">12,30</td><td class="px-2 py-2 text-right whitespace-nowrap">12,24</td><td class="px-2 py-2 text-right font-bold whitespace-nowrap text-emerald-400">−0,04 p.p.</td></tr><tr class="border-t border-white/5"><th scope="row" class="px-2 py-2 text-left font-medium text-white whitespace-nowrap">Santander</th><td class="px-2 py-2 text-right whitespace-nowrap">12,50</td><td class="px-2 py-2 text-right whitespace-nowrap">12,54</td><td class="px-2 py-2 text-right whitespace-nowrap">12,67</td><td class="px-2 py-2 text-right whitespace-nowrap">12,29</td><td class="px-2 py-2 text-right whitespace-nowrap">12,29</td><td class="px-2 py-2 text-right whitespace-nowrap">12,31</td><td class="px-2 py-2 text-right font-bold whitespace-nowrap text-emerald-400">−0,19 p.p.</td></tr><tr class="border-t border-white/5"><th scope="row" class="px-2 py-2 text-left font-medium text-white whitespace-nowrap">Banco Inter</th><td class="px-2 py-2 text-right whitespace-nowrap">11,79</td><td class="px-2 py-2 text-right whitespace-nowrap">12,74</td><td class="px-2 py-2 text-right whitespace-nowrap">12,93</td><td class="px-2 py-2 text-right whitespace-nowrap">12,50</td><td class="px-2 py-2 text-right whitespace-nowrap">12,47</td><td class="px-2 py-2 text-right whitespace-nowrap">12,91</td><td class="px-2 py-2 text-right font-bold whitespace-nowrap text-rose-400">+1,12 p.p.</td></tr><tr class="border-t border-white/5"><th scope="row" class="px-2 py-2 text-left font-medium text-white whitespace-nowrap">Banco do Brasil</th><td class="px-2 py-2 text-right whitespace-nowrap">15,52</td><td class="px-2 py-2 text-right whitespace-nowrap">14,76</td><td class="px-2 py-2 text-right whitespace-nowrap">14,38</td><td class="px-2 py-2 text-right whitespace-nowrap">14,42</td><td class="px-2 py-2 text-right whitespace-nowrap">14,51</td><td class="px-2 py-2 text-right whitespace-nowrap">14,49</td><td class="px-2 py-2 text-right font-bold whitespace-nowrap text-emerald-400">−1,03 p.p.</td></tr></tbody>
+                </table>
+            </div>
+            <p class="text-slate-500 text-[11px] mt-3">Bancos que o BACEN não cobre nesta modalidade (BRB e Poupex) não entram na série. Fonte: <a href="https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201" rel="noopener" class="underline">Banco Central do Brasil</a>.</p>
+        </section>
+
+        <p class="mt-10 text-center text-xs text-slate-400"><a href="comparador-bancos" class="text-emerald-400 underline">Ver o comparativo de taxas entre os 11 bancos →</a></p>
+    </main>
+
+    <footer class="border-t border-white/5 py-8 mt-10">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de Satori Soluções Comerciais LTDA · CNPJ 63.998.502/0001-73.</p>
+            <div class="flex flex-wrap items-center justify-center gap-4">
+                <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
+                <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
+                <a href="https://dados.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Lente B2B: dados de empresas</a>
+                <a href="/aprenda" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
+                <a href="/sobre" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
