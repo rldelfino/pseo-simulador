@@ -39,6 +39,24 @@ ARQUIVO_CACHE_TAXAS = 'taxas_cache.json'
 # razão social nem CNPJ; o hub mostrava. Texto copiado do hub, não inventado.
 EMPRESA_RODAPE = "Satori Soluções Comerciais LTDA · CNPJ 63.998.502/0001-73"
 
+# Prazos (em meses) cujas páginas "banco x valor x prazo" são INDEXÁVEIS.
+# Achado real (auditoria de SEO, 29/out/2026, Search Console): 98% das
+# impressões do site vinham das páginas de 360 e 420 meses; as ~1.230
+# páginas de 120 a 300 meses (4 prazos x 28 valores x 11 bancos) somaram ~40
+# impressões. O simulador deixa o usuário trocar o prazo na própria página,
+# então uma URL por prazo curto é duplicação. Essas páginas continuam
+# existindo e funcionando (links internos, slider), mas saem do sitemap e
+# levam <meta robots="noindex,follow">; a demanda por prazo curto passa a ser
+# atendida pelas páginas de comparação sem marca (financiamento-imobiliario-
+# {valor}-mil-{anos}-anos), que respondem à busca de verdade ("financiar 200
+# mil em 20 anos"). Reversível: basta incluir o prazo aqui e regerar.
+PRAZOS_INDEXAVEIS = (360, 420)
+
+# Grade das páginas de comparação sem marca de banco.
+VALORES_COMPARACAO = tuple(range(150_000, 1_000_001, 50_000))
+ANOS_COMPARACAO = (10, 15, 20, 25, 30, 35)
+MIN_BANCOS_COMPARACAO = 3  # não gera a página se menos bancos oferecem aquele prazo
+
 _URL_GOOGLE_FONTS = (
     "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700"
     "&family=Inter:wght@300;400;500;600;700&display=swap"
@@ -172,7 +190,7 @@ def construir_bancos_json(taxas_atuais):
 # gerado, não foi perdido.
 
 
-def render_head_boilerplate(titulo_pagina, meta_description, url_canonica, dominio, json_ld_blocos, meta_keywords=None, titulo_social=None):
+def render_head_boilerplate(titulo_pagina, meta_description, url_canonica, dominio, json_ld_blocos, meta_keywords=None, titulo_social=None, robots=None):
     """Bloco <head> compartilhado (charset/viewport/OG/Twitter Card/
     AdSense/stylesheets) — extraído em set/2026 (auditoria pedida pelo
     Rodolfo) porque estava colado quase idêntico em 4 funções geradoras
@@ -217,6 +235,7 @@ def render_head_boilerplate(titulo_pagina, meta_description, url_canonica, domin
         '    <meta name="viewport" content="width=device-width, initial-scale=1.0">',
         f'    <title>{titulo_pagina}</title>',
         f'    <meta name="description" content="{meta_description}">',
+        f'    <meta name="robots" content="{robots}">' if robots else None,
         f'    <meta name="keywords" content="{meta_keywords}">' if meta_keywords else None,
         f'    <link rel="canonical" href="{url_canonica}" />',
         # Achado real (06/set/2026, print do usuário comparando nosso
@@ -703,6 +722,26 @@ def formatar_reais(valor):
     return f"R$ {valor:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
 
+def slug_comparacao(valor_imovel, anos):
+    """Slug da página de comparação sem marca (ex: 300000, 30 ->
+    'financiamento-imobiliario-300-mil-30-anos')."""
+    return f"financiamento-imobiliario-{int(valor_imovel) // 1000}-mil-{anos}-anos"
+
+
+def bancos_com_prazo(prazo_meses):
+    """Bancos que realmente oferecem (pelo menos) esse prazo — a comparação
+    nunca mostra um banco com prazo menor disfarçado de prazo maior."""
+    return [b for b, regra in BANCOS.items() if regra["prazo_max"] >= prazo_meses]
+
+
+def pagina_comparacao_existe(valor_imovel, anos):
+    return (
+        int(valor_imovel) in VALORES_COMPARACAO
+        and anos in ANOS_COMPARACAO
+        and len(bancos_com_prazo(anos * 12)) >= MIN_BANCOS_COMPARACAO
+    )
+
+
 def slug_hub_banco(banco):
     """Slug da página-hub do banco (ex: 'C6 Bank' -> 'banco-c6-bank'). Mesma
     convenção de normalização (lower + espaço->hífen) já usada em outros
@@ -894,6 +933,12 @@ def gerar_paginas_pseo():
             # à dica), mas sem nomear concorrente nem linkar pra fora — o
             # CTA da caixinha aponta pra Financia Tudo.
             texto_comparacao_mercado = ""
+            link_comparacao_html = ""
+            if pagina_comparacao_existe(valor_imovel, anos):
+                link_comparacao_html = (
+                    f'<a href="{slug_comparacao(valor_imovel, anos)}" class="text-emerald-400 underline hover:text-emerald-300 '
+                    f'block mt-3 text-xs font-semibold">Comparar {valor_curto} em {anos} anos em todos os bancos →</a>'
+                )
             if ranking_bancos:
                 cet_atual = comparativo['cet_sac']
                 cet_atual_fmt = f"{cet_atual:.2f}".replace('.', ',')
@@ -938,6 +983,7 @@ def gerar_paginas_pseo():
                         <div class="w-full md:w-3/5">{grafico_html}</div>
                         <div class="w-full md:w-2/5 md:border-l md:border-emerald-500/20 md:pl-6">
                             <p class="text-slate-300 text-xs font-light leading-relaxed" id="texto_resumo_mercado">{texto_resumo}</p>
+                            {link_comparacao_html}
                         </div>
                     </div>
                 </div>'''
@@ -1129,7 +1175,7 @@ def gerar_paginas_pseo():
             html_content = f'''<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-{render_head_boilerplate(titulo_pagina, meta_description, url_canonica, dominio, [schema_faq, schema_breadcrumb, schema_software, schema_howto], meta_keywords)}
+{render_head_boilerplate(titulo_pagina, meta_description, url_canonica, dominio, [schema_faq, schema_breadcrumb, schema_software, schema_howto], meta_keywords, robots=(None if prazo in PRAZOS_INDEXAVEIS else 'noindex,follow'))}
 </head>
 <body class="antialiased flex flex-col">
     <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
@@ -1548,7 +1594,9 @@ def gerar_paginas_pseo():
             caminho_arquivo = os.path.join(pasta_saida, f"{slug}.html")
             with open(caminho_arquivo, "w", encoding="utf-8") as f:
                 f.write(corrigir_concordancia(html_content))
-            urls_sitemap.append(url_canonica)
+            # só entra no sitemap o que é indexável (ver PRAZOS_INDEXAVEIS)
+            if prazo in PRAZOS_INDEXAVEIS:
+                urls_sitemap.append(url_canonica)
 
     # Páginas-hub por banco + página comparativa entre os 15 — capturam
     # buscas "guarda-chuva" (ex: "financiamento imobiliário caixa",
@@ -1559,6 +1607,7 @@ def gerar_paginas_pseo():
     # pro hub do seu banco (ver link real no cabeçalho, acima).
     urls_hub = gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, dominio, taxas_atuais_por_banco)
     url_comparador = gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas_atuais_por_banco)
+    urls_comparacao = gerar_paginas_comparacao(pasta_saida, dominio, data_ultima_atualizacao, taxas_atuais_por_banco, lookup_paginas)
 
     gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao)
     url_sobre = gerar_pagina_sobre(pasta_saida, dominio)
@@ -1568,7 +1617,7 @@ def gerar_paginas_pseo():
     ]
     url_aprenda_hub = gerar_hub_aprenda(ARTIGOS_APRENDA, pasta_saida, dominio)
     gerar_sitemap(
-        urls_sitemap + urls_hub + [url_comparador, url_sobre, url_aprenda_hub] + urls_aprenda,
+        urls_sitemap + urls_hub + [url_comparador, url_sobre, url_aprenda_hub] + urls_comparacao + urls_aprenda,
         pasta_saida, dominio, data_ultima_atualizacao,
     )
     gerar_robots_txt(pasta_saida, dominio)
@@ -2001,6 +2050,10 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
             O CET (Custo Efetivo Total) já soma juros, seguros obrigatórios (MIP e DFI) e taxa de administração — é o número certo pra comparar bancos entre si, diferente da taxa de juros anunciada sozinha. Os valores acima são uma referência para {formatar_reais(VALOR_REF)} em {PRAZO_REF} meses; o CET real do seu financiamento depende do valor, prazo e entrada que você escolher — clique num banco acima pra ver as condições completas e simular o seu cenário.
         </p>
 
+        <p class="text-slate-300 text-sm font-light leading-relaxed mt-6 max-w-2xl">
+            Quer ver o comparativo para o seu valor e prazo? Consulte a <a href="financiamento-imobiliario" class="text-emerald-400 underline">tabela de financiamento imobiliário por valor e prazo</a>, de R$ 150 mil a R$ 1 milhão, em 10 a 35 anos.
+        </p>
+
         <div class="mt-16 bg-gradient-to-r from-emerald-600 to-emerald-900 rounded-3xl p-8 md:p-12 relative overflow-hidden shadow-[0_20px_50px_rgba(16,185,129,0.3)] border border-emerald-400/50">
             <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-[80px]"></div>
             <div class="flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
@@ -2072,6 +2125,395 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
         f.write(corrigir_concordancia(html_comparador))
 
     return url_canonica
+
+
+# ---------------------------------------------------------------------------
+# Páginas de comparação SEM marca de banco: "financiamento imobiliário de
+# 300 mil em 30 anos" — todos os bancos lado a lado, mesma condição.
+#
+# Por que existem (auditoria de SEO, 29/out/2026): 76% das buscas que o
+# Google mostrou citavam nome de banco ("simulador sicredi") e o CTR era
+# zero — quem busca isso quer o simulador do próprio banco. A busca sem
+# marca ("financiar 300 mil em 30 anos", "parcela de financiamento de 200
+# mil em 20 anos") é onde um site neutro tem o que oferecer: o comparativo.
+# Cada página traz números próprios (parcela, CET e total pago por banco para
+# aquele valor e prazo), não troca de variável em texto.
+# ---------------------------------------------------------------------------
+
+_CACHE_LINHAS_COMPARACAO = {}
+
+
+def _reais_inteiros(valor):
+    return f"R$ {valor:,.0f}".replace(",", ".")
+
+
+def _pct(valor):
+    return f"{valor:.2f}".replace(".", ",")
+
+
+def linhas_comparacao(valor_imovel, prazo_meses, taxas_atuais=None):
+    """Uma linha por banco que oferece o prazo, ordenada por CET (SAC).
+    Usa a ENTRADA MÍNIMA de cada banco (LTV próprio) e a taxa atual gravada
+    pelo ETL — mesma regra de comparar_todos_bancos. Cacheada porque o índice
+    e as páginas vizinhas reaproveitam os mesmos cenários."""
+    chave = (float(valor_imovel), prazo_meses, tuple(sorted((taxas_atuais or {}).items())))
+    if chave in _CACHE_LINHAS_COMPARACAO:
+        return _CACHE_LINHAS_COMPARACAO[chave]
+    linhas = []
+    for banco in bancos_com_prazo(prazo_meses):
+        regra = BANCOS[banco]
+        taxa = (taxas_atuais or {}).get(banco, regra["taxa_padrao"])
+        entrada = valor_imovel * (1 - regra["ltv"])
+        financiado = valor_imovel - entrada
+        r = calcular_sac_price(financiado, prazo_meses, taxa, valor_imovel)
+        linhas.append({
+            "banco": banco, "banco_exib": nome_exibicao(banco), "taxa": taxa,
+            "entrada": entrada, "entrada_perc": round((1 - regra["ltv"]) * 100),
+            "financiado": financiado, "p1_sac": r["p1_sac"], "p_price": r["p1_price"],
+            "total_sac": r["total_sac"], "cet": r["cet_sac"], "renda": r["renda_sugerida"],
+        })
+    linhas.sort(key=lambda x: x["cet"])
+    _CACHE_LINHAS_COMPARACAO[chave] = linhas
+    return linhas
+
+
+def _escolher_que_cabe(limite, *opcoes):
+    for o in opcoes:
+        if len(o) <= limite:
+            return o
+    return opcoes[-1][:limite].rsplit(" ", 1)[0]
+
+
+def _nav_comparacao():
+    return f'''<nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <a href="/" class="flex items-center">
+                    <img src="logo-full.png" alt="Datalab Global" width="122" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
+                </a>
+                <div class="flex items-center gap-1">
+                    <a href="/aprenda" aria-label="Aprenda" class="inline-flex items-center gap-1.5 -my-2.5 p-2.5 text-xs text-slate-400 hover:text-emerald-400 transition-colors">{icone('book-open')} <span class="hidden sm:inline">Aprenda</span></a>
+                    <div class="hidden md:flex items-center">
+                        <a href="{LINK_FINANCIA_TUDO}" target="_blank" rel="noopener sponsored" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-6 py-2.5 rounded-full font-bold transition-all text-sm flex items-center">
+                            Fazer Análise Grátis {icone('arrow-right', 'ml-2 text-sm')}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>'''
+
+
+def _cta_comparacao(titulo):
+    return f'''<div class="mt-16 bg-gradient-to-r from-emerald-600 to-emerald-900 rounded-3xl p-8 md:p-12 relative overflow-hidden border border-emerald-400/50">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
+                <div class="md:w-2/3 text-left">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="bg-yellow-400 text-yellow-950 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Parceria Oficial</span>
+                        <span class="flex items-center text-emerald-200 text-xs font-medium">{icone('shield-check', 'mr-1')} 100% Seguro</span>
+                    </div>
+                    <h3 class="text-3xl font-serif text-white mb-3">{titulo}</h3>
+                    <p class="text-emerald-100 text-sm md:text-base font-light leading-relaxed">
+                        A Financia Tudo compara as condições por você e negocia direto com a mesa de crédito — sem custo, sem compromisso. Podemos receber uma comissão do parceiro, sem custo extra pra você.
+                    </p>
+                </div>
+                <div class="md:w-1/3 w-full flex justify-center md:justify-end">
+                    <a href="{LINK_FINANCIA_TUDO}" target="_blank" rel="noopener sponsored" class="group inline-flex items-center justify-center bg-white text-emerald-900 hover:bg-slate-100 font-black px-8 py-5 rounded-2xl transition-all">
+                        <span class="flex items-center">Fazer Análise Grátis {icone('external-link', 'ml-3')}</span>
+                    </a>
+                </div>
+            </div>
+        </div>'''
+
+
+def _footer_comparacao():
+    return f'''<footer class="border-t border-white/5 py-8 mt-10">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}.</p>
+            <div class="flex flex-wrap items-center justify-center gap-4">
+                <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
+                <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
+                <a href="https://dados.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Lente B2B: dados de empresas</a>
+                <a href="/aprenda" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
+                <a href="/sobre" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
+            </div>
+        </div>
+    </footer>'''
+
+
+def _faq_html(perguntas):
+    blocos = ""
+    for q, a in perguntas:
+        blocos += f'''
+                <details class="group bg-white/5 border border-white/10 rounded-xl overflow-hidden open:border-emerald-500/30 transition-colors">
+                    <summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4">
+                        <h3 class="text-emerald-400 font-bold text-sm">{q}</h3>
+                        <span class="faq-toggle-icon shrink-0 text-slate-400 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
+                    </summary>
+                    <p class="text-slate-300 text-sm font-light leading-relaxed px-5 pb-5">{a}</p>
+                </details>'''
+    return blocos
+
+
+def gerar_paginas_comparacao(pasta_saida, dominio, data_ultima_atualizacao, taxas_atuais, lookup_paginas):
+    """Gera as páginas valor x prazo sem marca + o índice
+    (financiamento-imobiliario.html). Retorna as URLs (pro sitemap)."""
+    urls = []
+    data_br = date.fromisoformat(data_ultima_atualizacao).strftime('%d/%m/%Y')
+    url_indice = f"{dominio}/financiamento-imobiliario"
+
+    for valor in VALORES_COMPARACAO:
+        for anos in ANOS_COMPARACAO:
+            if not pagina_comparacao_existe(valor, anos):
+                continue
+            prazo = anos * 12
+            linhas = linhas_comparacao(valor, prazo, taxas_atuais)
+            n = len(linhas)
+            vc = formatar_valor_curto(valor)
+            vf = formatar_reais(valor)
+            slug = slug_comparacao(valor, anos)
+            url_canonica = f"{dominio}/{slug}"
+
+            menor_cet, maior_cet = linhas[0], linhas[-1]
+            por_parcela = sorted(linhas, key=lambda x: x["p1_sac"])
+            menor_p, maior_p = por_parcela[0], por_parcela[-1]
+            price_min = min(x["p_price"] for x in linhas)
+            price_max = max(x["p_price"] for x in linhas)
+            nota_prazo = ""
+            if n < len(BANCOS):
+                nota_prazo = (f" Só {n} dos {len(BANCOS)} bancos que acompanhamos financiam em {anos} anos;"
+                              f" os demais têm prazo máximo menor e ficam de fora desta comparação.")
+
+            titulo_pagina = f"Financiamento imobiliário de {vc} em {anos} anos | Datalab Global"
+            meta_description = _escolher_que_cabe(
+                160,
+                f"Financiar {vc} em {anos} anos: 1ª parcela de {_reais_inteiros(menor_p['p1_sac'])} a {_reais_inteiros(maior_p['p1_sac'])} e CET de {_pct(menor_cet['cet'])}% a {_pct(maior_cet['cet'])}% a.a. em {n} bancos.",
+                f"Financiar {vc} em {anos} anos: 1ª parcela de {_reais_inteiros(menor_p['p1_sac'])} a {_reais_inteiros(maior_p['p1_sac'])} em {n} bancos.",
+            )
+
+            linhas_html = ""
+            for i, x in enumerate(linhas, start=1):
+                regra = BANCOS[x["banco"]]
+                url_logo = f"https://www.google.com/s2/favicons?domain={regra['dominio_favicon']}&sz=128"
+                slug_b = lookup_paginas.get((x["banco"], float(valor), prazo)) or slug_hub_banco(x["banco"])
+                destaque = "bg-emerald-500/10 border-emerald-500/30" if i == 1 else "bg-white/5 border-white/10"
+                medalha = '<span class="text-yellow-400 font-bold text-xs">#1</span>' if i == 1 else f'<span class="text-emerald-400 font-bold text-xs">#{i}</span>'
+                linhas_html += f'''
+        <a href="{slug_b}" class="grid grid-cols-[auto_1fr_auto_auto] md:grid-cols-[auto_1.4fr_1fr_1fr_1fr_1fr_1fr] items-center gap-3 md:gap-5 p-4 rounded-xl border {destaque} hover:border-emerald-500/50 transition-all">
+            <span class="w-6 text-center">{medalha}</span>
+            <span class="flex items-center gap-2 min-w-0">
+                {favicon_com_fallback(url_logo, x['banco_exib'], "w-6 h-6")}
+                <span class="text-sm font-medium text-white truncate">{x['banco_exib']}</span>
+            </span>
+            <span class="hidden md:block text-center text-xs text-slate-400">{_pct(x['taxa'])}% a.a.</span>
+            <span class="hidden md:block text-center text-xs text-slate-400">{_reais_inteiros(x['entrada'])} <span class="text-slate-500">({x['entrada_perc']}%)</span></span>
+            <span class="text-right md:text-center text-xs text-slate-300">{_reais_inteiros(x['p1_sac'])}</span>
+            <span class="hidden md:block text-center text-xs text-slate-400">{_reais_inteiros(x['p_price'])}</span>
+            <span class="text-right text-sm font-bold text-emerald-400">{_pct(x['cet'])}%</span>
+        </a>'''
+
+            # outros prazos para o mesmo valor
+            outros_prazos = ""
+            for a2 in ANOS_COMPARACAO:
+                if a2 == anos or not pagina_comparacao_existe(valor, a2):
+                    continue
+                l2 = linhas_comparacao(valor, a2 * 12, taxas_atuais)
+                outros_prazos += (f'<li><a href="{slug_comparacao(valor, a2)}" class="flex items-center justify-between gap-3 p-3 rounded-lg border border-white/10 hover:border-emerald-500/50 text-sm text-slate-300">'
+                                  f'<span>{vc} em {a2} anos</span><span class="text-xs text-slate-400">1ª parcela a partir de {_reais_inteiros(min(x["p1_sac"] for x in l2))}</span></a></li>')
+            # valores próximos no mesmo prazo
+            vizinhos = ""
+            for dv in (-100_000, -50_000, 50_000, 100_000):
+                v2 = valor + dv
+                if pagina_comparacao_existe(v2, anos):
+                    l2 = linhas_comparacao(v2, prazo, taxas_atuais)
+                    vizinhos += (f'<li><a href="{slug_comparacao(v2, anos)}" class="flex items-center justify-between gap-3 p-3 rounded-lg border border-white/10 hover:border-emerald-500/50 text-sm text-slate-300">'
+                                 f'<span>{formatar_valor_curto(v2)} em {anos} anos</span><span class="text-xs text-slate-400">1ª parcela a partir de {_reais_inteiros(min(x["p1_sac"] for x in l2))}</span></a></li>')
+
+            faq = [
+                (f"Qual a parcela de um financiamento imobiliário de {vc} em {anos} anos?",
+                 f"No sistema SAC, a primeira parcela de {vf} em {prazo} meses vai de {formatar_reais(menor_p['p1_sac'])} ({menor_p['banco_exib']}) a {formatar_reais(maior_p['p1_sac'])} ({maior_p['banco_exib']}), e diminui a cada mês. No sistema Price, a parcela é fixa e fica entre {formatar_reais(price_min)} e {formatar_reais(price_max)}. A diferença entre os bancos vem da taxa e da entrada mínima de cada um (quanto menor a entrada, maior o valor financiado)."),
+                (f"Qual banco tem o menor CET para financiar {vc} em {anos} anos?",
+                 f"Na nossa simulação, {menor_cet['banco_exib']} tem o menor CET ({_pct(menor_cet['cet'])}% a.a.) e {maior_cet['banco_exib']} o maior ({_pct(maior_cet['cet'])}% a.a.). O CET soma juros, seguros (MIP e DFI) e taxa de administração; é a melhor medida para comparar bancos. O valor final da sua proposta depende da análise de crédito."),
+                (f"Que renda preciso para financiar {vc} em {anos} anos?",
+                 f"Os bancos costumam limitar a parcela a 30% da renda bruta. Para a primeira parcela de {formatar_reais(menor_cet['p1_sac'])} ({menor_cet['banco_exib']}, o menor CET), isso dá uma renda familiar de pelo menos {formatar_reais(menor_cet['renda'])}.{nota_prazo}"),
+            ]
+            schema_faq = json.dumps({
+                "@context": "https://schema.org", "@type": "FAQPage",
+                "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faq],
+            }, ensure_ascii=False)
+            schema_breadcrumb = json.dumps({
+                "@context": "https://schema.org", "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {"@type": "ListItem", "position": 1, "name": "Datalab Global", "item": f"{dominio}/"},
+                    {"@type": "ListItem", "position": 2, "name": "Financiamento imobiliário por valor e prazo", "item": url_indice},
+                    {"@type": "ListItem", "position": 3, "name": f"{vc} em {anos} anos", "item": url_canonica},
+                ],
+            }, ensure_ascii=False)
+            schema_artigo = json.dumps({
+                "@context": "https://schema.org", "@type": "WebPage", "url": url_canonica,
+                "name": f"Financiamento imobiliário de {vc} em {anos} anos",
+                "dateModified": data_ultima_atualizacao,
+                "isPartOf": {"@type": "WebSite", "url": f"{dominio}/", "name": "Datalab Global"},
+                "about": {"@type": "FinancialProduct", "name": "Financiamento imobiliário"},
+            }, ensure_ascii=False)
+
+            html_pagina = f'''<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+{render_head_boilerplate(titulo_pagina, meta_description, url_canonica, dominio, [schema_breadcrumb, schema_faq, schema_artigo])}
+</head>
+<body class="antialiased flex flex-col min-h-screen">
+    {_nav_comparacao()}
+
+    <header class="py-12 md:py-16 relative z-10 text-center">
+        <p class="text-emerald-400 text-xs uppercase tracking-widest mb-3 px-4"><a href="financiamento-imobiliario" class="hover:underline">Financiamento imobiliário por valor e prazo</a></p>
+        <h1 class="text-3xl md:text-5xl font-serif text-white mb-4 leading-tight px-4">
+            Financiamento imobiliário de {vc} em {anos} anos
+        </h1>
+        <p class="text-slate-400 text-base md:text-lg font-light tracking-wide max-w-3xl mx-auto px-4">
+            Parcela e CET para financiar {vf} em {prazo} meses, com a entrada mínima de cada um dos {n} bancos, ordenado do menor pro maior custo efetivo total.
+        </p>
+        <p class="text-slate-600 text-[10px] uppercase tracking-widest mt-4">Taxas atualizadas em {data_br} · {texto_fonte_taxa()}</p>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 flex-grow w-full relative z-10">
+        <div class="flex items-center gap-2 mb-4 text-[11px] text-slate-400 uppercase tracking-widest px-4">
+            <span class="w-6"></span><span class="flex-1">Banco</span><span class="hidden md:block flex-1 text-center">Taxa</span><span class="hidden md:block flex-1 text-center">Entrada mín.</span><span class="flex-1 text-right md:text-center">1ª parcela (SAC)</span><span class="hidden md:block flex-1 text-center">Parcela (Price)</span><span class="flex-1 text-right">CET</span>
+        </div>
+        <div class="space-y-2">
+            {linhas_html}
+        </div>
+        <p class="text-slate-400 text-xs font-light leading-relaxed mt-6 max-w-2xl">
+            Cada linha leva à simulação completa do banco, onde você ajusta valor, entrada e prazo. A 1ª parcela do SAC considera juros e amortização; o CET inclui também seguros (MIP e DFI) e taxa de administração estimados. Valores de referência: a proposta final depende da análise de crédito de cada banco.{nota_prazo}
+        </p>
+
+        <section class="mt-12">
+            <h2 class="text-2xl font-serif text-white mb-3">Resumo para {vc} em {anos} anos</h2>
+            <p class="text-slate-300 text-sm font-light leading-relaxed">
+                Financiando {vf} em {prazo} meses, a primeira parcela (SAC) vai de <strong class="text-white">{formatar_reais(menor_p['p1_sac'])}</strong> em {menor_p['banco_exib']} a <strong class="text-white">{formatar_reais(maior_p['p1_sac'])}</strong> em {maior_p['banco_exib']}.
+                O menor CET é de {menor_cet['banco_exib']} ({_pct(menor_cet['cet'])}% a.a.) e o maior, de {maior_cet['banco_exib']} ({_pct(maior_cet['cet'])}% a.a.).
+                No menor CET, o total pago no SAC é {formatar_reais(menor_cet['total_sac'])} para {formatar_reais(menor_cet['financiado'])} financiados, com entrada de {formatar_reais(menor_cet['entrada'])}.
+            </p>
+        </section>
+
+        <section class="mt-10 grid md:grid-cols-2 gap-8">
+            <div>
+                <h2 class="text-lg font-serif text-white mb-3">Mesmo valor, outros prazos</h2>
+                <ul class="space-y-2">{outros_prazos}</ul>
+            </div>
+            <div>
+                <h2 class="text-lg font-serif text-white mb-3">Mesmo prazo, valores próximos</h2>
+                <ul class="space-y-2">{vizinhos}</ul>
+            </div>
+        </section>
+
+        {_cta_comparacao("Não sabe qual banco escolher?")}
+
+        <div class="mt-16 mb-8">
+            <h2 class="text-2xl font-serif text-white mb-6 text-center">Perguntas Frequentes</h2>
+            <div class="space-y-3 max-w-3xl mx-auto">{_faq_html(faq)}
+            </div>
+        </div>
+        <p class="text-center text-xs text-slate-400"><a href="comparador-bancos" class="text-emerald-400 underline">Ver o comparativo geral de taxas entre os {len(BANCOS)} bancos →</a></p>
+    </main>
+
+    {_footer_comparacao()}
+</body>
+</html>'''
+            with open(os.path.join(pasta_saida, f"{slug}.html"), "w", encoding="utf-8") as f:
+                f.write(corrigir_concordancia(html_pagina))
+            urls.append(url_canonica)
+
+    urls.append(gerar_indice_comparacao(pasta_saida, dominio, data_ultima_atualizacao, taxas_atuais))
+    return urls
+
+
+def gerar_indice_comparacao(pasta_saida, dominio, data_ultima_atualizacao, taxas_atuais):
+    """Índice (financiamento-imobiliario.html): tabela valor x prazo com a 1ª
+    parcela do banco de menor CET em cada cenário, cada célula levando à
+    página de comparação. É útil por si só (uma tabela de parcelas que o
+    usuário consulta) e dá a todas as páginas valor x prazo um pai comum."""
+    data_br = date.fromisoformat(data_ultima_atualizacao).strftime('%d/%m/%Y')
+    url_canonica = f"{dominio}/financiamento-imobiliario"
+    titulo_pagina = "Financiamento imobiliário: parcela por valor e prazo | Datalab Global"
+    meta_description = (
+        f"Tabela de financiamento imobiliário de {formatar_valor_curto(VALORES_COMPARACAO[0])} a "
+        f"{formatar_valor_curto(VALORES_COMPARACAO[-1])} em 10 a 35 anos: parcela inicial e CET comparados em até {len(BANCOS)} bancos."
+    )
+    anos_validos = [a for a in ANOS_COMPARACAO if len(bancos_com_prazo(a * 12)) >= MIN_BANCOS_COMPARACAO]
+    cab = "".join(f'<th scope="col" class="px-3 py-2 text-right font-medium">{a} anos</th>' for a in anos_validos)
+    corpo = ""
+    for valor in VALORES_COMPARACAO:
+        celulas = ""
+        for a in anos_validos:
+            l = linhas_comparacao(valor, a * 12, taxas_atuais)
+            celulas += (f'<td class="px-3 py-2 text-right"><a href="{slug_comparacao(valor, a)}" class="text-emerald-400 hover:underline">'
+                        f'{_reais_inteiros(min(x["p1_sac"] for x in l))}</a></td>')
+        corpo += f'<tr class="border-t border-white/5"><th scope="row" class="px-3 py-2 text-left font-medium text-white">{formatar_valor_curto(valor)}</th>{celulas}</tr>'
+
+    faq = [
+        ("Como ler esta tabela?",
+         "Cada célula mostra a primeira parcela (sistema SAC) do banco com o menor CET para aquele valor de imóvel e prazo, já considerando a entrada mínima exigida por cada banco. Clique para ver todos os bancos lado a lado."),
+        ("Por que a coluna de 35 anos tem menos bancos?",
+         "Nem todo banco financia em 35 anos. Na coluna de 35 anos entram só os bancos com prazo máximo de 420 meses; nos demais prazos entram todos os que acompanhamos."),
+    ]
+    schema_faq = json.dumps({
+        "@context": "https://schema.org", "@type": "FAQPage",
+        "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faq],
+    }, ensure_ascii=False)
+    schema_breadcrumb = json.dumps({
+        "@context": "https://schema.org", "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Datalab Global", "item": f"{dominio}/"},
+            {"@type": "ListItem", "position": 2, "name": "Financiamento imobiliário por valor e prazo", "item": url_canonica},
+        ],
+    }, ensure_ascii=False)
+
+    html_indice = f'''<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+{render_head_boilerplate(titulo_pagina, meta_description, url_canonica, dominio, [schema_breadcrumb, schema_faq])}
+</head>
+<body class="antialiased flex flex-col min-h-screen">
+    {_nav_comparacao()}
+
+    <header class="py-12 md:py-16 relative z-10 text-center">
+        <h1 class="text-3xl md:text-5xl font-serif text-white mb-4 leading-tight px-4">
+            Financiamento imobiliário: parcela por valor e prazo
+        </h1>
+        <p class="text-slate-400 text-base md:text-lg font-light tracking-wide max-w-3xl mx-auto px-4">
+            Primeira parcela do banco com o menor CET para cada valor de imóvel e prazo. Escolha um cenário para comparar todos os bancos.
+        </p>
+        <p class="text-slate-600 text-[10px] uppercase tracking-widest mt-4">Taxas atualizadas em {data_br} · {texto_fonte_taxa()}</p>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 flex-grow w-full relative z-10">
+        <div class="overflow-x-auto rounded-xl border border-white/10">
+            <table class="w-full text-sm text-slate-300">
+                <thead class="text-[11px] uppercase tracking-widest text-slate-400"><tr><th scope="col" class="px-3 py-2 text-left font-medium">Imóvel</th>{cab}</tr></thead>
+                <tbody>{corpo}</tbody>
+            </table>
+        </div>
+        <p class="text-slate-400 text-xs font-light leading-relaxed mt-6 max-w-2xl">
+            Valores de referência no sistema SAC, com a entrada mínima de cada banco. A proposta final depende da análise de crédito. Para o comparativo geral de taxas, veja o <a href="comparador-bancos" class="text-emerald-400 underline">comparativo entre bancos</a>; para simular com os seus números, escolha um banco na <a href="/" class="text-emerald-400 underline">página inicial</a>.
+        </p>
+
+        {_cta_comparacao("Quer ajuda para escolher?")}
+
+        <div class="mt-16 mb-8">
+            <h2 class="text-2xl font-serif text-white mb-6 text-center">Perguntas Frequentes</h2>
+            <div class="space-y-3 max-w-3xl mx-auto">{_faq_html(faq)}
+            </div>
+        </div>
+    </main>
+
+    {_footer_comparacao()}
+</body>
+</html>'''
+    with open(os.path.join(pasta_saida, "financiamento-imobiliario.html"), "w", encoding="utf-8") as f:
+        f.write(corrigir_concordancia(html_indice))
+    return url_canonica
+
 
 
 def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
@@ -2208,6 +2650,9 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
         </p>
         <a href="comparador-bancos" class="inline-flex items-center gap-2 mt-6 text-emerald-400 hover:text-emerald-300 text-sm font-medium underline underline-offset-4">
             Ou veja o comparativo de taxas entre os {len(BANCOS)} bancos {icone('arrow-right', 'text-xs')}
+        </a>
+        <a href="financiamento-imobiliario" class="inline-flex items-center gap-2 mt-3 ml-0 sm:ml-6 text-emerald-400 hover:text-emerald-300 text-sm font-medium underline underline-offset-4">
+            Ou consulte a parcela por valor e prazo {icone('arrow-right', 'text-xs')}
         </a>
     </div>
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-32 relative z-10 w-full">
@@ -3040,6 +3485,8 @@ Total de páginas de simulação: {total_paginas}
 
 ## Páginas
 - [Home / lista de bancos]({dominio}/)
+- [Comparativo de taxas entre os {len(BANCOS)} bancos]({dominio}/comparador-bancos)
+- [Financiamento imobiliário: parcela por valor e prazo]({dominio}/financiamento-imobiliario)
 - [Sitemap completo]({dominio}/sitemap.xml)
 
 ## Sobre os dados
