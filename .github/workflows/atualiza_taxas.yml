@@ -76,3 +76,10 @@ jobs:
           git add dados.csv paginas_seo taxas_cache.json relatorio_atualizacao_taxas.txt ultima_atualizacao_taxas.txt historico_taxas.csv
           git commit -m "auto: atualização mensal de taxas e rebuild do site" || echo "Sem mudanças"
           git push
+
+      - name: Avisar o Bing (IndexNow) das páginas atualizadas
+        # Espera o Cloudflare Pages publicar o deploy do push acima antes de
+        # avisar. Falha de rede não derruba o pipeline (o script sai com 0).
+        run: |
+          sleep 240
+          python indexnow.py
