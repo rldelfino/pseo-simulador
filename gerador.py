@@ -33,6 +33,11 @@ LINK_FINANCIA_TUDO = "https://app.financiatudo.com.br/financiamento-de-imoveis/c
 DOMINIO = 'https://simulador.datalabglobal.com'
 ARQUIVO_ULTIMA_ATUALIZACAO = 'ultima_atualizacao_taxas.txt'
 ARQUIVO_CACHE_TAXAS = 'taxas_cache.json'
+# Identidade da empresa por trás do site — mesmo texto já publicado no rodapé
+# e no schema Organization do hub (www.datalabglobal.com). Achado de auditoria
+# (29/out/2026): os simuladores, que são tema YMYL (dinheiro), não mostravam
+# razão social nem CNPJ; o hub mostrava. Texto copiado do hub, não inventado.
+EMPRESA_RODAPE = "Satori Soluções Comerciais LTDA · CNPJ 63.998.502/0001-73"
 
 _URL_GOOGLE_FONTS = (
     "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700"
@@ -1503,7 +1508,7 @@ def gerar_paginas_pseo():
     <!-- FOOTER COM SUPORTE HUMANO DISCRETO -->
     <footer class="border-t border-white/5 py-8 mt-10">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
+            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}.</p>
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
@@ -1849,7 +1854,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
 
     <footer class="border-t border-white/5 py-8 mt-10">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
+            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}.</p>
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
@@ -2047,7 +2052,7 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
 
     <footer class="border-t border-white/5 py-8 mt-10">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
+            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}.</p>
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
@@ -2239,7 +2244,7 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
     </main>
     <footer class="border-t border-white/5 py-8">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
+            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}.</p>
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
@@ -2338,7 +2343,7 @@ def gerar_pagina_sobre(pasta_saida, dominio):
     {corpo}
     <footer class="border-t border-white/5 py-8 mt-10">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
+            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}.</p>
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
@@ -2414,7 +2419,7 @@ def gerar_pagina_aprenda(art, pasta_saida, dominio, data_atualizacao):
     {corpo}
     <footer class="border-t border-white/5 py-8 mt-10">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
+            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}.</p>
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
@@ -2471,7 +2476,7 @@ def gerar_hub_aprenda(artigos, pasta_saida, dominio):
     {corpo}
     <footer class="border-t border-white/5 py-8 mt-10">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados.</p>
+            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}.</p>
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>

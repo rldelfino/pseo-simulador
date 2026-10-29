@@ -68,3 +68,18 @@ def test_rodape_nao_atribui_ao_bacen_taxa_que_nao_e_do_bacen():
         texto = open(alvo, encoding="utf-8").read()
         assert "Fonte: Banco Central do Brasil (BACEN)<" not in texto, banco
         assert "não é taxa oficial do BACEN" in texto, banco
+
+
+@pytest.mark.skipif(not os.path.isdir(PASTA_SAIDA), reason="paginas_seo/ não gerada")
+def test_rodape_mostra_identidade_da_empresa():
+    # mesmo texto já publicado no hub (www.datalabglobal.com): site YMYL
+    # precisa dizer quem está por trás; e nenhum placeholder pode vazar.
+    faltando = []
+    for nome in os.listdir(PASTA_SAIDA):
+        if not nome.endswith(".html") or nome == "404.html":
+            continue
+        texto = open(os.path.join(PASTA_SAIDA, nome), encoding="utf-8").read()
+        assert "{EMPRESA_RODAPE}" not in texto, nome
+        if "CNPJ 63.998.502/0001-73" not in texto:
+            faltando.append(nome)
+    assert not faltando, faltando[:5]
