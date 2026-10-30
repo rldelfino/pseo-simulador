@@ -2930,7 +2930,7 @@ def gerar_pagina_incorporar(pasta_saida, dominio, data_ultima_atualizacao):
     schema_bc = json.dumps({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
         {"@type": "ListItem", "position": 1, "name": "Datalab Global", "item": f"{dominio}/"},
         {"@type": "ListItem", "position": 2, "name": "Simulador para incorporar", "item": url}]}, ensure_ascii=False)
-    titulo = "Simulador de financiamento imobiliário para o seu site (grátis) | Datalab Global"
+    titulo = "Simulador de financiamento imobiliário para site (grátis) | Datalab Global"
     meta = "Incorpore grátis um simulador de financiamento imobiliário no seu site, com taxas atualizadas dos bancos. Copie o código e cole: sem cadastro."
     html_pagina = f'''<!DOCTYPE html>
 <html lang="pt-BR">
