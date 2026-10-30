@@ -86,7 +86,7 @@ def test_todo_link_interno_resolve_para_pagina_existente():
                 continue
             href = href.split("?", 1)[0]  # 12/10: icones versionados (favicon.ico?v=...) para furar o cache de favicon do navegador
             href_normalizado = href.lstrip("/")  # "/comparador-bancos" == "comparador-bancos"
-            if href in arquivos_estaticos or href_normalizado in slugs_validos or href in slugs_validos:
+            if href in arquivos_estaticos or href_normalizado in arquivos_estaticos or href_normalizado in slugs_validos or href in slugs_validos:
                 continue
             # arquivos de dados abertos publicados em dados/ (csv, json, md)
             if href_normalizado.startswith("dados/") and os.path.isfile(os.path.join(PASTA_SAIDA, href_normalizado)):
