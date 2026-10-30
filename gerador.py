@@ -1551,7 +1551,7 @@ def gerar_paginas_pseo():
     <!-- FOOTER COM SUPORTE HUMANO DISCRETO -->
     <footer class="border-t border-white/5 py-8 mt-10">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}. <a href="https://www.datalabglobal.com/privacidade/" class="underline hover:text-emerald-500">Privacidade</a> · <a href="https://www.datalabglobal.com/termos/" class="underline hover:text-emerald-500">Termos</a></p>
+            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}. <a href="https://www.datalabglobal.com/privacidade/" class="underline hover:text-emerald-500">Privacidade</a> · <a href="https://www.datalabglobal.com/termos/" class="underline hover:text-emerald-500">Termos</a> · <a href="incorporar" class="underline hover:text-emerald-500">Simulador para o seu site</a> · <a href="imprensa" class="underline hover:text-emerald-500">Imprensa</a></p>
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
@@ -1904,7 +1904,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
 
     <footer class="border-t border-white/5 py-8 mt-10">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}. <a href="https://www.datalabglobal.com/privacidade/" class="underline hover:text-emerald-500">Privacidade</a> · <a href="https://www.datalabglobal.com/termos/" class="underline hover:text-emerald-500">Termos</a></p>
+            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}. <a href="https://www.datalabglobal.com/privacidade/" class="underline hover:text-emerald-500">Privacidade</a> · <a href="https://www.datalabglobal.com/termos/" class="underline hover:text-emerald-500">Termos</a> · <a href="incorporar" class="underline hover:text-emerald-500">Simulador para o seu site</a> · <a href="imprensa" class="underline hover:text-emerald-500">Imprensa</a></p>
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
@@ -2397,7 +2397,7 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
 
     <footer class="border-t border-white/5 py-8 mt-10">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}. <a href="https://www.datalabglobal.com/privacidade/" class="underline hover:text-emerald-500">Privacidade</a> · <a href="https://www.datalabglobal.com/termos/" class="underline hover:text-emerald-500">Termos</a></p>
+            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}. <a href="https://www.datalabglobal.com/privacidade/" class="underline hover:text-emerald-500">Privacidade</a> · <a href="https://www.datalabglobal.com/termos/" class="underline hover:text-emerald-500">Termos</a> · <a href="incorporar" class="underline hover:text-emerald-500">Simulador para o seu site</a> · <a href="imprensa" class="underline hover:text-emerald-500">Imprensa</a></p>
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
@@ -2469,6 +2469,23 @@ def linhas_comparacao(valor_imovel, prazo_meses, taxas_atuais=None):
     return linhas
 
 
+GUIAS_RELACIONADOS = ("aprenda-sac-x-price", "aprenda-cet-iof-financiamento-imobiliario",
+                      "aprenda-ltv-financiamento-imobiliario", "aprenda-fgts-financiamento-imobiliario",
+                      "aprenda-amortizacao-extraordinaria", "aprenda-financiamento-x-consorcio-imobiliario")
+
+
+def _guias_html():
+    """Bloco "Entenda melhor" com links contextuais para os guias de /aprenda.
+    Achado da auditoria de links internos (29/out/2026): cada guia recebia só 1
+    link (do índice /aprenda), o que o deixa fraco para o Google."""
+    por_slug = {a["slug"]: a for a in ARTIGOS_APRENDA}
+    itens = "".join(
+        f'<li><a href="{sl}" class="text-emerald-400 underline hover:text-emerald-300">{por_slug[sl]["titulo_h1"]}</a></li>'
+        for sl in GUIAS_RELACIONADOS if sl in por_slug)
+    return f'''<section class="mt-12"><h2 class="text-2xl font-serif text-white mb-3">Entenda melhor</h2>
+            <ul class="text-sm space-y-2 list-disc list-inside text-slate-300">{itens}</ul></section>'''
+
+
 def _escolher_que_cabe(limite, *opcoes):
     for o in opcoes:
         if len(o) <= limite:
@@ -2521,7 +2538,7 @@ def _cta_comparacao(titulo):
 def _footer_comparacao():
     return f'''<footer class="border-t border-white/5 py-8 mt-10">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}. <a href="https://www.datalabglobal.com/privacidade/" class="underline hover:text-emerald-500">Privacidade</a> · <a href="https://www.datalabglobal.com/termos/" class="underline hover:text-emerald-500">Termos</a></p>
+            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}. <a href="https://www.datalabglobal.com/privacidade/" class="underline hover:text-emerald-500">Privacidade</a> · <a href="https://www.datalabglobal.com/termos/" class="underline hover:text-emerald-500">Termos</a> · <a href="incorporar" class="underline hover:text-emerald-500">Simulador para o seu site</a> · <a href="imprensa" class="underline hover:text-emerald-500">Imprensa</a></p>
             <div class="flex flex-wrap items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
@@ -2699,6 +2716,8 @@ def gerar_paginas_comparacao(pasta_saida, dominio, data_ultima_atualizacao, taxa
             </div>
         </section>
 
+        {_guias_html()}
+
         {_cta_comparacao("Não sabe qual banco escolher?")}
 
         <div class="mt-16 mb-8">
@@ -2789,6 +2808,8 @@ def gerar_indice_comparacao(pasta_saida, dominio, data_ultima_atualizacao, taxas
         <p class="text-slate-400 text-xs font-light leading-relaxed mt-6 max-w-2xl">
             Valores de referência no sistema SAC, com a entrada mínima de cada banco. A proposta final depende da análise de crédito. Para o comparativo geral de taxas, veja o <a href="comparador-bancos" class="text-emerald-400 underline">comparativo entre bancos</a>; para simular com os seus números, escolha um banco na <a href="/" class="text-emerald-400 underline">página inicial</a>.
         </p>
+
+        {_guias_html()}
 
         {_cta_comparacao("Quer ajuda para escolher?")}
 
@@ -3229,7 +3250,7 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
     </main>
     <footer class="border-t border-white/5 py-8">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}. <a href="https://www.datalabglobal.com/privacidade/" class="underline hover:text-emerald-500">Privacidade</a> · <a href="https://www.datalabglobal.com/termos/" class="underline hover:text-emerald-500">Termos</a></p>
+            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}. <a href="https://www.datalabglobal.com/privacidade/" class="underline hover:text-emerald-500">Privacidade</a> · <a href="https://www.datalabglobal.com/termos/" class="underline hover:text-emerald-500">Termos</a> · <a href="incorporar" class="underline hover:text-emerald-500">Simulador para o seu site</a> · <a href="imprensa" class="underline hover:text-emerald-500">Imprensa</a></p>
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
@@ -3328,7 +3349,7 @@ def gerar_pagina_sobre(pasta_saida, dominio):
     {corpo}
     <footer class="border-t border-white/5 py-8 mt-10">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}. <a href="https://www.datalabglobal.com/privacidade/" class="underline hover:text-emerald-500">Privacidade</a> · <a href="https://www.datalabglobal.com/termos/" class="underline hover:text-emerald-500">Termos</a></p>
+            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}. <a href="https://www.datalabglobal.com/privacidade/" class="underline hover:text-emerald-500">Privacidade</a> · <a href="https://www.datalabglobal.com/termos/" class="underline hover:text-emerald-500">Termos</a> · <a href="incorporar" class="underline hover:text-emerald-500">Simulador para o seu site</a> · <a href="imprensa" class="underline hover:text-emerald-500">Imprensa</a></p>
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
@@ -3404,7 +3425,7 @@ def gerar_pagina_aprenda(art, pasta_saida, dominio, data_atualizacao):
     {corpo}
     <footer class="border-t border-white/5 py-8 mt-10">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}. <a href="https://www.datalabglobal.com/privacidade/" class="underline hover:text-emerald-500">Privacidade</a> · <a href="https://www.datalabglobal.com/termos/" class="underline hover:text-emerald-500">Termos</a></p>
+            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}. <a href="https://www.datalabglobal.com/privacidade/" class="underline hover:text-emerald-500">Privacidade</a> · <a href="https://www.datalabglobal.com/termos/" class="underline hover:text-emerald-500">Termos</a> · <a href="incorporar" class="underline hover:text-emerald-500">Simulador para o seu site</a> · <a href="imprensa" class="underline hover:text-emerald-500">Imprensa</a></p>
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
@@ -3461,7 +3482,7 @@ def gerar_hub_aprenda(artigos, pasta_saida, dominio):
     {corpo}
     <footer class="border-t border-white/5 py-8 mt-10">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}. <a href="https://www.datalabglobal.com/privacidade/" class="underline hover:text-emerald-500">Privacidade</a> · <a href="https://www.datalabglobal.com/termos/" class="underline hover:text-emerald-500">Termos</a></p>
+            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}. <a href="https://www.datalabglobal.com/privacidade/" class="underline hover:text-emerald-500">Privacidade</a> · <a href="https://www.datalabglobal.com/termos/" class="underline hover:text-emerald-500">Termos</a> · <a href="incorporar" class="underline hover:text-emerald-500">Simulador para o seu site</a> · <a href="imprensa" class="underline hover:text-emerald-500">Imprensa</a></p>
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
