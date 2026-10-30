@@ -86,7 +86,7 @@ def test_todo_link_interno_resolve_para_pagina_existente():
                 continue
             href = href.split("?", 1)[0]  # 12/10: icones versionados (favicon.ico?v=...) para furar o cache de favicon do navegador
             href_normalizado = href.lstrip("/")  # "/comparador-bancos" == "comparador-bancos"
-            if href in arquivos_estaticos or href_normalizado in slugs_validos or href in slugs_validos:
+            if href in arquivos_estaticos or href_normalizado in arquivos_estaticos or href_normalizado in slugs_validos or href in slugs_validos:
                 continue
             # arquivos de dados abertos publicados em dados/ (csv, json, md)
             if href_normalizado.startswith("dados/") and os.path.isfile(os.path.join(PASTA_SAIDA, href_normalizado)):
@@ -174,22 +174,23 @@ def test_sitemap_lista_todas_as_paginas_e_sem_html():
 
 
 def test_arquivos_de_infraestrutura_existem():
-    for nome in ("sitemap.xml", "robots.txt", "llms.txt", "_headers", "_redirects", "404.html", "styles.css", "logo-full.png", "favicon.ico", "favicon-32.png", "favicon-192.png", "apple-touch-icon.png", "logo-schema.png", "og-image.png", "ads.txt"):
+    for nome in ("sitemap.xml", "robots.txt", "llms.txt", "_headers", "_redirects", "404.html", "styles.css", "logo-full.png", "favicon.ico", "favicon-32.png", "favicon-192.png", "apple-touch-icon.png", "logo-schema.png", "og-image.png"):
         assert os.path.isfile(os.path.join(PASTA_SAIDA, nome)), f"{nome} não existe em paginas_seo/"
 
 
-def test_ads_txt_autoriza_o_publisher_certo():
-    """Achado real (07/set/2026, verificação final do produto): o site
-    roda AdSense (ca-pub-5414184968223405) desde a implementação
-    inicial mas nunca teve ads.txt — sem ele o Google trata o
-    inventário como não-verificado, o que reduz a demanda de
-    compradores dispostos a dar lance (risco de receita real, não só
-    aviso cosmético no painel). Trava de regressão pro publisher ID
-    nunca ficar dessincronizado do script do adsbygoogle."""
-    with open(os.path.join(PASTA_SAIDA, "ads.txt"), encoding="utf-8") as f:
-        conteudo = f.read()
-    assert "pub-5414184968223405" in conteudo, "ads.txt sem o publisher ID do AdSense usado no site"
-    assert "DIRECT" in conteudo, "ads.txt sem a relação DIRECT esperada"
+def test_site_nao_carrega_adsense_nem_dominios_de_anuncio():
+    """AdSense removido em 29/out/2026: custava ~450 ms de bloqueio e 250 KB por página no
+    mobile e rendia quase nada com o tráfego atual. Trava pra não voltar sem querer."""
+    proibidos = ("adsbygoogle", "googlesyndication", "doubleclick", "adtrafficquality", "googletagservices")
+    for nome in _arquivos_html():
+        with open(os.path.join(PASTA_SAIDA, nome), encoding="utf-8") as f:
+            html = f.read()
+        achados = [p for p in proibidos if p in html]
+        assert not achados, f"{nome} ainda referencia anúncios: {achados}"
+    with open(os.path.join(PASTA_SAIDA, "_headers"), encoding="utf-8") as f:
+        headers = f.read()
+    assert not [p for p in proibidos if p in headers], "CSP em _headers ainda libera domínios de anúncio"
+    assert not os.path.exists(os.path.join(PASTA_SAIDA, "ads.txt")), "ads.txt sem AdSense não faz sentido"
 
 
 def test_pagina_404_tem_noindex():

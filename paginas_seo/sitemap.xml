@@ -3439,6 +3439,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://simulador.datalabglobal.com/incorporar</loc>
+    <lastmod>2026-10-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://simulador.datalabglobal.com/imprensa</loc>
+    <lastmod>2026-10-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://simulador.datalabglobal.com/aprenda-sac-x-price</loc>
     <lastmod>2026-10-05</lastmod>
     <changefreq>monthly</changefreq>

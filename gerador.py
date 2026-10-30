@@ -192,7 +192,7 @@ def construir_bancos_json(taxas_atuais):
 
 def render_head_boilerplate(titulo_pagina, meta_description, url_canonica, dominio, json_ld_blocos, meta_keywords=None, titulo_social=None, robots=None):
     """Bloco <head> compartilhado (charset/viewport/OG/Twitter Card/
-    AdSense/stylesheets) — extraído em set/2026 (auditoria pedida pelo
+    stylesheets) — extraído em set/2026 (auditoria pedida pelo
     Rodolfo) porque estava colado quase idêntico em 4 funções geradoras
     diferentes (gerar_paginas_pseo, gerar_hub_bancos,
     gerar_comparador_bancos, gerar_index_home), ~40 linhas cada, e
@@ -262,7 +262,6 @@ def render_head_boilerplate(titulo_pagina, meta_description, url_canonica, domin
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
 
     <meta property="og:type" content="website">
     <meta property="og:locale" content="pt_BR">
@@ -278,8 +277,6 @@ def render_head_boilerplate(titulo_pagina, meta_description, url_canonica, domin
 
     <link rel="stylesheet" href="styles.css">
     {GOOGLE_FONTS_LINK_ASSINCRONO}
-
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5414184968223405" crossorigin="anonymous"></script>
 
 {scripts_json_ld}'''
 
@@ -1554,7 +1551,7 @@ def gerar_paginas_pseo():
     <!-- FOOTER COM SUPORTE HUMANO DISCRETO -->
     <footer class="border-t border-white/5 py-8 mt-10">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}.</p>
+            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}. <a href="https://www.datalabglobal.com/privacidade/" class="underline hover:text-emerald-500">Privacidade</a> · <a href="https://www.datalabglobal.com/termos/" class="underline hover:text-emerald-500">Termos</a> · <a href="incorporar" class="underline hover:text-emerald-500">Simulador para o seu site</a> · <a href="imprensa" class="underline hover:text-emerald-500">Imprensa</a></p>
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
@@ -1609,6 +1606,9 @@ def gerar_paginas_pseo():
     url_comparador = gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas_atuais_por_banco)
     urls_comparacao = gerar_paginas_comparacao(pasta_saida, dominio, data_ultima_atualizacao, taxas_atuais_por_banco, lookup_paginas)
     urls_comparacao += gerar_dados_abertos(pasta_saida, dominio, data_ultima_atualizacao)
+    gerar_embed(pasta_saida, dominio, data_ultima_atualizacao, taxas_atuais_por_banco)
+    urls_comparacao += gerar_pagina_incorporar(pasta_saida, dominio, data_ultima_atualizacao)
+    urls_comparacao += gerar_pagina_imprensa(pasta_saida, dominio, data_ultima_atualizacao, taxas_atuais_por_banco)
 
     gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao)
     url_sobre = gerar_pagina_sobre(pasta_saida, dominio)
@@ -1904,7 +1904,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
 
     <footer class="border-t border-white/5 py-8 mt-10">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}.</p>
+            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}. <a href="https://www.datalabglobal.com/privacidade/" class="underline hover:text-emerald-500">Privacidade</a> · <a href="https://www.datalabglobal.com/termos/" class="underline hover:text-emerald-500">Termos</a> · <a href="incorporar" class="underline hover:text-emerald-500">Simulador para o seu site</a> · <a href="imprensa" class="underline hover:text-emerald-500">Imprensa</a></p>
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
@@ -2397,7 +2397,7 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
 
     <footer class="border-t border-white/5 py-8 mt-10">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}.</p>
+            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}. <a href="https://www.datalabglobal.com/privacidade/" class="underline hover:text-emerald-500">Privacidade</a> · <a href="https://www.datalabglobal.com/termos/" class="underline hover:text-emerald-500">Termos</a> · <a href="incorporar" class="underline hover:text-emerald-500">Simulador para o seu site</a> · <a href="imprensa" class="underline hover:text-emerald-500">Imprensa</a></p>
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
@@ -2469,6 +2469,23 @@ def linhas_comparacao(valor_imovel, prazo_meses, taxas_atuais=None):
     return linhas
 
 
+GUIAS_RELACIONADOS = ("aprenda-sac-x-price", "aprenda-cet-iof-financiamento-imobiliario",
+                      "aprenda-ltv-financiamento-imobiliario", "aprenda-fgts-financiamento-imobiliario",
+                      "aprenda-amortizacao-extraordinaria", "aprenda-financiamento-x-consorcio-imobiliario")
+
+
+def _guias_html():
+    """Bloco "Entenda melhor" com links contextuais para os guias de /aprenda.
+    Achado da auditoria de links internos (29/out/2026): cada guia recebia só 1
+    link (do índice /aprenda), o que o deixa fraco para o Google."""
+    por_slug = {a["slug"]: a for a in ARTIGOS_APRENDA}
+    itens = "".join(
+        f'<li><a href="{sl}" class="text-emerald-400 underline hover:text-emerald-300">{por_slug[sl]["titulo_h1"]}</a></li>'
+        for sl in GUIAS_RELACIONADOS if sl in por_slug)
+    return f'''<section class="mt-12"><h2 class="text-2xl font-serif text-white mb-3">Entenda melhor</h2>
+            <ul class="text-sm space-y-2 list-disc list-inside text-slate-300">{itens}</ul></section>'''
+
+
 def _escolher_que_cabe(limite, *opcoes):
     for o in opcoes:
         if len(o) <= limite:
@@ -2521,7 +2538,7 @@ def _cta_comparacao(titulo):
 def _footer_comparacao():
     return f'''<footer class="border-t border-white/5 py-8 mt-10">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}.</p>
+            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}. <a href="https://www.datalabglobal.com/privacidade/" class="underline hover:text-emerald-500">Privacidade</a> · <a href="https://www.datalabglobal.com/termos/" class="underline hover:text-emerald-500">Termos</a> · <a href="incorporar" class="underline hover:text-emerald-500">Simulador para o seu site</a> · <a href="imprensa" class="underline hover:text-emerald-500">Imprensa</a></p>
             <div class="flex flex-wrap items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
@@ -2699,6 +2716,8 @@ def gerar_paginas_comparacao(pasta_saida, dominio, data_ultima_atualizacao, taxa
             </div>
         </section>
 
+        {_guias_html()}
+
         {_cta_comparacao("Não sabe qual banco escolher?")}
 
         <div class="mt-16 mb-8">
@@ -2790,6 +2809,8 @@ def gerar_indice_comparacao(pasta_saida, dominio, data_ultima_atualizacao, taxas
             Valores de referência no sistema SAC, com a entrada mínima de cada banco. A proposta final depende da análise de crédito. Para o comparativo geral de taxas, veja o <a href="comparador-bancos" class="text-emerald-400 underline">comparativo entre bancos</a>; para simular com os seus números, escolha um banco na <a href="/" class="text-emerald-400 underline">página inicial</a>.
         </p>
 
+        {_guias_html()}
+
         {_cta_comparacao("Quer ajuda para escolher?")}
 
         <div class="mt-16 mb-8">
@@ -2805,6 +2826,254 @@ def gerar_indice_comparacao(pasta_saida, dominio, data_ultima_atualizacao, taxas
     with open(os.path.join(pasta_saida, "financiamento-imobiliario.html"), "w", encoding="utf-8") as f:
         f.write(corrigir_concordancia(html_indice))
     return url_canonica
+
+
+
+# ---------------------------------------------------------------------------
+# Simulador incorporável (/embed), página "como incorporar" (/incorporar) e
+# página de imprensa (/imprensa).
+#
+# Por que existem (auditoria de SEO, 29/out/2026): o site é novo e quase não tem
+# links. Calculadora incorporável e fatos citáveis são dos poucos jeitos de ganhar
+# links sem contato com ninguém: blogs e imobiliárias usam a calculadora e dão
+# crédito; jornalistas encontram os números prontos e a forma de citar.
+# ---------------------------------------------------------------------------
+
+_JS_CALCULO_EMBED = """// <calc>
+function calcularFinanciamento(valorFinanciado, meses, taxaAnualPct) {
+  var i = (taxaAnualPct / 100) / 12;
+  var amort = valorFinanciado / meses;
+  var p1 = amort + valorFinanciado * i;
+  var pU = amort * (1 + i);
+  var price = i > 0 ? valorFinanciado * (i * Math.pow(1 + i, meses)) / (Math.pow(1 + i, meses) - 1) : amort;
+  return {p1: p1, pU: pU, price: price,
+          jurosSac: valorFinanciado * i * (meses + 1) / 2, jurosPrice: price * meses - valorFinanciado};
+}
+// </calc>"""
+
+_TEMPLATE_EMBED = """<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador de financiamento imobiliário | Datalab Global</title>
+<meta name="description" content="Simulador de financiamento imobiliário incorporável: parcela SAC e Price com a taxa média de cada banco.">
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="__DOMINIO__/incorporar">
+<link rel="icon" href="/favicon.ico?v=20261012" sizes="any">
+<link rel="icon" href="/favicon-32.png?v=20261012" type="image/png" sizes="32x32">
+<style>
+*{box-sizing:border-box}body{margin:0;padding:14px;font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#0b1220;color:#e2e8f0}
+h1{font-size:16px;margin:0 0 10px;font-weight:700}label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#94a3b8;margin:10px 0 4px}
+select,input{width:100%;padding:9px 10px;border-radius:8px;border:1px solid #334155;background:#111b2e;color:#f8fafc;font-size:14px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.res{margin-top:14px;padding:12px;border-radius:10px;background:#0f2a24;border:1px solid #14b8a6}
+.res b{display:block;font-size:20px;color:#5eead4}.res small{color:#94a3b8}.k{display:flex;justify-content:space-between;gap:8px;padding:4px 0;border-top:1px solid #1e3a34}.k:first-of-type{border-top:0}
+.nota{margin-top:10px;font-size:11px;color:#94a3b8}.nota a{color:#5eead4}
+</style>
+</head>
+<body>
+<h1>Simule seu financiamento imobiliário</h1>
+<label for="banco">Banco</label><select id="banco"></select>
+<div class="row"><div><label for="valor">Valor do imóvel (R$)</label><input id="valor" type="number" min="50000" step="10000" value="500000" inputmode="numeric"></div>
+<div><label for="prazo">Prazo</label><select id="prazo"></select></div></div>
+<label for="entrada">Entrada (R$) <span id="minimo" style="text-transform:none;letter-spacing:0"></span></label><input id="entrada" type="number" min="0" step="5000" inputmode="numeric">
+<div class="res" aria-live="polite">
+<small>1ª parcela (SAC)</small><b id="p1">–</b>
+<div class="k"><span>Última parcela (SAC)</span><span id="pU">–</span></div>
+<div class="k"><span>Parcela fixa (Price)</span><span id="price">–</span></div>
+<div class="k"><span>Juros totais (SAC)</span><span id="juros">–</span></div>
+<div class="k"><span>Valor financiado</span><span id="fin">–</span></div></div>
+<p class="nota" id="nota"></p>
+<p class="nota">Simulação educativa, sem seguros e tarifas; não é oferta de crédito. Simulador por <a href="__DOMINIO__/" target="_blank" rel="noopener">Datalab Global</a>.</p>
+<script>
+__JS_CALCULO__
+var BANCOS = __BANCOS_JSON__;
+var fmt = new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL', maximumFractionDigits: 0});
+var el = function (id) { return document.getElementById(id); };
+BANCOS.forEach(function (b, i) { var o = document.createElement('option'); o.value = i; o.textContent = b.nome + ' (' + b.taxa.toFixed(2).replace('.', ',') + '% a.a.)'; el('banco').appendChild(o); });
+function atualizarPrazos() {
+  var b = BANCOS[el('banco').value], atual = el('prazo').value; el('prazo').innerHTML = '';
+  [10, 15, 20, 25, 30, 35].forEach(function (a) { if (a * 12 <= b.prazoMax) { var o = document.createElement('option'); o.value = a * 12; o.textContent = a + ' anos'; el('prazo').appendChild(o); } });
+  el('prazo').value = (atual && Array.prototype.some.call(el('prazo').options, function (o) { return o.value === atual; })) ? atual : String(Math.min(360, b.prazoMax));
+}
+function calcular(ajustarEntrada) {
+  var b = BANCOS[el('banco').value], valor = Math.max(0, parseFloat(el('valor').value) || 0);
+  var min = valor * (1 - b.ltv);
+  el('minimo').textContent = '(mín. ' + fmt.format(min) + ')';
+  if (ajustarEntrada || !el('entrada').value) el('entrada').value = Math.round(Math.max(valor * 0.2, min));
+  var entrada = Math.min(valor, Math.max(min, parseFloat(el('entrada').value) || 0)), fin = valor - entrada, meses = parseInt(el('prazo').value, 10);
+  if (fin <= 0 || !meses) { ['p1','pU','price','juros','fin'].forEach(function (id) { el(id).textContent = '–'; }); return; }
+  var r = calcularFinanciamento(fin, meses, b.taxa);
+  el('p1').textContent = fmt.format(r.p1); el('pU').textContent = fmt.format(r.pU); el('price').textContent = fmt.format(r.price);
+  el('juros').textContent = fmt.format(r.jurosSac); el('fin').textContent = fmt.format(fin);
+  el('nota').textContent = 'Taxa média: ' + b.nome + ', ' + b.taxa.toFixed(2).replace('.', ',') + '% a.a. (Banco Central, __DATA_BR__).';
+}
+el('banco').addEventListener('change', function () { atualizarPrazos(); calcular(true); });
+el('prazo').addEventListener('change', function () { calcular(false); });
+el('valor').addEventListener('input', function () { calcular(true); });
+el('entrada').addEventListener('input', function () { calcular(false); });
+atualizarPrazos(); calcular(true);
+</script>
+</body>
+</html>"""
+
+
+def gerar_embed(pasta_saida, dominio, data_ultima_atualizacao, taxas_atuais):
+    """/embed: simulador mínimo, sem dependências, pra ser usado em <iframe>."""
+    data_br = date.fromisoformat(data_ultima_atualizacao).strftime('%d/%m/%Y')
+    html_embed = (_TEMPLATE_EMBED
+                  .replace("__JS_CALCULO__", _JS_CALCULO_EMBED)
+                  .replace("__BANCOS_JSON__", construir_bancos_json(taxas_atuais or {}))
+                  .replace("__DOMINIO__", dominio)
+                  .replace("__DATA_BR__", data_br))
+    with open(os.path.join(pasta_saida, "embed.html"), "w", encoding="utf-8") as f:
+        f.write(html_embed)
+
+
+def gerar_pagina_incorporar(pasta_saida, dominio, data_ultima_atualizacao):
+    url = f"{dominio}/incorporar"
+    codigo = (f'<iframe src="{dominio}/embed" title="Simulador de financiamento imobiliário" '
+              f'width="100%" height="560" style="border:0;max-width:520px" loading="lazy"></iframe>\n'
+              f'<p style="font-size:12px">Simulador por <a href="{dominio}/">Datalab Global</a></p>')
+    codigo_html = codigo.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    perguntas = [
+        ("O simulador para incorporar é gratuito?",
+         "Sim. Basta copiar o código acima e colar no HTML da sua página. Pedimos apenas que mantenha o link de crédito para a Datalab Global."),
+        ("Preciso me cadastrar ou usar alguma biblioteca?",
+         "Não. É um iframe: sem cadastro, sem chave de API, sem JavaScript no seu site e sem cookies."),
+        ("As taxas dos bancos ficam atualizadas?",
+         "Sim. O simulador usa a taxa média mensal de cada banco, segundo o Banco Central, e é atualizado por nós todo mês, sem você precisar mexer no seu site."),
+        ("O que o simulador calcula?",
+         "A primeira e a última parcela no sistema SAC, a parcela fixa na tabela Price, os juros totais e o valor financiado, respeitando a entrada mínima e o prazo máximo de cada banco. Não inclui seguros nem tarifas."),
+    ]
+    schema_faq = json.dumps({"@context": "https://schema.org", "@type": "FAQPage",
+        "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in perguntas]}, ensure_ascii=False)
+    schema_bc = json.dumps({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Datalab Global", "item": f"{dominio}/"},
+        {"@type": "ListItem", "position": 2, "name": "Simulador para incorporar", "item": url}]}, ensure_ascii=False)
+    titulo = "Simulador de financiamento imobiliário para site (grátis) | Datalab Global"
+    meta = "Incorpore grátis um simulador de financiamento imobiliário no seu site, com taxas atualizadas dos bancos. Copie o código e cole: sem cadastro."
+    html_pagina = f'''<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+{render_head_boilerplate(titulo, meta, url, dominio, [schema_bc, schema_faq])}
+</head>
+<body class="antialiased flex flex-col min-h-screen">
+    {_nav_comparacao()}
+    <header class="py-12 md:py-16 relative z-10 text-center">
+        <h1 class="text-3xl md:text-5xl font-serif text-white mb-4 leading-tight px-4">Simulador de financiamento imobiliário para o seu site</h1>
+        <p class="text-slate-400 text-base md:text-lg font-light tracking-wide max-w-3xl mx-auto px-4">Copie o código, cole na sua página e pronto: um simulador de parcela com a taxa média atualizada de cada banco, grátis e sem cadastro.</p>
+    </header>
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 flex-grow w-full relative z-10">
+        <section class="grid md:grid-cols-2 gap-8 items-start">
+            <div>
+                <h2 class="text-2xl font-serif text-white mb-3">Veja como fica</h2>
+                <iframe src="embed" title="Simulador de financiamento imobiliário" width="100%" height="560" style="border:0;max-width:520px;border-radius:12px" loading="lazy"></iframe>
+            </div>
+            <div>
+                <h2 class="text-2xl font-serif text-white mb-3">Copie o código</h2>
+                <textarea readonly rows="7" onclick="this.select()" class="w-full bg-slate-900/60 border border-white/10 rounded-xl p-3 text-xs text-slate-300 font-mono" aria-label="Código para incorporar o simulador">{codigo_html}</textarea>
+                <ol class="mt-4 space-y-2 text-sm text-slate-300 list-decimal list-inside">
+                    <li>Clique no código e copie (Ctrl+C).</li>
+                    <li>Cole no HTML da página onde o simulador deve aparecer.</li>
+                    <li>Mantenha o link "Simulador por Datalab Global" logo abaixo.</li>
+                </ol>
+                <p class="mt-4 text-xs text-slate-400">Taxas médias do Banco Central, atualizadas todo mês. Simulação educativa: não é oferta de crédito. Os <a href="dados-abertos" class="text-emerald-400 underline">dados abertos</a> por trás do simulador estão disponíveis em CSV e JSON.</p>
+            </div>
+        </section>
+        <section class="mt-16">
+            <h2 class="text-2xl font-serif text-white mb-6 text-center">Perguntas Frequentes</h2>
+            <div class="space-y-3 max-w-3xl mx-auto">{_faq_html(perguntas)}
+            </div>
+        </section>
+        <p class="mt-10 text-center text-xs text-slate-400"><a href="financiamento-imobiliario" class="text-emerald-400 underline">Tabela de financiamento por valor e prazo</a> · <a href="comparador-bancos" class="text-emerald-400 underline">Comparativo de taxas entre bancos</a></p>
+    </main>
+    {_footer_comparacao()}
+</body>
+</html>'''
+    with open(os.path.join(pasta_saida, "incorporar.html"), "w", encoding="utf-8") as f:
+        f.write(corrigir_concordancia(html_pagina))
+    return [url]
+
+
+def gerar_pagina_imprensa(pasta_saida, dominio, data_ultima_atualizacao, taxas_atuais):
+    """/imprensa: fatos citáveis calculados dos dados reais (mudam sozinhos a
+    cada atualização), metodologia, logos, como citar e contato."""
+    url = f"{dominio}/imprensa"
+    data_br = date.fromisoformat(data_ultima_atualizacao).strftime('%d/%m/%Y')
+    historico = carregar_historico()
+    fatos = []
+    if historico:
+        meses = sorted({r["inicio_periodo"] for r in historico})
+        ult = meses[-1]
+        do_mes = sorted((r for r in historico if r["inicio_periodo"] == ult), key=lambda r: r["taxa_aa"])
+        if do_mes:
+            lo, hi = do_mes[0], do_mes[-1]
+            fatos.append(f"Em {MESES_PT[int(ult[5:7]) - 1]} de {ult[:4]}, a taxa média contratada no financiamento imobiliário foi de {_pct2(lo['taxa_aa'])}% ao ano em {nome_exibicao(lo['banco'])}, a menor entre os {len(do_mes)} bancos com dado do Banco Central, e de {_pct2(hi['taxa_aa'])}% ao ano em {nome_exibicao(hi['banco'])}, a maior.")
+        resumo = resumo_historico(historico)
+        if resumo:
+            q, a = resumo["maior_queda"], resumo["maior_alta"]
+            m0, m1 = resumo["meses"][0], resumo["meses"][-1]
+            fatos.append(f"Entre {_rotulo_mes(m0)} e {_rotulo_mes(m1)}, a maior queda foi a de {q['banco_exib']} ({_sinal_pp(q['variacao'])} ponto percentual) e a maior alta, a de {a['banco_exib']} ({_sinal_pp(a['variacao'])} ponto percentual).")
+        fatos.append(f"A série histórica cobre {len(meses)} meses ({_rotulo_mes(meses[0])} a {_rotulo_mes(meses[-1])}) e está disponível em dados abertos, sob licença {LICENCA_DADOS}.")
+    l500 = linhas_comparacao(500_000, 360, taxas_atuais)
+    p_lo, p_hi = min(l500, key=lambda x: x["p1_sac"]), max(l500, key=lambda x: x["p1_sac"])
+    fatos.append(f"Para financiar um imóvel de R$ 500 mil em 30 anos, com a entrada mínima de cada banco, a primeira parcela (sistema SAC) vai de {formatar_reais(p_lo['p1_sac'])} ({p_lo['banco_exib']}) a {formatar_reais(p_hi['p1_sac'])} ({p_hi['banco_exib']}), e o CET estimado, de {_pct(min(x['cet'] for x in l500))}% a {_pct(max(x['cet'] for x in l500))}% ao ano.")
+    fatos_html = "".join(f'<li class="mb-3">{f}</li>' for f in fatos)
+    citacao = f"Datalab Global. {{titulo}}. {url}, acesso em AAAA-MM-DD."
+    schema_bc = json.dumps({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Datalab Global", "item": f"{dominio}/"},
+        {"@type": "ListItem", "position": 2, "name": "Imprensa", "item": url}]}, ensure_ascii=False)
+    schema_page = json.dumps({"@context": "https://schema.org", "@type": "WebPage", "url": url, "name": "Imprensa e dados para citação",
+        "dateModified": data_ultima_atualizacao, "about": {"@type": "Organization", "name": "Datalab Global", "url": "https://www.datalabglobal.com/"}}, ensure_ascii=False)
+    titulo = "Imprensa: dados de financiamento imobiliário para citar | Datalab Global"
+    meta = "Números atualizados de taxas e parcelas de financiamento imobiliário, metodologia, logos e como citar a Datalab Global. Dados abertos (CC BY 4.0)."
+    html_pagina = f'''<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+{render_head_boilerplate(titulo, meta, url, dominio, [schema_bc, schema_page])}
+</head>
+<body class="antialiased flex flex-col min-h-screen">
+    {_nav_comparacao()}
+    <header class="py-12 md:py-16 relative z-10 text-center">
+        <h1 class="text-3xl md:text-5xl font-serif text-white mb-4 leading-tight px-4">Imprensa e dados para citação</h1>
+        <p class="text-slate-400 text-base md:text-lg font-light tracking-wide max-w-3xl mx-auto px-4">Números prontos, metodologia aberta e a forma de citar. Atualizado em {data_br}.</p>
+    </header>
+    <main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 flex-grow w-full relative z-10">
+        <section>
+            <h2 class="text-2xl font-serif text-white mb-3">Números para citar</h2>
+            <ul class="text-slate-300 text-sm font-light leading-relaxed list-disc list-inside">{fatos_html}</ul>
+            <p class="text-slate-400 text-xs mt-2">Calculados automaticamente a partir dos dados do Banco Central; mudam a cada atualização. As taxas são médias do que foi efetivamente contratado, não ofertas.</p>
+        </section>
+        <section class="mt-10">
+            <h2 class="text-2xl font-serif text-white mb-3">Metodologia</h2>
+            <p class="text-slate-300 text-sm font-light leading-relaxed">As taxas vêm do relatório de taxas de juros por instituição financeira do Banco Central (modalidade 903201). O CET é calculado por nós (TIR do fluxo completo, com seguros MIP e DFI e taxa de administração estimados) para o mesmo valor, prazo e a entrada mínima de cada banco. BRB e Poupex não constam no relatório do Banco Central nesta modalidade; para eles usamos uma estimativa, sinalizada nas páginas. Detalhes e série completa em <a href="dados-abertos" class="text-emerald-400 underline">dados abertos</a>.</p>
+        </section>
+        <section class="mt-10">
+            <h2 class="text-2xl font-serif text-white mb-3">Sobre a Datalab Global</h2>
+            <p class="text-slate-300 text-sm font-light leading-relaxed">A Datalab Global é uma marca de {EMPRESA_RODAPE}. Cria ferramentas gratuitas de dados e de simulação de crédito. As simulações são educativas e não constituem oferta de crédito. Conheça a <a href="sobre" class="text-emerald-400 underline">página Sobre</a>.</p>
+        </section>
+        <section class="mt-10">
+            <h2 class="text-2xl font-serif text-white mb-3">Logos e imagens</h2>
+            <ul class="text-sm space-y-2"><li><a href="logo-full.png" download class="text-emerald-400 underline">Logo completo (PNG)</a></li><li><a href="logo-schema.png" download class="text-emerald-400 underline">Ícone (PNG, 512 px)</a></li><li><a href="og-image.png" download class="text-emerald-400 underline">Imagem de compartilhamento (PNG)</a></li></ul>
+        </section>
+        <section class="mt-10">
+            <h2 class="text-2xl font-serif text-white mb-3">Como citar</h2>
+            <p class="text-slate-300 text-sm font-light leading-relaxed bg-white/5 border border-white/10 rounded-xl p-4">{citacao.format(titulo="Taxas de financiamento imobiliário por banco (dados do Banco Central)")}</p>
+            <p class="text-slate-400 text-xs mt-3">Dados sob licença <a href="{LICENCA_DADOS_URL}" rel="noopener" class="underline">{LICENCA_DADOS}</a>: pode usar e adaptar, citando a fonte com link.</p>
+        </section>
+        <section class="mt-10">
+            <h2 class="text-2xl font-serif text-white mb-3">Contato</h2>
+            <p class="text-slate-300 text-sm font-light">E-mail: <a href="mailto:contato@datalabglobal.com" class="text-emerald-400 underline">contato@datalabglobal.com</a></p>
+        </section>
+        <p class="mt-10 text-center text-xs text-slate-400"><a href="comparador-bancos" class="text-emerald-400 underline">Comparativo de taxas</a> · <a href="financiamento-imobiliario" class="text-emerald-400 underline">Parcela por valor e prazo</a> · <a href="incorporar" class="text-emerald-400 underline">Simulador para o seu site</a></p>
+    </main>
+    {_footer_comparacao()}
+</body>
+</html>'''
+    with open(os.path.join(pasta_saida, "imprensa.html"), "w", encoding="utf-8") as f:
+        f.write(corrigir_concordancia(html_pagina))
+    return [url]
 
 
 
@@ -2981,7 +3250,7 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
     </main>
     <footer class="border-t border-white/5 py-8">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}.</p>
+            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}. <a href="https://www.datalabglobal.com/privacidade/" class="underline hover:text-emerald-500">Privacidade</a> · <a href="https://www.datalabglobal.com/termos/" class="underline hover:text-emerald-500">Termos</a> · <a href="incorporar" class="underline hover:text-emerald-500">Simulador para o seu site</a> · <a href="imprensa" class="underline hover:text-emerald-500">Imprensa</a></p>
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
@@ -3080,7 +3349,7 @@ def gerar_pagina_sobre(pasta_saida, dominio):
     {corpo}
     <footer class="border-t border-white/5 py-8 mt-10">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}.</p>
+            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}. <a href="https://www.datalabglobal.com/privacidade/" class="underline hover:text-emerald-500">Privacidade</a> · <a href="https://www.datalabglobal.com/termos/" class="underline hover:text-emerald-500">Termos</a> · <a href="incorporar" class="underline hover:text-emerald-500">Simulador para o seu site</a> · <a href="imprensa" class="underline hover:text-emerald-500">Imprensa</a></p>
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
@@ -3156,7 +3425,7 @@ def gerar_pagina_aprenda(art, pasta_saida, dominio, data_atualizacao):
     {corpo}
     <footer class="border-t border-white/5 py-8 mt-10">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}.</p>
+            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}. <a href="https://www.datalabglobal.com/privacidade/" class="underline hover:text-emerald-500">Privacidade</a> · <a href="https://www.datalabglobal.com/termos/" class="underline hover:text-emerald-500">Termos</a> · <a href="incorporar" class="underline hover:text-emerald-500">Simulador para o seu site</a> · <a href="imprensa" class="underline hover:text-emerald-500">Imprensa</a></p>
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
@@ -3213,7 +3482,7 @@ def gerar_hub_aprenda(artigos, pasta_saida, dominio):
     {corpo}
     <footer class="border-t border-white/5 py-8 mt-10">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}.</p>
+            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}. <a href="https://www.datalabglobal.com/privacidade/" class="underline hover:text-emerald-500">Privacidade</a> · <a href="https://www.datalabglobal.com/termos/" class="underline hover:text-emerald-500">Termos</a> · <a href="incorporar" class="underline hover:text-emerald-500">Simulador para o seu site</a> · <a href="imprensa" class="underline hover:text-emerald-500">Imprensa</a></p>
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="https://www.datalabglobal.com/pix-no-cartao/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
@@ -3780,6 +4049,8 @@ Total de páginas de simulação: {total_paginas}
 - [Comparativo de taxas entre os {len(BANCOS)} bancos]({dominio}/comparador-bancos)
 - [Financiamento imobiliário: parcela por valor e prazo]({dominio}/financiamento-imobiliario)
 - [Dados abertos: taxas de financiamento por banco, série mensal em CSV e JSON]({dominio}/dados-abertos)
+- [Simulador de financiamento para incorporar no seu site (grátis)]({dominio}/incorporar)
+- [Imprensa: números atualizados para citar]({dominio}/imprensa)
 - [Sitemap completo]({dominio}/sitemap.xml)
 
 ## Sobre os dados

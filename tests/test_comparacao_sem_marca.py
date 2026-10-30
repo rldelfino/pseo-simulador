@@ -151,3 +151,73 @@ def test_resumo_historico_calcula_variacao_e_extremos():
     assert r["maior_queda"]["banco"] == "Caixa" and r["maior_queda"]["variacao"] == pytest.approx(-0.5)
     assert r["maior_alta"]["banco"] == "Itau" and r["maior_alta"]["variacao"] == pytest.approx(0.5)
     assert resumo_historico(h[:2]) is None  # um mês só: sem evolução
+
+
+# ---------------------------------------------------------------------------
+# Simulador incorporável, página "como incorporar" e imprensa
+# ---------------------------------------------------------------------------
+
+def _bloco_calc_do_embed():
+    html = open(os.path.join(PASTA_SAIDA, "embed.html"), encoding="utf-8").read()
+    m = re.search(r"// <calc>(.*?)// </calc>", html, re.S)
+    assert m, "bloco <calc> não encontrado no embed.html"
+    return m.group(1)
+
+
+@pytest.mark.skipif(not gerada, reason="paginas_seo/ não gerada")
+def test_calculo_do_embed_bate_com_o_calculo_do_site():
+    """A calculadora JS do /embed tem de dar os mesmos números que o motor Python do site."""
+    import json
+    import shutil
+    import subprocess
+    from gerador import calcular_sac_price
+    if not shutil.which("node"):
+        pytest.skip("node não instalado")
+    casos = [(400_000, 360, 11.45), (250_000, 120, 12.30), (900_000, 420, 14.51), (150_000, 180, 9.56)]
+    js = _bloco_calc_do_embed() + "\nconst casos=" + json.dumps(casos) + ";\nconsole.log(JSON.stringify(casos.map(c=>calcularFinanciamento(c[0],c[1],c[2]))));"
+    saida = subprocess.run(["node", "-e", js], capture_output=True, text=True, check=True).stdout
+    for (fin, meses, taxa), r in zip(casos, json.loads(saida)):
+        py = calcular_sac_price(fin, meses, taxa)
+        assert r["p1"] == pytest.approx(py["p1_sac"], rel=1e-9)
+        assert r["pU"] == pytest.approx(py["pU_sac"], rel=1e-9)
+        assert r["price"] == pytest.approx(py["p1_price"], rel=1e-9)
+        assert r["jurosSac"] == pytest.approx(py["total_sac"] - fin, rel=1e-6)
+        assert r["jurosPrice"] == pytest.approx(py["total_price"] - fin, rel=1e-6)
+
+
+@pytest.mark.skipif(not gerada, reason="paginas_seo/ não gerada")
+def test_embed_e_noindex_tem_canonical_e_headers_liberam_iframe_so_nele():
+    html = open(os.path.join(PASTA_SAIDA, "embed.html"), encoding="utf-8").read()
+    assert 'name="robots" content="noindex,follow"' in html
+    assert 'rel="canonical" href="https://simulador.datalabglobal.com/incorporar"' in html
+    assert "Datalab Global" in html and "https://simulador.datalabglobal.com/" in html  # link de crédito
+    headers = open(os.path.join(PASTA_SAIDA, "_headers"), encoding="utf-8").read()
+    bloco_embed = headers.split("\n/embed\n", 1)[1].split("\n\n", 1)[0]
+    assert "frame-ancestors *" in bloco_embed and "! X-Frame-Options" in bloco_embed
+    bloco_global = headers.split("/*\n", 1)[1].split("\n\n", 1)[0]
+    assert "X-Frame-Options: DENY" in bloco_global and "frame-ancestors 'none'" in bloco_global
+    sitemap = open(os.path.join(PASTA_SAIDA, "sitemap.xml"), encoding="utf-8").read()
+    assert "/embed<" not in sitemap and "/incorporar</loc>" in sitemap and "/imprensa</loc>" in sitemap
+
+
+@pytest.mark.skipif(not gerada, reason="paginas_seo/ não gerada")
+def test_imprensa_tem_numeros_calculados_e_incorporar_tem_codigo_e_iframe():
+    imp = open(os.path.join(PASTA_SAIDA, "imprensa.html"), encoding="utf-8").read()
+    assert "Números para citar" in imp and "R$ 500 mil em 30 anos" in imp and "CNPJ 63.998.502/0001-73" in imp
+    assert re.search(r"taxa média contratada no financiamento imobiliário foi de \d+,\d{2}% ao ano", imp)
+    inc = open(os.path.join(PASTA_SAIDA, "incorporar.html"), encoding="utf-8").read()
+    assert "&lt;iframe src=&quot;" not in inc  # o código fica escapado no textarea
+    assert "&lt;iframe src=" in inc and 'src="embed"' in inc and "Simulador por" in inc
+
+
+@pytest.mark.skipif(not gerada, reason="paginas_seo/ não gerada")
+def test_cada_guia_recebe_varios_links_contextuais_e_paginas_novas_sao_alcancaveis():
+    """Auditoria de links internos (29/out/2026): cada guia recebia só 1 link e
+    /incorporar e /imprensa eram inalcançáveis a partir da home."""
+    from gerador import ARTIGOS_APRENDA
+    textos = {n: open(os.path.join(PASTA_SAIDA, n), encoding="utf-8").read() for n in os.listdir(PASTA_SAIDA) if n.endswith(".html")}
+    for art in ARTIGOS_APRENDA:
+        recebidos = sum(1 for n, t in textos.items() if n != art["slug"] + ".html" and f'href="{art["slug"]}"' in t)
+        assert recebidos >= 20, (art["slug"], recebidos)
+    for destino in ("incorporar", "imprensa"):
+        assert f'href="{destino}"' in textos["index.html"], destino  # rodapé da home
