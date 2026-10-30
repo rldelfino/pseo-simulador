@@ -76,7 +76,7 @@ def test_rodape_mostra_identidade_da_empresa():
     # precisa dizer quem está por trás; e nenhum placeholder pode vazar.
     faltando = []
     for nome in os.listdir(PASTA_SAIDA):
-        if not nome.endswith(".html") or nome == "404.html":
+        if not nome.endswith(".html") or nome in ("404.html", "embed.html"):  # embed: widget sem rodapé
             continue
         texto = open(os.path.join(PASTA_SAIDA, nome), encoding="utf-8").read()
         assert "{EMPRESA_RODAPE}" not in texto, nome

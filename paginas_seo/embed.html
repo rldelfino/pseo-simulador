@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador de financiamento imobiliário | Datalab Global</title>
+<meta name="description" content="Simulador de financiamento imobiliário incorporável: parcela SAC e Price com a taxa média de cada banco.">
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="https://simulador.datalabglobal.com/incorporar">
+<link rel="icon" href="https://simulador.datalabglobal.com/favicon.ico?v=20261012" sizes="any">
+<link rel="icon" href="https://simulador.datalabglobal.com/favicon-32.png?v=20261012" type="image/png" sizes="32x32">
+<style>
+*{box-sizing:border-box}body{margin:0;padding:14px;font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#0b1220;color:#e2e8f0}
+h1{font-size:16px;margin:0 0 10px;font-weight:700}label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#94a3b8;margin:10px 0 4px}
+select,input{width:100%;padding:9px 10px;border-radius:8px;border:1px solid #334155;background:#111b2e;color:#f8fafc;font-size:14px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.res{margin-top:14px;padding:12px;border-radius:10px;background:#0f2a24;border:1px solid #14b8a6}
+.res b{display:block;font-size:20px;color:#5eead4}.res small{color:#94a3b8}.k{display:flex;justify-content:space-between;gap:8px;padding:4px 0;border-top:1px solid #1e3a34}.k:first-of-type{border-top:0}
+.nota{margin-top:10px;font-size:11px;color:#94a3b8}.nota a{color:#5eead4}
+</style>
+</head>
+<body>
+<h1>Simule seu financiamento imobiliário</h1>
+<label for="banco">Banco</label><select id="banco"></select>
+<div class="row"><div><label for="valor">Valor do imóvel (R$)</label><input id="valor" type="number" min="50000" step="10000" value="500000" inputmode="numeric"></div>
+<div><label for="prazo">Prazo</label><select id="prazo"></select></div></div>
+<label for="entrada">Entrada (R$) <span id="minimo" style="text-transform:none;letter-spacing:0"></span></label><input id="entrada" type="number" min="0" step="5000" inputmode="numeric">
+<div class="res" aria-live="polite">
+<small>1ª parcela (SAC)</small><b id="p1">–</b>
+<div class="k"><span>Última parcela (SAC)</span><span id="pU">–</span></div>
+<div class="k"><span>Parcela fixa (Price)</span><span id="price">–</span></div>
+<div class="k"><span>Juros totais (SAC)</span><span id="juros">–</span></div>
+<div class="k"><span>Valor financiado</span><span id="fin">–</span></div></div>
+<p class="nota" id="nota"></p>
+<p class="nota">Simulação educativa, sem seguros e tarifas; não é oferta de crédito. Simulador por <a href="https://simulador.datalabglobal.com/" target="_blank" rel="noopener">Datalab Global</a>.</p>
+<script>
+// <calc>
+function calcularFinanciamento(valorFinanciado, meses, taxaAnualPct) {
+  var i = (taxaAnualPct / 100) / 12;
+  var amort = valorFinanciado / meses;
+  var p1 = amort + valorFinanciado * i;
+  var pU = amort * (1 + i);
+  var price = i > 0 ? valorFinanciado * (i * Math.pow(1 + i, meses)) / (Math.pow(1 + i, meses) - 1) : amort;
+  return {p1: p1, pU: pU, price: price,
+          jurosSac: valorFinanciado * i * (meses + 1) / 2, jurosPrice: price * meses - valorFinanciado};
+}
+// </calc>
+var BANCOS = [{"chave": "Caixa", "nome": "Caixa", "taxa": 12.12, "ltv": 0.8, "prazoMax": 420, "fem": true}, {"chave": "Banco do Brasil", "nome": "Banco do Brasil", "taxa": 14.51, "ltv": 0.8, "prazoMax": 420, "fem": false}, {"chave": "Santander", "nome": "Santander", "taxa": 12.29, "ltv": 0.8, "prazoMax": 420, "fem": false}, {"chave": "BRB", "nome": "BRB", "taxa": 11.36, "ltv": 0.8, "prazoMax": 420, "fem": false}, {"chave": "Poupex", "nome": "Poupex", "taxa": 10.8, "ltv": 0.9, "prazoMax": 420, "fem": true}, {"chave": "Itau", "nome": "Itaú", "taxa": 12.06, "ltv": 0.8, "prazoMax": 360, "fem": false}, {"chave": "Bradesco", "nome": "Bradesco", "taxa": 12.3, "ltv": 0.8, "prazoMax": 360, "fem": false}, {"chave": "Banco Inter", "nome": "Banco Inter", "taxa": 12.47, "ltv": 0.8, "prazoMax": 360, "fem": false}, {"chave": "Sicredi", "nome": "Sicredi", "taxa": 11.45, "ltv": 0.8, "prazoMax": 360, "fem": false}, {"chave": "Sicoob", "nome": "Sicoob", "taxa": 10.89, "ltv": 0.8, "prazoMax": 360, "fem": false}, {"chave": "Banrisul", "nome": "Banrisul", "taxa": 9.56, "ltv": 0.75, "prazoMax": 360, "fem": false}];
+var fmt = new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL', maximumFractionDigits: 0});
+var el = function (id) { return document.getElementById(id); };
+BANCOS.forEach(function (b, i) { var o = document.createElement('option'); o.value = i; o.textContent = b.nome + ' (' + b.taxa.toFixed(2).replace('.', ',') + '% a.a.)'; el('banco').appendChild(o); });
+function atualizarPrazos() {
+  var b = BANCOS[el('banco').value], atual = el('prazo').value; el('prazo').innerHTML = '';
+  [10, 15, 20, 25, 30, 35].forEach(function (a) { if (a * 12 <= b.prazoMax) { var o = document.createElement('option'); o.value = a * 12; o.textContent = a + ' anos'; el('prazo').appendChild(o); } });
+  el('prazo').value = (atual && Array.prototype.some.call(el('prazo').options, function (o) { return o.value === atual; })) ? atual : String(Math.min(360, b.prazoMax));
+}
+function calcular(ajustarEntrada) {
+  var b = BANCOS[el('banco').value], valor = Math.max(0, parseFloat(el('valor').value) || 0);
+  var min = valor * (1 - b.ltv);
+  el('minimo').textContent = '(mín. ' + fmt.format(min) + ')';
+  if (ajustarEntrada || !el('entrada').value) el('entrada').value = Math.round(Math.max(valor * 0.2, min));
+  var entrada = Math.min(valor, Math.max(min, parseFloat(el('entrada').value) || 0)), fin = valor - entrada, meses = parseInt(el('prazo').value, 10);
+  if (fin <= 0 || !meses) { ['p1','pU','price','juros','fin'].forEach(function (id) { el(id).textContent = '–'; }); return; }
+  var r = calcularFinanciamento(fin, meses, b.taxa);
+  el('p1').textContent = fmt.format(r.p1); el('pU').textContent = fmt.format(r.pU); el('price').textContent = fmt.format(r.price);
+  el('juros').textContent = fmt.format(r.jurosSac); el('fin').textContent = fmt.format(fin);
+  el('nota').textContent = 'Taxa média: ' + b.nome + ', ' + b.taxa.toFixed(2).replace('.', ',') + '% a.a. (Banco Central, 05/10/2026).';
+}
+el('banco').addEventListener('change', function () { atualizarPrazos(); calcular(true); });
+el('prazo').addEventListener('change', function () { calcular(false); });
+el('valor').addEventListener('input', function () { calcular(true); });
+el('entrada').addEventListener('input', function () { calcular(false); });
+atualizarPrazos(); calcular(true);
+</script>
+</body>
+</html>
