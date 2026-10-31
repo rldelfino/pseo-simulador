@@ -268,6 +268,7 @@ def render_head_boilerplate(titulo_pagina, meta_description, url_canonica, domin
         '    <link rel="icon" href="favicon-32.png?v=20261012" type="image/png" sizes="32x32">',
         '    <link rel="icon" href="favicon-192.png?v=20261012" type="image/png" sizes="192x192">',
         '    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261012">',
+        *tags_medicao(),
     ]
     linhas_topo_html = "\n".join(l for l in linhas_topo if l is not None)
     return f'''{linhas_topo_html}
@@ -1589,6 +1590,7 @@ def gerar_paginas_pseo():
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
                 <a href="/metodologia" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Metodologia</a>
                 <a href="/taxas-financiamento-imobiliario" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Taxas mês a mês</a>
+                <a href="/renda-para-financiar-imovel" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Renda para financiar</a>
                 <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
                     {icone('whatsapp', 'mr-1')} Falar com o suporte
                 </a>
@@ -1642,6 +1644,9 @@ def gerar_paginas_pseo():
     urls_comparacao += gerar_pagina_imprensa(pasta_saida, dominio, data_ultima_atualizacao, taxas_atuais_por_banco)
     urls_comparacao += gerar_paginas_mensais(pasta_saida, dominio, data_ultima_atualizacao, historico_cache)
     urls_comparacao += gerar_pagina_metodologia(pasta_saida, dominio, data_ultima_atualizacao)
+    urls_comparacao += gerar_paginas_renda(pasta_saida, dominio, data_ultima_atualizacao, taxas_atuais_por_banco)
+    gerar_llms_full_txt(pasta_saida, dominio, data_ultima_atualizacao, taxas_atuais_por_banco, historico_cache)
+    gerar_medicao_js(pasta_saida)
 
     gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao)
     url_sobre = gerar_pagina_sobre(pasta_saida, dominio)
@@ -1952,6 +1957,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
                 <a href="/metodologia" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Metodologia</a>
                 <a href="/taxas-financiamento-imobiliario" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Taxas mês a mês</a>
+                <a href="/renda-para-financiar-imovel" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Renda para financiar</a>
                 <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
                     {icone('whatsapp', 'mr-1')} Falar com o suporte
                 </a>
@@ -2239,13 +2245,14 @@ def html_vizinhas(grupo_banco, pagina, banco_exib):
                 itens.append(alt)
     if not itens:
         return ""
+    link_renda = slug_renda(valor) if int(round(valor)) in VALORES_INDEXAVEIS else SLUG_INDICE_RENDA
     links = "".join(
         f'<a href="{p["slug"]}" class="block p-3 bg-white/5 rounded-xl border border-white/10 hover:border-emerald-500/50 text-sm text-slate-300">'
         f'{banco_exib}: {p["texto"]}</a>' for p in itens)
     return f'''<section class="mt-8">
             <h2 class="text-sm font-serif text-slate-400 mb-3">Valores e prazos vizinhos no {banco_exib}</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-3">{links}</div>
-            <p class="text-slate-500 text-xs mt-3"><a href="{SLUG_INDICE_MENSAL}" class="underline hover:text-emerald-400">Taxas de financiamento imobiliário mês a mês</a> · <a href="financiamento-imobiliario" class="underline hover:text-emerald-400">Parcela por valor e prazo</a> · <a href="metodologia" class="underline hover:text-emerald-400">Como calculamos</a></p>
+            <p class="text-slate-500 text-xs mt-3"><a href="{SLUG_INDICE_MENSAL}" class="underline hover:text-emerald-400">Taxas de financiamento imobiliário mês a mês</a> · <a href="financiamento-imobiliario" class="underline hover:text-emerald-400">Parcela por valor e prazo</a> · <a href="{link_renda}" class="underline hover:text-emerald-400">Renda necessária para financiar</a> · <a href="metodologia" class="underline hover:text-emerald-400">Como calculamos</a></p>
         </section>'''
 
 
@@ -2267,6 +2274,7 @@ def gerar_paginas_mensais(pasta_saida, dominio, data_ultima_atualizacao, histori
     for r in historico:
         por_mes.setdefault(r["inicio_periodo"], {})[r["banco"]] = r["taxa_aa"]
     recentes = set(meses[-MESES_INDEXAVEIS_MENSAL:])
+    por_mes_fim = {r["inicio_periodo"]: r["fim_periodo"] for r in historico}
     data_br = date.fromisoformat(data_ultima_atualizacao).strftime('%d/%m/%Y')
     urls = []
     for k, mes in enumerate(meses):
@@ -2325,6 +2333,15 @@ def gerar_paginas_mensais(pasta_saida, dominio, data_ultima_atualizacao, histori
             {"@type": "ListItem", "position": 3, "name": mes_ano, "item": url}]}, ensure_ascii=False)
         schema_faq = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
             {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faq]}, ensure_ascii=False)
+        schema_dados = json.dumps({
+            "@context": "https://schema.org", "@type": "Dataset", "name": f"Taxas do financiamento imobiliário por banco em {mes_ano}",
+            "description": f"Taxa média de juros contratada (% ao ano) por banco em {mes_ano}, segundo o Banco Central do Brasil.",
+            "url": url, "inLanguage": "pt-BR", "license": LICENCA_DADOS_URL, "isAccessibleForFree": True,
+            "creator": {"@type": "Organization", "name": "Datalab Global", "url": f"{dominio}/"},
+            "isBasedOn": FONTE_BACEN_URL, "temporalCoverage": f"{mes}/{por_mes_fim[mes]}",
+            "variableMeasured": ["Taxa média de juros contratada (% ao ano)"],
+            "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": f"{dominio}/dados/taxas-financiamento-imobiliario.csv"}],
+        }, ensure_ascii=False)
         vizinhos = ""
         if k > 0:
             vizinhos += f'<a href="{slug_mes(meses[k - 1])}" class="underline hover:text-emerald-400">← {nome_mes(meses[k - 1])}</a>'
@@ -2333,7 +2350,7 @@ def gerar_paginas_mensais(pasta_saida, dominio, data_ultima_atualizacao, histori
         html = f'''<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-{render_head_boilerplate(titulo, desc, url, dominio, [schema_bc, schema_faq], robots=(None if indexavel else 'noindex,follow'))}
+{render_head_boilerplate(titulo, desc, url, dominio, [schema_bc, schema_faq, schema_dados], robots=(None if indexavel else 'noindex,follow'))}
 </head>
 <body class="antialiased min-h-screen flex flex-col">
     {_nav_comparacao()}
@@ -2448,6 +2465,261 @@ def gerar_pagina_metodologia(pasta_saida, dominio, data_ultima_atualizacao):
         f.write(corrigir_concordancia(html))
     return [url]
 
+
+
+# ---------------------------------------------------------------------------
+# Motor v3b (31/out/2026): renda necessária por valor, llms-full.txt e medição
+# de cliques (Umami, só liga com o ID do site).
+# ---------------------------------------------------------------------------
+SLUG_INDICE_RENDA = "renda-para-financiar-imovel"
+ENTRADAS_RENDA = (0.20, 0.30, 0.50)
+ANOS_RENDA = (20, 25, 30, 35)
+PERC_RENDA_COMPROMETIDA = 0.30
+
+# Medição de cliques (31/out/2026): vazio = não carrega nada. Preencha com o
+# "Website ID" do Umami Cloud (plano gratuito, sem cookies) para ligar.
+UMAMI_WEBSITE_ID = ""
+UMAMI_SCRIPT = "https://cloud.umami.is/script.js"
+
+
+def slug_renda(valor_imovel):
+    return f"{SLUG_INDICE_RENDA}-{int(round(valor_imovel / 1000))}-mil"
+
+
+def _taxa_mediana_prazo(prazo_meses, taxas_atuais):
+    bancos = bancos_com_prazo(prazo_meses)
+    if len(bancos) < MIN_BANCOS_COMPARACAO:
+        return None
+    return _mediana([(taxas_atuais or {}).get(b, BANCOS[b]["taxa_padrao"]) for b in bancos])
+
+
+def renda_minima(valor_imovel, entrada_perc, anos, taxas_atuais):
+    """Renda familiar mínima (1ª parcela / 30%) na taxa mediana dos bancos que
+    oferecem o prazo. None se menos de MIN_BANCOS_COMPARACAO bancos o oferecem."""
+    prazo = anos * 12
+    taxa = _taxa_mediana_prazo(prazo, taxas_atuais)
+    if taxa is None:
+        return None
+    r = calcular_sac_price(valor_imovel * (1 - entrada_perc), prazo, taxa)
+    arred = lambda p: math.ceil((p / PERC_RENDA_COMPROMETIDA) / 50) * 50
+    return {"taxa": taxa, "p1_sac": r["p1_sac"], "renda_sac": arred(r["p1_sac"]),
+            "p_price": r["p1_price"], "renda_price": arred(r["p1_price"])}
+
+
+def gerar_paginas_renda(pasta_saida, dominio, data_ultima_atualizacao, taxas_atuais):
+    """/renda-para-financiar-imovel-{valor}-mil: quanto de renda os bancos
+    costumam exigir, por prazo e entrada (busca real: 'renda para financiar
+    imóvel de 300 mil'). Números próprios por valor. Retorna as URLs."""
+    urls = []
+    valores = list(VALORES_INDEXAVEIS)
+    for k, valor in enumerate(valores):
+        vc, vf = formatar_valor_curto(valor), formatar_reais(valor)
+        tab = {(a, e): renda_minima(valor, e, a, taxas_atuais) for a in ANOS_RENDA for e in ENTRADAS_RENDA}
+        base = tab.get((30, 0.20)) or next(v for v in tab.values() if v)
+        base_anos = 30 if tab.get((30, 0.20)) else next(a for (a, e), v in tab.items() if v)
+        alta = tab.get((30, 0.50)) or base
+        longo = tab.get((35, 0.20))
+        cab = "".join(f'<th scope="col" class="px-2 py-2 text-right font-medium">{round(e * 100)}% de entrada<br><span class="normal-case text-slate-500">({formatar_reais(valor * e)})</span></th>' for e in ENTRADAS_RENDA)
+
+        def tabela(chave, parcela):
+            linhas = ""
+            for a in ANOS_RENDA:
+                cels = ""
+                for e in ENTRADAS_RENDA:
+                    v = tab[(a, e)]
+                    cels += (f'<td class="px-2 py-2 text-right whitespace-nowrap"><strong class="text-white">{formatar_reais(v[chave])}</strong>'
+                             f'<br><span class="text-slate-500">parcela {formatar_reais(v[parcela])}</span></td>') if v else '<td class="px-2 py-2 text-right text-slate-500">–</td>'
+                linhas += f'<tr class="border-t border-white/5"><th scope="row" class="px-2 py-2 text-left font-medium text-white whitespace-nowrap">{a} anos</th>{cels}</tr>'
+            return (f'<div class="overflow-x-auto rounded-xl border border-white/10"><table class="w-full text-xs text-slate-300">'
+                    f'<thead class="text-[10px] uppercase tracking-widest text-slate-400"><tr><th scope="col" class="px-2 py-2 text-left font-medium">Prazo</th>{cab}</tr></thead>'
+                    f'<tbody>{linhas}</tbody></table></div>')
+
+        resumo = (f"Para financiar um imóvel de {vf} com 20% de entrada ({formatar_reais(valor * 0.20)}) em {base_anos} anos, na taxa mediana dos bancos "
+                  f"({_pct2(base['taxa'])}% ao ano), a primeira parcela na SAC é de {formatar_reais(base['p1_sac'])} e a renda familiar mínima, "
+                  f"considerando o limite de 30% da renda, é de {formatar_reais(base['renda_sac'])} por mês. Na PRICE, a parcela é fixa em "
+                  f"{formatar_reais(base['p_price'])} e a renda mínima, de {formatar_reais(base['renda_price'])}.")
+        dica = (f"Com 50% de entrada ({formatar_reais(valor * 0.5)}), a renda mínima cai para {formatar_reais(alta['renda_sac'])} na SAC em 30 anos."
+                if tab.get((30, 0.50)) else "")
+        if longo:
+            dica += (f" Esticar para 35 anos baixa a renda mínima (20% de entrada) para {formatar_reais(longo['renda_sac'])}, mas aumenta o total de juros.")
+        faq = [
+            (f"Qual a renda mínima para financiar um imóvel de {vc}?",
+             f"Com 20% de entrada, em {base_anos} anos e na taxa mediana do mercado ({_pct2(base['taxa'])}% ao ano), a renda familiar mínima é de cerca de "
+             f"{formatar_reais(base['renda_sac'])} por mês na SAC e {formatar_reais(base['renda_price'])} na PRICE."),
+            (f"Como diminuir a renda exigida para financiar {vc}?",
+             f"Aumentar a entrada e alongar o prazo reduzem a parcela e, com ela, a renda exigida."
+             + (f" Com 50% de entrada, a renda mínima cai para {formatar_reais(alta['renda_sac'])} na SAC em 30 anos." if tab.get((30, 0.50)) else "")),
+            ("Por que a renda mínima é calculada com 30%?",
+             "Os bancos costumam limitar a primeira parcela a 30% da renda bruta familiar. É uma regra de mercado, não uma lei: cada banco faz a própria análise de crédito."),
+        ]
+        slug = slug_renda(valor)
+        url = f"{dominio}/{slug}"
+        titulo = _escolher_que_cabe(60, f"Renda para financiar imóvel de {vc}: quanto precisa ganhar | Datalab Global",
+                                    f"Renda para financiar imóvel de {vc}: quanto precisa ganhar", f"Renda para financiar imóvel de {vc}")
+        desc = _escolher_que_cabe(160, f"Renda mínima para financiar imóvel de {vc}: {formatar_reais(base['renda_sac'])} por mês com 20% de entrada em {base_anos} anos (SAC). Veja por prazo e entrada.",
+                                  f"Renda mínima para financiar imóvel de {vc}: {formatar_reais(base['renda_sac'])} por mês com 20% de entrada em {base_anos} anos.")
+        schema_bc = json.dumps({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Datalab Global", "item": f"{dominio}/"},
+            {"@type": "ListItem", "position": 2, "name": "Renda para financiar", "item": f"{dominio}/{SLUG_INDICE_RENDA}"},
+            {"@type": "ListItem", "position": 3, "name": vc, "item": url}]}, ensure_ascii=False)
+        schema_faq = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+            {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faq]}, ensure_ascii=False)
+        viz = []
+        if k > 0:
+            viz.append(f'<a href="{slug_renda(valores[k - 1])}" class="underline hover:text-emerald-400">← Renda para {formatar_valor_curto(valores[k - 1])}</a>')
+        if k + 1 < len(valores):
+            viz.append(f'<a href="{slug_renda(valores[k + 1])}" class="underline hover:text-emerald-400">Renda para {formatar_valor_curto(valores[k + 1])} →</a>')
+        comp = ""
+        if pagina_comparacao_existe(valor, base_anos):
+            comp = f'<a href="{slug_comparacao(valor, base_anos)}" class="text-emerald-400 underline">Compare {vc} em {base_anos} anos em todos os bancos</a> · '
+        html = f'''<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+{render_head_boilerplate(titulo, desc, url, dominio, [schema_bc, schema_faq])}
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+    {_nav_comparacao()}
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 relative z-10 w-full flex-grow">
+        <h1 class="text-3xl md:text-5xl font-serif text-white mb-4 leading-tight">Renda necessária para financiar um imóvel de {vc}</h1>
+        <p class="text-slate-300 text-base font-light leading-relaxed mb-4">{resumo}</p>
+        <p class="text-slate-300 text-sm font-light leading-relaxed mb-8">{dica}</p>
+        <h2 class="text-xl font-serif text-white mb-3">Renda mínima na SAC (parcelas decrescentes)</h2>
+        {tabela("renda_sac", "p1_sac")}
+        <h2 class="text-xl font-serif text-white mt-8 mb-3">Renda mínima na PRICE (parcela fixa)</h2>
+        {tabela("renda_price", "p_price")}
+        <p class="text-slate-500 text-[11px] mt-3">Cálculo: primeira parcela dividida por 30%, na taxa mediana dos bancos que oferecem o prazo (taxas médias do Banco Central, atualizadas em {date.fromisoformat(data_ultima_atualizacao).strftime('%d/%m/%Y')}), sem seguros nem tarifas. A sua análise de crédito pode exigir mais ou menos. Veja a <a href="metodologia" class="underline">metodologia</a>.</p>
+        <p class="text-slate-400 text-sm mt-6">{" &nbsp;·&nbsp; ".join(viz)}</p>
+        <section class="mt-12 space-y-3"><h2 class="text-2xl font-serif text-white mb-2">Perguntas frequentes</h2>{_faq_html(faq)}</section>
+        <p class="text-slate-400 text-sm mt-10">{comp}<a href="{SLUG_INDICE_RENDA}" class="text-emerald-400 underline">Renda por valor do imóvel</a> · <a href="comparador-bancos" class="text-emerald-400 underline">Comparador de bancos</a></p>
+        {_cta_comparacao("Quer saber se a sua renda aprova?")}
+    </main>
+    {_footer_comparacao()}
+</body>
+</html>'''
+        with open(os.path.join(pasta_saida, f"{slug}.html"), "w", encoding="utf-8") as f:
+            f.write(corrigir_concordancia(html))
+        urls.append(url)
+
+    itens = "".join(
+        f'<li><a href="{slug_renda(v)}" class="text-emerald-400 underline hover:text-emerald-300">Renda para financiar {formatar_valor_curto(v)}</a>'
+        f' <span class="text-slate-500 text-xs">(a partir de {formatar_reais(renda_minima(v, 0.50, 35, taxas_atuais)["renda_sac"] if renda_minima(v, 0.50, 35, taxas_atuais) else renda_minima(v, 0.50, 30, taxas_atuais)["renda_sac"])} por mês)</span></li>'
+        for v in valores)
+    url_ind = f"{dominio}/{SLUG_INDICE_RENDA}"
+    schema_bc = json.dumps({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Datalab Global", "item": f"{dominio}/"},
+        {"@type": "ListItem", "position": 2, "name": "Renda para financiar", "item": url_ind}]}, ensure_ascii=False)
+    html = f'''<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+{render_head_boilerplate("Renda para financiar imóvel: quanto precisa ganhar | Datalab Global", "Renda mínima para financiar imóveis de R$ 150 mil a R$ 1 milhão, por prazo e entrada, com a taxa mediana dos bancos.", url_ind, dominio, [schema_bc])}
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+    {_nav_comparacao()}
+    <main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 relative z-10 w-full flex-grow">
+        <h1 class="text-3xl md:text-5xl font-serif text-white mb-4 leading-tight">Renda para financiar um imóvel</h1>
+        <p class="text-slate-300 text-base font-light leading-relaxed mb-8">Escolha o valor do imóvel e veja a renda familiar mínima por prazo e entrada, calculada com o limite de 30% da renda e a taxa mediana do mercado.</p>
+        <ul class="space-y-3 text-sm">{itens}</ul>
+        <p class="text-slate-400 text-sm mt-10"><a href="financiamento-imobiliario" class="text-emerald-400 underline">Parcela por valor e prazo</a> · <a href="metodologia" class="text-emerald-400 underline">Metodologia</a></p>
+    </main>
+    {_footer_comparacao()}
+</body>
+</html>'''
+    with open(os.path.join(pasta_saida, f"{SLUG_INDICE_RENDA}.html"), "w", encoding="utf-8") as f:
+        f.write(corrigir_concordancia(html))
+    urls.append(url_ind)
+    return urls
+
+
+def gerar_llms_full_txt(pasta_saida, dominio, data_ultima_atualizacao, taxas_atuais, historico):
+    """llms-full.txt: versão longa do llms.txt, com os números atuais em frases
+    curtas e datadas, fáceis de citar por buscadores de IA."""
+    data_br = date.fromisoformat(data_ultima_atualizacao).strftime('%d/%m/%Y')
+    linhas_taxa = "\n".join(
+        f"- {nome_exibicao(b)}: taxa de {_pct2(t)}% ao ano ({_pct2(((1 + t / 100) ** (1 / 12) - 1) * 100)}% ao mês), entrada mínima de {round((1 - BANCOS[b]['ltv']) * 100)}%, prazo de até {BANCOS[b]['prazo_max']} meses."
+        for b, t in sorted((taxas_atuais or {}).items(), key=lambda kv: kv[1]))
+    meses = sorted({r["inicio_periodo"] for r in historico})
+    serie = ""
+    if meses:
+        ultimo = meses[-1]
+        atual = {r["banco"]: r["taxa_aa"] for r in historico if r["inicio_periodo"] == ultimo}
+        if atual:
+            menor, maior = min(atual, key=atual.get), max(atual, key=atual.get)
+            serie = (f"\n## Taxa média contratada em {nome_mes(ultimo)} (Banco Central)\n"
+                     f"- Menor: {nome_exibicao(menor)}, {_pct2(atual[menor])}% ao ano.\n- Maior: {nome_exibicao(maior)}, {_pct2(atual[maior])}% ao ano.\n"
+                     f"- Média simples de {len(atual)} bancos: {_pct2(sum(atual.values()) / len(atual))}% ao ano.\n"
+                     f"- Série mensal desde {nome_mes(meses[0])}: {dominio}/taxas-financiamento-imobiliario\n")
+    conteudo = f"""# Datalab Global: simulador de financiamento imobiliário (versão completa)
+
+> Simuladores e dados abertos de financiamento imobiliário no Brasil. Última atualização das taxas: {data_br}. Os números abaixo podem ser citados com link para {dominio}/ (dados sob licença CC BY 4.0).
+
+## O que é e o que não é
+Calcula parcela (SAC e PRICE), CET estimado e economia de juros com amortização. Não é oferta de crédito: as taxas são médias efetivamente contratadas, divulgadas pelo Banco Central, e a proposta de cada pessoa depende da análise do banco.
+
+## Taxas usadas nas simulações hoje ({data_br})
+{linhas_taxa}
+{serie}
+## Como os números são calculados
+- Fonte das taxas: API pública do Banco Central, modalidade 903201 (aquisição de imóveis, pessoa física, pré-fixada). BRB e Poupex não são cobertos; para eles a taxa é estimada e identificada como tal.
+- SAC: amortização constante; PRICE: parcela fixa. A renda mínima usa 30% de comprometimento da renda bruta.
+- CET: TIR do fluxo com seguros e tarifa estimados. Detalhes: {dominio}/metodologia
+
+## Páginas principais
+- Comparador de bancos: {dominio}/comparador-bancos
+- Parcela por valor e prazo: {dominio}/financiamento-imobiliario
+- Renda necessária por valor do imóvel: {dominio}/{SLUG_INDICE_RENDA}
+- Taxas mês a mês: {dominio}/taxas-financiamento-imobiliario
+- Dados abertos (CSV, JSON): {dominio}/dados-abertos
+- Metodologia: {dominio}/metodologia
+- Guias: {dominio}/aprenda
+
+## Como citar
+Datalab Global ({dominio}/), taxas do Banco Central compiladas em {data_br}.
+
+## Responsável
+Marca de {EMPRESA_RODAPE}. Contato: contato@datalabglobal.com
+"""
+    with open(os.path.join(pasta_saida, "llms-full.txt"), "w", encoding="utf-8") as f:
+        f.write(conteudo)
+
+
+def gerar_medicao_js(pasta_saida):
+    """medicao.js: eventos de clique no CTA da Financia Tudo e de primeira
+    interação com o simulador. Só é gerado/carregado com UMAMI_WEBSITE_ID."""
+    caminho = os.path.join(pasta_saida, "medicao.js")
+    if not UMAMI_WEBSITE_ID:
+        if os.path.exists(caminho):
+            os.remove(caminho)
+        return
+    js = """(function () {
+  function bloco(a) {
+    if (a.closest('nav')) return 'topo';
+    if (a.closest('footer')) return 'rodape';
+    var s = a.closest('[id]');
+    return s ? s.id : 'corpo';
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href*="financiatudo"]');
+    if (a && window.umami) umami.track('cta-financiatudo', { pagina: location.pathname, bloco: bloco(a) });
+  }, true);
+  var usou = false;
+  document.addEventListener('input', function (e) {
+    if (usou || !window.umami || !e.target.matches('input')) return;
+    usou = true;
+    umami.track('usou-simulador', { pagina: location.pathname });
+  }, true);
+})();
+"""
+    with open(caminho, "w", encoding="utf-8") as f:
+        f.write(js)
+
+
+def tags_medicao():
+    """<script> do Umami + medicao.js para o <head> (vazio sem UMAMI_WEBSITE_ID)."""
+    if not UMAMI_WEBSITE_ID:
+        return []
+    host = DOMINIO.replace("https://", "")
+    return [f'    <script defer src="{UMAMI_SCRIPT}" data-website-id="{UMAMI_WEBSITE_ID}" data-domains="{host}" data-do-not-track="true"></script>',
+            '    <script defer src="/medicao.js"></script>']
 
 
 def gerar_dados_abertos(pasta_saida, dominio, data_ultima_atualizacao):
@@ -2823,6 +3095,7 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
                 <a href="/metodologia" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Metodologia</a>
                 <a href="/taxas-financiamento-imobiliario" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Taxas mês a mês</a>
+                <a href="/renda-para-financiar-imovel" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Renda para financiar</a>
                 <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
                     {icone('whatsapp', 'mr-1')} Falar com o suporte
                 </a>
@@ -2966,6 +3239,7 @@ def _footer_comparacao():
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
                 <a href="/metodologia" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Metodologia</a>
                 <a href="/taxas-financiamento-imobiliario" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Taxas mês a mês</a>
+                <a href="/renda-para-financiar-imovel" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Renda para financiar</a>
             </div>
         </div>
     </footer>'''
@@ -3086,11 +3360,18 @@ def gerar_paginas_comparacao(pasta_saida, dominio, data_ultima_atualizacao, taxa
                 "isPartOf": {"@type": "WebSite", "url": f"{dominio}/", "name": "Datalab Global"},
                 "about": {"@type": "FinancialProduct", "name": "Financiamento imobiliário"},
             }, ensure_ascii=False)
+            schema_lista = json.dumps({
+                "@context": "https://schema.org", "@type": "ItemList",
+                "name": f"Bancos para financiar {vc} em {anos} anos, do menor ao maior CET",
+                "numberOfItems": len(linhas),
+                "itemListElement": [{"@type": "ListItem", "position": pos, "name": x["banco_exib"],
+                                     "url": f"{dominio}/{slug_hub_banco(x['banco'])}"} for pos, x in enumerate(linhas, start=1)],
+            }, ensure_ascii=False)
 
             html_pagina = f'''<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-{render_head_boilerplate(titulo_pagina, meta_description, url_canonica, dominio, [schema_breadcrumb, schema_faq, schema_artigo])}
+{render_head_boilerplate(titulo_pagina, meta_description, url_canonica, dominio, [schema_breadcrumb, schema_faq, schema_artigo, schema_lista])}
 </head>
 <body class="antialiased flex flex-col min-h-screen">
     {_nav_comparacao()}
@@ -3680,6 +3961,7 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
                 <a href="/metodologia" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Metodologia</a>
                 <a href="/taxas-financiamento-imobiliario" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Taxas mês a mês</a>
+                <a href="/renda-para-financiar-imovel" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Renda para financiar</a>
                 <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
                     {icone('whatsapp', 'mr-1')} Falar com o suporte
                 </a>
@@ -3781,6 +4063,7 @@ def gerar_pagina_sobre(pasta_saida, dominio):
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
                 <a href="/metodologia" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Metodologia</a>
                 <a href="/taxas-financiamento-imobiliario" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Taxas mês a mês</a>
+                <a href="/renda-para-financiar-imovel" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Renda para financiar</a>
                 <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
                     {icone('whatsapp', 'mr-1')} Falar com o suporte
                 </a>
@@ -3859,6 +4142,7 @@ def gerar_pagina_aprenda(art, pasta_saida, dominio, data_atualizacao):
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
                 <a href="/metodologia" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Metodologia</a>
                 <a href="/taxas-financiamento-imobiliario" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Taxas mês a mês</a>
+                <a href="/renda-para-financiar-imovel" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Renda para financiar</a>
                 <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
                     {icone('whatsapp', 'mr-1')} Falar com o suporte
                 </a>
@@ -3918,6 +4202,7 @@ def gerar_hub_aprenda(artigos, pasta_saida, dominio):
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
                 <a href="/metodologia" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Metodologia</a>
                 <a href="/taxas-financiamento-imobiliario" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Taxas mês a mês</a>
+                <a href="/renda-para-financiar-imovel" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Renda para financiar</a>
                 <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
                     {icone('whatsapp', 'mr-1')} Falar com o suporte
                 </a>
@@ -4482,6 +4767,8 @@ Total de páginas de simulação: {total_paginas}
 - [Imprensa: números atualizados para citar]({dominio}/imprensa)
 - [Taxas de financiamento imobiliário mês a mês, desde 2024]({dominio}/taxas-financiamento-imobiliario)
 - [Metodologia: fonte das taxas e fórmulas]({dominio}/metodologia)
+- [Renda necessária para financiar um imóvel, por valor]({dominio}/renda-para-financiar-imovel)
+- [Versão completa com os números atuais]({dominio}/llms-full.txt)
 - [Sitemap completo]({dominio}/sitemap.xml)
 
 ## Sobre os dados

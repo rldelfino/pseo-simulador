@@ -99,3 +99,55 @@ def test_metodologia_hub_e_footer():
     assert re.search(r"Taxa do Itaú hoje: \d+,\d{2}% ao ano", hub)
     assert 'href="/metodologia"' in _ler("index.html")
     assert "taxas-financiamento-imobiliario" in _ler("llms.txt")
+
+
+# ---- motor v3b: renda, llms-full, ItemList/Dataset, medição ----
+import gerador  # noqa: E402
+
+
+def test_renda_minima_cai_com_mais_entrada_e_prazo_maior():
+    taxas = {b: 11.5 for b in gerador.BANCOS}
+    r20 = gerador.renda_minima(500_000, 0.20, 30, taxas)
+    r50 = gerador.renda_minima(500_000, 0.50, 30, taxas)
+    r35 = gerador.renda_minima(500_000, 0.20, 35, taxas)
+    assert r50["renda_sac"] < r20["renda_sac"]
+    if r35:
+        assert r35["renda_sac"] < r20["renda_sac"]
+    assert r20["renda_sac"] >= r20["p1_sac"] / 0.30 - 50
+    assert r20["renda_price"] < r20["renda_sac"]
+
+
+@pytest.mark.skipif(not gerada, reason="paginas_seo/ não gerada")
+def test_paginas_de_renda_existem_no_sitemap_e_com_faq_igual_ao_json_ld():
+    sitemap = _ler("sitemap.xml")
+    for v in VALORES_INDEXAVEIS:
+        slug = gerador.slug_renda(v)
+        html = _ler(slug + ".html")
+        assert f"/{slug}</loc>" in sitemap and 'content="noindex' not in html
+        blocos = re.findall(r'<script type="application/ld\+json">(.*?)</script>', html, re.S)
+        faq = next(json.loads(b) for b in blocos if '"FAQPage"' in b)
+        for q in faq["mainEntity"]:
+            assert q["name"] in html and q["acceptedAnswer"]["text"] in html
+    assert f"/{gerador.SLUG_INDICE_RENDA}</loc>" in sitemap
+    a, b = _ler(gerador.slug_renda(300_000) + ".html"), _ler(gerador.slug_renda(500_000) + ".html")
+    assert re.search(r"<tbody>(.*?)</tbody>", a, re.S).group(1) != re.search(r"<tbody>(.*?)</tbody>", b, re.S).group(1)
+
+
+@pytest.mark.skipif(not gerada, reason="paginas_seo/ não gerada")
+def test_llms_full_itemlist_dataset_e_medicao_desligada():
+    full = _ler("llms-full.txt")
+    assert "Taxas usadas nas simulações hoje" in full and "% ao ano" in full and "CC BY 4.0" in full
+    comp = _ler("financiamento-imobiliario-500-mil-30-anos.html")
+    assert '"ItemList"' in comp
+    mensal = _ler(slug_mes(sorted({r["inicio_periodo"] for r in carregar_historico()})[-1]) + ".html")
+    assert '"Dataset"' in mensal and "temporalCoverage" in mensal
+    assert not gerador.UMAMI_WEBSITE_ID
+    assert "umami" not in _ler("index.html").lower() and not os.path.exists(os.path.join(PASTA, "medicao.js"))
+    assert "cloud.umami.is" in _ler("_headers")  # CSP já pronta para quando o ID for preenchido
+
+
+def test_tags_de_medicao_so_com_id(monkeypatch):
+    assert gerador.tags_medicao() == []
+    monkeypatch.setattr(gerador, "UMAMI_WEBSITE_ID", "abc-123")
+    tags = "".join(gerador.tags_medicao())
+    assert 'data-website-id="abc-123"' in tags and 'data-do-not-track="true"' in tags and "/medicao.js" in tags
