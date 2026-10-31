@@ -57,6 +57,9 @@ jobs:
       - name: Compilar CSS estático (substitui o CDN do Tailwind em produção)
         run: npm run build:css
 
+      - name: Gerar pacote de publicação (Kaggle, Hugging Face, dados.gov.br, nota de imprensa)
+        run: python publicacao.py
+
       - name: Atualizar Site (Commit e Push)
         run: |
           git config --global user.name "Robô Datalab"
@@ -73,7 +76,7 @@ jobs:
           # local/CI lia a data antiga (06/set) e as 1.701 páginas voltavam a
           # dizer "Taxas atualizadas em 06/09/2026" com lastmod parado no
           # sitemap. O projeto irmão (veículos) já fazia o git add dele.
-          git add dados.csv paginas_seo taxas_cache.json relatorio_atualizacao_taxas.txt ultima_atualizacao_taxas.txt historico_taxas.csv
+          git add dados.csv paginas_seo taxas_cache.json relatorio_atualizacao_taxas.txt ultima_atualizacao_taxas.txt historico_taxas.csv publicacao
           git commit -m "auto: atualização mensal de taxas e rebuild do site" || echo "Sem mudanças"
           git push
 

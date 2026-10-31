@@ -1,0 +1,24 @@
+{
+  "title": "Taxas de financiamento imobiliário por banco (Brasil, BACEN)",
+  "id": "SEU_USUARIO_KAGGLE/taxas-financiamento-imobiliario-brasil",
+  "subtitle": "Taxa média mensal contratada por banco, % ao ano, atualizada todo mês",
+  "description": "Taxa média mensal de juros efetivamente contratada no financiamento imobiliário (aquisição de imóveis, pessoa física, taxa pré-fixada), por banco, em % ao ano, segundo o Banco Central do Brasil. Cobre 24 meses (out/24 a set/26) e 9 instituições.\n\nLicença: CC BY 4.0. Fonte: Banco Central do Brasil. Atualizado todo mês em https://simulador.datalabglobal.com/dados-abertos.",
+  "licenses": [
+    {
+      "name": "CC-BY-4.0"
+    }
+  ],
+  "keywords": [
+    "finance",
+    "brazil",
+    "banking",
+    "interest rates",
+    "real estate"
+  ],
+  "resources": [
+    {
+      "path": "taxas-financiamento-imobiliario.csv",
+      "description": "Série mensal: periodo_inicio, periodo_fim, instituicao, taxa_juros_aa_pct"
+    }
+  ]
+}
