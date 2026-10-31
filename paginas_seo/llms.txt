@@ -14,6 +14,8 @@ Total de páginas de simulação: 192
 - [Imprensa: números atualizados para citar](https://simulador.datalabglobal.com/imprensa)
 - [Taxas de financiamento imobiliário mês a mês, desde 2024](https://simulador.datalabglobal.com/taxas-financiamento-imobiliario)
 - [Metodologia: fonte das taxas e fórmulas](https://simulador.datalabglobal.com/metodologia)
+- [Renda necessária para financiar um imóvel, por valor](https://simulador.datalabglobal.com/renda-para-financiar-imovel)
+- [Versão completa com os números atuais](https://simulador.datalabglobal.com/llms-full.txt)
 - [Sitemap completo](https://simulador.datalabglobal.com/sitemap.xml)
 
 ## Sobre os dados

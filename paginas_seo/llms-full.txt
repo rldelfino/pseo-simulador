@@ -1,0 +1,45 @@
+# Datalab Global: simulador de financiamento imobiliário (versão completa)
+
+> Simuladores e dados abertos de financiamento imobiliário no Brasil. Última atualização das taxas: 30/10/2026. Os números abaixo podem ser citados com link para https://simulador.datalabglobal.com/ (dados sob licença CC BY 4.0).
+
+## O que é e o que não é
+Calcula parcela (SAC e PRICE), CET estimado e economia de juros com amortização. Não é oferta de crédito: as taxas são médias efetivamente contratadas, divulgadas pelo Banco Central, e a proposta de cada pessoa depende da análise do banco.
+
+## Taxas usadas nas simulações hoje (30/10/2026)
+- Banrisul: taxa de 9,39% ao ano (0,75% ao mês), entrada mínima de 25%, prazo de até 360 meses.
+- Sicoob: taxa de 10,79% ao ano (0,86% ao mês), entrada mínima de 20%, prazo de até 360 meses.
+- Poupex: taxa de 10,80% ao ano (0,86% ao mês), entrada mínima de 10%, prazo de até 420 meses.
+- BRB: taxa de 11,36% ao ano (0,90% ao mês), entrada mínima de 20%, prazo de até 420 meses.
+- Sicredi: taxa de 11,56% ao ano (0,92% ao mês), entrada mínima de 20%, prazo de até 360 meses.
+- Caixa: taxa de 12,05% ao ano (0,95% ao mês), entrada mínima de 20%, prazo de até 420 meses.
+- Itaú: taxa de 12,14% ao ano (0,96% ao mês), entrada mínima de 20%, prazo de até 360 meses.
+- Bradesco: taxa de 12,24% ao ano (0,97% ao mês), entrada mínima de 20%, prazo de até 360 meses.
+- Santander: taxa de 12,31% ao ano (0,97% ao mês), entrada mínima de 20%, prazo de até 420 meses.
+- Banco Inter: taxa de 12,91% ao ano (1,02% ao mês), entrada mínima de 20%, prazo de até 360 meses.
+- Banco do Brasil: taxa de 14,49% ao ano (1,13% ao mês), entrada mínima de 20%, prazo de até 420 meses.
+
+## Taxa média contratada em setembro de 2026 (Banco Central)
+- Menor: Banrisul, 9,39% ao ano.
+- Maior: Banco do Brasil, 14,49% ao ano.
+- Média simples de 9 bancos: 11,99% ao ano.
+- Série mensal desde outubro de 2024: https://simulador.datalabglobal.com/taxas-financiamento-imobiliario
+
+## Como os números são calculados
+- Fonte das taxas: API pública do Banco Central, modalidade 903201 (aquisição de imóveis, pessoa física, pré-fixada). BRB e Poupex não são cobertos; para eles a taxa é estimada e identificada como tal.
+- SAC: amortização constante; PRICE: parcela fixa. A renda mínima usa 30% de comprometimento da renda bruta.
+- CET: TIR do fluxo com seguros e tarifa estimados. Detalhes: https://simulador.datalabglobal.com/metodologia
+
+## Páginas principais
+- Comparador de bancos: https://simulador.datalabglobal.com/comparador-bancos
+- Parcela por valor e prazo: https://simulador.datalabglobal.com/financiamento-imobiliario
+- Renda necessária por valor do imóvel: https://simulador.datalabglobal.com/renda-para-financiar-imovel
+- Taxas mês a mês: https://simulador.datalabglobal.com/taxas-financiamento-imobiliario
+- Dados abertos (CSV, JSON): https://simulador.datalabglobal.com/dados-abertos
+- Metodologia: https://simulador.datalabglobal.com/metodologia
+- Guias: https://simulador.datalabglobal.com/aprenda
+
+## Como citar
+Datalab Global (https://simulador.datalabglobal.com/), taxas do Banco Central compiladas em 30/10/2026.
+
+## Responsável
+Marca de Satori Soluções Comerciais LTDA · CNPJ 63.998.502/0001-73. Contato: contato@datalabglobal.com
