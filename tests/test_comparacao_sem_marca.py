@@ -13,6 +13,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from bancos import BANCOS
 from gerador import (
+    pagina_indexavel,
     ANOS_COMPARACAO, MIN_BANCOS_COMPARACAO, PRAZOS_INDEXAVEIS, VALORES_COMPARACAO,
     bancos_com_prazo, calcular_sac_price, linhas_comparacao, pagina_comparacao_existe, slug_comparacao,
 )
@@ -75,10 +76,11 @@ def test_paginas_de_prazo_curto_sao_noindex_e_fora_do_sitemap():
         if not m:
             continue
         prazo = int(m.group(2))
+        valor = int(m.group(1)) * 1000
         html = open(os.path.join(PASTA_SAIDA, nome), encoding="utf-8").read()
         tem_noindex = 'name="robots" content="noindex,follow"' in html
         no_sitemap = f"/{nome[:-5]}</loc>" in sitemap
-        if prazo in PRAZOS_INDEXAVEIS:
+        if pagina_indexavel(valor, prazo):
             assert not tem_noindex and no_sitemap, nome
         else:
             assert tem_noindex and not no_sitemap, nome

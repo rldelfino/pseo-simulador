@@ -52,6 +52,18 @@ EMPRESA_RODAPE = "Satori Soluções Comerciais LTDA · CNPJ 63.998.502/0001-73"
 # mil em 20 anos"). Reversível: basta incluir o prazo aqui e regerar.
 PRAZOS_INDEXAVEIS = (360, 420)
 
+# Valores de imóvel cujas páginas são INDEXÁVEIS (31/out/2026, Search Console:
+# 5.836 páginas "rastreadas, mas não indexadas", 440 delas do simulador
+# imobiliário, que varia R$ 50 mil de uma página para outra). Ficam os valores
+# redondos que as pessoas de fato pesquisam ("financiar 300 mil", "500 mil");
+# as demais continuam no ar (links, slider), com noindex,follow e fora do
+# sitemap. Menos páginas, mais conteúdo próprio em cada uma. Reversível.
+VALORES_INDEXAVEIS = tuple(sorted({150_000, 250_000, 350_000} | set(range(200_000, 1_000_001, 100_000))))
+
+
+def pagina_indexavel(valor_imovel, prazo):
+    return prazo in PRAZOS_INDEXAVEIS and int(round(valor_imovel)) in VALORES_INDEXAVEIS
+
 # Grade das páginas de comparação sem marca de banco.
 VALORES_COMPARACAO = tuple(range(150_000, 1_000_001, 50_000))
 ANOS_COMPARACAO = (10, 15, 20, 25, 30, 35)
@@ -863,6 +875,8 @@ def gerar_paginas_pseo():
         # nos sliders.
         bancos_json_atual = construir_bancos_json(taxas_atuais_por_banco)
 
+        historico_cache = carregar_historico()
+
         termos_variados = [
             "Calculadora de financiamento", "Simulador de crédito", "Simulação de amortização",
             "Calcular taxas de juros", "Simulador imobiliário", "Comparador de empréstimo",
@@ -1026,6 +1040,12 @@ def gerar_paginas_pseo():
                 pag for pag in grupo_banco
                 if pag["slug"] != slug and pag not in paginas_sorteadas
             ]
+            # Autoridade para quem pode ranquear (31/out/2026): se o banco tem páginas indexáveis, o sorteio
+            # (com a mesma semente fixa) sai só delas.
+            _so_indexaveis = [pag for pag in candidatos_mesmo_banco
+                              if pagina_indexavel(float(pag["linha_original"]["valor_imovel"]), pag["prazo_correto"])]
+            if len(_so_indexaveis) >= 3:
+                candidatos_mesmo_banco = _so_indexaveis
             faltam = 4 - len(paginas_sorteadas)
             if candidatos_mesmo_banco and faltam > 0:
                 paginas_sorteadas.extend(
@@ -1089,6 +1109,14 @@ def gerar_paginas_pseo():
                 f'{formatar_reais(comparativo["renda_sugerida"])} por mês.</p>'
                 '</div>'
             )
+
+            frase_posicao = posicao_no_mercado(ranking_bancos, banco, comparativo["cet_sac"])
+            if frase_posicao:
+                analise_html = analise_html[:-len('</div>')] + (
+                    f'<p class="text-slate-300 text-sm font-light leading-relaxed mt-3">{frase_posicao}</p></div>')
+            extras_html = (html_projecao_anual(financiado_p, prazo, taxa, banco_exib)
+                           + html_serie_banco(historico_cache, banco, banco_exib, taxa)
+                           + html_vizinhas(grupo_banco, p, banco_exib))
 
             faq_q1 = f"Qual a primeira parcela de {valor_curto} em {prazo} meses no {banco_exib}?"
             faq_a1 = (f"Com entrada de {formatar_reais(entrada_padrao)}, o valor financiado é {formatar_reais(financiado_p)}. Na tabela SAC, "
@@ -1172,7 +1200,7 @@ def gerar_paginas_pseo():
             html_content = f'''<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-{render_head_boilerplate(titulo_pagina, meta_description, url_canonica, dominio, [schema_faq, schema_breadcrumb, schema_software, schema_howto], meta_keywords, robots=(None if prazo in PRAZOS_INDEXAVEIS else 'noindex,follow'))}
+{render_head_boilerplate(titulo_pagina, meta_description, url_canonica, dominio, [schema_faq, schema_breadcrumb, schema_software, schema_howto], meta_keywords, robots=(None if pagina_indexavel(valor_imovel, prazo) else 'noindex,follow'))}
 </head>
 <body class="antialiased flex flex-col">
     <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
@@ -1435,6 +1463,7 @@ def gerar_paginas_pseo():
 
 
         {analise_html}
+        {extras_html}
 
         <!-- ZONA E: GLOSSÁRIO / HUB DE AJUDA -->
         <div class="mt-16">
@@ -1558,6 +1587,8 @@ def gerar_paginas_pseo():
                 <a href="https://dados.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Lente B2B: dados de empresas</a>
                 <a href="/aprenda" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
+                <a href="/metodologia" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Metodologia</a>
+                <a href="/taxas-financiamento-imobiliario" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Taxas mês a mês</a>
                 <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
                     {icone('whatsapp', 'mr-1')} Falar com o suporte
                 </a>
@@ -1592,7 +1623,7 @@ def gerar_paginas_pseo():
             with open(caminho_arquivo, "w", encoding="utf-8") as f:
                 f.write(corrigir_concordancia(html_content))
             # só entra no sitemap o que é indexável (ver PRAZOS_INDEXAVEIS)
-            if prazo in PRAZOS_INDEXAVEIS:
+            if pagina_indexavel(valor_imovel, prazo):
                 urls_sitemap.append(url_canonica)
 
     # Páginas-hub por banco + página comparativa entre os 15 — capturam
@@ -1609,6 +1640,8 @@ def gerar_paginas_pseo():
     gerar_embed(pasta_saida, dominio, data_ultima_atualizacao, taxas_atuais_por_banco)
     urls_comparacao += gerar_pagina_incorporar(pasta_saida, dominio, data_ultima_atualizacao)
     urls_comparacao += gerar_pagina_imprensa(pasta_saida, dominio, data_ultima_atualizacao, taxas_atuais_por_banco)
+    urls_comparacao += gerar_paginas_mensais(pasta_saida, dominio, data_ultima_atualizacao, historico_cache)
+    urls_comparacao += gerar_pagina_metodologia(pasta_saida, dominio, data_ultima_atualizacao)
 
     gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao)
     url_sobre = gerar_pagina_sobre(pasta_saida, dominio)
@@ -1673,6 +1706,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
     cet_max_mercado = ranking_ref[-1]["cet"] if ranking_ref else 0
 
     urls = []
+    _historico_hubs = carregar_historico()
     for banco, links in links_por_banco.items():
         regra = obter_regra(banco)
         banco_exib = nome_exibicao(banco)
@@ -1760,7 +1794,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
         if len(titulo_pagina) > 60:
             titulo_pagina = f"Simulador {banco_exib}: Financiamento Imobiliário {ano_atual}"
         meta_description = (
-            f"Simulador de {regra['mod'].lower()} {banco_exib} em {ano_atual}: taxa de {taxa_fmt}% a.a., "
+            f"Simulador {banco_exib} em {ano_atual}: taxa de {taxa_fmt}% a.a. hoje, "
             f"entrada a partir de {entrada_min_pct}%, até {prazo_max} meses. Calcule parcela e CET."
         )[:160]
 
@@ -1782,6 +1816,10 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
       ]
     }}'''
 
+        taxa_mensal_fmt = f"{((1 + taxa_atual_banco / 100) ** (1 / 12) - 1) * 100:.2f}".replace('.', ',')
+        resposta_direta = (f"Taxa do {banco_exib} hoje: {taxa_fmt}% ao ano ({taxa_mensal_fmt}% ao mês). "
+                           f"Entrada mínima de {entrada_min_pct}% e prazo de até {prazo_max} meses.")
+        faixa_html += html_serie_banco(_historico_hubs, banco, banco_exib, taxa_atual_banco)
         html_hub = f'''<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -1818,6 +1856,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
         <p class="text-slate-400 text-base md:text-lg font-light tracking-wide max-w-3xl mx-auto px-4">
             Visão geral das condições do {banco_exib} — taxa de juros, entrada mínima e prazo — e o índice completo das nossas simulações prontas pra esse banco.
         </p>
+        <p class="text-white text-lg md:text-xl font-medium max-w-3xl mx-auto px-4 mt-6">{resposta_direta}</p>
         <p class="text-slate-600 text-[10px] uppercase tracking-widest mt-4">Taxas atualizadas em {date.fromisoformat(data_ultima_atualizacao).strftime('%d/%m/%Y')} · {texto_fonte_taxa(banco)}</p>
     </header>
 
@@ -1911,6 +1950,8 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
                 <a href="https://dados.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Lente B2B: dados de empresas</a>
                 <a href="/aprenda" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
+                <a href="/metodologia" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Metodologia</a>
+                <a href="/taxas-financiamento-imobiliario" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Taxas mês a mês</a>
                 <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
                     {icone('whatsapp', 'mr-1')} Falar com o suporte
                 </a>
@@ -2031,6 +2072,382 @@ def texto_variacao(resumo):
         frase += (f" e a maior alta, a de {a['banco_exib']} ({_sinal_pp(a['variacao'])} p.p., "
                   f"de {_pct2(a['serie'][m0])}% para {_pct2(a['serie'][m1])}% a.a.)")
     return frase + ". São médias mensais do Banco Central, não ofertas."
+
+
+# ---------------------------------------------------------------------------
+# Motor v3 (31/out/2026): conteúdo próprio por página, links entre vizinhas,
+# páginas mensais de taxas e metodologia. Tudo calculado dos dados reais.
+# ---------------------------------------------------------------------------
+MESES_NA_SERIE_BANCO = 12
+SLUG_INDICE_MENSAL = "taxas-financiamento-imobiliario"
+MESES_INDEXAVEIS_MENSAL = 12  # meses mais antigos continuam no ar, mas noindex
+_SEM_ACENTO = str.maketrans("ç", "c")
+
+
+def slug_mes(inicio_periodo):
+    """'2026-09-01' -> 'taxas-financiamento-imobiliario-setembro-2026'."""
+    ano, mes = inicio_periodo[:4], int(inicio_periodo[5:7])
+    return f"{SLUG_INDICE_MENSAL}-{MESES_PT[mes - 1].translate(_SEM_ACENTO)}-{ano}"
+
+
+def nome_mes(inicio_periodo):
+    """'2026-09-01' -> 'setembro de 2026'."""
+    return f"{MESES_PT[int(inicio_periodo[5:7]) - 1]} de {inicio_periodo[:4]}"
+
+
+def projecao_anual(financiado, prazo, taxa_aa):
+    """Marcos anuais (1, 2, 3, 5, 10, 15... e o último ano) do financiamento
+    em SAC e em PRICE: parcela, saldo devedor e juros acumulados. São números
+    próprios de cada página (valor x prazo x taxa), não texto de template."""
+    i = (taxa_aa / 100) / 12
+    amort = financiado / prazo
+    if i > 0:
+        pmt = financiado * (i * (1 + i) ** prazo) / ((1 + i) ** prazo - 1)
+    else:
+        pmt = financiado / prazo
+    anos_total = prazo // 12
+    marcos = {a for a in (1, 2, 3, 5, 10, 15, 20, 25, 30, 35) if a <= anos_total} | {anos_total}
+    saldo_sac = saldo_price = financiado
+    juros_sac = juros_price = 0.0
+    linhas = []
+    for m in range(1, prazo + 1):
+        j_sac = saldo_sac * i
+        j_price = saldo_price * i
+        parcela_sac = amort + j_sac
+        juros_sac += j_sac
+        juros_price += j_price
+        saldo_sac -= amort
+        saldo_price -= (pmt - j_price)
+        if m % 12 == 0 and m // 12 in marcos:
+            linhas.append({"ano": m // 12, "parcela_sac": parcela_sac, "saldo_sac": max(saldo_sac, 0.0),
+                           "saldo_price": max(saldo_price, 0.0), "juros_sac": juros_sac, "juros_price": juros_price})
+    return {"linhas": linhas, "pmt_price": pmt}
+
+
+def html_projecao_anual(financiado, prazo, taxa_aa, banco_exib):
+    proj = projecao_anual(financiado, prazo, taxa_aa)
+    linhas = proj["linhas"]
+    if not linhas:
+        return ""
+    corpo = ""
+    for x in linhas:
+        corpo += (f'<tr class="border-t border-white/5"><th scope="row" class="px-2 py-2 text-left font-medium text-white whitespace-nowrap">{x["ano"]}º ano</th>'
+                  f'<td class="px-2 py-2 text-right whitespace-nowrap">{formatar_reais(x["parcela_sac"])}</td>'
+                  f'<td class="px-2 py-2 text-right whitespace-nowrap">{formatar_reais(x["saldo_sac"])}</td>'
+                  f'<td class="px-2 py-2 text-right whitespace-nowrap">{formatar_reais(x["saldo_price"])}</td>'
+                  f'<td class="px-2 py-2 text-right whitespace-nowrap">{formatar_reais(x["juros_sac"])}</td>'
+                  f'<td class="px-2 py-2 text-right whitespace-nowrap">{formatar_reais(x["juros_price"])}</td></tr>')
+    metade = min(linhas, key=lambda x: abs(x["ano"] - (prazo / 12) / 2))
+    pct_sac = 100 * (1 - metade["saldo_sac"] / financiado)
+    pct_price = 100 * (1 - metade["saldo_price"] / financiado)
+    frase = (f"No {metade['ano']}º ano, a metade do prazo, quem escolhe a SAC já quitou {pct_sac:.0f}% do valor financiado; "
+             f"na PRICE, apenas {pct_price:.0f}%: a PRICE paga mais juros no começo e devolve o principal mais devagar. "
+             f"Ao fim do contrato, a diferença de juros entre os dois sistemas é de "
+             f"{formatar_reais(linhas[-1]['juros_price'] - linhas[-1]['juros_sac'])}.")
+    return f'''<section class="mt-8 glass-panel p-8 md:p-10 rounded-3xl">
+            <h2 class="text-xs font-bold text-slate-300 uppercase tracking-widest mb-1">Como a dívida evolui ano a ano</h2>
+            <p class="text-slate-400 text-[11px] mb-4 pb-4 border-b border-white/10">Financiando {formatar_reais(financiado)} em {prazo} meses no {banco_exib}, a {_pct2(taxa_aa)}% ao ano, sem amortizações extras.</p>
+            <div class="overflow-x-auto rounded-xl border border-white/10">
+                <table class="w-full text-xs text-slate-300">
+                    <thead class="text-[10px] uppercase tracking-widest text-slate-400"><tr>
+                        <th scope="col" class="px-2 py-2 text-left font-medium">Ano</th>
+                        <th scope="col" class="px-2 py-2 text-right font-medium">Parcela SAC no fim do ano</th>
+                        <th scope="col" class="px-2 py-2 text-right font-medium">Saldo SAC</th>
+                        <th scope="col" class="px-2 py-2 text-right font-medium">Saldo PRICE</th>
+                        <th scope="col" class="px-2 py-2 text-right font-medium">Juros pagos SAC</th>
+                        <th scope="col" class="px-2 py-2 text-right font-medium">Juros pagos PRICE</th>
+                    </tr></thead>
+                    <tbody>{corpo}</tbody>
+                </table>
+            </div>
+            <p class="text-slate-300 text-sm font-light leading-relaxed mt-4">{frase}</p>
+            <p class="text-slate-500 text-[11px] mt-2">Valores no fim de cada ano, sem seguros nem tarifas (o CET, que os inclui, está no simulador). Parcela PRICE fixa: {formatar_reais(proj["pmt_price"])}.</p>
+        </section>'''
+
+
+def posicao_no_mercado(ranking_bancos, banco, cet_atual):
+    """Frase com a posição do CET desta página entre os bancos simulados no
+    mesmo cenário (sem nomear concorrente; ver a nota da 'Caixinha Dica')."""
+    cets = sorted(r["cet"] for r in ranking_bancos)
+    n = len(cets)
+    if n < 3:
+        return ""
+    mediana = cets[n // 2] if n % 2 else (cets[n // 2 - 1] + cets[n // 2]) / 2
+    posicao = sum(1 for c in cets if c < cet_atual - 1e-9) + 1
+    dif = cet_atual - mediana
+    if abs(dif) < 0.005:
+        rel = "praticamente igual à mediana"
+    else:
+        rel = f"{_pct2(abs(dif))} p.p. {'acima' if dif > 0 else 'abaixo'} da mediana"
+    return (f"Nas mesmas condições (mesmo valor de imóvel e prazo), o CET desta simulação, {_pct2(cet_atual)}% ao ano, fica na "
+            f"{posicao}ª posição entre {n} bancos (do menor para o maior CET), {rel} do mercado ({_pct2(mediana)}%).")
+
+
+def serie_do_banco(historico, banco):
+    """Últimos MESES_NA_SERIE_BANCO meses da taxa média contratada do banco
+    (BACEN), do mais antigo ao mais recente. Lista vazia se o BACEN não cobre."""
+    pontos = sorted((r["inicio_periodo"], r["taxa_aa"]) for r in historico if r["banco"] == banco)
+    return pontos[-MESES_NA_SERIE_BANCO:]
+
+
+def html_serie_banco(historico, banco, banco_exib, taxa_simulada):
+    pontos = serie_do_banco(historico, banco)
+    if len(pontos) < 3:
+        return ""
+    (m0, t0), (m1, t1) = pontos[0], pontos[-1]
+    maior = max(pontos, key=lambda p: p[1])
+    menor = min(pontos, key=lambda p: p[1])
+    celulas = "".join(
+        f'<tr class="border-t border-white/5"><th scope="row" class="px-2 py-1.5 text-left font-medium text-white whitespace-nowrap">'
+        f'<a href="{slug_mes(m)}" class="hover:text-emerald-400">{_rotulo_mes(m)}</a></th>'
+        f'<td class="px-2 py-1.5 text-right">{_pct2(t)}%</td></tr>' for m, t in reversed(pontos))
+    sentido = "caiu" if t1 < t0 else "subiu" if t1 > t0 else "ficou estável"
+    frase = (f"Segundo o Banco Central, a taxa média contratada no {banco_exib} {sentido} de {_pct2(t0)}% ao ano em {_rotulo_mes(m0)} "
+             f"para {_pct2(t1)}% em {_rotulo_mes(m1)} ({_sinal_pp(t1 - t0)} p.p.). Nos últimos {len(pontos)} meses, a máxima foi de "
+             f"{_pct2(maior[1])}% ({_rotulo_mes(maior[0])}) e a mínima, de {_pct2(menor[1])}% ({_rotulo_mes(menor[0])}). "
+             f"A simulação desta página usa {_pct2(taxa_simulada)}% ao ano.")
+    return f'''<section class="mt-8 glass-panel p-8 md:p-10 rounded-3xl">
+            <h2 class="text-xs font-bold text-slate-300 uppercase tracking-widest mb-1">Taxa do {banco_exib} nos últimos meses</h2>
+            <p class="text-slate-400 text-[11px] mb-4 pb-4 border-b border-white/10">Taxa média efetivamente contratada, por mês (% ao ano). Não é uma oferta: a sua proposta pode ser diferente.</p>
+            <p class="text-slate-300 text-sm font-light leading-relaxed mb-4">{frase}</p>
+            <div class="overflow-x-auto rounded-xl border border-white/10 max-w-xs">
+                <table class="w-full text-xs text-slate-300"><thead class="text-[10px] uppercase tracking-widest text-slate-400"><tr><th scope="col" class="px-2 py-2 text-left font-medium">Mês</th><th scope="col" class="px-2 py-2 text-right font-medium">Taxa a.a.</th></tr></thead><tbody>{celulas}</tbody></table>
+            </div>
+            <p class="text-slate-500 text-[11px] mt-3">Fonte: <a href="{FONTE_BACEN_URL}" rel="noopener" class="underline">Banco Central do Brasil</a>. Toda a série está em <a href="dados-abertos" class="underline">dados abertos</a>.</p>
+        </section>'''
+
+
+def html_vizinhas(grupo_banco, pagina, banco_exib):
+    """Links para as páginas vizinhas do mesmo banco (valor anterior e seguinte
+    no mesmo prazo; o outro prazo indexável no mesmo valor) e para os índices
+    de taxas. Prefere vizinhas indexáveis, para a autoridade chegar a elas."""
+    prazo, valor = pagina["prazo_correto"], float(pagina["linha_original"]["valor_imovel"])
+    mesmo_prazo = sorted((p for p in grupo_banco if p["prazo_correto"] == prazo),
+                         key=lambda p: float(p["linha_original"]["valor_imovel"]))
+    idx = next((k for k, p in enumerate(mesmo_prazo) if p["slug"] == pagina["slug"]), None)
+    itens = []
+    if idx is not None:
+        if idx > 0:
+            itens.append(mesmo_prazo[idx - 1])
+        if idx + 1 < len(mesmo_prazo):
+            itens.append(mesmo_prazo[idx + 1])
+    for outro in PRAZOS_INDEXAVEIS:
+        if outro != prazo:
+            alt = next((p for p in grupo_banco if p["prazo_correto"] == outro
+                        and float(p["linha_original"]["valor_imovel"]) == valor), None)
+            if alt:
+                itens.append(alt)
+    if not itens:
+        return ""
+    links = "".join(
+        f'<a href="{p["slug"]}" class="block p-3 bg-white/5 rounded-xl border border-white/10 hover:border-emerald-500/50 text-sm text-slate-300">'
+        f'{banco_exib}: {p["texto"]}</a>' for p in itens)
+    return f'''<section class="mt-8">
+            <h2 class="text-sm font-serif text-slate-400 mb-3">Valores e prazos vizinhos no {banco_exib}</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">{links}</div>
+            <p class="text-slate-500 text-xs mt-3"><a href="{SLUG_INDICE_MENSAL}" class="underline hover:text-emerald-400">Taxas de financiamento imobiliário mês a mês</a> · <a href="financiamento-imobiliario" class="underline hover:text-emerald-400">Parcela por valor e prazo</a> · <a href="metodologia" class="underline hover:text-emerald-400">Como calculamos</a></p>
+        </section>'''
+
+
+def _mediana(valores):
+    v = sorted(valores)
+    n = len(v)
+    return v[n // 2] if n % 2 else (v[n // 2 - 1] + v[n // 2]) / 2
+
+
+def gerar_paginas_mensais(pasta_saida, dominio, data_ultima_atualizacao, historico):
+    """Uma página por mês da série do BACEN ('taxa de financiamento
+    imobiliário setembro 2026') + o arquivo (/taxas-financiamento-imobiliario).
+    Só os MESES_INDEXAVEIS_MENSAL mais recentes são indexáveis. Retorna as URLs
+    indexáveis (para o sitemap)."""
+    meses = sorted({r["inicio_periodo"] for r in historico})
+    if len(meses) < 2:
+        return []
+    por_mes = {}
+    for r in historico:
+        por_mes.setdefault(r["inicio_periodo"], {})[r["banco"]] = r["taxa_aa"]
+    recentes = set(meses[-MESES_INDEXAVEIS_MENSAL:])
+    data_br = date.fromisoformat(data_ultima_atualizacao).strftime('%d/%m/%Y')
+    urls = []
+    for k, mes in enumerate(meses):
+        taxas = por_mes[mes]
+        anterior = por_mes[meses[k - 1]] if k > 0 else {}
+        ano_antes = f"{int(mes[:4]) - 1}{mes[4:]}"
+        mes_ano = nome_mes(mes)
+        ordenado = sorted(taxas.items(), key=lambda kv: kv[1])
+        menor_b, menor_t = ordenado[0]
+        maior_b, maior_t = ordenado[-1]
+        media = sum(taxas.values()) / len(taxas)
+        mediana = _mediana(list(taxas.values()))
+        comuns = [b for b in taxas if b in anterior]
+        var_media = (sum(taxas[b] for b in comuns) / len(comuns) - sum(anterior[b] for b in comuns) / len(comuns)) if comuns else None
+        var_ano = None
+        if ano_antes in por_mes:
+            cb = [b for b in taxas if b in por_mes[ano_antes]]
+            if cb:
+                var_ano = sum(taxas[b] for b in cb) / len(cb) - sum(por_mes[ano_antes][b] for b in cb) / len(cb)
+        linhas = ""
+        for b, t in ordenado:
+            p1 = calcular_sac_price(400_000, 360, t)["p1_sac"]
+            v = f'{_sinal_pp(t - anterior[b])} p.p.' if b in anterior else "–"
+            linhas += (f'<tr class="border-t border-white/5"><th scope="row" class="px-2 py-2 text-left font-medium text-white whitespace-nowrap">'
+                       f'<a href="{slug_hub_banco(b)}" class="hover:text-emerald-400">{nome_exibicao(b)}</a></th>'
+                       f'<td class="px-2 py-2 text-right whitespace-nowrap">{_pct2(t)}%</td>'
+                       f'<td class="px-2 py-2 text-right whitespace-nowrap">{_pct2(((1 + t / 100) ** (1 / 12) - 1) * 100)}%</td>'
+                       f'<td class="px-2 py-2 text-right whitespace-nowrap">{v}</td>'
+                       f'<td class="px-2 py-2 text-right whitespace-nowrap">{formatar_reais(p1)}</td></tr>')
+        resumo = (f"Em {mes_ano}, a taxa média contratada no financiamento imobiliário variou de {_pct2(menor_t)}% ao ano "
+                  f"({nome_exibicao(menor_b)}) a {_pct2(maior_t)}% ({nome_exibicao(maior_b)}), com média de {_pct2(media)}% e mediana de "
+                  f"{_pct2(mediana)}% entre os {len(taxas)} bancos que o Banco Central acompanha.")
+        if var_media is not None:
+            resumo += (f" Em relação ao mês anterior, a média dos mesmos bancos {'caiu' if var_media < 0 else 'subiu' if var_media > 0 else 'ficou estável'}"
+                       f" ({_sinal_pp(var_media)} p.p.).")
+        if var_ano is not None:
+            resumo += f" Contra {nome_mes(ano_antes)}, a variação é de {_sinal_pp(var_ano)} p.p."
+        faq = [
+            (f"Qual a menor taxa de financiamento imobiliário em {mes_ano}?",
+             f"Entre os bancos acompanhados pelo Banco Central, {nome_exibicao(menor_b)} teve a menor taxa média contratada em {mes_ano}: {_pct2(menor_t)}% ao ano."),
+            (f"Qual a taxa média do financiamento imobiliário em {mes_ano}?",
+             f"A média simples dos {len(taxas)} bancos foi de {_pct2(media)}% ao ano, e a mediana, de {_pct2(mediana)}%. São taxas efetivamente contratadas, não ofertas."),
+        ]
+        slug = slug_mes(mes)
+        url = f"{dominio}/{slug}"
+        indexavel = mes in recentes
+        titulo = _escolher_que_cabe(
+            60, f"Taxa de financiamento imobiliário em {mes_ano} | Datalab Global",
+            f"Taxa de financiamento imobiliário em {mes_ano}")
+        desc = _escolher_que_cabe(
+            160, f"Taxa do financiamento imobiliário em {mes_ano}: de {_pct2(menor_t)}% a {_pct2(maior_t)}% ao ano, média de {_pct2(media)}%. Veja a taxa de cada banco e a variação.",
+            f"Taxa do financiamento imobiliário em {mes_ano}: de {_pct2(menor_t)}% a {_pct2(maior_t)}% ao ano, média de {_pct2(media)}%.")
+        schema_bc = json.dumps({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Datalab Global", "item": f"{dominio}/"},
+            {"@type": "ListItem", "position": 2, "name": "Taxas mês a mês", "item": f"{dominio}/{SLUG_INDICE_MENSAL}"},
+            {"@type": "ListItem", "position": 3, "name": mes_ano, "item": url}]}, ensure_ascii=False)
+        schema_faq = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+            {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faq]}, ensure_ascii=False)
+        vizinhos = ""
+        if k > 0:
+            vizinhos += f'<a href="{slug_mes(meses[k - 1])}" class="underline hover:text-emerald-400">← {nome_mes(meses[k - 1])}</a>'
+        if k + 1 < len(meses):
+            vizinhos += f' &nbsp;·&nbsp; <a href="{slug_mes(meses[k + 1])}" class="underline hover:text-emerald-400">{nome_mes(meses[k + 1])} →</a>'
+        html = f'''<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+{render_head_boilerplate(titulo, desc, url, dominio, [schema_bc, schema_faq], robots=(None if indexavel else 'noindex,follow'))}
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+    {_nav_comparacao()}
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 relative z-10 w-full flex-grow">
+        <h1 class="text-3xl md:text-5xl font-serif text-white mb-4 leading-tight">Taxa de financiamento imobiliário em {mes_ano}</h1>
+        <p class="text-slate-300 text-base font-light leading-relaxed mb-8">{resumo}</p>
+        <div class="overflow-x-auto rounded-xl border border-white/10">
+            <table class="w-full text-xs text-slate-300">
+                <thead class="text-[10px] uppercase tracking-widest text-slate-400"><tr>
+                    <th scope="col" class="px-2 py-2 text-left font-medium">Banco</th>
+                    <th scope="col" class="px-2 py-2 text-right font-medium">Taxa a.a.</th>
+                    <th scope="col" class="px-2 py-2 text-right font-medium">Taxa a.m.</th>
+                    <th scope="col" class="px-2 py-2 text-right font-medium">Vs. mês anterior</th>
+                    <th scope="col" class="px-2 py-2 text-right font-medium">1ª parcela SAC*</th>
+                </tr></thead>
+                <tbody>{linhas}</tbody>
+            </table>
+        </div>
+        <p class="text-slate-500 text-[11px] mt-3">* Financiando R$ 400.000 (imóvel de R$ 500.000 com 20% de entrada) em 360 meses, sem seguros e tarifas, na taxa do mês. Taxas: média mensal contratada, <a href="{FONTE_BACEN_URL}" rel="noopener" class="underline">Banco Central do Brasil</a>. BRB e Poupex não são cobertos pelo relatório. Veja <a href="metodologia" class="underline">como calculamos</a>.</p>
+        <p class="text-slate-400 text-sm mt-6">{vizinhos}</p>
+        <section class="mt-12 space-y-3">
+            <h2 class="text-2xl font-serif text-white mb-2">Perguntas frequentes</h2>
+            {_faq_html(faq)}
+        </section>
+        <p class="text-slate-400 text-sm mt-10">Simule o seu caso: <a href="comparador-bancos" class="text-emerald-400 underline">comparador de bancos</a> · <a href="financiamento-imobiliario" class="text-emerald-400 underline">parcela por valor e prazo</a> · <a href="{SLUG_INDICE_MENSAL}" class="text-emerald-400 underline">todos os meses</a></p>
+        {_cta_comparacao("Quer a menor taxa para o seu caso?")}
+    </main>
+    {_footer_comparacao()}
+</body>
+</html>'''
+        with open(os.path.join(pasta_saida, f"{slug}.html"), "w", encoding="utf-8") as f:
+            f.write(corrigir_concordancia(html))
+        if indexavel:
+            urls.append(url)
+
+    # arquivo
+    itens = "".join(
+        f'<li><a href="{slug_mes(m)}" class="text-emerald-400 underline hover:text-emerald-300">Taxa de financiamento imobiliário em {nome_mes(m)}</a>'
+        f' <span class="text-slate-500 text-xs">(média {_pct2(sum(por_mes[m].values()) / len(por_mes[m]))}% a.a.)</span></li>'
+        for m in reversed(meses))
+    url_ind = f"{dominio}/{SLUG_INDICE_MENSAL}"
+    titulo_ind = "Taxas de financiamento imobiliário mês a mês | Datalab Global"
+    desc_ind = (f"Histórico mensal das taxas do financiamento imobiliário por banco, de {nome_mes(meses[0])} a {nome_mes(meses[-1])}, "
+                f"com dados do Banco Central.")[:160]
+    schema_bc = json.dumps({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Datalab Global", "item": f"{dominio}/"},
+        {"@type": "ListItem", "position": 2, "name": "Taxas mês a mês", "item": url_ind}]}, ensure_ascii=False)
+    html = f'''<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+{render_head_boilerplate(titulo_ind, desc_ind, url_ind, dominio, [schema_bc])}
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+    {_nav_comparacao()}
+    <main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 relative z-10 w-full flex-grow">
+        <h1 class="text-3xl md:text-5xl font-serif text-white mb-4 leading-tight">Taxas de financiamento imobiliário mês a mês</h1>
+        <p class="text-slate-300 text-base font-light leading-relaxed mb-8">A taxa média efetivamente contratada de cada banco, todo mês, desde {nome_mes(meses[0])}, segundo o Banco Central. Atualizado em {data_br}. Para baixar a série completa, veja os <a href="dados-abertos" class="text-emerald-400 underline">dados abertos</a>.</p>
+        <ul class="space-y-3 text-sm">{itens}</ul>
+        <p class="text-slate-400 text-sm mt-10"><a href="comparador-bancos" class="text-emerald-400 underline">Comparador de bancos</a> · <a href="metodologia" class="text-emerald-400 underline">Metodologia</a></p>
+    </main>
+    {_footer_comparacao()}
+</body>
+</html>'''
+    with open(os.path.join(pasta_saida, f"{SLUG_INDICE_MENSAL}.html"), "w", encoding="utf-8") as f:
+        f.write(corrigir_concordancia(html))
+    urls.append(url_ind)
+    return urls
+
+
+def gerar_pagina_metodologia(pasta_saida, dominio, data_ultima_atualizacao):
+    """/metodologia: de onde vêm os números, como são calculados e o que não
+    são. Sinal de confiança (E-E-A-T) em tema financeiro, e a página para a qual
+    quem cita o site pode apontar."""
+    url = f"{dominio}/metodologia"
+    data_br = date.fromisoformat(data_ultima_atualizacao).strftime('%d/%m/%Y')
+    titulo = "Metodologia: de onde vêm as taxas e os cálculos | Datalab Global"
+    desc = ("Como a Datalab Global obtém as taxas do Banco Central e calcula parcelas SAC e PRICE, CET e amortização. "
+            "O que os números são e o que não são.")
+    schema = json.dumps({"@context": "https://schema.org", "@type": "WebPage", "url": url, "name": titulo,
+                         "dateModified": data_ultima_atualizacao,
+                         "isPartOf": {"@type": "WebSite", "url": f"{dominio}/", "name": "Simulador de financiamento imobiliário | Datalab Global"},
+                         "publisher": {"@type": "Organization", "@id": "https://www.datalabglobal.com/#organization", "name": "Datalab Global"}}, ensure_ascii=False)
+    schema_bc = json.dumps({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Datalab Global", "item": f"{dominio}/"},
+        {"@type": "ListItem", "position": 2, "name": "Metodologia", "item": url}]}, ensure_ascii=False)
+    html = f'''<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+{render_head_boilerplate(titulo, desc, url, dominio, [schema, schema_bc])}
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+    {_nav_comparacao()}
+    <main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 relative z-10 w-full flex-grow">
+        <h1 class="text-3xl md:text-5xl font-serif text-white mb-8 leading-tight">Metodologia</h1>
+        <div class="glass-panel rounded-2xl p-6 md:p-10 space-y-6 text-slate-300 leading-relaxed">
+            <h2 class="text-xl font-serif text-white">De onde vêm as taxas</h2>
+            <p>As taxas vêm da API pública de taxas de juros do Banco Central do Brasil, modalidade "Aquisição de imóveis, taxa pré-fixada, pessoa física" (código 903201). É a taxa <strong>média efetivamente contratada</strong> por cada instituição no mês, não uma tabela de oferta. O Banco Central não cobre BRB e Poupex nessa modalidade; para esses dois, usamos uma estimativa que identificamos como tal em cada página. Última atualização: {data_br}. A série mensal está em <a href="dados-abertos" class="text-emerald-400 underline">dados abertos</a> (licença CC BY 4.0).</p>
+            <h2 class="text-xl font-serif text-white">Como calculamos</h2>
+            <p><strong>SAC:</strong> amortização constante (valor financiado ÷ prazo); os juros do mês incidem sobre o saldo devedor, então a parcela começa maior e cai. <strong>PRICE:</strong> parcela fixa, pela fórmula PMT com a taxa mensal equivalente. <strong>Entrada:</strong> respeita o percentual mínimo de cada banco (LTV). <strong>Renda sugerida:</strong> primeira parcela dividida por 30%, a regra de comprometimento de renda usada pelos bancos.</p>
+            <p><strong>CET:</strong> calculado por TIR (taxa interna de retorno) do fluxo completo de parcelas, somando os juros a estimativas de mercado para o seguro de morte e invalidez (0,030% do saldo devedor por mês), o seguro de danos ao imóvel (0,0129% do valor do imóvel por mês) e a tarifa de administração (R$ 25 por mês). Esses três custos variam por banco, idade e seguradora, então o CET aqui serve para comparar: o seu depende da sua análise de crédito e da avaliação do imóvel.</p>
+            <h2 class="text-xl font-serif text-white">O que os números não são</h2>
+            <p>Não são oferta, proposta nem aprovação de crédito. A taxa que o banco oferece a você pode ser maior ou menor que a média do mês. Use os resultados para comparar e entender a ordem de grandeza; confirme as condições direto com a instituição.</p>
+            <h2 class="text-xl font-serif text-white">Quem mantém</h2>
+            <p>A Datalab Global é uma marca de {EMPRESA_RODAPE}, criada por Rodolfo Delfino. <a href="sobre" class="text-emerald-400 underline">Saiba mais</a>. Encontrou um número errado? Escreva para <a href="mailto:contato@datalabglobal.com" class="text-emerald-400 underline">contato@datalabglobal.com</a>.</p>
+            <p>Divulgação: o simulador pode indicar a Financia Tudo, parceira com a qual podemos receber comissão, sem custo adicional para você. As taxas e os rankings não são influenciados por essa parceria.</p>
+        </div>
+    </main>
+    {_footer_comparacao()}
+</body>
+</html>'''
+    with open(os.path.join(pasta_saida, "metodologia.html"), "w", encoding="utf-8") as f:
+        f.write(corrigir_concordancia(html))
+    return [url]
+
 
 
 def gerar_dados_abertos(pasta_saida, dominio, data_ultima_atualizacao):
@@ -2404,6 +2821,8 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
                 <a href="https://dados.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Lente B2B: dados de empresas</a>
                 <a href="/aprenda" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
+                <a href="/metodologia" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Metodologia</a>
+                <a href="/taxas-financiamento-imobiliario" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Taxas mês a mês</a>
                 <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
                     {icone('whatsapp', 'mr-1')} Falar com o suporte
                 </a>
@@ -2545,6 +2964,8 @@ def _footer_comparacao():
                 <a href="https://dados.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Lente B2B: dados de empresas</a>
                 <a href="/aprenda" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
+                <a href="/metodologia" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Metodologia</a>
+                <a href="/taxas-financiamento-imobiliario" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Taxas mês a mês</a>
             </div>
         </div>
     </footer>'''
@@ -3257,6 +3678,8 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
                 <a href="https://dados.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Lente B2B: dados de empresas</a>
                 <a href="/aprenda" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
+                <a href="/metodologia" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Metodologia</a>
+                <a href="/taxas-financiamento-imobiliario" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Taxas mês a mês</a>
                 <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
                     {icone('whatsapp', 'mr-1')} Falar com o suporte
                 </a>
@@ -3356,6 +3779,8 @@ def gerar_pagina_sobre(pasta_saida, dominio):
                 <a href="https://dados.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Lente B2B: dados de empresas</a>
                 <a href="/aprenda" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
+                <a href="/metodologia" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Metodologia</a>
+                <a href="/taxas-financiamento-imobiliario" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Taxas mês a mês</a>
                 <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
                     {icone('whatsapp', 'mr-1')} Falar com o suporte
                 </a>
@@ -3386,7 +3811,7 @@ def gerar_pagina_aprenda(art, pasta_saida, dominio, data_atualizacao):
       "@type": "Article",
       "headline": "{art['titulo_h1']}",
       "url": "{url_canonica}",
-      "author": {{"@type": "Organization", "name": "Datalab Global"}},
+      "author": {{"@type": "Organization", "@id": "https://www.datalabglobal.com/#organization", "name": "Datalab Global", "url": "{dominio}/sobre"}},
       "publisher": {{
         "@type": "Organization", "name": "Datalab Global",
         "logo": {{"@type": "ImageObject", "url": "{dominio}/logo-schema.png"}}
@@ -3432,6 +3857,8 @@ def gerar_pagina_aprenda(art, pasta_saida, dominio, data_atualizacao):
                 <a href="https://dados.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Lente B2B: dados de empresas</a>
                 <a href="/aprenda" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
+                <a href="/metodologia" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Metodologia</a>
+                <a href="/taxas-financiamento-imobiliario" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Taxas mês a mês</a>
                 <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
                     {icone('whatsapp', 'mr-1')} Falar com o suporte
                 </a>
@@ -3489,6 +3916,8 @@ def gerar_hub_aprenda(artigos, pasta_saida, dominio):
                 <a href="https://dados.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Lente B2B: dados de empresas</a>
                 <a href="/aprenda" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
+                <a href="/metodologia" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Metodologia</a>
+                <a href="/taxas-financiamento-imobiliario" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Taxas mês a mês</a>
                 <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
                     {icone('whatsapp', 'mr-1')} Falar com o suporte
                 </a>
@@ -4051,6 +4480,8 @@ Total de páginas de simulação: {total_paginas}
 - [Dados abertos: taxas de financiamento por banco, série mensal em CSV e JSON]({dominio}/dados-abertos)
 - [Simulador de financiamento para incorporar no seu site (grátis)]({dominio}/incorporar)
 - [Imprensa: números atualizados para citar]({dominio}/imprensa)
+- [Taxas de financiamento imobiliário mês a mês, desde 2024]({dominio}/taxas-financiamento-imobiliario)
+- [Metodologia: fonte das taxas e fórmulas]({dominio}/metodologia)
 - [Sitemap completo]({dominio}/sitemap.xml)
 
 ## Sobre os dados
