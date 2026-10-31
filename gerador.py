@@ -3163,7 +3163,10 @@ def linhas_comparacao(valor_imovel, prazo_meses, taxas_atuais=None):
 
 GUIAS_RELACIONADOS = ("aprenda-sac-x-price", "aprenda-cet-iof-financiamento-imobiliario",
                       "aprenda-ltv-financiamento-imobiliario", "aprenda-fgts-financiamento-imobiliario",
-                      "aprenda-amortizacao-extraordinaria", "aprenda-financiamento-x-consorcio-imobiliario")
+                      "aprenda-amortizacao-extraordinaria", "aprenda-financiamento-x-consorcio-imobiliario",
+                      "aprenda-passo-a-passo-financiar-imovel-documentos", "aprenda-portabilidade-financiamento-imobiliario",
+                      "aprenda-seguro-mip-dfi-financiamento-imobiliario", "aprenda-itbi-cartorio-custos-compra-imovel",
+                      "aprenda-minha-casa-minha-vida-faixas-limites", "aprenda-imovel-na-planta-incc-juros-de-obra")
 
 
 def _guias_html():
@@ -4177,7 +4180,7 @@ def gerar_hub_aprenda(artigos, pasta_saida, dominio):
     html = f'''<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-{render_head_boilerplate("Aprenda: guias sobre financiamento imobiliário | Datalab Global", "Guias sobre financiamento imobiliário: SAC x Price, CET, IOF, amortização, FGTS, LTV e consórcio, explicados sem juridiquês e com dados do Banco Central.", url_canonica, dominio, [])}
+{render_head_boilerplate("Aprenda: guias sobre financiamento imobiliário | Datalab Global", "Guias sobre financiamento imobiliário: SAC x Price, CET, FGTS, portabilidade, ITBI, MCMV, seguros e mais, com fontes oficiais.", url_canonica, dominio, [])}
 </head>
 <body class="antialiased min-h-screen flex flex-col">
     <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
@@ -4340,6 +4343,10 @@ ARTIGOS_APRENDA = [
         "cta_texto": "Simular financiamento imobiliário",
     },
 ]
+
+import guias_novos  # noqa: E402
+
+ARTIGOS_APRENDA += guias_novos.montar_guias(calcular_sac_price, formatar_reais)
 
 
 def gerar_calculo_js():
