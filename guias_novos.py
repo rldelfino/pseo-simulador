@@ -195,7 +195,7 @@ def montar_guias(calc, reais):
                 "Compare com a simulação de mercado pelo CET e pela primeira parcela, não só pela taxa.",
                 "Confirme os requisitos do seu caso: por exemplo, em geral não ser proprietário de imóvel residencial e não ter financiamento ativo no sistema de habitação."]),
             _sec("Subsídio e financiamento",
-                 "Segundo o Ministério das Cidades, o programa combina financiamento com condições específicas e, nas faixas de renda mais baixas, subsídio; a Faixa 4, voltada à classe média, é financiamento do programa, sem a produção subsidiada das faixas iniciais. Os percentuais de juros e de subsídio mudam conforme a faixa, a região e as decisões do governo para o programa, por isso não os reproduzimos aqui: peça a simulação oficial."),
+                 "Segundo o Ministério das Cidades, o programa combina financiamento com condições específicas e, nas faixas de renda mais baixas, subsídio. Os percentuais de juros e de subsídio mudam conforme a faixa, a região e as decisões do governo para o programa, por isso não os reproduzimos aqui: peça a simulação oficial."),
             _fontes([
                 ("https://www.gov.br/cidades/pt-br/acesso-a-informacao/institucional/base-juridica/portarias/2026/PORTARIAMCIDN333DE30DEMARODE2026PORTARIAMCIDN333DE30DEMARODE2026DOUImprensaNacional.pdf", "Portaria MCID nº 333, de 30 de março de 2026 (Diário Oficial da União)"),
                 ("https://www.gov.br/secom/pt-br/acompanhe-a-secom/noticias/2026/04/nova-portaria-atualiza-limites-de-renda-bruta-familiar-admitidos-para-familias-atendidas-pelo-minha-casa-minha-vida", "Secom/Governo Federal: nova portaria atualiza limites de renda"),
