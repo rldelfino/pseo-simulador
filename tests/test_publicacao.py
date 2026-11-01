@@ -21,3 +21,9 @@ def test_pacote_de_publicacao_gerado_dos_dados_abertos():
     notas = [n for n in os.listdir(pasta) if n.startswith("nota-imprensa-")]
     assert len(notas) == 1
     assert "contato@datalabglobal.com" in open(os.path.join(pasta, notas[0]), encoding="utf-8").read()
+
+
+@pytest.mark.skipif(not os.path.isdir(os.path.join(RAIZ, "paginas_seo", "dados")), reason="paginas_seo/ não gerada")
+def test_pagina_de_dados_abertos_aponta_para_o_kaggle():
+    html = open(os.path.join(RAIZ, "paginas_seo", "dados-abertos.html"), encoding="utf-8").read()
+    assert html.count("https://www.kaggle.com/datasets/rodolfodelfino/") >= 2  # link visível + sameAs do Dataset
