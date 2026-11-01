@@ -1993,6 +1993,8 @@ MESES_PT = ["janeiro", "fevereiro", "março", "abril", "maio", "junho",
 MESES_PT_ABREV = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"]
 FONTE_BACEN_URL = "https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201"
 LICENCA_DADOS = "CC BY 4.0"
+# Cópia do conjunto de dados no Kaggle (publicada em 01/11/2026).
+URL_KAGGLE = "https://www.kaggle.com/datasets/rodolfodelfino/taxas-financiamento-imobilirio-por-banco-bacen"
 LICENCA_DADOS_URL = "https://creativecommons.org/licenses/by/4.0/deed.pt-br"
 MESES_NA_TABELA_EVOLUCAO = 6
 
@@ -2792,7 +2794,7 @@ Publicado por Datalab Global ({dominio}/), marca de {EMPRESA_RODAPE}.
         "description": descricao, "url": url_pagina, "inLanguage": "pt-BR",
         "license": LICENCA_DADOS_URL, "isAccessibleForFree": True,
         "creator": {"@type": "Organization", "name": "Datalab Global", "url": f"{dominio}/"},
-        "isBasedOn": FONTE_BACEN_URL, "dateModified": data_ultima_atualizacao,
+        "isBasedOn": FONTE_BACEN_URL, "dateModified": data_ultima_atualizacao, "sameAs": URL_KAGGLE,
         "temporalCoverage": f"{ini}/{fim}", "spatialCoverage": {"@type": "Country", "name": "Brasil"},
         "variableMeasured": ["Taxa média de juros contratada (% ao ano)"],
         "distribution": [
@@ -2833,6 +2835,7 @@ Publicado por Datalab Global ({dominio}/), marca de {EMPRESA_RODAPE}.
                 <li><a href="dados/taxas-financiamento-imobiliario.json" download class="text-emerald-400 underline">taxas-financiamento-imobiliario.json</a> <span class="text-slate-400">· para programação</span></li>
                 <li><a href="dados/datapackage.json" download class="text-emerald-400 underline">datapackage.json</a> <span class="text-slate-400">· metadados (Frictionless Data)</span></li>
                 <li><a href="dados/README.md" class="text-emerald-400 underline">README.md</a> <span class="text-slate-400">· descrição e como citar</span></li>
+                <li><a href="{URL_KAGGLE}" rel="noopener" class="text-emerald-400 underline">Kaggle</a> <span class="text-slate-400">· mesma série, com notebook de exemplo</span></li>
             </ul>
         </section>
 
@@ -4769,7 +4772,7 @@ Total de páginas de simulação: {total_paginas}
 - [Home / lista de bancos]({dominio}/)
 - [Comparativo de taxas entre os {len(BANCOS)} bancos]({dominio}/comparador-bancos)
 - [Financiamento imobiliário: parcela por valor e prazo]({dominio}/financiamento-imobiliario)
-- [Dados abertos: taxas de financiamento por banco, série mensal em CSV e JSON]({dominio}/dados-abertos)
+- [Dados abertos: taxas de financiamento por banco, série mensal em CSV e JSON]({dominio}/dados-abertos) (cópia no Kaggle: {URL_KAGGLE})
 - [Simulador de financiamento para incorporar no seu site (grátis)]({dominio}/incorporar)
 - [Imprensa: números atualizados para citar]({dominio}/imprensa)
 - [Taxas de financiamento imobiliário mês a mês, desde 2024]({dominio}/taxas-financiamento-imobiliario)
