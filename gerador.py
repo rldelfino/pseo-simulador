@@ -3993,7 +3993,7 @@ def gerar_pagina_sobre(pasta_saida, dominio):
     inventado — nunca fabricar razão social/CNPJ/endereço que não foram
     confirmados."""
     url_canonica = f"{dominio}/sobre"
-    titulo_pagina = "Sobre a Datalab Global | Simulador de Financiamento Imobiliário"
+    titulo_pagina = "Sobre a Datalab Global: simuladores e dados financeiros"
     meta_description = (
         "Conheça a Datalab Global, criada por Rodolfo Delfino para resolver problemas reais com dados e IA, "
         "incluindo este simulador de financiamento imobiliário."
@@ -4175,6 +4175,14 @@ def gerar_hub_aprenda(artigos, pasta_saida, dominio):
         </a>'''
         for a in artigos
     )
+    schema_hub = json.dumps({"@context": "https://schema.org", "@type": "CollectionPage", "name": "Aprenda sobre financiamento imobiliário",
+                             "url": url_canonica, "isPartOf": {"@type": "WebSite", "url": f"{dominio}/", "name": "Datalab Global"},
+                             "mainEntity": {"@type": "ItemList", "numberOfItems": len(artigos),
+                                            "itemListElement": [{"@type": "ListItem", "position": i, "url": f"{dominio}/{a['slug']}", "name": a["titulo_h1"]}
+                                                                for i, a in enumerate(artigos, start=1)]}}, ensure_ascii=False)
+    schema_hub_bc = json.dumps({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Datalab Global", "item": f"{dominio}/"},
+        {"@type": "ListItem", "position": 2, "name": "Aprenda", "item": url_canonica}]}, ensure_ascii=False)
     corpo = f'''<main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 relative z-10 w-full">
         <h1 class="text-3xl md:text-5xl font-serif text-white mb-2 leading-tight">Aprenda sobre financiamento imobiliário</h1>
         <p class="text-slate-400 text-sm mb-10">Guias educativos, sem juridiquês, pra você entender o que está simulando antes de decidir.</p>
@@ -4183,7 +4191,7 @@ def gerar_hub_aprenda(artigos, pasta_saida, dominio):
     html = f'''<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-{render_head_boilerplate("Aprenda: guias sobre financiamento imobiliário | Datalab Global", "Guias sobre financiamento imobiliário: SAC x Price, CET, FGTS, portabilidade, ITBI, MCMV, seguros e mais, com fontes oficiais.", url_canonica, dominio, [])}
+{render_head_boilerplate("Aprenda: guias sobre financiamento imobiliário | Datalab Global", "Guias sobre financiamento imobiliário: SAC x Price, CET, FGTS, portabilidade, ITBI, MCMV, seguros e mais, com fontes oficiais.", url_canonica, dominio, [schema_hub, schema_hub_bc])}
 </head>
 <body class="antialiased min-h-screen flex flex-col">
     <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
@@ -4417,13 +4425,17 @@ def gerar_calculo_js():
                 fluxo.push(amortizacao + juros + seguroMip + seguroDfi + TAXA_ADMIN_MENSAL);
                 saldo -= amortizacao;
             }
+            // Desempenho (02/nov/2026, Lighthouse: tarefa longa de ~450 ms na carga): fator de desconto
+            // incremental em vez de Math.pow por parcela, e 36 iterações de bisseção (precisão de ~1e-12 ao mês,
+            // muito além das 2 casas decimais exibidas).
             const vpl = (r) => {
-                let total = -vFinanciado;
-                for (let i = 0; i < fluxo.length; i++) total += fluxo[i] / Math.pow(1 + r, i + 1);
+                const f = 1 / (1 + r);
+                let d = 1, total = -vFinanciado;
+                for (let i = 0; i < fluxo.length; i++) { d *= f; total += fluxo[i] * d; }
                 return total;
             };
             let lo = 0, hi = 0.05;
-            for (let i = 0; i < 60; i++) {
+            for (let i = 0; i < 36; i++) {
                 const mid = (lo + hi) / 2;
                 if (vpl(mid) > 0) lo = mid; else hi = mid;
             }
