@@ -151,3 +151,30 @@ def test_tags_de_medicao_so_com_id(monkeypatch):
     monkeypatch.setattr(gerador, "UMAMI_WEBSITE_ID", "abc-123")
     tags = "".join(gerador.tags_medicao())
     assert 'data-website-id="abc-123"' in tags and 'data-do-not-track="true"' in tags and "/medicao.js" in tags
+
+
+@pytest.mark.skipif(not gerada or not __import__("shutil").which("node"), reason="paginas_seo/ não gerada ou sem node")
+def test_cet_do_calculo_js_bate_com_o_python():
+    import subprocess
+    js = _ler("calculo.js")
+    i = js.index("function calcularCET")
+    depth, j = 0, js.index("{", i)
+    for k in range(j, len(js)):
+        depth += (js[k] == "{") - (js[k] == "}")
+        if depth == 0:
+            fn = js[i:k + 1]
+            break
+    casos = [(400_000, 360, 0.0098, 500_000, "SAC"), (250_000, 240, 0.0121, 300_000, "PRICE"),
+             (800_000, 420, 0.0105, 1_000_000, "SAC"), (120_000, 120, 0.0135, 150_000, "PRICE")]
+    code = fn + f"\nconst c={json.dumps(casos)};console.log(JSON.stringify(c.map(x=>calcularCET(x[0],x[1],x[2],x[3],x[4]))));"
+    res = json.loads(subprocess.run(["node", "-e", code], capture_output=True, text=True, check=True).stdout)
+    for c, r in zip(casos, res):
+        assert round(r, 2) == gerador.calcular_cet_real(c[0], c[1], c[2] * 12 * 100, c[3], c[4])
+
+
+@pytest.mark.skipif(not gerada, reason="paginas_seo/ não gerada")
+def test_titulos_dentro_do_limite_e_hub_aprenda_com_json_ld():
+    for nome in ("sobre.html", "aprenda.html"):
+        html = _ler(nome)
+        assert len(re.search(r"<title>(.*?)</title>", html).group(1)) <= 60, nome
+    assert '"CollectionPage"' in _ler("aprenda.html")
