@@ -178,3 +178,15 @@ def test_titulos_dentro_do_limite_e_hub_aprenda_com_json_ld():
         html = _ler(nome)
         assert len(re.search(r"<title>(.*?)</title>", html).group(1)) <= 60, nome
     assert '"CollectionPage"' in _ler("aprenda.html")
+
+
+@pytest.mark.skipif(not gerada, reason="paginas_seo/ não gerada")
+def test_titulos_dos_hubs_de_banco_e_do_comparador():
+    import glob
+    hubs = glob.glob(os.path.join(PASTA, "banco-*.html"))
+    assert len(hubs) >= 10
+    for f in hubs:
+        t = re.search(r"<title>(.*?)</title>", open(f, encoding="utf-8").read()).group(1)
+        assert len(t) <= 60 and "taxa de juros" in t.lower() and "simulador" in t.lower(), (f, t)
+    comp = re.search(r"<title>(.*?)</title>", _ler("comparador-bancos.html")).group(1)
+    assert comp.startswith("Comparar taxas") and len(comp) <= 70
