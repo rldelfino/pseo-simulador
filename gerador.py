@@ -1795,9 +1795,17 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
         # pessoa digita agora abre o título (e o H1), que é onde o Google
         # mais pesa relevância; o fallback sem marca continua existindo
         # pra nome de banco longo.
-        titulo_pagina = f"Simulador {banco_exib}: Financiamento Imobiliário {ano_atual} | Datalab Global"
-        if len(titulo_pagina) > 60:
-            titulo_pagina = f"Simulador {banco_exib}: Financiamento Imobiliário {ano_atual}"
+        # 04/11/2026 (Bing Webmaster > AI Performance): o Copilot cita o site para "taxa de juros financiamento
+        # bradesco", "juros imobiliário bradesco" etc. (~94 citações só de Bradesco em 3 meses). O título mantém
+        # "simulador" (consultas do Google) e passa a trazer "taxa de juros"; cai de opção sem passar de 60.
+        candidatos_titulo = (
+            f"Simulador {banco_exib}: taxa de juros e financiamento {ano_atual}",
+            f"{banco_exib}: taxa de juros e simulador de financiamento {ano_atual}",
+            f"Taxa de juros {banco_exib} {ano_atual}: simulador imobiliário",
+            f"Taxa de juros {banco_exib} {ano_atual}: simulador",
+            f"Simulador {banco_exib}: Financiamento Imobiliário {ano_atual}",
+        )
+        titulo_pagina = next((t for t in candidatos_titulo if len(t) <= 60), candidatos_titulo[-1])
         meta_description = (
             f"Simulador {banco_exib} em {ano_atual}: taxa de {taxa_fmt}% a.a. hoje, "
             f"entrada a partir de {entrada_min_pct}%, até {prazo_max} meses. Calcule parcela e CET."
@@ -2923,7 +2931,9 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
     url_canonica = f"{dominio}/comparador-bancos"
     # Mês no título e no H1: a busca real é "taxa de financiamento imobiliário
     # {mês} {ano}". Abreviado no <title> pra caber em 60 caracteres.
-    titulo_pagina = f"Taxas de financiamento imobiliário por banco: {mes_ano_curto} | Datalab Global"
+    # 04/11/2026 (Bing > AI Performance): "taxas financiamento imóvel comparação" e "comparador de financiamentos" são as
+    # consultas mais citadas pelo Copilot; o título passa a começar por "Comparar".
+    titulo_pagina = f"Comparar taxas de financiamento imobiliário: {mes_ano_curto} | Datalab Global"
     meta_description = (
         f"Compare taxa, entrada mínima e CET de {len(ranking_ref)} bancos de financiamento imobiliário em {mes_ano} "
         f"e veja como as taxas evoluíram nos últimos meses."
