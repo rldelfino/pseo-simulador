@@ -1833,10 +1833,11 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
         resposta_direta = (f"Taxa do {banco_exib} hoje: {taxa_fmt}% ao ano ({taxa_mensal_fmt}% ao mês). "
                            f"Entrada mínima de {entrada_min_pct}% e prazo de até {prazo_max} meses.")
         faixa_html += html_serie_banco(_historico_hubs, banco, banco_exib, taxa_atual_banco)
+        faixa_html += html_mais_sobre_banco(banco_exib, _historico_hubs)
         html_hub = f'''<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-{render_head_boilerplate(titulo_pagina, meta_description, url_canonica, dominio, [schema_breadcrumb, schema_faq])}
+{render_head_boilerplate(titulo_pagina, meta_description, url_canonica, dominio, [schema_breadcrumb, schema_faq, schema_webpage(url_canonica, titulo_pagina, dominio, data_ultima_atualizacao)])}
 </head>
 <body class="antialiased flex flex-col min-h-screen">
     <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
@@ -2732,6 +2733,45 @@ def tags_medicao():
             '    <script defer src="/medicao.js"></script>']
 
 
+def schema_webpage(url, nome, dominio, data_modificacao):
+    """JSON-LD WebPage com dateModified e publisher (sinal de atualização para buscadores e IA)."""
+    return json.dumps({"@context": "https://schema.org", "@type": "WebPage", "url": url, "name": nome,
+                       "dateModified": data_modificacao, "inLanguage": "pt-BR",
+                       "isPartOf": {"@type": "WebSite", "url": f"{dominio}/", "name": "Datalab Global"},
+                       "publisher": {"@type": "Organization", "@id": "https://www.datalabglobal.com/#organization", "name": "Datalab Global"}},
+                      ensure_ascii=False)
+
+
+def html_mais_sobre_banco(banco_exib, historico, pasta_mes=True):
+    """Bloco 'Mais sobre {banco}': links de contexto (no corpo, não só no rodapé) a partir do hub, que é a página
+    mais citada pelo Copilot (Bing > AI Performance, 04/11/2026)."""
+    meses = sorted({r["inicio_periodo"] for r in historico})
+    itens = []
+    if meses:
+        itens.append((slug_mes(meses[-1]), f"Taxas de financiamento imobiliário em {nome_mes(meses[-1])}"))
+    itens += [(SLUG_INDICE_MENSAL, "Taxas mês a mês, de todos os bancos"),
+              (SLUG_INDICE_RENDA, "Renda necessária para financiar, por valor do imóvel"),
+              ("comparador-bancos", f"Comparar o {banco_exib} com os outros bancos"),
+              ("aprenda-cet-iof-financiamento-imobiliario", "O que é CET e por que olhar além da taxa de juros"),
+              ("aprenda-portabilidade-financiamento-imobiliario", "Portabilidade: trocar o financiamento de banco"),
+              ("metodologia", "Como calculamos")]
+    lis = "".join(f'<li><a href="{h}" class="text-emerald-400 underline hover:text-emerald-300">{t}</a></li>' for h, t in itens)
+    return f'''<section class="mt-8 glass-panel p-8 rounded-3xl">
+            <h2 class="text-xs font-bold text-slate-300 uppercase tracking-widest mb-3">Mais sobre {banco_exib}</h2>
+            <ul class="space-y-2 text-sm">{lis}</ul>
+        </section>'''
+
+
+def frase_resposta_comparador(ranking_ref, data_br, valor_ref, prazo_ref):
+    """Resposta direta no topo do comparador (consultas 'comparar taxas financiamento imóvel')."""
+    if len(ranking_ref) < 2:
+        return ""
+    menor, maior = ranking_ref[0], ranking_ref[-1]
+    return (f"Em {data_br}, entre os {len(ranking_ref)} bancos que acompanhamos, o menor CET para financiar {formatar_reais(valor_ref)} em "
+            f"{prazo_ref // 12} anos é o do {menor['banco_exib']} ({_pct2(menor['cet'])}% ao ano) e o maior, o do {maior['banco_exib']} "
+            f"({_pct2(maior['cet'])}% ao ano).")
+
+
 def gerar_dados_abertos(pasta_saida, dominio, data_ultima_atualizacao):
     """Publica a série histórica como dados abertos em /dados/ (CSV, JSON,
     datapackage.json e README.md) e a página /dados-abertos. Só linhas do
@@ -2992,7 +3032,7 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
     html_comparador = f'''<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-{render_head_boilerplate(titulo_pagina, meta_description, url_canonica, dominio, [schema_breadcrumb, schema_faq])}
+{render_head_boilerplate(titulo_pagina, meta_description, url_canonica, dominio, [schema_breadcrumb, schema_faq, schema_webpage(url_canonica, titulo_pagina, dominio, data_ultima_atualizacao)])}
 </head>
 <body class="antialiased flex flex-col min-h-screen">
     <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
@@ -3017,6 +3057,7 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
         <h1 class="text-3xl md:text-5xl font-serif text-white mb-4 leading-tight px-4">
             Taxas de financiamento imobiliário por banco em {mes_ano}
         </h1>
+        <p class="text-white text-lg md:text-xl font-medium max-w-3xl mx-auto px-4 mb-4">{frase_resposta_comparador(ranking_ref, date.fromisoformat(data_ultima_atualizacao).strftime('%d/%m/%Y'), VALOR_REF, PRAZO_REF)}</p>
         <p class="text-slate-400 text-base md:text-lg font-light tracking-wide max-w-3xl mx-auto px-4">
             CET simulado para {formatar_reais(VALOR_REF)} em {PRAZO_REF} meses, na mesma condição para os {len(ranking_ref)} bancos e fintechs que acompanhamos — ordenado do menor pro maior custo efetivo total.
         </p>
@@ -3501,7 +3542,7 @@ def gerar_indice_comparacao(pasta_saida, dominio, data_ultima_atualizacao, taxas
     html_indice = f'''<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-{render_head_boilerplate(titulo_pagina, meta_description, url_canonica, dominio, [schema_breadcrumb, schema_faq])}
+{render_head_boilerplate(titulo_pagina, meta_description, url_canonica, dominio, [schema_breadcrumb, schema_faq, schema_webpage(url_canonica, titulo_pagina, dominio, data_ultima_atualizacao)])}
 </head>
 <body class="antialiased flex flex-col min-h-screen">
     {_nav_comparacao()}

@@ -190,3 +190,23 @@ def test_titulos_dos_hubs_de_banco_e_do_comparador():
         assert len(t) <= 60 and "taxa de juros" in t.lower() and "simulador" in t.lower(), (f, t)
     comp = re.search(r"<title>(.*?)</title>", _ler("comparador-bancos.html")).group(1)
     assert comp.startswith("Comparar taxas") and len(comp) <= 70
+
+
+@pytest.mark.skipif(not gerada, reason="paginas_seo/ não gerada")
+def test_hub_e_comparador_com_webpage_mais_sobre_e_resposta_direta():
+    for nome in ("banco-bradesco.html", "comparador-bancos.html"):
+        html = _ler(nome)
+        blocos = re.findall(r'<script type="application/ld\+json">(.*?)</script>', html, re.S)
+        tipos = [json.loads(b).get("@type") for b in blocos]
+        assert "WebPage" in tipos and "FAQPage" in tipos, (nome, tipos)
+        wp = next(json.loads(b) for b in blocos if '"WebPage"' in b)
+        assert re.fullmatch(r"\d{4}-\d{2}-\d{2}", wp["dateModified"])
+    hub = _ler("banco-bradesco.html")
+    secao = hub[hub.index("Mais sobre Bradesco"):]
+    for href in re.findall(r'<li><a href="([^"]+)"', secao[:2500]):
+        assert os.path.exists(os.path.join(PASTA, href + ".html")), href
+    comp = _ler("comparador-bancos.html")
+    frase = re.search(r'font-medium max-w-3xl mx-auto px-4 mb-4">(.*?)</p>', comp, re.S).group(1)
+    # o banco da frase é o #1 da tabela de CET
+    menor = re.search(r"o menor CET .*? é o do (.+?) \(", frase).group(1)
+    assert comp.index(f">{menor}<") < comp.index(">Banco do Brasil<") or menor == "Banco do Brasil"
