@@ -2489,7 +2489,7 @@ PERC_RENDA_COMPROMETIDA = 0.30
 
 # Medição de cliques (31/out/2026): vazio = não carrega nada. Preencha com o
 # "Website ID" do Umami Cloud (plano gratuito, sem cookies) para ligar.
-UMAMI_WEBSITE_ID = ""
+UMAMI_WEBSITE_ID = "ba3c0b88-59e8-47dd-866d-0b05e5e7dae9"  # Umami Cloud (plano Hobby); um único site mede simulador. e veiculos. (hostname separa)
 UMAMI_SCRIPT = "https://cloud.umami.is/script.js"
 
 
