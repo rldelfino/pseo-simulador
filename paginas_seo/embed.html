@@ -63,7 +63,7 @@ function calcular(ajustarEntrada) {
   var r = calcularFinanciamento(fin, meses, b.taxa);
   el('p1').textContent = fmt.format(r.p1); el('pU').textContent = fmt.format(r.pU); el('price').textContent = fmt.format(r.price);
   el('juros').textContent = fmt.format(r.jurosSac); el('fin').textContent = fmt.format(fin);
-  el('nota').textContent = 'Taxa média: ' + b.nome + ', ' + b.taxa.toFixed(2).replace('.', ',') + '% a.a. (Banco Central, 30/10/2026).';
+  el('nota').textContent = 'Taxa média: ' + b.nome + ', ' + b.taxa.toFixed(2).replace('.', ',') + '% a.a. (Banco Central, 05/11/2026).';
 }
 el('banco').addEventListener('change', function () { atualizarPrazos(); calcular(true); });
 el('prazo').addEventListener('change', function () { calcular(false); });

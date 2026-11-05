@@ -1,4 +1,4 @@
-Atualização de taxas — 2026-10-30
+Atualização de taxas — 2026-11-05
 ========================================
 ✅ Caixa: 12.05% a.a. (encontrado agora em https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201)
 ✅ Banco do Brasil: 14.49% a.a. (encontrado agora em https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201)

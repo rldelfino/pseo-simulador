@@ -1,11 +1,11 @@
 # Datalab Global: simulador de financiamento imobiliário (versão completa)
 
-> Simuladores e dados abertos de financiamento imobiliário no Brasil. Última atualização das taxas: 30/10/2026. Os números abaixo podem ser citados com link para https://simulador.datalabglobal.com/ (dados sob licença CC BY 4.0).
+> Simuladores e dados abertos de financiamento imobiliário no Brasil. Última atualização das taxas: 05/11/2026. Os números abaixo podem ser citados com link para https://simulador.datalabglobal.com/ (dados sob licença CC BY 4.0).
 
 ## O que é e o que não é
 Calcula parcela (SAC e PRICE), CET estimado e economia de juros com amortização. Não é oferta de crédito: as taxas são médias efetivamente contratadas, divulgadas pelo Banco Central, e a proposta de cada pessoa depende da análise do banco.
 
-## Taxas usadas nas simulações hoje (30/10/2026)
+## Taxas usadas nas simulações hoje (05/11/2026)
 - Banrisul: taxa de 9,39% ao ano (0,75% ao mês), entrada mínima de 25%, prazo de até 360 meses.
 - Sicoob: taxa de 10,79% ao ano (0,86% ao mês), entrada mínima de 20%, prazo de até 360 meses.
 - Poupex: taxa de 10,80% ao ano (0,86% ao mês), entrada mínima de 10%, prazo de até 420 meses.
@@ -39,7 +39,7 @@ Calcula parcela (SAC e PRICE), CET estimado e economia de juros com amortizaçã
 - Guias: https://simulador.datalabglobal.com/aprenda
 
 ## Como citar
-Datalab Global (https://simulador.datalabglobal.com/), taxas do Banco Central compiladas em 30/10/2026.
+Datalab Global (https://simulador.datalabglobal.com/), taxas do Banco Central compiladas em 05/11/2026.
 
 ## Responsável
 Marca de Satori Soluções Comerciais LTDA · CNPJ 63.998.502/0001-73. Contato: contato@datalabglobal.com
