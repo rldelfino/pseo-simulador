@@ -268,6 +268,7 @@ def render_head_boilerplate(titulo_pagina, meta_description, url_canonica, domin
         '    <link rel="icon" href="favicon-32.png?v=20261012" type="image/png" sizes="32x32">',
         '    <link rel="icon" href="favicon-192.png?v=20261012" type="image/png" sizes="192x192">',
         '    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261012">',
+        f'    <link rel="alternate" type="application/atom+xml" title="{TITULO_FEED}" href="/{URL_FEED}">',
         *tags_medicao(),
     ]
     linhas_topo_html = "\n".join(l for l in linhas_topo if l is not None)
@@ -1647,6 +1648,7 @@ def gerar_paginas_pseo():
     urls_comparacao += gerar_paginas_renda(pasta_saida, dominio, data_ultima_atualizacao, taxas_atuais_por_banco)
     gerar_llms_full_txt(pasta_saida, dominio, data_ultima_atualizacao, taxas_atuais_por_banco, historico_cache)
     gerar_medicao_js(pasta_saida)
+    gerar_feed_atom(pasta_saida, dominio, data_ultima_atualizacao, historico_cache)
 
     gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao)
     url_sobre = gerar_pagina_sobre(pasta_saida, dominio)
@@ -1834,6 +1836,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
                            f"Entrada mínima de {entrada_min_pct}% e prazo de até {prazo_max} meses.")
         faixa_html += html_serie_banco(_historico_hubs, banco, banco_exib, taxa_atual_banco)
         faixa_html += html_mais_sobre_banco(banco_exib, _historico_hubs)
+        faixa_html += html_como_citar(f"Taxa do {banco_exib} para financiamento imobiliário", url_canonica, date.fromisoformat(data_ultima_atualizacao).strftime('%d/%m/%Y'))
         html_hub = f'''<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -2770,6 +2773,55 @@ def frase_resposta_comparador(ranking_ref, data_br, valor_ref, prazo_ref):
     return (f"Em {data_br}, entre os {len(ranking_ref)} bancos que acompanhamos, o menor CET para financiar {formatar_reais(valor_ref)} em "
             f"{prazo_ref // 12} anos é o do {menor['banco_exib']} ({_pct2(menor['cet'])}% ao ano) e o maior, o do {maior['banco_exib']} "
             f"({_pct2(maior['cet'])}% ao ano).")
+
+
+URL_FEED = "feed.xml"
+TITULO_FEED = "Taxas de financiamento imobiliário por banco | Datalab Global"
+
+
+def _xml(s):
+    return (str(s).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;"))
+
+
+def gerar_feed_atom(pasta_saida, dominio, data_ultima_atualizacao, historico):
+    """feed.xml (Atom): uma entrada por mês da série do BACEN (12 mais recentes), com menor, maior e média do mês.
+    Agregadores e buscadores de IA leem feeds; custo zero, e o conteúdo é o mesmo das páginas mensais."""
+    meses = sorted({r["inicio_periodo"] for r in historico})[-MESES_INDEXAVEIS_MENSAL:]
+    por_mes = {}
+    for r in historico:
+        por_mes.setdefault(r["inicio_periodo"], {})[r["banco"]] = r["taxa_aa"]
+    fim_mes = {r["inicio_periodo"]: r["fim_periodo"] for r in historico}
+    entradas = ""
+    for mes in reversed(meses):
+        taxas = por_mes[mes]
+        ordenado = sorted(taxas.items(), key=lambda kv: kv[1])
+        (b_min, t_min), (b_max, t_max) = ordenado[0], ordenado[-1]
+        media = sum(taxas.values()) / len(taxas)
+        resumo = (f"Em {nome_mes(mes)}, a taxa média contratada no financiamento imobiliário foi de {_pct2(t_min)}% ao ano ({nome_exibicao(b_min)}) "
+                  f"a {_pct2(t_max)}% ({nome_exibicao(b_max)}), com média de {_pct2(media)}% entre {len(taxas)} bancos (Banco Central).")
+        url = f"{dominio}/{slug_mes(mes)}"
+        entradas += (f"  <entry>\n    <title>{_xml('Taxa de financiamento imobiliário em ' + nome_mes(mes))}</title>\n"
+                     f"    <link href=\"{url}\"/>\n    <id>{url}</id>\n    <updated>{fim_mes[mes]}T00:00:00Z</updated>\n"
+                     f"    <summary>{_xml(resumo)}</summary>\n  </entry>\n")
+    atualizado = (fim_mes[meses[-1]] if meses else data_ultima_atualizacao)
+    xml = ('<?xml version="1.0" encoding="UTF-8"?>\n<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="pt-BR">\n'
+           f"  <title>{_xml(TITULO_FEED)}</title>\n  <subtitle>Taxa média mensal contratada por banco, segundo o Banco Central do Brasil.</subtitle>\n"
+           f"  <link href=\"{dominio}/\"/>\n  <link rel=\"self\" type=\"application/atom+xml\" href=\"{dominio}/{URL_FEED}\"/>\n"
+           f"  <id>{dominio}/</id>\n  <updated>{atualizado}T00:00:00Z</updated>\n"
+           "  <author><name>Datalab Global</name><uri>https://www.datalabglobal.com/</uri></author>\n"
+           f"{entradas}</feed>\n")
+    with open(os.path.join(pasta_saida, URL_FEED), "w", encoding="utf-8") as f:
+        f.write(xml)
+
+
+def html_como_citar(titulo, url, data_br):
+    """Caixa 'Como citar' com o texto pronto (CC BY 4.0), sem JavaScript extra."""
+    texto = f'Datalab Global, "{titulo}", dados do Banco Central do Brasil, atualizado em {data_br}. {url}'
+    return f'''<section class="mt-8 glass-panel p-8 rounded-3xl">
+            <h2 class="text-xs font-bold text-slate-300 uppercase tracking-widest mb-3">Como citar este dado</h2>
+            <textarea readonly rows="3" onclick="this.select()" aria-label="Texto para citar" class="w-full bg-slate-900/60 border border-white/10 rounded-xl p-3 text-xs text-slate-200">{_xml(texto)}</textarea>
+            <p class="text-slate-500 text-[11px] mt-2">Dados sob licença <a href="{LICENCA_DADOS_URL}" rel="noopener" class="underline">{LICENCA_DADOS}</a>: pode usar e adaptar, citando a fonte.</p>
+        </section>'''
 
 
 def gerar_dados_abertos(pasta_saida, dominio, data_ultima_atualizacao):
@@ -3806,7 +3858,7 @@ def gerar_pagina_imprensa(pasta_saida, dominio, data_ultima_atualizacao, taxas_a
         </section>
         <section class="mt-10">
             <h2 class="text-2xl font-serif text-white mb-3">Metodologia</h2>
-            <p class="text-slate-300 text-sm font-light leading-relaxed">As taxas vêm do relatório de taxas de juros por instituição financeira do Banco Central (modalidade 903201). O CET é calculado por nós (TIR do fluxo completo, com seguros MIP e DFI e taxa de administração estimados) para o mesmo valor, prazo e a entrada mínima de cada banco. BRB e Poupex não constam no relatório do Banco Central nesta modalidade; para eles usamos uma estimativa, sinalizada nas páginas. Detalhes e série completa em <a href="dados-abertos" class="text-emerald-400 underline">dados abertos</a>.</p>
+            <p class="text-slate-300 text-sm font-light leading-relaxed">As taxas vêm do relatório de taxas de juros por instituição financeira do Banco Central (modalidade 903201). O CET é calculado por nós (TIR do fluxo completo, com seguros MIP e DFI e taxa de administração estimados) para o mesmo valor, prazo e a entrada mínima de cada banco. BRB e Poupex não constam no relatório do Banco Central nesta modalidade; para eles usamos uma estimativa, sinalizada nas páginas. Detalhes e série completa em <a href="dados-abertos" class="text-emerald-400 underline">dados abertos</a>. Para acompanhar as atualizações, assine o <a href="/feed.xml" class="text-emerald-400 underline">feed Atom</a>.</p>
         </section>
         <section class="mt-10">
             <h2 class="text-2xl font-serif text-white mb-3">Sobre a Datalab Global</h2>
@@ -4838,6 +4890,7 @@ Total de páginas de simulação: {total_paginas}
 - [Dados abertos: taxas de financiamento por banco, série mensal em CSV e JSON]({dominio}/dados-abertos) (cópia no Kaggle: {URL_KAGGLE})
 - [Simulador de financiamento para incorporar no seu site (grátis)]({dominio}/incorporar)
 - [Imprensa: números atualizados para citar]({dominio}/imprensa)
+- [Feed Atom das taxas mês a mês]({dominio}/feed.xml)
 - [Taxas de financiamento imobiliário mês a mês, desde 2024]({dominio}/taxas-financiamento-imobiliario)
 - [Metodologia: fonte das taxas e fórmulas]({dominio}/metodologia)
 - [Renda necessária para financiar um imóvel, por valor]({dominio}/renda-para-financiar-imovel)
