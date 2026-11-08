@@ -71,7 +71,7 @@ def test_todo_link_interno_resolve_para_pagina_existente():
     no disco — ou ser "/" (raiz), "styles.css", "logo.svg", "sitemap.xml",
     externo (http/https), ou um dos arquivos estáticos conhecidos."""
     slugs_validos = _slugs_validos()
-    arquivos_estaticos = {"styles.css", "logo-full.png", "sitemap.xml", "robots.txt", "llms.txt", "/", "404.html",
+    arquivos_estaticos = {"styles.css", "logo-full.png", "sitemap.xml", "robots.txt", "llms.txt", "feed.xml", "/", "404.html",
                           "favicon-32.png", "favicon-192.png", "favicon.ico", "apple-touch-icon.png", "og-image.png", "logo-schema.png"}
     faltando = []
     for nome_arquivo in _arquivos_html():

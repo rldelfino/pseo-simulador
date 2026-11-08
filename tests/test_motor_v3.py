@@ -214,3 +214,30 @@ def test_hub_e_comparador_com_webpage_mais_sobre_e_resposta_direta():
     # o banco da frase é o #1 da tabela de CET
     menor = re.search(r"o menor CET .*? é o do (.+?) \(", frase).group(1)
     assert comp.index(f">{menor}<") < comp.index(">Banco do Brasil<") or menor == "Banco do Brasil"
+
+
+@pytest.mark.skipif(not gerada, reason="paginas_seo/ não gerada")
+def test_feed_atom_valido_com_entradas_e_link_no_head():
+    import xml.etree.ElementTree as ET
+    ns = {"a": "http://www.w3.org/2005/Atom"}
+    raiz = ET.parse(os.path.join(PASTA, "feed.xml")).getroot()
+    entradas = raiz.findall("a:entry", ns)
+    assert len(entradas) == MESES_INDEXAVEIS_MENSAL
+    meses = sorted({r["inicio_periodo"] for r in carregar_historico()})
+    assert entradas[0].find("a:id", ns).text.endswith("/" + slug_mes(meses[-1]))
+    for e in entradas:
+        assert re.fullmatch(r"\d{4}-\d{2}-\d{2}T00:00:00Z", e.find("a:updated", ns).text)
+        assert os.path.exists(os.path.join(PASTA, e.find("a:id", ns).text.rsplit("/", 1)[1] + ".html"))
+    assert 'rel="alternate" type="application/atom+xml"' in _ler("index.html")
+    assert "/feed.xml" in _ler("imprensa.html") and "/feed.xml" in _ler("llms.txt")
+    assert "feed.xml" not in _ler("sitemap.xml")
+
+
+@pytest.mark.skipif(not gerada, reason="paginas_seo/ não gerada")
+def test_hubs_tem_bloco_como_citar():
+    import glob
+    hubs = glob.glob(os.path.join(PASTA, "banco-*.html"))
+    assert len(hubs) >= 10
+    for f in hubs:
+        h = open(f, encoding="utf-8").read()
+        assert "Como citar este dado" in h and "CC BY 4.0" in h and 'onclick="this.select()"' in h, f

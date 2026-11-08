@@ -12,6 +12,7 @@ Total de páginas de simulação: 192
 - [Dados abertos: taxas de financiamento por banco, série mensal em CSV e JSON](https://simulador.datalabglobal.com/dados-abertos) (cópia no Kaggle: https://www.kaggle.com/datasets/rodolfodelfino/taxas-financiamento-imobilirio-por-banco-bacen)
 - [Simulador de financiamento para incorporar no seu site (grátis)](https://simulador.datalabglobal.com/incorporar)
 - [Imprensa: números atualizados para citar](https://simulador.datalabglobal.com/imprensa)
+- [Feed Atom das taxas mês a mês](https://simulador.datalabglobal.com/feed.xml)
 - [Taxas de financiamento imobiliário mês a mês, desde 2024](https://simulador.datalabglobal.com/taxas-financiamento-imobiliario)
 - [Metodologia: fonte das taxas e fórmulas](https://simulador.datalabglobal.com/metodologia)
 - [Renda necessária para financiar um imóvel, por valor](https://simulador.datalabglobal.com/renda-para-financiar-imovel)
