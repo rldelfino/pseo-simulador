@@ -76,6 +76,33 @@ def pagina_indexavel(valor_imovel, prazo):
     return (GRADE_VALOR_PRAZO_NO_INDICE and prazo in PRAZOS_INDEXAVEIS
             and int(round(valor_imovel)) in VALORES_INDEXAVEIS)
 
+
+# Achado real (13/nov/2026, Search Console + API de Inspeção): a home linkava ~1.680 páginas valor x prazo
+# (168 por banco, 286 KB de HTML, ~13,7 mil palavras de "R$ 500.000,00 em 360 meses") e cada hub, ~140. Essas
+# páginas são noindex e fora do sitemap: o Google rastreou, achou o padrão de grade combinatória e não indexou nem
+# a própria home (rastreada, não indexada). Home e hubs passam a destacar só os valores mais buscados; quem quer
+# outro valor ajusta no simulador da própria página.
+VALORES_DESTAQUE_LINKS = (200_000, 300_000, 500_000, 800_000)
+PRAZO_DESTAQUE_LINKS = 360
+
+
+def links_destaque(links, valores=VALORES_DESTAQUE_LINKS, prazo_preferido=PRAZO_DESTAQUE_LINKS):
+    """Subconjunto enxuto dos links valor x prazo de um banco: para cada valor de destaque, o prazo preferido
+    (ou o maior prazo que o banco oferece, se não tiver esse) e, se for diferente, o prazo máximo do banco."""
+    por_valor = {}
+    for item in links:
+        por_valor.setdefault(int(round(float(item["linha_original"]["valor_imovel"]))), []).append(item)
+    escolhidos = []
+    for valor in valores:
+        candidatos = sorted(por_valor.get(valor, []), key=lambda p: p["prazo_correto"])
+        if not candidatos:
+            continue
+        item_pref = next((p for p in candidatos if p["prazo_correto"] == prazo_preferido), candidatos[-1])
+        escolhidos.append(item_pref)
+        if candidatos[-1] is not item_pref:
+            escolhidos.append(candidatos[-1])
+    return escolhidos
+
 # Grade das páginas de comparação sem marca de banco.
 VALORES_COMPARACAO = tuple(range(150_000, 1_000_001, 50_000))
 ANOS_COMPARACAO = (10, 15, 20, 25, 30, 35)
@@ -1794,7 +1821,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
         # ordenado por valor — mais fácil de escanear que a lista solta
         # usada no card compacto do index.html.
         por_prazo = {}
-        for item in sorted(links, key=lambda p: float(p['linha_original']['valor_imovel'])):
+        for item in sorted(links_destaque(links), key=lambda p: float(p['linha_original']['valor_imovel'])):
             por_prazo.setdefault(item['prazo_correto'], []).append(item)
 
         blocos_prazo_html = ""
@@ -1934,9 +1961,9 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
 
         <div class="mt-16 pt-8 border-t border-white/5">
             <h2 class="text-sm font-serif text-slate-400 mb-2 flex items-center justify-center">
-                {icone('link', 'mr-2 text-emerald-500/50')} Todas as Simulações do {banco_exib}
+                {icone('link', 'mr-2 text-emerald-500/50')} Simulações do {banco_exib} para os valores mais buscados
             </h2>
-            <p class="text-slate-600 text-xs text-center max-w-xl mx-auto">Escolha um valor abaixo pra abrir o simulador completo, com cálculo de parcelas, CET e amortização.</p>
+            <p class="text-slate-400 text-xs text-center max-w-xl mx-auto">Escolha um valor abaixo pra abrir o simulador completo, com cálculo de parcelas, CET e amortização. Em qualquer uma delas você muda o valor, o prazo e a entrada.</p>
             {blocos_prazo_html}
         </div>
 
@@ -3942,7 +3969,7 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
         ancora_id = banco.lower().replace(" ", "-")
         links_html = "".join(
             f'<li><a href="{item["slug"]}" class="lk"><span>{item["texto"]}</span><span aria-hidden="true">›</span></a></li>'
-            for item in links
+            for item in links_destaque(links)
         )
 
         blocos_html += f'''
@@ -3953,7 +3980,7 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
                 <span class="ml-auto text-[10px] text-slate-400 group-hover/h2:text-emerald-400 uppercase tracking-widest transition-colors">Ver taxas →</span>
             </a>
             <div class="p-4">
-                <ul class="space-y-1 h-64 overflow-y-auto pr-2 custom-scrollbar">
+                <ul class="space-y-1">
                     {links_html}
                 </ul>
             </div>

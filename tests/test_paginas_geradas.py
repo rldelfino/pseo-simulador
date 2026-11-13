@@ -235,3 +235,24 @@ def test_headers_tem_hsts_e_libera_beacon_do_cloudflare_analytics():
     assert "Strict-Transport-Security: max-age=31536000" in conteudo
     assert "https://static.cloudflareinsights.com" in conteudo.split("script-src", 1)[1].split(";", 1)[0]
     assert "https://cloudflareinsights.com" in conteudo.split("connect-src", 1)[1].split(";", 1)[0]
+
+
+def test_home_e_hubs_nao_despejam_links_para_a_grade_valor_prazo():
+    """Achado real (13/nov/2026): a home linkava ~1.680 páginas valor x prazo (noindex, fora do sitemap) e cada hub
+    ~140. O Google rastreou, viu uma grade combinatória e não indexou nem a home. Trava o teto de links para a grade
+    em home e hubs (o resto da grade continua existindo e acessível pelos botões de cada simulação)."""
+    import re
+
+    def links_grade(nome):
+        with open(os.path.join(PASTA_SAIDA, nome), encoding="utf-8") as f:
+            html = f.read()
+        return html, [h for h in re.findall(r'<a [^>]*href="([^"#]+)"', html) if h.startswith("simulador-")]
+
+    html_home, grade_home = links_grade("index.html")
+    assert len(grade_home) <= 120, f"home com {len(grade_home)} links para a grade valor x prazo"
+    assert len(html_home) < 120_000, f"home com {len(html_home) // 1024} KB"
+    hubs = [n for n in os.listdir(PASTA_SAIDA) if n.startswith("banco-") and n.endswith(".html")]
+    assert len(hubs) >= 10
+    for nome in hubs:
+        _, grade_hub = links_grade(nome)
+        assert 1 <= len(grade_hub) <= 12, f"{nome}: {len(grade_hub)} links para a grade"
