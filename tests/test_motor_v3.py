@@ -35,7 +35,15 @@ def test_projecao_anual_fecha_com_o_calculo_principal():
     assert [x["ano"] for x in proj["linhas"]][:3] == [1, 2, 3]
 
 
-def test_indexabilidade_exige_prazo_e_valor_redondo():
+def test_grade_valor_prazo_fica_fora_do_indice():
+    import gerador
+    assert gerador.GRADE_VALOR_PRAZO_NO_INDICE is False
+    assert not pagina_indexavel(500_000, 360) and not pagina_indexavel(150_000, 420)
+
+
+def test_indexabilidade_exige_prazo_e_valor_redondo(monkeypatch):
+    import gerador
+    monkeypatch.setattr(gerador, "GRADE_VALOR_PRAZO_NO_INDICE", True)
     assert pagina_indexavel(500_000, 360) and pagina_indexavel(150_000, 420)
     assert not pagina_indexavel(500_000, 240)
     assert not pagina_indexavel(1_450_000, 360) and not pagina_indexavel(450_000, 360)
