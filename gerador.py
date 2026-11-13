@@ -1697,6 +1697,27 @@ def gerar_paginas_pseo():
     print(f"✅ {len(urls_hub)} páginas-hub por banco + 1 página comparativa geradas.")
 
 
+def html_requisitos_aprovacao(banco_exib=None, entrada_min_pct=None):
+    """Bloco "Antes de pedir a proposta" (13/nov/2026). Achado real: no painel do parceiro, 57% dos
+    pedidos encerrados foram "cadastro recusado na análise" e outros por renda ou enquadramento. Só
+    fatos gerais e conferíveis (Registrato do Banco Central, parcela até ~30% da renda, entrada,
+    documentos); nada sobre regras internas do parceiro, e avisa que não há garantia de aprovação."""
+    quem, verbo = (f"O {banco_exib}", "costuma") if banco_exib else ("Os bancos", "costumam")
+    entrada = (f"Para este banco, a entrada mínima usada na simulação é de {entrada_min_pct}% do valor do imóvel; "
+               if entrada_min_pct else "A maioria dos bancos financia só uma parte do imóvel (em geral até cerca de 80%) e a entrada cobre o resto; ")
+    itens = [
+        ("Histórico de crédito", 'Nome sem restrições ativas e dívidas em dia pesam mais na análise do que a taxa. Você pode consultar de graça o seu extrato de dívidas e financiamentos no <a href="https://www.bcb.gov.br/meubc/registrato" target="_blank" rel="noopener" class="text-emerald-400 underline">Registrato, do Banco Central</a>.'),
+        ("Parcela que cabe na renda", f"{quem} {verbo} limitar a prestação a cerca de 30% da renda bruta. Se a prestação passar disso, o pedido tende a ser recusado ou a exigir menos prazo ou mais entrada. Dá para somar a renda do cônjuge ou companheiro(a)."),
+        ("Entrada e FGTS", entrada + "ela pode vir de recursos próprios e, se você cumprir as regras do FGTS, do saldo da conta."),
+        ("O imóvel também é analisado", "O banco avalia o imóvel e a documentação dele (matrícula e certidões). Imóvel com pendência na documentação pode travar o pedido mesmo com renda suficiente."),
+        ("Documentos pessoais", "Costumam ser exigidos documento com foto, CPF, comprovante de renda e de residência e certidão de estado civil. Confirme a lista com a instituição."),
+    ]
+    lis = "".join(f'<li><strong class="text-white">{t}.</strong> {d}</li>' for t, d in itens)
+    return (f'<section id="antes-de-pedir" class="mt-10"><h2 class="text-xl font-serif text-white mb-3">Antes de pedir a proposta: o que costuma pesar na aprovação</h2>'
+            f'<ul class="space-y-2 text-sm text-slate-300 font-light leading-relaxed list-disc pl-5">{lis}</ul>'
+            f'<p class="mt-3 text-xs text-slate-400">O pedido de proposta é analisado por um correspondente bancário parceiro e a aprovação depende da análise de crédito de cada instituição. Nenhuma simulação garante aprovação.</p></section>')
+
+
 def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, dominio, taxas_atuais=None):
     """Gera uma página-hub por banco (ex: banco-caixa.html): visão geral de
     taxa/entrada/prazo, posição do banco na faixa de CET do mercado, e um
@@ -1847,6 +1868,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
         resposta_direta = (f"Taxa do {banco_exib} hoje: {taxa_fmt}% ao ano ({taxa_mensal_fmt}% ao mês). "
                            f"Entrada mínima de {entrada_min_pct}% e prazo de até {prazo_max} meses.")
         faixa_html += html_serie_banco(_historico_hubs, banco, banco_exib, taxa_atual_banco)
+        faixa_html += html_requisitos_aprovacao(banco_exib, entrada_min_pct)
         faixa_html += html_mais_sobre_banco(banco_exib, _historico_hubs)
         faixa_html += html_como_citar(f"Taxa do {banco_exib} para financiamento imobiliário", url_canonica, date.fromisoformat(data_ultima_atualizacao).strftime('%d/%m/%Y'))
         html_hub = f'''<!DOCTYPE html>
@@ -3144,6 +3166,8 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
         </p>
 
         {html_evolucao_taxas(resumo_hist)}
+
+        {html_requisitos_aprovacao()}
 
         <section class="mt-12">
             <h2 class="text-2xl font-serif text-white mb-3">Como calculamos e de onde vêm os dados</h2>

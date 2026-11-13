@@ -249,3 +249,20 @@ def test_hubs_tem_bloco_como_citar():
     for f in hubs:
         h = open(f, encoding="utf-8").read()
         assert "Como citar este dado" in h and "CC BY 4.0" in h and 'onclick="this.select()"' in h, f
+
+
+def test_bloco_requisitos_de_aprovacao_e_honesto_e_sem_marca_concorrente():
+    from gerador import html_requisitos_aprovacao
+    h = html_requisitos_aprovacao("Sicredi", 20)
+    assert "O Sicredi costuma limitar a prestação" in h and "entrada mínima usada na simulação é de 20%" in h
+    assert "Registrato" in h and "Nenhuma simulação garante aprovação" in h
+    g = html_requisitos_aprovacao()
+    assert "Os bancos costumam limitar a prestação" in g
+    assert "garantido" not in (h + g).lower() and "aprovação garantida" not in (h + g).lower()
+
+
+@pytest.mark.skipif(not os.path.isdir(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "paginas_seo")), reason="paginas_seo/ não gerada")
+def test_hubs_e_comparador_trazem_o_bloco_de_requisitos():
+    pasta = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "paginas_seo")
+    for nome in ("banco-sicredi.html", "banco-itau.html", "comparador-bancos.html"):
+        assert "Antes de pedir a proposta" in open(os.path.join(pasta, nome), encoding="utf-8").read(), nome
