@@ -61,8 +61,20 @@ PRAZOS_INDEXAVEIS = (360, 420)
 VALORES_INDEXAVEIS = tuple(sorted({150_000, 250_000, 350_000} | set(range(200_000, 1_000_001, 100_000))))
 
 
+# A grade "banco x valor x prazo" entra no índice? NÃO (13/nov/2026). API de
+# Inspeção de URL do Search Console nas 358 URLs do sitemap: 2 indexadas, 215
+# "rastreadas, mas não indexadas" e 141 nunca descobertas; as visitas reais
+# (Bing e Google) caem nos hubs de banco, no comparador e nas páginas de
+# comparação sem marca, não nas simulações por valor. As páginas seguem no ar
+# (links internos, slider), com noindex,follow e fora do sitemap, para o Google
+# avaliar o site pelas ~165 páginas de valor próprio. Reversível: troque para
+# True (valem PRAZOS_INDEXAVEIS e VALORES_INDEXAVEIS) e regere.
+GRADE_VALOR_PRAZO_NO_INDICE = False
+
+
 def pagina_indexavel(valor_imovel, prazo):
-    return prazo in PRAZOS_INDEXAVEIS and int(round(valor_imovel)) in VALORES_INDEXAVEIS
+    return (GRADE_VALOR_PRAZO_NO_INDICE and prazo in PRAZOS_INDEXAVEIS
+            and int(round(valor_imovel)) in VALORES_INDEXAVEIS)
 
 # Grade das páginas de comparação sem marca de banco.
 VALORES_COMPARACAO = tuple(range(150_000, 1_000_001, 50_000))
