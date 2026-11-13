@@ -28,6 +28,7 @@ from datetime import date, datetime
 
 from bancos import BANCOS, obter_regra, nome_exibicao, corrigir_concordancia, eh_feminino
 from icones import icone, tooltip
+import lastmod
 
 LINK_FINANCIA_TUDO = "https://app.financiatudo.com.br/financiamento-de-imoveis/chave/8940d282b765cbf97b6df55fd1eb0b52b18b2f6e"
 DOMINIO = 'https://simulador.datalabglobal.com'
@@ -102,6 +103,47 @@ def links_destaque(links, valores=VALORES_DESTAQUE_LINKS, prazo_preferido=PRAZO_
         if candidatos[-1] is not item_pref:
             escolhidos.append(candidatos[-1])
     return escolhidos
+
+
+# Datas reais de modificação (ver lastmod.py): preenchido no início de gerar_paginas_pseo().
+_MANIFESTO_LASTMOD = {}
+
+# Fontes oficiais dos guias que não tinham nenhuma (13/nov/2026). Só entram links que foram abertos e lidos
+# (ou cujo título a busca confirmou). O Google pergunta se o conteúdo mostra "clear sourcing" e trata finanças como
+# tema YMYL; o Bing perde elegibilidade de páginas finas. Guias novos já trazem o próprio bloco "Fontes".
+URL_CDC_PROCON = "https://www.procon.sp.gov.br/wp-content/uploads/2026/01/CDC-2026-site.pdf"
+FONTES_GUIAS = {
+    "aprenda-amortizacao-extraordinaria": [
+        (URL_CDC_PROCON, "Código de Defesa do Consumidor (Lei 8.078/1990), art. 52, § 2º: liquidação antecipada do débito com redução proporcional dos juros (texto publicado pelo Procon-SP)"),
+    ],
+    "aprenda-cet-iof-financiamento-imobiliario": [
+        ("https://www.bcb.gov.br/pre/normativos/res/2007/pdf/res_3517_v1_o.pdf", "Banco Central, Resolução CMN nº 3.517/2007: informação e divulgação do Custo Efetivo Total (CET)"),
+        ("https://www.bcb.gov.br/content/cidadaniafinanceira/documentos_cidadania/guia_de_excelencia/guia_de_excelencia_oferta_de_produtos_servi%C3%A7os_financeiros.pdf", "Banco Central, Cidadania Financeira: Guia de Excelência em oferta de produtos e serviços financeiros (o CET como \"preço\" do crédito)"),
+        ("https://www.gov.br/pgfn/pt-br/cidadania-tributaria/por-assunto/outros-tributos-em-especie-1/iof-2/iof-e-contratos-de-emprestimo", "Procuradoria-Geral da Fazenda Nacional: IOF e contratos de empréstimo"),
+    ],
+    "aprenda-fgts-financiamento-imobiliario": [
+        ("https://www.gov.br/trabalho-e-emprego/pt-br/noticias-e-conteudo/2025/novembro/fgts-podera-ser-usado-em-financiamentos-imobiliarios-de-ate-r-2-25-milhoes", "Ministério do Trabalho e Emprego: FGTS poderá ser usado em financiamentos imobiliários de até R$ 2,25 milhões (nov/2025)"),
+        ("https://www.caixa.gov.br/voce/habitacao/Paginas/utilizacao-fgts.aspx", "Caixa: Utilização do FGTS na casa própria"),
+    ],
+    "aprenda-financiamento-x-consorcio-imobiliario": [
+        ("https://aprendervalor.bcb.gov.br/content/estabilidadefinanceira/panoramaconsorcio/panorama_de_consorcios_2024.pdf", "Banco Central: Panorama do Sistema de Consórcios (dados de dezembro/2024)"),
+    ],
+    "aprenda-ltv-financiamento-imobiliario": [
+        ("https://caixanoticias.caixa.gov.br/Paginas/Not%C3%ADcias/2025/10-OUTUBRO/CAIXA-e-Governo-Federal-fortalecem-politica-habitacional-com-novas-medidas-para-o-credito-imobiliario.aspx", "CAIXA Notícias (out/2025): CAIXA e Governo Federal fortalecem política habitacional com novas medidas para o crédito imobiliário"),
+    ],
+    "aprenda-sac-x-price": [
+        ("https://caixanoticias.caixa.gov.br/Paginas/Not%C3%ADcias/2026/02-FEVEREIRO/SAC-ou-Price-entenda-as-diferen%C3%A7as-entre-os-sistemas-de-amortiza%C3%A7%C3%A3o-e-fa%C3%A7a-a-melhor-escolha.aspx", "CAIXA Notícias (fev/2026): SAC ou Price, entenda as diferenças entre os sistemas de amortização"),
+    ],
+}
+
+
+def html_fontes_guia(slug, fontes=None):
+    fontes = fontes if fontes is not None else FONTES_GUIAS.get(slug)
+    if not fontes:
+        return ""
+    lis = "".join(f'<li><a href="{u}" target="_blank" rel="noopener" class="text-emerald-400 underline">{t}</a></li>' for u, t in fontes)
+    return (f'<div class="border-t border-white/10 pt-6"><h2 class="font-serif text-xl text-white mb-3">Fontes e referências</h2>'
+            f'<ul class="list-disc pl-6 space-y-1 text-sm">{lis}</ul></div>')
 
 # Grade das páginas de comparação sem marca de banco.
 VALORES_COMPARACAO = tuple(range(150_000, 1_000_001, 50_000))
@@ -823,6 +865,8 @@ def gerar_paginas_pseo():
     if not os.path.exists(caminho_csv):
         criar_csv_exemplo(caminho_csv)
 
+    global _MANIFESTO_LASTMOD
+    _MANIFESTO_LASTMOD = lastmod.carregar()
     data_ultima_atualizacao = obter_data_ultima_atualizacao()
     data_ultima_atualizacao_br = date.fromisoformat(data_ultima_atualizacao).strftime('%d/%m/%Y')
     urls_sitemap = []
@@ -1700,6 +1744,7 @@ def gerar_paginas_pseo():
         urls_sitemap + urls_hub + [url_comparador, url_sobre, url_aprenda_hub] + urls_comparacao + urls_aprenda,
         pasta_saida, dominio, data_ultima_atualizacao,
     )
+    lastmod.salvar(_MANIFESTO_LASTMOD)
     gerar_robots_txt(pasta_saida, dominio)
     with open(os.path.join(pasta_saida, "calculo.js"), "w", encoding="utf-8") as f:
         f.write(gerar_calculo_js())
@@ -4025,7 +4070,7 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
       "name": "Datalab Global",
       "url": "https://www.datalabglobal.com/",
       "logo": "{DOMINIO}/logo-schema.png",
-      "founder": {{"@type": "Person", "name": "Rodolfo Delfino"}},
+      "founder": {{"@type": "Person", "name": "Rodolfo Delfino", "sameAs": ["https://github.com/rldelfino"]}},
       "contactPoint": {{"@type": "ContactPoint", "email": "contato@datalabglobal.com", "contactType": "customer service"}}
     }}'''
 
@@ -4174,7 +4219,7 @@ def gerar_pagina_sobre(pasta_saida, dominio):
         "@id": "https://www.datalabglobal.com/#organization",
         "name": "Datalab Global",
         "url": "https://www.datalabglobal.com/",
-        "founder": {{"@type": "Person", "name": "Rodolfo Delfino"}},
+        "founder": {{"@type": "Person", "name": "Rodolfo Delfino", "sameAs": ["https://github.com/rldelfino"]}},
         "contactPoint": {{"@type": "ContactPoint", "email": "contato@datalabglobal.com", "contactType": "customer service"}}
       }}
     }}'''
@@ -4261,6 +4306,10 @@ def gerar_pagina_aprenda(art, pasta_saida, dominio, data_atualizacao):
     CTA) — Article schema (headline = o próprio tema, não inventado) +
     link de volta pro simulador/comparador relevante no fim."""
     url_canonica = f"{dominio}/{art['slug']}"
+    bloco_fontes = html_fontes_guia(art["slug"], art.get("fontes"))
+    # Data REAL da última mudança do texto do guia (hash do conteúdo, ver lastmod.py), não a data das taxas.
+    data_guia_iso = lastmod.registrar(_MANIFESTO_LASTMOD, "guia:" + art["slug"],
+                                      art["titulo_h1"] + art["meta_description"] + art["corpo_html"] + bloco_fontes)
     schema_article = f'''{{
       "@context": "https://schema.org",
       "@type": "Article",
@@ -4271,7 +4320,7 @@ def gerar_pagina_aprenda(art, pasta_saida, dominio, data_atualizacao):
         "@type": "Organization", "name": "Datalab Global",
         "logo": {{"@type": "ImageObject", "url": "{dominio}/logo-schema.png"}}
       }},
-      "dateModified": "{data_atualizacao}",
+      "dateModified": "{data_guia_iso[:10]}",
       "mainEntityOfPage": "{url_canonica}"
     }}'''
 
@@ -4279,7 +4328,9 @@ def gerar_pagina_aprenda(art, pasta_saida, dominio, data_atualizacao):
         <h1 class="text-3xl md:text-5xl font-serif text-white mb-8 leading-tight">{art['titulo_h1']}</h1>
         <div class="glass-panel rounded-2xl p-6 md:p-10 space-y-6 text-slate-300 leading-relaxed">
             {art['corpo_html']}
+            {bloco_fontes}
         </div>
+        <p class="text-xs text-slate-400 mt-4">Texto atualizado em {lastmod.data_br(data_guia_iso)}. Conteúdo educativo da Datalab Global (<a href="/sobre" class="underline">quem somos</a> · <a href="/metodologia" class="underline">como calculamos</a>); não é recomendação de crédito.</p>
         <div class="flex flex-wrap gap-3 mt-8">
             <a href="{art['cta_href']}" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-6 py-3 rounded-full font-bold text-sm transition-all">{art['cta_texto']}</a>
             <a href="aprenda" class="border border-white/10 hover:border-emerald-500/50 px-6 py-3 rounded-full font-bold text-sm transition-all">Ver todos os artigos</a>
@@ -4896,14 +4947,24 @@ def gerar_calculo_js():
         }'''
 
 
+def _arquivo_da_url(url, pasta_saida, dominio):
+    caminho = url[len(dominio):].strip("/")
+    return os.path.join(pasta_saida, (caminho or "index") + ".html")
+
+
 def gerar_sitemap(urls, pasta_saida, dominio, data_ultima_atualizacao):
-    # lastmod = data REAL da última mudança de taxa (não a data do deploy).
-    # Ver obter_data_ultima_atualizacao(): "lastmod sempre = hoje" é tratado
-    # pelo Google como sinal de frescor falso.
+    """Sitemap com `lastmod` REAL por URL (ISO 8601 com hora, UTC): a data só avança quando o HTML da página muda
+    (ver lastmod.py). `changefreq` e `priority` não entram: o Bing diz que ignora (blog do Bing, jul/2025) e o
+    Google também não usa."""
+    def lm(url):
+        arquivo = _arquivo_da_url(url, pasta_saida, dominio)
+        if os.path.exists(arquivo):
+            with open(arquivo, "rb") as f:
+                return lastmod.registrar(_MANIFESTO_LASTMOD, "url:" + url, f.read())
+        return f"{data_ultima_atualizacao}T00:00:00+00:00"
     xml_content = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-    xml_content += f"  <url>\n    <loc>{dominio}/</loc>\n    <lastmod>{data_ultima_atualizacao}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>1.0</priority>\n  </url>\n"
-    for url in urls:
-        xml_content += f"  <url>\n    <loc>{url}</loc>\n    <lastmod>{data_ultima_atualizacao}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.8</priority>\n  </url>\n"
+    for url in [f"{dominio}/"] + list(urls):
+        xml_content += f"  <url>\n    <loc>{url}</loc>\n    <lastmod>{lm(url)}</lastmod>\n  </url>\n"
     xml_content += '</urlset>'
     with open(os.path.join(pasta_saida, 'sitemap.xml'), "w", encoding="utf-8") as f:
         f.write(xml_content)
