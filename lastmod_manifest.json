@@ -1,11 +1,11 @@
 {
  "guia:aprenda-amortizacao-extraordinaria": {
-  "hash": "29fad9ec1d87998d524a5f83c3d4edaf8e60668bbb06e1e096ee3ee60695eae6",
-  "lastmod": "2026-11-13T20:59:07+00:00"
+  "hash": "affc7b2a62c417946847ce099e4bad5fc24537646ea1dabdb2089bc9f6eb8e3a",
+  "lastmod": "2026-11-14T01:37:32+00:00"
  },
  "guia:aprenda-cet-iof-financiamento-imobiliario": {
-  "hash": "3f5d944eb549dfd5c8974fce653087003ba3cf30d6fb11d5c1c19ba155c620ca",
-  "lastmod": "2026-11-13T20:59:07+00:00"
+  "hash": "3728594dfd8d804b50c11e564a081925e8ab7edee0889cc2c57cffa66bf106da",
+  "lastmod": "2026-11-14T01:37:32+00:00"
  },
  "guia:aprenda-fgts-financiamento-imobiliario": {
   "hash": "37aeb9e4055e7574f58dd7bf61c9c5c2903badd0fd124fc8246e2c2f4cda9298",
@@ -24,8 +24,8 @@
   "lastmod": "2026-11-08T15:10:30+00:00"
  },
  "guia:aprenda-ltv-financiamento-imobiliario": {
-  "hash": "589a21ecb219e7a72e44e799fbe280b8a2857a59cb4609cb717127d45115343d",
-  "lastmod": "2026-11-13T20:59:07+00:00"
+  "hash": "ae8cb008c12abfda6b64c9cfa273e02abc5762300280e5994c6228cd1673a81c",
+  "lastmod": "2026-11-14T01:37:32+00:00"
  },
  "guia:aprenda-minha-casa-minha-vida-faixas-limites": {
   "hash": "c1e693277deaf51d8a4ffc64341a31171d417080d2f554f317f7adef191d6db7",
@@ -40,8 +40,8 @@
   "lastmod": "2026-11-08T15:10:30+00:00"
  },
  "guia:aprenda-sac-x-price": {
-  "hash": "3d75a1fa664bc79663ff30bc51bc4be409fa578e2c9920645b54647a34b1a425",
-  "lastmod": "2026-11-13T20:59:07+00:00"
+  "hash": "ffed00f881f6f440dfdfe036a3fc09e18805621fb9633c4cdf535e557cf8ded2",
+  "lastmod": "2026-11-14T01:37:32+00:00"
  },
  "guia:aprenda-seguro-mip-dfi-financiamento-imobiliario": {
   "hash": "5219897640d1405c6ef52a66058f52335e445de081fd3a7746198798173c8ae4",
@@ -56,96 +56,96 @@
   "lastmod": "2026-11-08T15:10:30+00:00"
  },
  "url:https://simulador.datalabglobal.com/aprenda-amortizacao-extraordinaria": {
-  "hash": "139ff493bd398bf0933f4b53ebd345a2edbea604026105fc5145571fba9f6a89",
-  "lastmod": "2026-11-13T20:59:07+00:00"
+  "hash": "61ca90af6746a105892491696526209a17b0b1433d7c482b55e2ec0e3f14a390",
+  "lastmod": "2026-11-14T01:37:32+00:00"
  },
  "url:https://simulador.datalabglobal.com/aprenda-cet-iof-financiamento-imobiliario": {
-  "hash": "534b1c1023d9d78815c3d1b0d82970666a1c553c42e7681be89f3198d263c934",
-  "lastmod": "2026-11-13T20:59:07+00:00"
+  "hash": "28911b6d1e839c29c69f33ff54692c7c32a7a0bdfccd6965b407853f6e5ce741",
+  "lastmod": "2026-11-14T01:37:32+00:00"
  },
  "url:https://simulador.datalabglobal.com/aprenda-fgts-financiamento-imobiliario": {
   "hash": "5c9aec1e72d5759d4ec46f17beadbffb413f8bbeeb863f68856cd49a0c401e31",
-  "lastmod": "2026-11-13T20:59:07+00:00"
+  "lastmod": "2026-11-14T01:38:43+00:00"
  },
  "url:https://simulador.datalabglobal.com/aprenda-financiamento-x-consorcio-imobiliario": {
   "hash": "f83d733112042e22fdf30f7defa7990444be8abd59d42c56974c2ba1661ee9b3",
-  "lastmod": "2026-11-13T20:59:07+00:00"
+  "lastmod": "2026-11-14T01:38:43+00:00"
  },
  "url:https://simulador.datalabglobal.com/aprenda-imovel-na-planta-incc-juros-de-obra": {
   "hash": "f4987fa000812b5e38a089516d485ccbb8649a5427f0ec1ff42e8962f581a1a7",
-  "lastmod": "2026-11-13T20:59:42+00:00"
+  "lastmod": "2026-11-14T01:38:43+00:00"
  },
  "url:https://simulador.datalabglobal.com/aprenda-itbi-cartorio-custos-compra-imovel": {
   "hash": "61a116bbcc3e605857f01548aceed8ecf9f7e5b6cd7df891ebcd2de9e83900c4",
-  "lastmod": "2026-11-13T20:59:42+00:00"
+  "lastmod": "2026-11-14T01:38:43+00:00"
  },
  "url:https://simulador.datalabglobal.com/aprenda-ltv-financiamento-imobiliario": {
-  "hash": "31da2b04427a4901ebc40b1ba8b3a9e4c8e337cb037027acf28ad419a285a4fa",
-  "lastmod": "2026-11-13T20:59:07+00:00"
+  "hash": "14e4ff204a547c710c3284310a9d4192486234bece36eda15859ae3c53077fae",
+  "lastmod": "2026-11-14T01:37:32+00:00"
  },
  "url:https://simulador.datalabglobal.com/aprenda-minha-casa-minha-vida-faixas-limites": {
   "hash": "d2d6a19e5f86027d6fbb4f0627a8859f5da77b3fae431ca75c14d8ed907d7b0d",
-  "lastmod": "2026-11-13T20:59:42+00:00"
+  "lastmod": "2026-11-14T01:38:43+00:00"
  },
  "url:https://simulador.datalabglobal.com/aprenda-passo-a-passo-financiar-imovel-documentos": {
   "hash": "0bcbc06c10d31ed5234f30aa29a5171f40f569fb1ae7f597e55e19374894537d",
-  "lastmod": "2026-11-13T20:59:42+00:00"
+  "lastmod": "2026-11-14T01:38:43+00:00"
  },
  "url:https://simulador.datalabglobal.com/aprenda-portabilidade-financiamento-imobiliario": {
   "hash": "59ff1eff90e85507d2f7c65d93cc1016f8897c01166616d9443762d5ad83ab3c",
-  "lastmod": "2026-11-13T20:59:42+00:00"
+  "lastmod": "2026-11-14T01:38:43+00:00"
  },
  "url:https://simulador.datalabglobal.com/aprenda-sac-x-price": {
-  "hash": "a9d9b1ba1ea02de3aea738b365422f19ec79ef5d78591e25c0dcf67bbf2cc4a7",
-  "lastmod": "2026-11-13T20:59:07+00:00"
+  "hash": "e984983e9994ed0d6eee4bfbb3559b6f9791684526d5035ad3dfd1138e51b4c6",
+  "lastmod": "2026-11-14T01:37:32+00:00"
  },
  "url:https://simulador.datalabglobal.com/aprenda-seguro-mip-dfi-financiamento-imobiliario": {
   "hash": "a0af5cbd351d81e639ef5c400c7f303acde11618e599ecb2026b95e4e90c5337",
-  "lastmod": "2026-11-13T20:59:42+00:00"
+  "lastmod": "2026-11-14T01:38:43+00:00"
  },
  "url:https://simulador.datalabglobal.com/banco-banco-do-brasil": {
-  "hash": "de2a6c3efbc12137685f50c5f10e26230a9f2d397abc2f52b5f848284583c12e",
-  "lastmod": "2026-11-13T14:06:06+00:00"
+  "hash": "905f74540461675324b7f182cea7ad82814b17c69731e14b28cd75a3177de9f0",
+  "lastmod": "2026-11-14T01:37:32+00:00"
  },
  "url:https://simulador.datalabglobal.com/banco-banco-inter": {
-  "hash": "0f75defa6213ded725007b20badcdbe62a06146b2151a823f46bd6d9b1edf1c3",
-  "lastmod": "2026-11-13T14:06:06+00:00"
+  "hash": "6f99bc468a050a615105995c798004fcaf3c3e53b5dc5fa421582d91fb991bc8",
+  "lastmod": "2026-11-14T01:37:32+00:00"
  },
  "url:https://simulador.datalabglobal.com/banco-banrisul": {
-  "hash": "f3ed217bae74043bbec168c8ad658c76798a22df029b981917a1fa4b2fd37821",
-  "lastmod": "2026-11-13T14:06:06+00:00"
+  "hash": "63f364e2397ea70aa7b97ef5932c9fd54bdf12ff3d74d1070af33d0a194ce3ea",
+  "lastmod": "2026-11-14T01:37:32+00:00"
  },
  "url:https://simulador.datalabglobal.com/banco-bradesco": {
-  "hash": "dcf981c6f92935e66335400443058c7ca935c9368b09e61c8fe6e65e12410808",
-  "lastmod": "2026-11-13T14:06:06+00:00"
+  "hash": "10b71e9a0ec94daf075508b7224549ec442139807cb688555c3485e27d3c9955",
+  "lastmod": "2026-11-14T01:37:32+00:00"
  },
  "url:https://simulador.datalabglobal.com/banco-brb": {
-  "hash": "e7e3b7dfeb80251bca27f8e6bc47c83f0d526bef9656d6f3fb89091d74fbed31",
-  "lastmod": "2026-11-13T14:06:06+00:00"
+  "hash": "3805f0bfb8b6f5abeec44fbccae742ea14bb22f323f59204d9f7b97eec129060",
+  "lastmod": "2026-11-14T01:37:32+00:00"
  },
  "url:https://simulador.datalabglobal.com/banco-caixa": {
-  "hash": "ebdc5a87e4920d68096b694da09955ae68549fe3701933c852ebc1925ec76a69",
-  "lastmod": "2026-11-13T14:06:06+00:00"
+  "hash": "f396e967ce34c347c9fa5b7311ebb0bcd1bc47f0a8fc672e55c28068cf4bb25d",
+  "lastmod": "2026-11-14T01:37:32+00:00"
  },
  "url:https://simulador.datalabglobal.com/banco-itau": {
-  "hash": "814124d670bbbf4e9556a38d353dc2aa0eee3df869579dae127ec60ea22cba97",
-  "lastmod": "2026-11-13T14:06:06+00:00"
+  "hash": "eaf41f1e021298742ab651c65fb594b50b3c00648b61003bea1305042c405335",
+  "lastmod": "2026-11-14T01:37:32+00:00"
  },
  "url:https://simulador.datalabglobal.com/banco-poupex": {
-  "hash": "90315e097c509ebb1b119309af46a3ee3c475af3945d230fd22e967211b79c39",
-  "lastmod": "2026-11-13T14:06:06+00:00"
+  "hash": "5c82ce38f5089aad18c751bbe9c38d03a259e4620e315196359e9c1a5f20f634",
+  "lastmod": "2026-11-14T01:37:32+00:00"
  },
  "url:https://simulador.datalabglobal.com/banco-santander": {
-  "hash": "0461a583447a7280c8353f238a77d8b8380815aadc0d0a7dfda25d05d33f3ea5",
-  "lastmod": "2026-11-13T14:06:06+00:00"
+  "hash": "fdef41de9e6fed7b1e6ad07b6a94fe4554f81de5edbe06957264e12ea7113414",
+  "lastmod": "2026-11-14T01:37:32+00:00"
  },
  "url:https://simulador.datalabglobal.com/banco-sicoob": {
-  "hash": "6c4dff5762a0b9fa5fb992c6f8e143ae43ebe4f4ae2006af5781cba9a8f6ba9e",
-  "lastmod": "2026-11-13T14:06:06+00:00"
+  "hash": "c5fbf7c575329037385d45fb984f58845c1391c3a50aec73c84778553a4544bf",
+  "lastmod": "2026-11-14T01:37:32+00:00"
  },
  "url:https://simulador.datalabglobal.com/banco-sicredi": {
-  "hash": "e328e4042b3733213afa98231130f0c78b8e2a853af6e330e0a30b63969b70ab",
-  "lastmod": "2026-11-13T14:06:06+00:00"
+  "hash": "aa86468ba64619beb29515c0b5bb66382b8c6dfe3836a32d985ee0cb1f0a79dd",
+  "lastmod": "2026-11-14T01:37:32+00:00"
  },
  "url:https://simulador.datalabglobal.com/comparador-bancos": {
   "hash": "3577c24a30806f3931008cc7a1325e4d506cd44c5abddfdb857195c34e4397f0",

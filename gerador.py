@@ -20,6 +20,7 @@ pelo nome em português/inglês equivalente) e replique a mudança lá também
 """
 
 import os
+import html
 import csv
 import json
 import math
@@ -2920,6 +2921,24 @@ def gerar_feed_atom(pasta_saida, dominio, data_ultima_atualizacao, historico):
         f.write(xml)
 
 
+def html_link_e_compartilhar(titulo, url, classe_link="text-emerald-400"):
+    """Facilita criar um link para a página, como pedem as Diretrizes do Bing ("copy-and-paste code snippets" e
+    compartilhamento social). Texto de âncora descritivo e de marca, sem palavra-chave empilhada; botões sem JavaScript
+    e com rel nofollow (são só atalhos de compartilhar)."""
+    import urllib.parse as _up
+    codigo = f'<a href="{url}">{titulo} (Datalab Global)</a>'
+    u, t = _up.quote(url, safe=""), _up.quote(f"{titulo} (Datalab Global)", safe="")
+    botoes = [("WhatsApp", f"https://api.whatsapp.com/send?text={t}%20{u}"),
+              ("LinkedIn", f"https://www.linkedin.com/sharing/share-offsite/?url={u}"),
+              ("X", f"https://twitter.com/intent/tweet?url={u}&text={t}"),
+              ("Facebook", f"https://www.facebook.com/sharer/sharer.php?u={u}")]
+    links = " · ".join(f'<a href="{h}" target="_blank" rel="noopener nofollow" class="underline {classe_link}">{n}</a>' for n, h in botoes)
+    return (f'<h3 class="text-xs font-bold text-slate-300 uppercase tracking-widest mt-5 mb-2">Link para esta página</h3>'
+            f'<textarea readonly rows="2" onclick="this.select()" aria-label="Código HTML do link para esta página" '
+            f'class="w-full bg-slate-900/60 border border-white/10 rounded-xl p-3 text-xs text-slate-200 font-mono">{html.escape(codigo, quote=True)}</textarea>'
+            f'<p class="text-slate-400 text-xs mt-2">Compartilhar: {links}</p>')
+
+
 def html_como_citar(titulo, url, data_br):
     """Caixa 'Como citar' com o texto pronto (CC BY 4.0), sem JavaScript extra."""
     texto = f'Datalab Global, "{titulo}", dados do Banco Central do Brasil, atualizado em {data_br}. {url}'
@@ -2927,6 +2946,7 @@ def html_como_citar(titulo, url, data_br):
             <h2 class="text-xs font-bold text-slate-300 uppercase tracking-widest mb-3">Como citar este dado</h2>
             <textarea readonly rows="3" onclick="this.select()" aria-label="Texto para citar" class="w-full bg-slate-900/60 border border-white/10 rounded-xl p-3 text-xs text-slate-200">{_xml(texto)}</textarea>
             <p class="text-slate-500 text-[11px] mt-2">Dados sob licença <a href="{LICENCA_DADOS_URL}" rel="noopener" class="underline">{LICENCA_DADOS}</a>: pode usar e adaptar, citando a fonte.</p>
+            {html_link_e_compartilhar(titulo, url)}
         </section>'''
 
 
@@ -4306,10 +4326,12 @@ def gerar_pagina_aprenda(art, pasta_saida, dominio, data_atualizacao):
     CTA) — Article schema (headline = o próprio tema, não inventado) +
     link de volta pro simulador/comparador relevante no fim."""
     url_canonica = f"{dominio}/{art['slug']}"
+    bloco_exemplo = EXEMPLOS_GUIAS.get(art["slug"], "")
     bloco_fontes = html_fontes_guia(art["slug"], art.get("fontes"))
+    bloco_exemplo_html = ("\n            " + bloco_exemplo) if bloco_exemplo else ""
     # Data REAL da última mudança do texto do guia (hash do conteúdo, ver lastmod.py), não a data das taxas.
     data_guia_iso = lastmod.registrar(_MANIFESTO_LASTMOD, "guia:" + art["slug"],
-                                      art["titulo_h1"] + art["meta_description"] + art["corpo_html"] + bloco_fontes)
+                                      art["titulo_h1"] + art["meta_description"] + art["corpo_html"] + bloco_exemplo + bloco_fontes)
     schema_article = f'''{{
       "@context": "https://schema.org",
       "@type": "Article",
@@ -4327,7 +4349,7 @@ def gerar_pagina_aprenda(art, pasta_saida, dominio, data_atualizacao):
     corpo = f'''<main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 relative z-10 w-full">
         <h1 class="text-3xl md:text-5xl font-serif text-white mb-8 leading-tight">{art['titulo_h1']}</h1>
         <div class="glass-panel rounded-2xl p-6 md:p-10 space-y-6 text-slate-300 leading-relaxed">
-            {art['corpo_html']}
+            {art['corpo_html']}{bloco_exemplo_html}
             {bloco_fontes}
         </div>
         <p class="text-xs text-slate-400 mt-4">Texto atualizado em {lastmod.data_br(data_guia_iso)}. Conteúdo educativo da Datalab Global (<a href="/sobre" class="underline">quem somos</a> · <a href="/metodologia" class="underline">como calculamos</a>); não é recomendação de crédito.</p>
@@ -4575,6 +4597,9 @@ ARTIGOS_APRENDA = [
 import guias_novos  # noqa: E402
 
 ARTIGOS_APRENDA += guias_novos.montar_guias(calcular_sac_price, formatar_reais)
+
+import exemplos_guias  # noqa: E402
+EXEMPLOS_GUIAS = exemplos_guias.montar_exemplos(calcular_sac_price, formatar_reais)
 
 
 def gerar_calculo_js():
