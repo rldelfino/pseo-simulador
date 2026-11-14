@@ -65,3 +65,30 @@ def test_fontes_dos_guias_sao_https_e_sem_duplicata():
         urls = [u for u, _ in fontes]
         assert len(urls) == len(set(urls)), slug
         assert all(u.startswith("https://") for u in urls), slug
+
+
+@pytest.mark.skipif(not gerada, reason="paginas_seo/ não gerada")
+def test_guias_com_exemplo_calculado_trazem_numeros_do_simulador():
+    for slug in ("aprenda-sac-x-price", "aprenda-ltv-financiamento-imobiliario",
+                 "aprenda-amortizacao-extraordinaria", "aprenda-cet-iof-financiamento-imobiliario"):
+        with open(os.path.join(PASTA, slug + ".html"), encoding="utf-8") as f:
+            h = f.read()
+        assert "Exemplo calculado" in h and len(re.findall(r"R\$ [\d.]+(?:,\d{2})?", h)) >= 2, slug
+
+
+def test_amortizacao_extra_nao_sofre_erro_de_ponto_flutuante():
+    import exemplos_guias
+    # 300.000 em 360 meses, extra de 30.000 após 24 parcelas: 250.000 / 833,33 = exatamente 300 meses restantes
+    _, meses, _ = exemplos_guias._sac_com_extra(300_000, 360, 11.5, 24, 30_000, "prazo")
+    assert meses == 324
+
+
+@pytest.mark.skipif(not gerada, reason="paginas_seo/ não gerada")
+def test_hubs_oferecem_link_para_copiar_e_compartilhar():
+    hubs = [n for n in os.listdir(PASTA) if n.startswith("banco-") and n.endswith(".html")]
+    assert len(hubs) >= 10
+    for n in hubs:
+        with open(os.path.join(PASTA, n), encoding="utf-8") as f:
+            h = f.read()
+        assert "Link para esta página" in h and "&lt;a href=" in h, n
+        assert h.count('rel="noopener nofollow"') >= 4, n  # botões de compartilhar sem passar autoridade
