@@ -20,6 +20,7 @@ pelo nome em português/inglês equivalente) e replique a mudança lá também
 """
 
 import os
+import re
 import html
 import csv
 import json
@@ -150,6 +151,12 @@ def html_fontes_guia(slug, fontes=None):
 VALORES_COMPARACAO = tuple(range(150_000, 1_000_001, 50_000))
 ANOS_COMPARACAO = (10, 15, 20, 25, 30, 35)
 MIN_BANCOS_COMPARACAO = 3  # não gera a página se menos bancos oferecem aquele prazo
+
+# Cache-busting de styles.css, calculo.js e medicao.js: o Cloudflare guarda esses arquivos na borda/navegador por
+# horas (max-age de 4 h revalidando) e o HTML novo pode chegar com CSS/JS antigo. Um carimbo na URL (?v=AAAAMMDDHHMMSS)
+# faz toda geração apontar para arquivos novos. Igual ao projeto irmão (veículos). O carimbo NÃO conta como mudança
+# de conteúdo para o lastmod do sitemap (ver gerar_sitemap).
+VERSAO_BUILD = datetime.now().strftime('%Y%m%d%H%M%S')
 
 _URL_GOOGLE_FONTS = (
     "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700"
@@ -371,7 +378,7 @@ def render_head_boilerplate(titulo_pagina, meta_description, url_canonica, domin
     <meta name="twitter:description" content="{meta_description}">
     <meta name="twitter:image" content="{dominio}/og-image.png">
 
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v={VERSAO_BUILD}">
     {GOOGLE_FONTS_LINK_ASSINCRONO}
 
 {scripts_json_ld}'''
@@ -1689,7 +1696,7 @@ def gerar_paginas_pseo():
         const BANCOS_JS = {bancos_json_atual};
         const BANCO_ATUAL_CHAVE = {json.dumps(banco, ensure_ascii=False)};
     </script>
-    <script src="calculo.js"></script>
+    <script src="calculo.js?v={VERSAO_BUILD}"></script>
     <script>
         window.onload = function() {{
             initMask('input_imovel'); initMask('input_entrada'); initMask('input_amortizar');
@@ -2084,7 +2091,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
         </div>
     </footer>
 
-    <script src="calculo.js"></script>
+    <script src="calculo.js?v={VERSAO_BUILD}"></script>
     <script>
         window.addEventListener('DOMContentLoaded', ajustarTooltips);
     </script>
@@ -2840,7 +2847,7 @@ def tags_medicao():
         return []
     host = DOMINIO.replace("https://", "")
     return [f'    <script defer src="{UMAMI_SCRIPT}" data-website-id="{UMAMI_WEBSITE_ID}" data-domains="{host}" data-do-not-track="true"></script>',
-            '    <script defer src="/medicao.js"></script>']
+            f'    <script defer src="/medicao.js?v={VERSAO_BUILD}"></script>']
 
 
 def schema_webpage(url, nome, dominio, data_modificacao):
@@ -4985,7 +4992,10 @@ def gerar_sitemap(urls, pasta_saida, dominio, data_ultima_atualizacao):
         arquivo = _arquivo_da_url(url, pasta_saida, dominio)
         if os.path.exists(arquivo):
             with open(arquivo, "rb") as f:
-                return lastmod.registrar(_MANIFESTO_LASTMOD, "url:" + url, f.read())
+                # os carimbos ?v=AAAAMMDDHHMMSS (css/js) mudam a cada geração e não contam como mudança da página:
+                # tira a query inteira, então o resumo é o mesmo de antes do carimbo existir (sem bump falso de lastmod)
+                conteudo = re.sub(rb"\.(css|js)\?v=\d{14}", rb".\g<1>", f.read())
+                return lastmod.registrar(_MANIFESTO_LASTMOD, "url:" + url, conteudo)
         return f"{data_ultima_atualizacao}T00:00:00+00:00"
     xml_content = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     for url in [f"{dominio}/"] + list(urls):
