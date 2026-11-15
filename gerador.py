@@ -1867,7 +1867,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
                     <span class="text-yellow-400 text-xl leading-none">{icone('lightbulb')}</span>
                     <span class="bg-emerald-500 text-slate-950 text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-widest">Dica</span>
                     <span class="text-slate-300 text-[11px] font-bold uppercase tracking-widest">Posição do {banco_exib} no Mercado</span>
-                    {tooltip(f'CET simulado para {formatar_reais(VALOR_REF)} em {PRAZO_REF} meses, mesma condição usada em todos os bancos que acompanhamos, pra comparação justa.')}
+                    {tooltip(f'CET simulado para {formatar_reais(VALOR_REF)} em {PRAZO_REF} meses, mesmo valor e prazo em todos os bancos que acompanhamos, com a entrada mínima de cada um, pra comparação justa.')}
                 </div>
                 <div class="space-y-2">
                     <div class="relative h-2 rounded-full bg-gradient-to-r from-emerald-500 via-amber-400 to-rose-500">
@@ -2894,12 +2894,21 @@ def html_mais_sobre_banco(banco_exib, historico, pasta_mes=True):
         </section>'''
 
 
-def frase_resposta_comparador(ranking_ref, data_br, valor_ref, prazo_ref):
-    """Resposta direta no topo do comparador (consultas 'comparar taxas financiamento imóvel')."""
+def mes_ref_taxas_bacen(historico=None):
+    """Mês fechado mais recente das taxas do Banco Central usadas no site (ex.: 'setembro de 2026'), ou None."""
+    historico = historico if historico is not None else carregar_historico()
+    meses = [r["inicio_periodo"] for r in historico if _banco_tem_taxa_bacen(r["banco"])]
+    return nome_mes(max(meses)) if meses else None
+
+
+def frase_resposta_comparador(ranking_ref, data_br, valor_ref, prazo_ref, mes_ref=None):
+    """Resposta direta no topo do comparador (consultas 'comparar taxas financiamento imóvel').
+    Cita o mês da taxa em vez da data de geração (15/nov/2026): a taxa do Banco Central é a média do último mês fechado."""
     if len(ranking_ref) < 2:
         return ""
     menor, maior = ranking_ref[0], ranking_ref[-1]
-    return (f"Em {data_br}, entre os {len(ranking_ref)} bancos que acompanhamos, o menor CET para financiar {formatar_reais(valor_ref)} em "
+    quando = (f"Com as taxas do último mês fechado do Banco Central ({mes_ref}), " if mes_ref else f"Na atualização de {data_br}, ")
+    return (f"{quando}entre os {len(ranking_ref)} bancos que acompanhamos, o menor CET para financiar {formatar_reais(valor_ref)} em "
             f"{prazo_ref // 12} anos é o do {menor['banco_exib']} ({_pct2(menor['cet'])}% ao ano) e o maior, o do {maior['banco_exib']} "
             f"({_pct2(maior['cet'])}% ao ano).")
 
@@ -3163,7 +3172,7 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
                 {favicon_com_fallback(url_logo, r['banco_exib'], "w-6 h-6")}
                 <span class="text-sm font-medium text-white truncate">{r['banco_exib']}</span>
             </span>
-            <span class="text-right md:text-center text-xs text-slate-400">{taxa_exibida:.2f}%<span class="hidden md:inline"> a.a.</span></span>
+            <span class="text-right md:text-center text-xs text-slate-400">{f"{taxa_exibida:.2f}".replace(".", ",")}%<span class="hidden md:inline"> a.a.</span></span>
             <span class="hidden md:block text-center text-xs text-slate-400">{r['entrada_perc']}% entrada</span>
             <span class="text-right text-sm font-bold text-emerald-400">{cet_fmt}% <span class="hidden md:inline text-[10px] text-slate-400 font-normal">CET</span></span>
         </a>'''
@@ -3257,9 +3266,9 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
         <h1 class="text-3xl md:text-5xl font-serif text-white mb-4 leading-tight px-4">
             Taxas de financiamento imobiliário por banco em {mes_ano}
         </h1>
-        <p class="text-white text-lg md:text-xl font-medium max-w-3xl mx-auto px-4 mb-4">{frase_resposta_comparador(ranking_ref, date.fromisoformat(data_ultima_atualizacao).strftime('%d/%m/%Y'), VALOR_REF, PRAZO_REF)}</p>
+        <p class="text-white text-lg md:text-xl font-medium max-w-3xl mx-auto px-4 mb-4">{frase_resposta_comparador(ranking_ref, date.fromisoformat(data_ultima_atualizacao).strftime('%d/%m/%Y'), VALOR_REF, PRAZO_REF, mes_ref_taxas_bacen())}</p>
         <p class="text-slate-400 text-base md:text-lg font-light tracking-wide max-w-3xl mx-auto px-4">
-            CET simulado para {formatar_reais(VALOR_REF)} em {PRAZO_REF} meses, na mesma condição para os {len(ranking_ref)} bancos e fintechs que acompanhamos — ordenado do menor pro maior custo efetivo total.
+            CET simulado para {formatar_reais(VALOR_REF)} em {PRAZO_REF} meses, com o mesmo valor e prazo para os {len(ranking_ref)} bancos e fintechs que acompanhamos e a entrada mínima de cada um (coluna "entrada") — ordenado do menor pro maior custo efetivo total.
         </p>
         <p class="text-slate-600 text-[10px] uppercase tracking-widest mt-4">Taxas atualizadas em {date.fromisoformat(data_ultima_atualizacao).strftime('%d/%m/%Y')} · {texto_fonte_taxa()}</p>
     </header>
