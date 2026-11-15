@@ -101,4 +101,44 @@ def montar_exemplos(calc, reais):
         f"{_b(_pct(c['cet_price']) + '% ao ano')} na Price.</p>"
         f"<p>Ou seja, o custo real é {_b(_pct(c['cet_sac'] - TAXA) + ' pontos percentuais')} acima da taxa anunciada. É por isso que a comparação "
         f"entre bancos deve ser feita pelo CET que consta na proposta, e não só pela taxa de juros.</p>"))
+
+    # ---- FGTS
+    imovel = 400_000
+    sem = calc(imovel * 0.80, 360, TAXA, imovel)
+    com = calc(imovel * 0.70, 360, TAXA, imovel)
+    fin = imovel * 0.80
+    j_base = sem["total_sac"] - fin
+    j_extra, m_extra, _ = _sac_com_extra(fin, 360, TAXA, 24, 20_000, "prazo")
+    ex["aprenda-fgts-financiamento-imobiliario"] = _H2.format(t="Exemplo calculado: R$ 40 mil de FGTS na entrada de um imóvel de R$ 400 mil", c=(
+        f"<p>Um exemplo hipotético, calculado como o simulador calcula (360 meses a {_pct(TAXA)}% ao ano, SAC, sem seguros e tarifas). "
+        f"Quem entra com {_b('R$ 80.000')} (20%) financia {_b(reais(fin))}. Se somar {_b('R$ 40.000')} de FGTS à entrada, ela vai a {_b('R$ 120.000')} "
+        f"(30%) e o financiamento cai para {_b(reais(imovel * 0.70))}:</p>"
+        f'<ul class="list-disc pl-6 space-y-2">'
+        f"<li>{_b('Sem o FGTS na entrada:')} primeira parcela de {_b(reais(sem['p1_sac']))}, total pago de {reais(sem['total_sac'])} "
+        f"({reais(j_base)} de juros).</li>"
+        f"<li>{_b('Com o FGTS na entrada:')} primeira parcela de {_b(reais(com['p1_sac']))}, total pago de {reais(com['total_sac'])} "
+        f"({reais(com['total_sac'] - imovel * 0.70)} de juros), uma economia de {_b(reais(j_base - (com['total_sac'] - imovel * 0.70)))} em juros.</li>"
+        f"</ul>"
+        f"<p>O FGTS também pode amortizar o saldo depois. Hipótese: depois de pagar a 24ª parcela do financiamento de {reais(fin)}, você usa "
+        f"{_b('R$ 20.000')} de FGTS para reduzir o prazo. O contrato passa a terminar em {_b(f'{m_extra} meses')} (em vez de 360) e os juros caem para "
+        f"{reais(j_extra)}, uma economia de {_b(reais(j_base - j_extra))}. O valor e a frequência que podem ser usados dependem do seu saldo e das regras "
+        f"do programa; confirme na Caixa. Simule o seu caso no {_a('comparador-bancos', 'comparador de bancos')}.</p>"))
+
+    # ---- Financiamento x consórcio
+    carta = 300_000
+    f240 = calc(carta, 240, TAXA)
+    f120 = calc(carta, 120, TAXA)
+    j240, j120 = f240["total_sac"] - carta, f120["total_sac"] - carta
+    ex["aprenda-financiamento-x-consorcio-imobiliario"] = _H2.format(t="Exemplo calculado: quanto o financiamento cobra de juros em R$ 300 mil", c=(
+        f"<p>Um exemplo hipotético, calculado como o simulador calcula (SAC, a {_pct(TAXA)}% ao ano, sem seguros e tarifas). Para ter {_b('R$ 300.000')} "
+        f"de crédito, o financiamento cobra:</p>"
+        f'<ul class="list-disc pl-6 space-y-2">'
+        f"<li>{_b('Em 240 meses (20 anos):')} primeira parcela de {reais(f240['p1_sac'])} e {_b(reais(j240))} de juros no total, "
+        f"o equivalente a {_b(_pct(100 * j240 / carta) + '% do crédito')}.</li>"
+        f"<li>{_b('Em 120 meses (10 anos):')} primeira parcela de {reais(f120['p1_sac'])} e {_b(reais(j120))} de juros, "
+        f"ou {_b(_pct(100 * j120 / carta) + '% do crédito')}.</li></ul>"
+        f"<p>No consórcio não há juros, mas há a taxa de administração, a correção monetária da carta e da mensalidade, e outros itens que o contrato "
+        f"prever (como fundo de reserva e seguro). Esses percentuais variam por administradora e estão no contrato. A comparação justa é: some tudo o que "
+        f"o contrato do consórcio cobra, calcule o percentual sobre a carta e compare com os percentuais acima. E lembre que o financiamento entrega o "
+        f"imóvel já, enquanto no consórcio a data depende de sorteio ou lance. Simule o financiamento no {_a('comparador-bancos', 'comparador de bancos')}.</p>"))
     return ex

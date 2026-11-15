@@ -70,7 +70,9 @@ def test_fontes_dos_guias_sao_https_e_sem_duplicata():
 @pytest.mark.skipif(not gerada, reason="paginas_seo/ não gerada")
 def test_guias_com_exemplo_calculado_trazem_numeros_do_simulador():
     for slug in ("aprenda-sac-x-price", "aprenda-ltv-financiamento-imobiliario",
-                 "aprenda-amortizacao-extraordinaria", "aprenda-cet-iof-financiamento-imobiliario"):
+                 "aprenda-amortizacao-extraordinaria", "aprenda-cet-iof-financiamento-imobiliario",
+                 "aprenda-fgts-financiamento-imobiliario", "aprenda-financiamento-x-consorcio-imobiliario",
+                 "aprenda-minha-casa-minha-vida-faixas-limites", "aprenda-passo-a-passo-financiar-imovel-documentos"):
         with open(os.path.join(PASTA, slug + ".html"), encoding="utf-8") as f:
             h = f.read()
         assert "Exemplo calculado" in h and len(re.findall(r"R\$ [\d.]+(?:,\d{2})?", h)) >= 2, slug
@@ -92,3 +94,30 @@ def test_hubs_oferecem_link_para_copiar_e_compartilhar():
             h = f.read()
         assert "Link para esta página" in h and "&lt;a href=" in h, n
         assert h.count('rel="noopener nofollow"') >= 4, n  # botões de compartilhar sem passar autoridade
+
+
+def test_exemplos_dos_guias_restantes_batem_com_o_calculo():
+    import gerador
+    r = gerador.formatar_reais
+    c = gerador.calcular_sac_price
+    fgts = gerador.EXEMPLOS_GUIAS["aprenda-fgts-financiamento-imobiliario"]
+    assert r(c(320_000, 360, 11.5)["p1_sac"]) in fgts and r(c(280_000, 360, 11.5)["p1_sac"]) in fgts
+    cons = gerador.EXEMPLOS_GUIAS["aprenda-financiamento-x-consorcio-imobiliario"]
+    assert r(c(300_000, 240, 11.5)["total_sac"] - 300_000) in cons
+    import guias_novos
+    guias = {g["slug"]: g["corpo_html"] for g in guias_novos.montar_guias(c, r)}
+    mcmv = guias["aprenda-minha-casa-minha-vida-faixas-limites"]
+    assert r(c(320_000, 360, 11.5, 400_000)["p1_sac"]) in mcmv and r(c(480_000, 360, 11.5, 600_000)["p1_sac"]) in mcmv
+    passo = guias["aprenda-passo-a-passo-financiar-imovel-documentos"]
+    for anos in (20, 30, 35):
+        assert r(c(280_000, anos * 12, 11.5, 350_000)["p1_sac"]) in passo
+
+
+def test_mcmv_nao_afirma_que_a_parcela_cabe_quando_a_renda_passa_do_limite():
+    import gerador
+    import guias_novos
+    r = gerador.formatar_reais
+    corpo = next(g["corpo_html"] for g in guias_novos.montar_guias(gerador.calcular_sac_price, r)
+                 if g["slug"] == "aprenda-minha-casa-minha-vida-faixas-limites")
+    renda3 = gerador.calcular_sac_price(320_000, 360, 11.5, 400_000)["renda_sugerida"]
+    assert (renda3 > 9_600) == ("a parcela não caberia nessa regra" in corpo.split("Exemplo calculado")[1].split("Faixa 3:")[1].split("Faixa 4:")[0])
