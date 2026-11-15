@@ -215,6 +215,21 @@ def _banco_tem_taxa_bacen(banco):
     return 'bcb.gov.br' in str(cache.get(banco, {}).get('fonte', ''))
 
 
+def referencia_taxa(banco, historico=None):
+    """Textos curto e longo da origem da taxa de um banco, sem dizer 'hoje' (15/nov/2026): a taxa do Banco Central é a
+    média do último MÊS FECHADO (setembro/2026 em novembro), então chamá-la de 'de hoje' afirmaria mais do que o dado diz.
+    Banco sem taxa do BACEN (BRB, Poupex) é declarado como estimativa, como já fazia texto_fonte_taxa."""
+    if not _banco_tem_taxa_bacen(banco):
+        return "estimativa de referências públicas de mercado", "estimada com base em referências públicas de mercado, não é taxa oficial do BACEN"
+    historico = historico if historico is not None else carregar_historico()
+    meses = [r["inicio_periodo"] for r in historico if r["banco"] == banco]
+    if not meses:
+        return "média do Banco Central", "média contratada, segundo o Banco Central"
+    ini = max(meses)
+    curto = f"{MESES_PT[int(ini[5:7]) - 1][:3].lower()}/{ini[:4]}"
+    return f"média de {curto}, Banco Central", f"média contratada em {nome_mes(ini)}, segundo o Banco Central"
+
+
 def texto_fonte_taxa(banco=None):
     """Texto de fonte exibido no rodapé do cabeçalho das páginas.
     banco=None -> página que cobre todos os bancos (home/comparador)."""
@@ -1922,7 +1937,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
         )
         titulo_pagina = next((t for t in candidatos_titulo if len(t) <= 60), candidatos_titulo[-1])
         meta_description = (
-            f"Simulador {banco_exib} em {ano_atual}: taxa de {taxa_fmt}% a.a. hoje, "
+            f"Simulador {banco_exib} em {ano_atual}: taxa de {taxa_fmt}% a.a. ({referencia_taxa(banco, _historico_hubs)[0]}), "
             f"entrada a partir de {entrada_min_pct}%, até {prazo_max} meses. Calcule parcela e CET."
         )[:160]
 
@@ -1945,7 +1960,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
     }}'''
 
         taxa_mensal_fmt = f"{((1 + taxa_atual_banco / 100) ** (1 / 12) - 1) * 100:.2f}".replace('.', ',')
-        resposta_direta = (f"Taxa do {banco_exib} hoje: {taxa_fmt}% ao ano ({taxa_mensal_fmt}% ao mês). "
+        resposta_direta = (f"Taxa do {banco_exib}: {taxa_fmt}% ao ano ({taxa_mensal_fmt}% ao mês), {referencia_taxa(banco, _historico_hubs)[1]}. "
                            f"Entrada mínima de {entrada_min_pct}% e prazo de até {prazo_max} meses.")
         faixa_html += html_serie_banco(_historico_hubs, banco, banco_exib, taxa_atual_banco)
         faixa_html += html_requisitos_aprovacao(banco_exib, entrada_min_pct)
@@ -2783,7 +2798,7 @@ def gerar_llms_full_txt(pasta_saida, dominio, data_ultima_atualizacao, taxas_atu
 ## O que é e o que não é
 Calcula parcela (SAC e PRICE), CET estimado e economia de juros com amortização. Não é oferta de crédito: as taxas são médias efetivamente contratadas, divulgadas pelo Banco Central, e a proposta de cada pessoa depende da análise do banco.
 
-## Taxas usadas nas simulações hoje ({data_br})
+## Taxas usadas nas simulações (média do último mês fechado divulgado pelo Banco Central; página atualizada em {data_br})
 {linhas_taxa}
 {serie}
 ## Como os números são calculados

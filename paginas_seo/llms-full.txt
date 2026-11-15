@@ -5,7 +5,7 @@
 ## O que é e o que não é
 Calcula parcela (SAC e PRICE), CET estimado e economia de juros com amortização. Não é oferta de crédito: as taxas são médias efetivamente contratadas, divulgadas pelo Banco Central, e a proposta de cada pessoa depende da análise do banco.
 
-## Taxas usadas nas simulações hoje (15/11/2026)
+## Taxas usadas nas simulações (média do último mês fechado divulgado pelo Banco Central; página atualizada em 15/11/2026)
 - Banrisul: taxa de 9,39% ao ano (0,75% ao mês), entrada mínima de 25%, prazo de até 360 meses.
 - Sicoob: taxa de 10,79% ao ano (0,86% ao mês), entrada mínima de 20%, prazo de até 360 meses.
 - Poupex: taxa de 10,80% ao ano (0,86% ao mês), entrada mínima de 10%, prazo de até 420 meses.

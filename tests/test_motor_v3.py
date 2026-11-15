@@ -104,7 +104,7 @@ def test_metodologia_hub_e_footer():
     assert "903201" in met and "TIR" in met and "contato@datalabglobal.com" in met
     assert "/metodologia</loc>" in _ler("sitemap.xml")
     hub = _ler("banco-itau.html")
-    assert re.search(r"Taxa do Itaú hoje: \d+,\d{2}% ao ano", hub)
+    assert re.search(r"Taxa do Itaú: \d+,\d{2}% ao ano \(\d+,\d{2}% ao mês\), média contratada em [a-zç]+ de \d{4}, segundo o Banco Central", hub)
     assert 'href="/metodologia"' in _ler("index.html")
     assert "taxas-financiamento-imobiliario" in _ler("llms.txt")
 
@@ -144,7 +144,7 @@ def test_paginas_de_renda_existem_no_sitemap_e_com_faq_igual_ao_json_ld():
 @pytest.mark.skipif(not gerada, reason="paginas_seo/ não gerada")
 def test_llms_full_itemlist_dataset_e_medicao_desligada():
     full = _ler("llms-full.txt")
-    assert "Taxas usadas nas simulações hoje" in full and "% ao ano" in full and "CC BY 4.0" in full
+    assert "Taxas usadas nas simulações (média do último mês fechado" in full and "% ao ano" in full and "CC BY 4.0" in full
     comp = _ler("financiamento-imobiliario-500-mil-30-anos.html")
     assert '"ItemList"' in comp
     mensal = _ler(slug_mes(sorted({r["inicio_periodo"] for r in carregar_historico()})[-1]) + ".html")
