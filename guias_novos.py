@@ -41,6 +41,7 @@ def _b(t):
 
 def montar_guias(calc, reais):
     p = lambda v: f"{v:.2f}".replace(".", ",")
+    TAXA_EX = 11.5  # % ao ano, taxa de exemplo dos blocos "Exemplo calculado"
 
     # ---------------------------------------------------------------- 1
     saldo, meses, t_atual, t_nova = 300_000, 240, 12.5, 10.5
@@ -118,6 +119,11 @@ def montar_guias(calc, reais):
     }
 
     # ---------------------------------------------------------------- 3
+    passo_ex = []
+    for anos in (20, 30, 35):
+        r = calc(280_000, anos * 12, TAXA_EX, 350_000)
+        passo_ex.append(f"{_b(f'{anos} anos:')} primeira parcela de {_b(reais(r['p1_sac']))}, renda sugerida de {reais(r['renda_sugerida'])} por mês "
+                        f"(parcela de até 30% da renda) e total pago de {reais(r['total_sac'])}.")
     passo = {
         "slug": "aprenda-passo-a-passo-financiar-imovel-documentos",
         "titulo_h1": "Passo a passo para financiar um imóvel: etapas e documentos",
@@ -154,6 +160,8 @@ def montar_guias(calc, reais):
                 "Ignorar que dá para somar a renda do cônjuge ou companheiro(a) quando a renda de uma pessoa só não cobre a parcela."]),
             _sec("Como definir a entrada",
                  f"A entrada é o que você paga com recursos próprios (ou FGTS) e o que sobra é o valor financiado. Cada banco tem um percentual máximo de financiamento, o LTV, e a entrada mínima é o que falta para chegar ao valor do imóvel (veja {_a('aprenda-ltv-financiamento-imobiliario', 'LTV')}). Entrada maior significa parcela menor e menos juros no total; entrada menor deixa o financiamento mais acessível agora, mas mais caro ao longo do contrato. O simulador de cada página mostra esse efeito ao mover o campo de entrada."),
+            _lista("Exemplo calculado: os três números antes de pedir o crédito", passo_ex,
+                   f"Um exemplo hipotético, calculado como o simulador calcula: imóvel de {_b('R$ 350.000')}, entrada de {_b('R$ 70.000')} (20%) e financiamento de {_b('R$ 280.000')}, na SAC, a {p(TAXA_EX)}% ao ano, sem seguros e tarifas. O que muda com o prazo:"),
             _fontes([
                 ("https://www.caixa.gov.br/voce/habitacao/financiamento/aquisicao-imovel-novo/Paginas/default.aspx", "Caixa: etapas do financiamento habitacional"),
                 ("https://www.caixa.gov.br/Downloads/habitacao-documentos-gerais/Lista_docs_definitiva.pdf", "Caixa: documentação básica para solicitação de crédito imobiliário"),
@@ -164,6 +172,14 @@ def montar_guias(calc, reais):
     }
 
     # ---------------------------------------------------------------- 4
+    mcmv_ex = []
+    for nome, teto_imovel, teto_renda in (("Faixa 3", 400_000, 9_600), ("Faixa 4", 600_000, 13_000)):
+        fin = teto_imovel * 0.80
+        r = calc(fin, 360, TAXA_EX, teto_imovel)
+        veredito = ("cabe até o limite de renda da faixa" if r["renda_sugerida"] <= teto_renda
+                    else f"fica acima do limite de renda da faixa (R$ {teto_renda:,}".replace(",", ".") + "), ou seja, com a taxa de mercado a parcela não caberia nessa regra")
+        mcmv_ex.append(f"{_b(nome + ':')} imóvel de {reais(teto_imovel)}, financiamento de {reais(fin)}, primeira parcela de {_b(reais(r['p1_sac']))}; "
+                       f"a renda sugerida para essa parcela é de {_b(reais(r['renda_sugerida']))} por mês, o que {veredito}.")
     mcmv = {
         "slug": "aprenda-minha-casa-minha-vida-faixas-limites",
         "titulo_h1": "Minha Casa, Minha Vida: faixas de renda, valor do imóvel e como consultar",
@@ -188,6 +204,8 @@ def montar_guias(calc, reais):
                  f"As condições do programa (taxa de juros, subsídio para as faixas mais baixas, seguros e regras de enquadramento) seguem regras próprias, definidas pelo governo federal e pelo agente financeiro, e não são as mesmas do financiamento de mercado. As taxas e simulações deste site usam as {_a('taxas-financiamento-imobiliario', 'taxas médias de mercado do Banco Central')}, então servem de comparação: se o seu imóvel e a sua renda se enquadram no programa, peça a simulação do MCMV ao banco e compare com a de mercado, pelo CET e pela primeira parcela."),
             _sec("Como saber se a renda cobre",
                  f"Mesmo no programa, a parcela precisa caber na renda. Para ter uma ordem de grandeza, veja a {_a('renda-para-financiar-imovel', 'renda mínima por valor do imóvel')} e entenda a diferença entre {_a('aprenda-sac-x-price', 'SAC e Price')}. Em geral, os requisitos incluem não ser proprietário de imóvel residencial e não ter financiamento ativo no sistema de habitação, mas cada faixa tem as próprias exigências: confirme as condições do seu caso na Caixa ou no portal do programa."),
+            _lista("Exemplo calculado: a parcela de um imóvel no teto de cada faixa", mcmv_ex,
+                   f"Um exemplo hipotético, calculado como o simulador calcula: imóvel no valor máximo da faixa, com 20% de entrada, 360 meses, SAC, a taxa de mercado de {p(TAXA_EX)}% ao ano do exemplo e a regra de parcela de até 30% da renda. As condições do programa são próprias e podem dar parcela menor, então isto mostra o tamanho do compromisso, não a parcela do programa:"),
             _lista("Passo a passo para confirmar o seu caso", [
                 "Some a renda bruta mensal de todas as pessoas da família que vão compor o financiamento e veja em qual faixa você se enquadra.",
                 "Consulte o valor máximo do imóvel para a sua faixa e, nas faixas 1 e 2, para o município onde o imóvel fica.",
