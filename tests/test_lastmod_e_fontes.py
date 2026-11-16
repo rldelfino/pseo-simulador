@@ -145,3 +145,21 @@ def test_comparador_e_comparacoes_sem_trofeu_numeracao_ou_destaque():
         assert "🏆" not in h, nome
         assert not re.search(r'font-bold text-xs">#\d+<', h), nome
         assert "bg-emerald-500/10 border-emerald-500/30" not in h, nome
+
+
+@pytest.mark.skipif(not gerada, reason="paginas_seo/ não gerada")
+def test_hubs_trazem_analise_propria_com_numeros_do_calculo_e_sem_recomendar():
+    import gerador
+    bacen = gerador._taxas_bacen_atuais()
+    media = sum(bacen.values()) / len(bacen)
+    hubs = [n for n in os.listdir(PASTA) if n.startswith("banco-") and n.endswith(".html")]
+    assert len(hubs) >= 10
+    for n in hubs:
+        with open(os.path.join(PASTA, n), encoding="utf-8") as f:
+            h = re.sub(r"<[^>]+>", " ", f.read())
+        assert "frente à média dos bancos" in h and "Exemplo calculado" in h, n
+        bloco = h[h.index("frente à média dos bancos"):h.index("Antes de pedir a proposta")]
+        assert f"{media:.2f}".replace(".", ",") + "% ao ano" in bloco, n
+        assert not re.search(r"\b(melhor|pior|recomend[ao]|vencedor)\b", bloco.replace("Não é recomendação de banco", "")), n
+    with open(os.path.join(PASTA, "dados-abertos.html"), encoding="utf-8") as f:
+        assert '"keywords"' in f.read()
