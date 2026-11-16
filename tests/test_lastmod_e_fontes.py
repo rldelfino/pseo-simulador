@@ -132,3 +132,16 @@ def test_comparador_cita_o_mes_da_taxa_usa_virgula_e_nao_diz_mesma_condicao():
     assert not re.search(r"Em \d{2}/\d{2}/\d{4}, entre os", h)
     assert not re.search(r"\d\.\d{2}% a\.a\.", bruto), "taxa com ponto decimal na tabela"
     assert "mesma condição" not in h and "entrada mínima de cada um" in h
+
+
+@pytest.mark.skipif(not gerada, reason="paginas_seo/ não gerada")
+def test_comparador_e_comparacoes_sem_trofeu_numeracao_ou_destaque():
+    nomes = ["comparador-bancos.html"] + sorted(n for n in os.listdir(PASTA)
+                                                 if n.startswith("financiamento-imobiliario-") and n.endswith("-anos.html"))
+    assert len(nomes) >= 20
+    for nome in nomes:
+        with open(os.path.join(PASTA, nome), encoding="utf-8") as f:
+            h = f.read()
+        assert "🏆" not in h, nome
+        assert not re.search(r'font-bold text-xs">#\d+<', h), nome
+        assert "bg-emerald-500/10 border-emerald-500/30" not in h, nome

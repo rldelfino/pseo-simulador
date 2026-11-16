@@ -219,7 +219,7 @@ def test_hub_e_comparador_com_webpage_mais_sobre_e_resposta_direta():
         assert os.path.exists(os.path.join(PASTA, href + ".html")), href
     comp = _ler("comparador-bancos.html")
     frase = re.search(r'font-medium max-w-3xl mx-auto px-4 mb-4">(.*?)</p>', comp, re.S).group(1)
-    # o banco da frase é o #1 da tabela de CET
+    # o banco da frase é o primeiro da tabela, ordenada por CET
     menor = re.search(r"o menor CET .*? é o do (.+?) \(", frase).group(1)
     assert comp.index(f">{menor}<") < comp.index(">Banco do Brasil<") or menor == "Banco do Brasil"
 
