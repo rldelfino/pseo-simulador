@@ -1963,6 +1963,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
         resposta_direta = (f"Taxa do {banco_exib}: {taxa_fmt}% ao ano ({taxa_mensal_fmt}% ao mês), {referencia_taxa(banco, _historico_hubs)[1]}. "
                            f"Entrada mínima de {entrada_min_pct}% e prazo de até {prazo_max} meses.")
         faixa_html += html_serie_banco(_historico_hubs, banco, banco_exib, taxa_atual_banco)
+        faixa_html += html_comparacao_mercado(banco, banco_exib, taxa_atual_banco, entrada_min_pct, prazo_max, _historico_hubs)
         faixa_html += html_requisitos_aprovacao(banco_exib, entrada_min_pct)
         faixa_html += html_mais_sobre_banco(banco_exib, _historico_hubs)
         faixa_html += html_como_citar(f"Taxa do {banco_exib} para financiamento imobiliário", url_canonica, date.fromisoformat(data_ultima_atualizacao).strftime('%d/%m/%Y'))
@@ -2366,6 +2367,56 @@ def html_serie_banco(historico, banco, banco_exib, taxa_simulada):
         </section>'''
 
 
+VALOR_ANALISE_HUB = 500_000
+KEYWORDS_DATASET = ["financiamento imobiliário", "taxa de juros", "Banco Central", "CET", "SAC", "Tabela Price", "Brasil", "dados abertos"]
+
+
+def _taxas_bacen_atuais():
+    """Taxa atual (% ao ano) só dos bancos cuja taxa vem do Banco Central, lida do cache do ETL."""
+    try:
+        with open(ARQUIVO_CACHE_TAXAS, encoding='utf-8') as f:
+            cache = json.load(f)
+    except (FileNotFoundError, ValueError):
+        return {}
+    return {b: float(v["taxa"]) for b, v in cache.items() if "bcb.gov.br" in str(v.get("fonte", "")) and "taxa" in v}
+
+
+def html_comparacao_mercado(banco, banco_exib, taxa_banco, entrada_perc, prazo_max, historico):
+    """Análise própria do hub (15/nov/2026): taxa do banco frente à média dos bancos com taxa do Banco Central, quantos dos últimos
+    meses ficou acima ou abaixo dela e o efeito em reais da diferença, com o mesmo cálculo do simulador. Texto neutro: não
+    ordena nem recomenda banco; os números mudam de banco para banco, o que também reduz o texto repetido entre hubs."""
+    bacen = _taxas_bacen_atuais()
+    if len(bacen) < 3:
+        return ""
+    media = sum(bacen.values()) / len(bacen)
+    dif = taxa_banco - media
+    posicao = "igual à" if abs(dif) < 0.005 else (f"{_pct2(abs(dif))} p.p. acima da" if dif > 0 else f"{_pct2(abs(dif))} p.p. abaixo da")
+    meses = sorted({r["inicio_periodo"] for r in historico})[-MESES_NA_SERIE_BANCO:]
+    por_mes = {}
+    for r in historico:
+        if r["inicio_periodo"] in meses:
+            por_mes.setdefault(r["inicio_periodo"], {})[r["banco"]] = float(r["taxa_aa"])
+    acima = abaixo = 0
+    for d in por_mes.values():
+        if banco in d and len(d) >= 3:
+            m = sum(d.values()) / len(d)
+            acima += d[banco] > m
+            abaixo += d[banco] < m
+    hist = (f" Nos últimos {acima + abaixo} meses de dados do Banco Central, ficou acima dessa média em {acima} e abaixo em {abaixo}."
+            if acima + abaixo >= 3 else "")
+    estimada = "" if _banco_tem_taxa_bacen(banco) else " A taxa do " + banco_exib + " aqui é uma estimativa de referências públicas de mercado, não do Banco Central."
+    prazo = min(360, prazo_max)
+    fin = VALOR_ANALISE_HUB * (1 - entrada_perc / 100)
+    a, m_ = calcular_sac_price(fin, prazo, taxa_banco), calcular_sac_price(fin, prazo, media)
+    j_a, j_m = a["total_sac"] - fin, m_["total_sac"] - fin
+    return f'''<section class="mt-8 glass-panel p-8 md:p-10 rounded-3xl">
+            <h2 class="text-xs font-bold text-slate-300 uppercase tracking-widest mb-1">O {banco_exib} frente à média dos bancos</h2>
+            <p class="text-slate-400 text-[11px] mb-4 pb-4 border-b border-white/10">Análise própria com dados do Banco Central. Não é recomendação de banco.</p>
+            <p class="text-slate-300 text-sm font-light leading-relaxed mb-4">Na média simples dos {len(bacen)} bancos com taxa do Banco Central, a taxa média é de {_pct2(media)}% ao ano. A do {banco_exib} ({_pct2(taxa_banco)}%) está {posicao} média.{hist}{estimada}</p>
+            <p class="text-slate-300 text-sm font-light leading-relaxed"><strong class="text-white">Exemplo calculado</strong>, como no simulador (imóvel de {formatar_reais(VALOR_ANALISE_HUB)}, entrada mínima de {entrada_perc}%, {prazo} meses, SAC, sem seguros e tarifas): com a taxa do {banco_exib}, a primeira parcela é de {formatar_reais(a["p1_sac"])} e os juros somam {formatar_reais(j_a)}; com a taxa média dos bancos, {formatar_reais(m_["p1_sac"])} e {formatar_reais(j_m)}. A diferença é de {formatar_reais(abs(a["p1_sac"] - m_["p1_sac"]))} na primeira parcela e {formatar_reais(abs(j_a - j_m))} nos juros do contrato. A sua taxa depende da análise do banco.</p>
+        </section>'''
+
+
 def html_vizinhas(grupo_banco, pagina, banco_exib):
     """Links para as páginas vizinhas do mesmo banco (valor anterior e seguinte
     no mesmo prazo; o outro prazo indexável no mesmo valor) e para os índices
@@ -2477,7 +2528,7 @@ def gerar_paginas_mensais(pasta_saida, dominio, data_ultima_atualizacao, histori
         schema_faq = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
             {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faq]}, ensure_ascii=False)
         schema_dados = json.dumps({
-            "@context": "https://schema.org", "@type": "Dataset", "name": f"Taxas do financiamento imobiliário por banco em {mes_ano}",
+            "@context": "https://schema.org", "@type": "Dataset", "keywords": KEYWORDS_DATASET, "name": f"Taxas do financiamento imobiliário por banco em {mes_ano}",
             "description": f"Taxa média de juros contratada (% ao ano) por banco em {mes_ano}, segundo o Banco Central do Brasil.",
             "url": url, "inLanguage": "pt-BR", "license": LICENCA_DADOS_URL, "isAccessibleForFree": True,
             "creator": {"@type": "Organization", "name": "Datalab Global", "url": f"{dominio}/"},
@@ -3046,7 +3097,7 @@ Publicado por Datalab Global ({dominio}/), marca de {EMPRESA_RODAPE}.
 """)
 
     schema_dataset = json.dumps({
-        "@context": "https://schema.org", "@type": "Dataset",
+        "@context": "https://schema.org", "@type": "Dataset", "keywords": KEYWORDS_DATASET,
         "name": "Taxas médias de juros do financiamento imobiliário por banco (BACEN)",
         "description": descricao, "url": url_pagina, "inLanguage": "pt-BR",
         "license": LICENCA_DADOS_URL, "isAccessibleForFree": True,
