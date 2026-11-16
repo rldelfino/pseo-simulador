@@ -121,3 +121,14 @@ def test_mcmv_nao_afirma_que_a_parcela_cabe_quando_a_renda_passa_do_limite():
                  if g["slug"] == "aprenda-minha-casa-minha-vida-faixas-limites")
     renda3 = gerador.calcular_sac_price(320_000, 360, 11.5, 400_000)["renda_sugerida"]
     assert (renda3 > 9_600) == ("a parcela não caberia nessa regra" in corpo.split("Exemplo calculado")[1].split("Faixa 3:")[1].split("Faixa 4:")[0])
+
+
+@pytest.mark.skipif(not gerada, reason="paginas_seo/ não gerada")
+def test_comparador_cita_o_mes_da_taxa_usa_virgula_e_nao_diz_mesma_condicao():
+    with open(os.path.join(PASTA, "comparador-bancos.html"), encoding="utf-8") as f:
+        bruto = f.read()
+    h = re.sub(r"<[^>]+>", " ", bruto)
+    assert re.search(r"Com as taxas do último mês fechado do Banco Central \([a-zç]+ de \d{4}\)", h)
+    assert not re.search(r"Em \d{2}/\d{2}/\d{4}, entre os", h)
+    assert not re.search(r"\d\.\d{2}% a\.a\.", bruto), "taxa com ponto decimal na tabela"
+    assert "mesma condição" not in h and "entrada mínima de cada um" in h
