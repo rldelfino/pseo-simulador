@@ -3163,11 +3163,11 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
         taxa_exibida = (taxas_atuais or {}).get(r["banco"], regra["taxa_padrao"])
         url_logo = f"https://www.google.com/s2/favicons?domain={regra['dominio_favicon']}&sz=128"
         cet_fmt = f"{r['cet']:.2f}".replace('.', ',')
-        destaque = "bg-emerald-500/10 border-emerald-500/30" if i == 1 else "bg-white/5 border-white/10"
-        medalha = f'<span class="text-emerald-400 font-bold text-xs">#{i}</span>' if i > 1 else f'<span class="text-yellow-400 font-bold text-xs">🏆 #1</span>'
+        # Sem troféu, sem numeração e sem linha em destaque (15/nov/2026, decisão do usuário): a tabela segue ordenada por CET,
+        # mas nenhum banco é apresentado como "vencedor", para não induzir o pedido a um banco específico.
+        destaque = "bg-white/5 border-white/10"
         linhas_tabela += f'''
-        <a href="{slug_hub_banco(r['banco'])}" class="grid grid-cols-[auto_1fr_auto_auto_auto] md:grid-cols-[auto_1fr_1fr_1fr_1fr] items-center gap-3 md:gap-6 p-4 rounded-xl border {destaque} hover:border-emerald-500/50 transition-all">
-            <span class="w-8 text-center">{medalha}</span>
+        <a href="{slug_hub_banco(r['banco'])}" class="grid grid-cols-[1fr_auto_auto] md:grid-cols-[1fr_1fr_1fr_1fr] items-center gap-3 md:gap-6 p-4 rounded-xl border {destaque} hover:border-emerald-500/50 transition-all">
             <span class="flex items-center gap-2 min-w-0">
                 {favicon_com_fallback(url_logo, r['banco_exib'], "w-6 h-6")}
                 <span class="text-sm font-medium text-white truncate">{r['banco_exib']}</span>
@@ -3275,7 +3275,7 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
 
     <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 flex-grow w-full relative z-10">
         <div class="flex items-center gap-2 mb-4 text-[11px] text-slate-400 uppercase tracking-widest px-4">
-            <span class="w-8"></span><span class="flex-1">Banco</span><span class="hidden md:block flex-1 text-center">Taxa</span><span class="hidden md:block flex-1 text-center">Entrada</span><span class="flex-1 text-right">CET (referência)</span>
+            <span class="flex-1">Banco</span><span class="hidden md:block flex-1 text-center">Taxa</span><span class="hidden md:block flex-1 text-center">Entrada</span><span class="flex-1 text-right">CET (referência)</span>
         </div>
         <div class="space-y-2">
             {linhas_tabela}
@@ -3568,11 +3568,9 @@ def gerar_paginas_comparacao(pasta_saida, dominio, data_ultima_atualizacao, taxa
                 regra = BANCOS[x["banco"]]
                 url_logo = f"https://www.google.com/s2/favicons?domain={regra['dominio_favicon']}&sz=128"
                 slug_b = lookup_paginas.get((x["banco"], float(valor), prazo)) or slug_hub_banco(x["banco"])
-                destaque = "bg-emerald-500/10 border-emerald-500/30" if i == 1 else "bg-white/5 border-white/10"
-                medalha = '<span class="text-yellow-400 font-bold text-xs">#1</span>' if i == 1 else f'<span class="text-emerald-400 font-bold text-xs">#{i}</span>'
+                destaque = "bg-white/5 border-white/10"  # sem numeração nem destaque (ver comparador-bancos)
                 linhas_html += f'''
-        <a href="{slug_b}" class="grid grid-cols-[auto_1fr_auto_auto] md:grid-cols-[auto_1.4fr_1fr_1fr_1fr_1fr_1fr] items-center gap-3 md:gap-5 p-4 rounded-xl border {destaque} hover:border-emerald-500/50 transition-all">
-            <span class="w-6 text-center">{medalha}</span>
+        <a href="{slug_b}" class="grid grid-cols-[1fr_auto_auto] md:grid-cols-[1.4fr_1fr_1fr_1fr_1fr_1fr] items-center gap-3 md:gap-5 p-4 rounded-xl border {destaque} hover:border-emerald-500/50 transition-all">
             <span class="flex items-center gap-2 min-w-0">
                 {favicon_com_fallback(url_logo, x['banco_exib'], "w-6 h-6")}
                 <span class="text-sm font-medium text-white truncate">{x['banco_exib']}</span>
@@ -3657,7 +3655,7 @@ def gerar_paginas_comparacao(pasta_saida, dominio, data_ultima_atualizacao, taxa
 
     <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 flex-grow w-full relative z-10">
         <div class="flex items-center gap-2 mb-4 text-[11px] text-slate-400 uppercase tracking-widest px-4">
-            <span class="w-6"></span><span class="flex-1">Banco</span><span class="hidden md:block flex-1 text-center">Taxa</span><span class="hidden md:block flex-1 text-center">Entrada mín.</span><span class="flex-1 text-right md:text-center">1ª parcela (SAC)</span><span class="hidden md:block flex-1 text-center">Parcela (Price)</span><span class="flex-1 text-right">CET</span>
+            <span class="flex-1">Banco</span><span class="hidden md:block flex-1 text-center">Taxa</span><span class="hidden md:block flex-1 text-center">Entrada mín.</span><span class="flex-1 text-right md:text-center">1ª parcela (SAC)</span><span class="hidden md:block flex-1 text-center">Parcela (Price)</span><span class="flex-1 text-right">CET</span>
         </div>
         <div class="space-y-2">
             {linhas_html}
