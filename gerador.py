@@ -5082,8 +5082,10 @@ def gerar_sitemap(urls, pasta_saida, dominio, data_ultima_atualizacao):
         if os.path.exists(arquivo):
             with open(arquivo, "rb") as f:
                 # os carimbos ?v=AAAAMMDDHHMMSS (css/js) mudam a cada geração e não contam como mudança da página:
-                # tira a query inteira, então o resumo é o mesmo de antes do carimbo existir (sem bump falso de lastmod)
-                conteudo = re.sub(rb"\.(css|js)\?v=\d{14}", rb".\g<1>", f.read())
+                # tira a query inteira, então o resumo é o mesmo de antes do carimbo existir (sem bump falso de lastmod).
+                # CRLF vira LF: gerar no Windows grava CRLF no disco e o git guarda LF; sem isso o resumo muda de uma
+                # plataforma para a outra e TODAS as URLs ganham lastmod novo (visto em 17/nov/2026)
+                conteudo = re.sub(rb"\.(css|js)\?v=\d{14}", rb".\g<1>", f.read().replace(b"\r\n", b"\n"))
                 return lastmod.registrar(_MANIFESTO_LASTMOD, "url:" + url, conteudo)
         return f"{data_ultima_atualizacao}T00:00:00+00:00"
     xml_content = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
