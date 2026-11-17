@@ -4181,7 +4181,7 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
       "url": "https://www.datalabglobal.com/",
       "logo": "{DOMINIO}/logo-schema.png",
       "sameAs": ["https://huggingface.co/datalabglobal"],
-      "founder": {{"@type": "Person", "name": "Rodolfo Delfino", "sameAs": ["https://github.com/rldelfino", "https://www.kaggle.com/rodolfodelfino"]}},
+      "founder": {{"@type": "Person", "name": "Rodolfo Delfino", "sameAs": ["https://github.com/rldelfino", "https://www.kaggle.com/rodolfodelfino", "https://www.linkedin.com/in/rodolfo-leal-delfino"]}},
       "contactPoint": {{"@type": "ContactPoint", "email": "contato@datalabglobal.com", "contactType": "customer service"}}
     }}'''
 
@@ -4332,7 +4332,7 @@ def gerar_pagina_sobre(pasta_saida, dominio):
         "name": "Datalab Global",
         "url": "https://www.datalabglobal.com/",
         "sameAs": ["https://huggingface.co/datalabglobal"],
-        "founder": {{"@type": "Person", "name": "Rodolfo Delfino", "sameAs": ["https://github.com/rldelfino", "https://www.kaggle.com/rodolfodelfino"]}},
+        "founder": {{"@type": "Person", "name": "Rodolfo Delfino", "sameAs": ["https://github.com/rldelfino", "https://www.kaggle.com/rodolfodelfino", "https://www.linkedin.com/in/rodolfo-leal-delfino"]}},
         "contactPoint": {{"@type": "ContactPoint", "email": "contato@datalabglobal.com", "contactType": "customer service"}}
       }}
     }}'''
