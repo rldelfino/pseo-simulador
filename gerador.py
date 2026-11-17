@@ -1692,6 +1692,7 @@ def gerar_paginas_pseo():
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="https://emprestimo.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
+                <a href="https://veiculos.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Financiamento de veículos</a>
                 <a href="https://dados.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Lente B2B: dados de empresas</a>
                 <a href="/aprenda" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
@@ -2094,6 +2095,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="https://emprestimo.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
+                <a href="https://veiculos.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Financiamento de veículos</a>
                 <a href="https://dados.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Lente B2B: dados de empresas</a>
                 <a href="/aprenda" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
@@ -3412,6 +3414,7 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="https://emprestimo.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
+                <a href="https://veiculos.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Financiamento de veículos</a>
                 <a href="https://dados.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Lente B2B: dados de empresas</a>
                 <a href="/aprenda" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
@@ -3559,6 +3562,7 @@ def _footer_comparacao():
             <div class="flex flex-wrap items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="https://emprestimo.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
+                <a href="https://veiculos.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Financiamento de veículos</a>
                 <a href="https://dados.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Lente B2B: dados de empresas</a>
                 <a href="/aprenda" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
@@ -4176,7 +4180,8 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
       "name": "Datalab Global",
       "url": "https://www.datalabglobal.com/",
       "logo": "{DOMINIO}/logo-schema.png",
-      "founder": {{"@type": "Person", "name": "Rodolfo Delfino", "sameAs": ["https://github.com/rldelfino"]}},
+      "sameAs": ["https://huggingface.co/datalabglobal"],
+      "founder": {{"@type": "Person", "name": "Rodolfo Delfino", "sameAs": ["https://github.com/rldelfino", "https://www.kaggle.com/rodolfodelfino"]}},
       "contactPoint": {{"@type": "ContactPoint", "email": "contato@datalabglobal.com", "contactType": "customer service"}}
     }}'''
 
@@ -4279,6 +4284,7 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="https://emprestimo.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
+                <a href="https://veiculos.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Financiamento de veículos</a>
                 <a href="https://dados.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Lente B2B: dados de empresas</a>
                 <a href="/aprenda" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
@@ -4325,7 +4331,8 @@ def gerar_pagina_sobre(pasta_saida, dominio):
         "@id": "https://www.datalabglobal.com/#organization",
         "name": "Datalab Global",
         "url": "https://www.datalabglobal.com/",
-        "founder": {{"@type": "Person", "name": "Rodolfo Delfino", "sameAs": ["https://github.com/rldelfino"]}},
+        "sameAs": ["https://huggingface.co/datalabglobal"],
+        "founder": {{"@type": "Person", "name": "Rodolfo Delfino", "sameAs": ["https://github.com/rldelfino", "https://www.kaggle.com/rodolfodelfino"]}},
         "contactPoint": {{"@type": "ContactPoint", "email": "contato@datalabglobal.com", "contactType": "customer service"}}
       }}
     }}'''
@@ -4381,6 +4388,7 @@ def gerar_pagina_sobre(pasta_saida, dominio):
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="https://emprestimo.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
+                <a href="https://veiculos.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Financiamento de veículos</a>
                 <a href="https://dados.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Lente B2B: dados de empresas</a>
                 <a href="/aprenda" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
@@ -4468,6 +4476,7 @@ def gerar_pagina_aprenda(art, pasta_saida, dominio, data_atualizacao):
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="https://emprestimo.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
+                <a href="https://veiculos.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Financiamento de veículos</a>
                 <a href="https://dados.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Lente B2B: dados de empresas</a>
                 <a href="/aprenda" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
@@ -4536,6 +4545,7 @@ def gerar_hub_aprenda(artigos, pasta_saida, dominio):
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
                 <a href="https://emprestimo.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
+                <a href="https://veiculos.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Financiamento de veículos</a>
                 <a href="https://dados.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Lente B2B: dados de empresas</a>
                 <a href="/aprenda" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
                 <a href="/sobre" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
@@ -5074,6 +5084,9 @@ def gerar_sitemap(urls, pasta_saida, dominio, data_ultima_atualizacao):
                 # os carimbos ?v=AAAAMMDDHHMMSS (css/js) mudam a cada geração e não contam como mudança da página:
                 # tira a query inteira, então o resumo é o mesmo de antes do carimbo existir (sem bump falso de lastmod)
                 conteudo = re.sub(rb"\.(css|js)\?v=\d{14}", rb".\g<1>", f.read())
+                # o rodapé é navegação do site inteiro: acrescentar um link nele não é mudança do conteúdo da página
+                # (senão as 166 URLs ganhariam o mesmo lastmod novo, frescor falso para o Google e o Bing)
+                conteudo = re.sub(rb"<footer\b.*?</footer>", b"<footer></footer>", conteudo, flags=re.S)
                 return lastmod.registrar(_MANIFESTO_LASTMOD, "url:" + url, conteudo)
         return f"{data_ultima_atualizacao}T00:00:00+00:00"
     xml_content = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
