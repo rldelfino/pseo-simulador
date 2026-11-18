@@ -14,6 +14,9 @@ on:
     # dia 5 dá uma folga razoável sobre o dia 1º sem exigir uma data
     # perfeita.
     - cron: '0 8 5 * *'
+    # Segunda rodada no dia 20: o BCB publica o mês fechado depois do dia 5
+    # (em 15/11/2026 ainda vinha setembro). Sem mudança se não houver dado novo.
+    - cron: '0 8 20 * *'
   workflow_dispatch: # Permite rodar manualmente no GitHub
 
 # ISSO AQUI RESOLVE O ERRO 128 (Dá permissão de gravação pro robô)
