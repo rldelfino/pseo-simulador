@@ -32,7 +32,7 @@ from bancos import BANCOS, obter_regra, nome_exibicao, corrigir_concordancia, eh
 from icones import icone, tooltip
 import lastmod
 
-LINK_FINANCIA_TUDO = "https://app.financiatudo.com.br/financiamento-de-imoveis/chave/8940d282b765cbf97b6df55fd1eb0b52b18b2f6e"
+LINK_FINANCIA_TUDO = "https://proposta.api.br/f/ae4809fa-f818-4813-a93d-f0f6cb2f235c"
 DOMINIO = 'https://simulador.datalabglobal.com'
 ARQUIVO_ULTIMA_ATUALIZACAO = 'ultima_atualizacao_taxas.txt'
 ARQUIVO_CACHE_TAXAS = 'taxas_cache.json'
@@ -5014,7 +5014,7 @@ def gerar_calculo_js():
                     <span>${cetMaxFmt}% maior CET</span>
                 </div>`;
 
-            const hrefFinanciaTudo = 'https://app.financiatudo.com.br/financiamento-de-imoveis/chave/8940d282b765cbf97b6df55fd1eb0b52b18b2f6e';
+            const hrefFinanciaTudo = 'https://proposta.api.br/f/ae4809fa-f818-4813-a93d-f0f6cb2f235c';
 
             if (marcadorPct <= 15) {
                 elTexto.innerHTML = `${bancoFem ? 'A' : 'O'} ${nomeBancoAtual} está entre as condições <strong class="text-emerald-400">mais competitivas</strong> que acompanhamos (${cetAtualFmt}% de CET, na faixa de ${cetMinFmt}% a ${cetMaxFmt}% do mercado). Vale confirmar essa condição e agilizar a aprovação sem custo.
