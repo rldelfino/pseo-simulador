@@ -4154,7 +4154,7 @@ def gerar_analise_do_mes(pasta_saida, dominio, data_ultima_atualizacao):
     fatos = [
         f"Em {mes_nome} de {ano}, a taxa média contratada foi de {_pct2(lo['atual'])}% ao ano em {lo['exib']}, a menor entre os {n} bancos com dado do Banco Central, e de {_pct2(hi['atual'])}% em {hi['exib']}, a maior.",
         f"Frente a {mes_nome} de {ano_ant}, {len(quedas)} de {n} bancos tiveram taxa média menor e {len(altas)}, maior"
-        + (f"; {n - len(quedas) - len(altas)} ficaram iguais" if n - len(quedas) - len(altas) else "") + ".",
+        + ((f"; {n - len(quedas) - len(altas)} ficou igual" if n - len(quedas) - len(altas) == 1 else f"; {n - len(quedas) - len(altas)} ficaram iguais") if n - len(quedas) - len(altas) else "") + ".",
     ]
     if maior_queda["var"] < 0:
         fatos.append(f"A maior queda foi a de {maior_queda['exib']}: de {_pct2(maior_queda['antes'])}% para {_pct2(maior_queda['atual'])}% ao ano ({_sinal_pp(maior_queda['var'])} ponto percentual).")
@@ -4170,7 +4170,7 @@ def gerar_analise_do_mes(pasta_saida, dominio, data_ultima_atualizacao):
         corpo += (f'<tr class="border-t border-white/5"><th scope="row" class="px-2 py-2 text-left font-medium text-white whitespace-nowrap">{x["exib"]}</th>'
                   f'<td class="px-2 py-2 text-right whitespace-nowrap">{_pct2(x["antes"])}</td>'
                   f'<td class="px-2 py-2 text-right whitespace-nowrap">{_pct2(x["atual"])}</td>'
-                  f'<td class="px-2 py-2 w-1/4"><div class="w-full h-2 rounded-full bg-white/5"><div class="h-2 rounded-full bg-emerald-500" style="width:{larg}%"></div></div></td>'
+                  f'<td class="px-2 py-2" style="width:25%"><div class="w-full h-2 rounded-full bg-white/5"><div class="h-2 rounded-full bg-emerald-500" style="width:{larg}%"></div></div></td>'
                   f'<td class="px-2 py-2 text-right font-bold whitespace-nowrap {cor}">{_sinal_pp(x["var"])} p.p.</td></tr>')
     url = f"{dominio}/analise-do-mes"
     data_br = date.fromisoformat(data_ultima_atualizacao).strftime('%d/%m/%Y')
