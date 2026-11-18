@@ -1750,6 +1750,7 @@ def gerar_paginas_pseo():
     gerar_embed(pasta_saida, dominio, data_ultima_atualizacao, taxas_atuais_por_banco)
     urls_comparacao += gerar_pagina_incorporar(pasta_saida, dominio, data_ultima_atualizacao)
     urls_comparacao += gerar_pagina_imprensa(pasta_saida, dominio, data_ultima_atualizacao, taxas_atuais_por_banco)
+    urls_comparacao += gerar_analise_do_mes(pasta_saida, dominio, data_ultima_atualizacao)
     urls_comparacao += gerar_paginas_mensais(pasta_saida, dominio, data_ultima_atualizacao, historico_cache)
     urls_comparacao += gerar_pagina_metodologia(pasta_saida, dominio, data_ultima_atualizacao)
     urls_comparacao += gerar_paginas_renda(pasta_saida, dominio, data_ultima_atualizacao, taxas_atuais_por_banco)
@@ -3171,9 +3172,9 @@ Publicado por Datalab Global ({dominio}/), marca de {EMPRESA_RODAPE}.
 
         <section class="mt-10">
             <h2 class="text-2xl font-serif text-white mb-3">Como citar</h2>
-            <p class="text-slate-300 text-sm font-light leading-relaxed bg-white/5 border border-white/10 rounded-xl p-4">{citacao.format(data="AAAA-MM-DD")}</p>
+            {_html_citar(url_pagina, citacao.format(data="AAAA-MM-DD"))}
             <p class="text-slate-400 text-xs font-light mt-3">DOI (sempre a versão mais recente): <a href="{URL_ZENODO_DOI}" rel="noopener" class="underline">{URL_ZENODO_DOI}</a></p>
-            <p class="text-slate-400 text-xs font-light mt-3">Licença <a href="{LICENCA_DADOS_URL}" rel="noopener" class="underline">{LICENCA_DADOS}</a>. Fonte original: <a href="{FONTE_BACEN_URL}" rel="noopener" class="underline">Banco Central do Brasil</a>. Atualizado em {date.fromisoformat(data_ultima_atualizacao).strftime('%d/%m/%Y')}.</p>
+            <p class="text-slate-400 text-xs font-light mt-3">Licença <a href="{LICENCA_DADOS_URL}" rel="noopener" class="underline">{LICENCA_DADOS}</a>. Fonte original: <a href="{FONTE_BACEN_URL}" rel="noopener" class="underline">Banco Central do Brasil</a>. Leia também a <a href="analise-do-mes" class="underline">análise do mês</a>. Atualizado em {date.fromisoformat(data_ultima_atualizacao).strftime('%d/%m/%Y')}.</p>
         </section>
 
         <section class="mt-10">
@@ -4088,14 +4089,14 @@ def gerar_pagina_imprensa(pasta_saida, dominio, data_ultima_atualizacao, taxas_a
         </section>
         <section class="mt-10">
             <h2 class="text-2xl font-serif text-white mb-3">Como citar</h2>
-            <p class="text-slate-300 text-sm font-light leading-relaxed bg-white/5 border border-white/10 rounded-xl p-4">{citacao.format(titulo="Taxas de financiamento imobiliário por banco (dados do Banco Central)")}</p>
+            {_html_citar(url, citacao.format(titulo="Taxas de financiamento imobiliário por banco (dados do Banco Central)"))}
             <p class="text-slate-400 text-xs mt-3">Dados sob licença <a href="{LICENCA_DADOS_URL}" rel="noopener" class="underline">{LICENCA_DADOS}</a>: pode usar e adaptar, citando a fonte com link.</p>
         </section>
         <section class="mt-10">
             <h2 class="text-2xl font-serif text-white mb-3">Contato</h2>
             <p class="text-slate-300 text-sm font-light">E-mail: <a href="mailto:contato@datalabglobal.com" class="text-emerald-400 underline">contato@datalabglobal.com</a></p>
         </section>
-        <p class="mt-10 text-center text-xs text-slate-400"><a href="comparador-bancos" class="text-emerald-400 underline">Comparativo de taxas</a> · <a href="financiamento-imobiliario" class="text-emerald-400 underline">Parcela por valor e prazo</a> · <a href="incorporar" class="text-emerald-400 underline">Simulador para o seu site</a></p>
+        <p class="mt-10 text-center text-xs text-slate-400"><a href="analise-do-mes" class="text-emerald-400 underline">Análise do mês</a> · <a href="comparador-bancos" class="text-emerald-400 underline">Comparativo de taxas</a> · <a href="financiamento-imobiliario" class="text-emerald-400 underline">Parcela por valor e prazo</a> · <a href="incorporar" class="text-emerald-400 underline">Simulador para o seu site</a></p>
     </main>
     {_footer_comparacao()}
 </body>
@@ -4104,6 +4105,131 @@ def gerar_pagina_imprensa(pasta_saida, dominio, data_ultima_atualizacao, taxas_a
         f.write(corrigir_concordancia(html_pagina))
     return [url]
 
+
+
+def _html_citar(url, texto_citacao):
+    """Bloco "Como citar": o texto e dois botões (copiar a citação; copiar o link em HTML, que é o que vira
+    backlink de verdade). Funciona sem biblioteca; se a cópia automática falhar, avisa e o texto segue selecionável."""
+    import html as _h
+    link_html = f'<a href="{url}">Datalab Global</a>'
+    botao = 'class="px-3 py-2 rounded-lg border border-white/10 text-emerald-400 text-xs"'
+    return f"""<div data-citar>
+            <p class="text-slate-300 text-sm font-light leading-relaxed bg-white/5 border border-white/10 rounded-xl p-4">{texto_citacao}</p>
+            <div class="flex flex-wrap gap-3 mt-3">
+                <button type="button" data-copiar="{_h.escape(texto_citacao, quote=True)}" {botao}>Copiar citação</button>
+                <button type="button" data-copiar="{_h.escape(link_html, quote=True)}" {botao}>Copiar link em HTML</button>
+            </div>
+            <p class="text-slate-400 text-xs mt-2" role="status" data-citar-status></p>
+            <script>document.addEventListener('click',function(e){{var b=e.target.closest('[data-copiar]');if(!b)return;var t=b.getAttribute('data-copiar'),s=b.closest('[data-citar]').querySelector('[data-citar-status]');function ok(){{s.textContent='Copiado.';}}function falha(){{s.textContent='Não foi possível copiar automaticamente: selecione o texto e copie.';}}if(navigator.clipboard&&window.isSecureContext){{navigator.clipboard.writeText(t).then(ok,falha);}}else{{var a=document.createElement('textarea');a.value=t;a.setAttribute('readonly','');a.style.position='fixed';a.style.opacity='0';document.body.appendChild(a);a.select();try{{document.execCommand('copy')?ok():falha();}}catch(x){{falha();}}document.body.removeChild(a);}}}});</script>
+        </div>"""
+
+
+def gerar_analise_do_mes(pasta_saida, dominio, data_ultima_atualizacao):
+    """/analise-do-mes: o último mês do Banco Central frente ao mesmo mês do ano anterior, banco a banco.
+    Tudo calculado da série (muda sozinho a cada atualização). Sem 12 meses de série, não gera a página."""
+    historico = carregar_historico()
+    if not historico:
+        return []
+    meses = sorted({r["inicio_periodo"] for r in historico})
+    ult = meses[-1]
+    ant = f"{int(ult[:4]) - 1}{ult[4:]}"
+    if ant not in meses:
+        return []
+    atual = {r["banco"]: r["taxa_aa"] for r in historico if r["inicio_periodo"] == ult}
+    antes = {r["banco"]: r["taxa_aa"] for r in historico if r["inicio_periodo"] == ant}
+    linhas = [{"banco": b, "exib": nome_exibicao(b), "antes": antes[b], "atual": atual[b], "var": atual[b] - antes[b]}
+              for b in atual if b in antes]
+    if len(linhas) < 3:
+        return []
+    linhas.sort(key=lambda x: x["atual"])
+    n = len(linhas)
+    quedas = [x for x in linhas if x["var"] < 0]
+    altas = [x for x in linhas if x["var"] > 0]
+    mes_nome, ano, ano_ant = MESES_PT[int(ult[5:7]) - 1], ult[:4], str(int(ult[:4]) - 1)
+    lo, hi = linhas[0], linhas[-1]
+    maior_queda = min(linhas, key=lambda x: x["var"])
+    maior_alta = max(linhas, key=lambda x: x["var"])
+    media_atual = sum(x["atual"] for x in linhas) / n
+    media_antes = sum(x["antes"] for x in linhas) / n
+    fatos = [
+        f"Em {mes_nome} de {ano}, a taxa média contratada foi de {_pct2(lo['atual'])}% ao ano em {lo['exib']}, a menor entre os {n} bancos com dado do Banco Central, e de {_pct2(hi['atual'])}% em {hi['exib']}, a maior.",
+        f"Frente a {mes_nome} de {ano_ant}, {len(quedas)} de {n} bancos tiveram taxa média menor e {len(altas)}, maior"
+        + ((f"; {n - len(quedas) - len(altas)} ficou igual" if n - len(quedas) - len(altas) == 1 else f"; {n - len(quedas) - len(altas)} ficaram iguais") if n - len(quedas) - len(altas) else "") + ".",
+    ]
+    if maior_queda["var"] < 0:
+        fatos.append(f"A maior queda foi a de {maior_queda['exib']}: de {_pct2(maior_queda['antes'])}% para {_pct2(maior_queda['atual'])}% ao ano ({_sinal_pp(maior_queda['var'])} ponto percentual).")
+    if maior_alta["var"] > 0:
+        fatos.append(f"A maior alta foi a de {maior_alta['exib']}: de {_pct2(maior_alta['antes'])}% para {_pct2(maior_alta['atual'])}% ao ano ({_sinal_pp(maior_alta['var'])} ponto percentual).")
+    fatos.append(f"A média simples dos {n} bancos foi de {_pct2(media_antes)}% para {_pct2(media_atual)}% ao ano ({_sinal_pp(media_atual - media_antes)} ponto percentual).")
+    fatos_html = "".join(f'<li class="mb-3">{f}</li>' for f in fatos)
+    teto = max(x["atual"] for x in linhas) or 1
+    corpo = ""
+    for x in linhas:
+        cor = "text-emerald-400" if x["var"] < 0 else "text-rose-400" if x["var"] > 0 else "text-slate-400"
+        larg = max(4, round(100 * x["atual"] / teto))
+        corpo += (f'<tr class="border-t border-white/5"><th scope="row" class="px-2 py-2 text-left font-medium text-white whitespace-nowrap">{x["exib"]}</th>'
+                  f'<td class="px-2 py-2 text-right whitespace-nowrap">{_pct2(x["antes"])}</td>'
+                  f'<td class="px-2 py-2 text-right whitespace-nowrap">{_pct2(x["atual"])}</td>'
+                  f'<td class="px-2 py-2" style="width:25%"><div class="w-full h-2 rounded-full bg-white/5"><div class="h-2 rounded-full bg-emerald-500" style="width:{larg}%"></div></div></td>'
+                  f'<td class="px-2 py-2 text-right font-bold whitespace-nowrap {cor}">{_sinal_pp(x["var"])} p.p.</td></tr>')
+    url = f"{dominio}/analise-do-mes"
+    data_br = date.fromisoformat(data_ultima_atualizacao).strftime('%d/%m/%Y')
+    citacao = f"Datalab Global. Análise do mês: juros do financiamento imobiliário por banco (dados do Banco Central). {url}, acesso em AAAA-MM-DD."
+    titulo = "Análise do mês: juros do financiamento imobiliário por banco | Datalab Global"
+    meta = (f"Em {mes_nome} de {ano}, a taxa média contratada no financiamento imobiliário foi de {_pct2(lo['atual'])}% a {_pct2(hi['atual'])}% ao ano. "
+            f"Veja, banco a banco, a variação frente a {mes_nome} de {ano_ant}, com dados do Banco Central.")
+    schema_bc = json.dumps({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Datalab Global", "item": f"{dominio}/"},
+        {"@type": "ListItem", "position": 2, "name": "Análise do mês", "item": url}]}, ensure_ascii=False)
+    schema_page = json.dumps({"@context": "https://schema.org", "@type": "WebPage", "url": url, "name": "Análise do mês: juros do financiamento imobiliário por banco",
+        "dateModified": data_ultima_atualizacao, "isBasedOn": FONTE_BACEN_URL,
+        "about": {"@type": "Organization", "name": "Datalab Global", "url": "https://www.datalabglobal.com/"}}, ensure_ascii=False)
+    html_pagina = f"""<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+{render_head_boilerplate(titulo, meta, url, dominio, [schema_bc, schema_page])}
+</head>
+<body class="antialiased flex flex-col min-h-screen">
+    {_nav_comparacao()}
+    <header class="py-12 md:py-16 relative z-10 text-center">
+        <h1 class="text-3xl md:text-5xl font-serif text-white mb-4 leading-tight px-4">Análise do mês: juros do financiamento imobiliário por banco</h1>
+        <p class="text-slate-400 text-base md:text-lg font-light tracking-wide max-w-3xl mx-auto px-4">{mes_nome.capitalize()} de {ano} frente a {mes_nome} de {ano_ant}. Atualizado em {data_br}.</p>
+    </header>
+    <main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 flex-grow w-full relative z-10">
+        <section>
+            <h2 class="text-2xl font-serif text-white mb-3">O que mudou em 12 meses</h2>
+            <ul class="text-slate-300 text-sm font-light leading-relaxed list-disc list-inside">{fatos_html}</ul>
+            <p class="text-slate-400 text-xs mt-2">Calculado automaticamente da série do Banco Central; muda a cada atualização. São médias do que foi efetivamente contratado, não ofertas: a sua proposta pode ser diferente.</p>
+        </section>
+        <section class="mt-10">
+            <h2 class="text-2xl font-serif text-white mb-3">Banco a banco</h2>
+            <p class="text-slate-400 text-xs font-light leading-relaxed mb-4">Taxa média contratada, em % ao ano. A barra mostra a taxa de {mes_nome} de {ano} em relação à maior do mês.</p>
+            <div class="overflow-x-auto rounded-xl border border-white/10">
+                <table class="w-full text-xs text-slate-300">
+                    <caption class="sr-only">Taxa média de juros do financiamento imobiliário por banco, {mes_nome} de {ano_ant} e {mes_nome} de {ano}</caption>
+                    <thead class="text-[10px] uppercase tracking-widest text-slate-400"><tr><th scope="col" class="px-2 py-2 text-left font-medium">Banco</th><th scope="col" class="px-2 py-2 text-right font-medium whitespace-nowrap">{_rotulo_mes(ant)}</th><th scope="col" class="px-2 py-2 text-right font-medium whitespace-nowrap">{_rotulo_mes(ult)}</th><th scope="col" class="px-2 py-2 text-left font-medium"><span class="sr-only">Comparação</span></th><th scope="col" class="px-2 py-2 text-right font-medium whitespace-nowrap">Variação</th></tr></thead>
+                    <tbody>{corpo}</tbody>
+                </table>
+            </div>
+            <p class="text-slate-400 text-xs font-light mt-3">BRB e Poupex não constam: o Banco Central não os cobre nesta modalidade.</p>
+        </section>
+        <section class="mt-10">
+            <h2 class="text-2xl font-serif text-white mb-3">Fonte e método</h2>
+            <p class="text-slate-300 text-sm font-light leading-relaxed">Os dados vêm do relatório de taxas de juros por instituição financeira do <a href="{FONTE_BACEN_URL}" rel="noopener" class="text-emerald-400 underline">Banco Central do Brasil</a> (modalidade 903201: aquisição de imóveis, pessoa física, taxa pré-fixada). A série completa está em <a href="dados-abertos" class="text-emerald-400 underline">dados abertos</a> (CSV e JSON, licença {LICENCA_DADOS}); o cálculo está em <a href="metodologia" class="text-emerald-400 underline">metodologia</a>.</p>
+        </section>
+        <section class="mt-10">
+            <h2 class="text-2xl font-serif text-white mb-3">Como citar</h2>
+            {_html_citar(url, citacao)}
+            <p class="text-slate-400 text-xs mt-3">Dados sob licença <a href="{LICENCA_DADOS_URL}" rel="noopener" class="underline">{LICENCA_DADOS}</a>: pode usar e adaptar, citando a fonte com link.</p>
+        </section>
+        <p class="mt-10 text-center text-xs text-slate-400"><a href="comparador-bancos" class="text-emerald-400 underline">Comparativo de taxas</a> · <a href="imprensa" class="text-emerald-400 underline">Imprensa</a> · <a href="taxas-financiamento-imobiliario" class="text-emerald-400 underline">Taxas mês a mês</a></p>
+    </main>
+    {_footer_comparacao()}
+</body>
+</html>"""
+    with open(os.path.join(pasta_saida, "analise-do-mes.html"), "w", encoding="utf-8") as f:
+        f.write(corrigir_concordancia(html_pagina))
+    return [url]
 
 
 def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
