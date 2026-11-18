@@ -1,10 +1,10 @@
 # Taxas médias de juros do financiamento imobiliário por banco
 
-Taxa média mensal de juros efetivamente contratada no financiamento imobiliário (aquisição de imóveis, pessoa física, taxa pré-fixada), por banco, em % ao ano, segundo o Banco Central do Brasil. Cobre 24 meses (out/24 a set/26) e 9 instituições.
+Taxa média mensal de juros efetivamente contratada no financiamento imobiliário (aquisição de imóveis, pessoa física, taxa pré-fixada), por banco, em % ao ano, segundo o Banco Central do Brasil. Cobre 24 meses (nov/24 a out/26) e 9 instituições.
 
 - **Fonte original:** [Banco Central do Brasil](https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201), modalidade 903201.
 - **Licença:** CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/deed.pt-br). Pode usar, copiar e adaptar, citando a fonte.
-- **Atualização:** mensal. Última atualização: 2026-11-15.
+- **Atualização:** mensal. Última atualização: 2026-11-18.
 - **DOI (Zenodo):** https://doi.org/10.5281/zenodo.24295616 (aponta sempre para a versão mais recente).
 - **Arquivos:** `taxas-financiamento-imobiliario.csv`, `taxas-financiamento-imobiliario.json`, `datapackage.json`.
 - **Colunas:** `periodo_inicio`, `periodo_fim`, `instituicao`, `taxa_juros_aa_pct`.

@@ -35,8 +35,10 @@ def test_analise_do_mes_bate_com_a_serie_do_banco_central():
     html = _ler("analise-do-mes.html")
     tabela = re.search(r"<tbody>(.*?)</tbody>", html, re.S).group(1)
     achados = 0
+    # a página compara só bancos com dado nos DOIS meses (ex.: o Banco Inter não tem out/2025 na série do BCB)
+    nos_dois = {r["banco"] for r in linhas if r["inicio_periodo"] == ult} & {r["banco"] for r in linhas if r["inicio_periodo"] == ant}
     for r in linhas:
-        if r["inicio_periodo"] not in (ult, ant):
+        if r["inicio_periodo"] not in (ult, ant) or r["banco"] not in nos_dois:
             continue
         v = f"{float(r['taxa_aa']):.2f}".replace(".", ",")
         # a célula do valor existe na linha do banco (nome de exibição varia: confere só a presença do número)

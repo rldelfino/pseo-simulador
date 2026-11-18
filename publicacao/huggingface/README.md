@@ -16,7 +16,7 @@ tags:
 
 # Taxas médias de juros do financiamento imobiliário por banco (BACEN)
 
-Taxa média mensal de juros efetivamente contratada no financiamento imobiliário (aquisição de imóveis, pessoa física, taxa pré-fixada), por banco, em % ao ano, segundo o Banco Central do Brasil. Cobre 24 meses (out/24 a set/26) e 9 instituições.
+Taxa média mensal de juros efetivamente contratada no financiamento imobiliário (aquisição de imóveis, pessoa física, taxa pré-fixada), por banco, em % ao ano, segundo o Banco Central do Brasil. Cobre 24 meses (nov/24 a out/26) e 9 instituições.
 
 ## Colunas
 - `periodo_inicio`, `periodo_fim`: primeiro e último dia do mês de referência.
@@ -24,7 +24,7 @@ Taxa média mensal de juros efetivamente contratada no financiamento imobiliári
 - `taxa_juros_aa_pct`: taxa média efetivamente contratada, em % ao ano.
 
 ## Cobertura
-outubro de 2024 a setembro de 2026; 9 instituições: Banco Inter, Banco do Brasil, Banrisul, Bradesco, Caixa, Itaú, Santander, Sicoob, Sicredi.
+novembro de 2024 a outubro de 2026; 9 instituições: Banco Inter, Banco do Brasil, Banrisul, Bradesco, Caixa, Itaú, Santander, Sicoob, Sicredi.
 
 ## Fonte e licença
 Banco Central do Brasil (API pública de taxas de juros, modalidade 903201). Licença CC BY 4.0: cite "Datalab Global (https://simulador.datalabglobal.com/dados-abertos)". Atualizado todo mês.
