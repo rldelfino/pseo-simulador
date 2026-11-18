@@ -2,63 +2,9 @@
  "titulo": "Taxas médias de juros do financiamento imobiliário por banco (BACEN)",
  "fonte": "https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201",
  "licenca": "CC BY 4.0",
- "atualizado_em": "2026-11-15",
+ "atualizado_em": "2026-11-18",
  "organizacao": "Datalab Global",
  "dados": [
-  {
-   "periodo_inicio": "2024-10-01",
-   "periodo_fim": "2024-10-31",
-   "instituicao": "Banco Inter",
-   "taxa_juros_aa_pct": 11.19
-  },
-  {
-   "periodo_inicio": "2024-10-01",
-   "periodo_fim": "2024-10-31",
-   "instituicao": "Banco do Brasil",
-   "taxa_juros_aa_pct": 10.44
-  },
-  {
-   "periodo_inicio": "2024-10-01",
-   "periodo_fim": "2024-10-31",
-   "instituicao": "Banrisul",
-   "taxa_juros_aa_pct": 10.45
-  },
-  {
-   "periodo_inicio": "2024-10-01",
-   "periodo_fim": "2024-10-31",
-   "instituicao": "Bradesco",
-   "taxa_juros_aa_pct": 10.66
-  },
-  {
-   "periodo_inicio": "2024-10-01",
-   "periodo_fim": "2024-10-31",
-   "instituicao": "Caixa",
-   "taxa_juros_aa_pct": 10.23
-  },
-  {
-   "periodo_inicio": "2024-10-01",
-   "periodo_fim": "2024-10-31",
-   "instituicao": "Itaú",
-   "taxa_juros_aa_pct": 10.48
-  },
-  {
-   "periodo_inicio": "2024-10-01",
-   "periodo_fim": "2024-10-31",
-   "instituicao": "Santander",
-   "taxa_juros_aa_pct": 11.18
-  },
-  {
-   "periodo_inicio": "2024-10-01",
-   "periodo_fim": "2024-10-31",
-   "instituicao": "Sicoob",
-   "taxa_juros_aa_pct": 11.35
-  },
-  {
-   "periodo_inicio": "2024-10-01",
-   "periodo_fim": "2024-10-31",
-   "instituicao": "Sicredi",
-   "taxa_juros_aa_pct": 14.89
-  },
   {
    "periodo_inicio": "2024-11-01",
    "periodo_fim": "2024-11-30",
@@ -1258,6 +1204,60 @@
    "periodo_fim": "2026-09-30",
    "instituicao": "Sicredi",
    "taxa_juros_aa_pct": 11.56
+  },
+  {
+   "periodo_inicio": "2026-10-01",
+   "periodo_fim": "2026-10-31",
+   "instituicao": "Banco Inter",
+   "taxa_juros_aa_pct": 12.97
+  },
+  {
+   "periodo_inicio": "2026-10-01",
+   "periodo_fim": "2026-10-31",
+   "instituicao": "Banco do Brasil",
+   "taxa_juros_aa_pct": 14.42
+  },
+  {
+   "periodo_inicio": "2026-10-01",
+   "periodo_fim": "2026-10-31",
+   "instituicao": "Banrisul",
+   "taxa_juros_aa_pct": 10.49
+  },
+  {
+   "periodo_inicio": "2026-10-01",
+   "periodo_fim": "2026-10-31",
+   "instituicao": "Bradesco",
+   "taxa_juros_aa_pct": 12.27
+  },
+  {
+   "periodo_inicio": "2026-10-01",
+   "periodo_fim": "2026-10-31",
+   "instituicao": "Caixa",
+   "taxa_juros_aa_pct": 11.97
+  },
+  {
+   "periodo_inicio": "2026-10-01",
+   "periodo_fim": "2026-10-31",
+   "instituicao": "Itaú",
+   "taxa_juros_aa_pct": 12.22
+  },
+  {
+   "periodo_inicio": "2026-10-01",
+   "periodo_fim": "2026-10-31",
+   "instituicao": "Santander",
+   "taxa_juros_aa_pct": 12.32
+  },
+  {
+   "periodo_inicio": "2026-10-01",
+   "periodo_fim": "2026-10-31",
+   "instituicao": "Sicoob",
+   "taxa_juros_aa_pct": 10.93
+  },
+  {
+   "periodo_inicio": "2026-10-01",
+   "periodo_fim": "2026-10-31",
+   "instituicao": "Sicredi",
+   "taxa_juros_aa_pct": 12.23
   }
  ]
 }

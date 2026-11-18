@@ -1,52 +1,52 @@
 {
   "BRB": {
-    "atualizado_em": "2026-11-15",
+    "atualizado_em": "2026-11-18",
     "fonte": "https://larya.com.br/blog/qual-banco-tem-a-menor-taxa-para-financiamento-imobiliario-em-2026/",
     "taxa": 11.36
   },
   "Banco Inter": {
-    "atualizado_em": "2026-11-15",
+    "atualizado_em": "2026-11-18",
     "fonte": "https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201",
-    "taxa": 12.91
+    "taxa": 12.97
   },
   "Banco do Brasil": {
-    "atualizado_em": "2026-11-15",
+    "atualizado_em": "2026-11-18",
     "fonte": "https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201",
-    "taxa": 14.49
+    "taxa": 14.42
   },
   "Banrisul": {
-    "atualizado_em": "2026-11-15",
+    "atualizado_em": "2026-11-18",
     "fonte": "https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201",
-    "taxa": 9.39
+    "taxa": 10.49
   },
   "Bradesco": {
-    "atualizado_em": "2026-11-15",
+    "atualizado_em": "2026-11-18",
     "fonte": "https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201",
-    "taxa": 12.24
+    "taxa": 12.27
   },
   "Caixa": {
-    "atualizado_em": "2026-11-15",
+    "atualizado_em": "2026-11-18",
     "fonte": "https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201",
-    "taxa": 12.05
+    "taxa": 11.97
   },
   "Itau": {
-    "atualizado_em": "2026-11-15",
+    "atualizado_em": "2026-11-18",
     "fonte": "https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201",
-    "taxa": 12.14
+    "taxa": 12.22
   },
   "Santander": {
-    "atualizado_em": "2026-11-15",
+    "atualizado_em": "2026-11-18",
     "fonte": "https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201",
-    "taxa": 12.31
+    "taxa": 12.32
   },
   "Sicoob": {
-    "atualizado_em": "2026-11-15",
+    "atualizado_em": "2026-11-18",
     "fonte": "https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201",
-    "taxa": 10.79
+    "taxa": 10.93
   },
   "Sicredi": {
-    "atualizado_em": "2026-11-15",
+    "atualizado_em": "2026-11-18",
     "fonte": "https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201",
-    "taxa": 11.56
+    "taxa": 12.23
   }
 }
