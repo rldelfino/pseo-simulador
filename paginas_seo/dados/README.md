@@ -4,7 +4,7 @@ Taxa média mensal de juros efetivamente contratada no financiamento imobiliári
 
 - **Fonte original:** [Banco Central do Brasil](https://www.bcb.gov.br/estatisticas/reporttxjuros?codigoSegmento=1&codigoModalidade=903201), modalidade 903201.
 - **Licença:** CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/deed.pt-br). Pode usar, copiar e adaptar, citando a fonte.
-- **Atualização:** mensal. Última atualização: 2026-11-18.
+- **Atualização:** mensal. Última atualização: 2026-11-20.
 - **DOI (Zenodo):** https://doi.org/10.5281/zenodo.24295616 (aponta sempre para a versão mais recente).
 - **Arquivos:** `taxas-financiamento-imobiliario.csv`, `taxas-financiamento-imobiliario.json`, `datapackage.json`.
 - **Colunas:** `periodo_inicio`, `periodo_fim`, `instituicao`, `taxa_juros_aa_pct`.
