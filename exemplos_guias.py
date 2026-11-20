@@ -21,7 +21,7 @@ def _pct(v):
 def _sac_com_extra(saldo, prazo, taxa_aa, mes_extra, extra, modo):
     """SAC com um pagamento extra logo após a parcela `mes_extra`. modo 'prazo' mantém a amortização mensal e
     encurta o contrato; 'parcela' mantém o prazo e reduz as parcelas seguintes. Devolve (juros_totais, meses, 1ª parcela depois)."""
-    i = (taxa_aa / 100) / 12
+    i = (1 + taxa_aa / 100) ** (1 / 12) - 1
     amort = saldo / prazo
     juros = 0.0
     for _ in range(mes_extra):
