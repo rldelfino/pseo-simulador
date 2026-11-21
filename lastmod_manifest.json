@@ -1,19 +1,19 @@
 {
  "guia:aprenda-amortizacao-extraordinaria": {
-  "hash": "affc7b2a62c417946847ce099e4bad5fc24537646ea1dabdb2089bc9f6eb8e3a",
-  "lastmod": "2026-11-14T01:37:32+00:00"
+  "hash": "0aed89756097cef854e010db8d5b307734c0991c53b3d57c0ae3389f2c9773fd",
+  "lastmod": "2026-11-20T20:44:55+00:00"
  },
  "guia:aprenda-cet-iof-financiamento-imobiliario": {
-  "hash": "3728594dfd8d804b50c11e564a081925e8ab7edee0889cc2c57cffa66bf106da",
-  "lastmod": "2026-11-14T01:37:32+00:00"
+  "hash": "678af1f868271b0b0f4f4845e40180a33553bc9be9611bf631f1e49d2791ff70",
+  "lastmod": "2026-11-20T20:44:55+00:00"
  },
  "guia:aprenda-fgts-financiamento-imobiliario": {
-  "hash": "b4a545ee30c63d9f4db96e888fe22179fef68586eebf6b97441a625891c75ce5",
-  "lastmod": "2026-11-15T02:15:44+00:00"
+  "hash": "cf2cbd1196e5aa15ffe39bf684a220524698870b80140e4ac73403319e44bb6a",
+  "lastmod": "2026-11-20T20:44:55+00:00"
  },
  "guia:aprenda-financiamento-x-consorcio-imobiliario": {
-  "hash": "9406f0d6dfc5e0a17b78ed20eeea91d832bea08d0e265ab13d763d369cd324c0",
-  "lastmod": "2026-11-15T02:15:44+00:00"
+  "hash": "0066d41c037dacc1a0b203d7789b78ded7264f2c9bd3bb8523394687b9fe421e",
+  "lastmod": "2026-11-20T20:44:55+00:00"
  },
  "guia:aprenda-imovel-na-planta-incc-juros-de-obra": {
   "hash": "eab5e7228d94bce9ad57265cffb60a23a3529899df5a940ac49f5ba9b8be2346",
@@ -24,28 +24,28 @@
   "lastmod": "2026-11-08T15:10:30+00:00"
  },
  "guia:aprenda-ltv-financiamento-imobiliario": {
-  "hash": "ae8cb008c12abfda6b64c9cfa273e02abc5762300280e5994c6228cd1673a81c",
-  "lastmod": "2026-11-14T01:37:32+00:00"
+  "hash": "1f1521dc427854a1fd65ecfc1e4a6bc0e457503d057f5714df95b4ee952bea88",
+  "lastmod": "2026-11-20T20:44:55+00:00"
  },
  "guia:aprenda-minha-casa-minha-vida-faixas-limites": {
-  "hash": "f74786a88adf359d49fdfbb6713546eb054306ead34d6ad8a437f6d25e10c607",
-  "lastmod": "2026-11-15T02:15:44+00:00"
+  "hash": "0004aab389f1d1afd84e4da6444b1e7f8d97eb9c1049362352c5946c84963ac4",
+  "lastmod": "2026-11-20T20:44:55+00:00"
  },
  "guia:aprenda-passo-a-passo-financiar-imovel-documentos": {
-  "hash": "5ffa6b08b11aecd3384408ef3389da16ea6ac5d59712ea0f79639d9036c005f8",
-  "lastmod": "2026-11-15T02:15:44+00:00"
+  "hash": "97e6f1b5788516ff71652ac7d3dd6ea3a6f08f4988f2f6b964c2c0e83a409536",
+  "lastmod": "2026-11-20T20:44:55+00:00"
  },
  "guia:aprenda-portabilidade-financiamento-imobiliario": {
-  "hash": "d5dc4a5e1a5535f16ae1be0738f57a12fee30cdb24c9df6a3220af2cd20598d9",
-  "lastmod": "2026-11-08T15:10:30+00:00"
+  "hash": "6a2ec7a349057aa1ab2dc8f475a438f6113bd7362189727df44c66fb0ca1c202",
+  "lastmod": "2026-11-20T20:44:55+00:00"
  },
  "guia:aprenda-sac-x-price": {
-  "hash": "ffed00f881f6f440dfdfe036a3fc09e18805621fb9633c4cdf535e557cf8ded2",
-  "lastmod": "2026-11-14T01:37:32+00:00"
+  "hash": "a142cb9dec356188e0fa16dbe3b1a03916bcf376b8b2d2c518c284bd0edec69b",
+  "lastmod": "2026-11-20T20:44:55+00:00"
  },
  "guia:aprenda-seguro-mip-dfi-financiamento-imobiliario": {
-  "hash": "5219897640d1405c6ef52a66058f52335e445de081fd3a7746198798173c8ae4",
-  "lastmod": "2026-11-08T15:10:30+00:00"
+  "hash": "62d57644843a36b46e65b7f8ba282793b4f5c456d92c034f531f34caf084474e",
+  "lastmod": "2026-11-20T20:44:55+00:00"
  },
  "url:https://simulador.datalabglobal.com/": {
   "hash": "97c79ca58779464fcaca56f94432699eef46a0cdd64bfc2d44261b97adc5dee3",
@@ -60,20 +60,20 @@
   "lastmod": "2026-11-20T16:49:01+00:00"
  },
  "url:https://simulador.datalabglobal.com/aprenda-amortizacao-extraordinaria": {
-  "hash": "4557917ee010643e5b41d19998352e7906dfbf4ca96df929eb2f3443cc2c4a83",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "c62c14ef25f87e49a00885b60492d4dc43e167d1df844b8f488aff59ebca22e7",
+  "lastmod": "2026-11-20T20:45:06+00:00"
  },
  "url:https://simulador.datalabglobal.com/aprenda-cet-iof-financiamento-imobiliario": {
-  "hash": "58c555816b76d6e39fc529b4d09c258db1099abd9340d5fb11d88e0054dc44b4",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "1dc904b282654f121031114af977327212368f3dc9f1300ee9a8a75703e66553",
+  "lastmod": "2026-11-20T20:45:06+00:00"
  },
  "url:https://simulador.datalabglobal.com/aprenda-fgts-financiamento-imobiliario": {
-  "hash": "83e3e1f70d9c2f7b556c1c178a2c6e55c0818ed8d0e858099e7d86a2d4bc7fd5",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "c0f77acbe83848ddc09423cbc28368b511f03a82a667a8dd0bd89ec3946d21ce",
+  "lastmod": "2026-11-20T20:45:06+00:00"
  },
  "url:https://simulador.datalabglobal.com/aprenda-financiamento-x-consorcio-imobiliario": {
-  "hash": "bd805a95fb490f4e3a118435a9056b6c4483c24f27dd37949577cc16bad1dd54",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "f1b3a5b4e53fcbdaaafc834125db789f27cf27d7f254eb26aa2b7709710ea466",
+  "lastmod": "2026-11-20T20:45:06+00:00"
  },
  "url:https://simulador.datalabglobal.com/aprenda-imovel-na-planta-incc-juros-de-obra": {
   "hash": "e1574a66729d4c5e18aa59b7fe3111a3125341a21c324a6ffa992a5d37a886a9",
@@ -84,520 +84,520 @@
   "lastmod": "2026-11-20T16:49:01+00:00"
  },
  "url:https://simulador.datalabglobal.com/aprenda-ltv-financiamento-imobiliario": {
-  "hash": "5230e583ccd07ddda48a337685c1c72d46c5f603aefd16396b1e489a55a0b9bf",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "218c3787a4c58ea8df74f6d8e6593e806f9b1366f1f48ec5ba715617b5f12782",
+  "lastmod": "2026-11-20T20:45:06+00:00"
  },
  "url:https://simulador.datalabglobal.com/aprenda-minha-casa-minha-vida-faixas-limites": {
-  "hash": "2cbea3e5deed63059aff68d11978e277430d8612a36f86ce450a42efe2799337",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "ea36ec2c4a4b048ac08cc917d440fb39bbb8262f465fba35a1bc81918dade0ba",
+  "lastmod": "2026-11-20T20:45:06+00:00"
  },
  "url:https://simulador.datalabglobal.com/aprenda-passo-a-passo-financiar-imovel-documentos": {
-  "hash": "79127dd8aa127ab51b690b17a7786769e2aabcc11fedcd017b0d113b15595150",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "60abcff08d32ab68aad6c7417ed3a878e2f5ffb33d5d6cc0c93c88d1780b66b7",
+  "lastmod": "2026-11-20T20:45:06+00:00"
  },
  "url:https://simulador.datalabglobal.com/aprenda-portabilidade-financiamento-imobiliario": {
-  "hash": "f86f9daf66c2a19a3178495283218dff0cd2e38be3c0ec7e7bbb1b2b697cbaeb",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "00b0f5302dcd57125b4ffe475a8c3e7ba36ee286adade1f54969a763fa39703c",
+  "lastmod": "2026-11-20T20:45:06+00:00"
  },
  "url:https://simulador.datalabglobal.com/aprenda-sac-x-price": {
-  "hash": "682dbc00abc8b2c141d9485ad5c43f869f4a8cd3bd6db9faf6d78017cba517b2",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "9047eae53d2df3c93b858b6bd467c675ae33a6b05db08766e241a0c71a2091f8",
+  "lastmod": "2026-11-20T20:45:06+00:00"
  },
  "url:https://simulador.datalabglobal.com/aprenda-seguro-mip-dfi-financiamento-imobiliario": {
-  "hash": "9969ce56d9c70f0e43cae871dc24111609a35d1e9a0fd925f2c42e8a5b778dda",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "2e4eaf47775b5114af8044382494fc4be2a3949c2583ac1a28dda1d9b9fc6dda",
+  "lastmod": "2026-11-20T20:45:06+00:00"
  },
  "url:https://simulador.datalabglobal.com/banco-banco-do-brasil": {
-  "hash": "c795b38bf400cefb0e043f61cc920e23ec0b35ef49c168b7431097e8317b5652",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "c7036be17e8e6d8af036fc59146f16a03a07fbc7af2fc942692b2ab59d204eeb",
+  "lastmod": "2026-11-20T20:44:55+00:00"
  },
  "url:https://simulador.datalabglobal.com/banco-banco-inter": {
-  "hash": "cc72b8afbca09d36026504930e4d72296511680dfe4af2c947e4e55610972d70",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "be29a891d8269c924a9a7e089e17024608f482f64467a7dce8f987620c6ca9ab",
+  "lastmod": "2026-11-20T20:44:56+00:00"
  },
  "url:https://simulador.datalabglobal.com/banco-banrisul": {
-  "hash": "b94910d5f97ddc84b32f5451bf0e751131874da86c052e8f67833ce9604f3bd3",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "fe6e8178d04bdc3ed1cb573a9cfc5afde973fd460bfb7dd7895d9fa7ecc8cce3",
+  "lastmod": "2026-11-20T20:44:56+00:00"
  },
  "url:https://simulador.datalabglobal.com/banco-bradesco": {
-  "hash": "e4b3fbe79824640f3fc801bee176bce9eba30f221a6fc7b899b9e9308c416e81",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "a5bbdf8c2d631b65df67155ba066b7e7b0f710085ef7ad5d3ebf212d50b8346a",
+  "lastmod": "2026-11-20T20:44:56+00:00"
  },
  "url:https://simulador.datalabglobal.com/banco-brb": {
-  "hash": "19421bdf99aec488f9fd1fc3d9b08e4177898519e1a8c64b15e61f0f611de472",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "722ee87c3639faa37fa895e06ffd23703c460077b25aa79b07159ed83e652f91",
+  "lastmod": "2026-11-20T20:44:55+00:00"
  },
  "url:https://simulador.datalabglobal.com/banco-caixa": {
-  "hash": "47f5a05ac66cdf2b5fd3e86bc77cc9c25bf146636c490208ef0bee6398cff23b",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "f241beb865a44e5c2e0da49d1b2caede7206365b7aceb2db8fc1e6c6f8399015",
+  "lastmod": "2026-11-20T20:44:55+00:00"
  },
  "url:https://simulador.datalabglobal.com/banco-itau": {
-  "hash": "3dfaae21522dd1d17209f3d14f2ddcd683191e36011331434500aa0298ca60fb",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "c3c5fd9487c1bb7a2b0ee368ed01d561011c2c33d223056d4b3f246477776568",
+  "lastmod": "2026-11-20T20:44:55+00:00"
  },
  "url:https://simulador.datalabglobal.com/banco-poupex": {
-  "hash": "104b237f31b33a17dc53c0b3cacb788e1cdb9bc00ec762a81ea9131d2ca6dbd5",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "f81efac7d5dd49df0e16eb0e973121e29778b24fc2a9b67337b6f4de3cdf57e6",
+  "lastmod": "2026-11-20T20:44:55+00:00"
  },
  "url:https://simulador.datalabglobal.com/banco-santander": {
-  "hash": "d8dcfa81d56a0690679ba02fa1080f89dceae9722f99214f40dde83ad86ffcdf",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "46aabc61c327b113848a93d6cabd3d8ed03e5b4bfbe503b3a640ab992197fd18",
+  "lastmod": "2026-11-20T20:44:55+00:00"
  },
  "url:https://simulador.datalabglobal.com/banco-sicoob": {
-  "hash": "e42ac033334717d1c01c98a8c91e2eff1f639030aecff10b550305be4b8c315c",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "8b4b7a4b3b17ac8527ba738f4a0f88da3e00099f0d75d6fb0349f66c4b4ebe53",
+  "lastmod": "2026-11-20T20:44:56+00:00"
  },
  "url:https://simulador.datalabglobal.com/banco-sicredi": {
-  "hash": "2556a7a65a1d6c672030b04cfc78d87e8ab40f22bae7d755b0fc41040cab6e4c",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "8ce8bfe611e41a9fbfd63d75fb5597ad0606f7dcf34298bfbb9a63f0e9bb5a78",
+  "lastmod": "2026-11-20T20:44:56+00:00"
  },
  "url:https://simulador.datalabglobal.com/comparador-bancos": {
-  "hash": "01676aba096a79e13d5ed3e663cd564590f5309498406b2330e9f57c4b0b33b0",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "79403af23fff6ad0d2b84c13d0224f17e9e8e2034081e2b74ad735bba09ebd6e",
+  "lastmod": "2026-11-20T20:44:56+00:00"
  },
  "url:https://simulador.datalabglobal.com/dados-abertos": {
   "hash": "b586e02315eaf3400a09af16d3e593f62146ccc8ec82a79c3b196347885df2f5",
   "lastmod": "2026-11-20T16:49:01+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario": {
-  "hash": "9b872e434774a4d6fc0773680f0f8937152d981d218832ab67388601c5a95856",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "5c64e535f3040c784260d7476037b7fd4e27c2ebcf2dc3c2947a487293ce2f40",
+  "lastmod": "2026-11-20T20:45:03+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-1000-mil-10-anos": {
-  "hash": "e46935382ae7bbd6c50ff1b7aff4b26177e85a40c05c6fb0141c9a9a0e5b4545",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "ff50321789e21e0e4c7c8e8eba240c27b207fa4fc8bc7b3628bab192974f3791",
+  "lastmod": "2026-11-20T20:45:03+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-1000-mil-15-anos": {
-  "hash": "ab61c8bc1b16f9cdbd9c89763b9c54885a3111ca42f295989576bbfdedf80bc6",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "fedb80c409c86dab1ed4f086485daf92b31b80b1ba6c39144a5f8e4d36c7d2c7",
+  "lastmod": "2026-11-20T20:45:03+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-1000-mil-20-anos": {
-  "hash": "7f73fa881f13d6b8ab0df017d1ae95eef74b65d18b72c719395d31a4c0c1c51b",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "4d133bd4e53292bb59729857b0922436033370cd72f663f3354a1253c4baebae",
+  "lastmod": "2026-11-20T20:45:03+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-1000-mil-25-anos": {
-  "hash": "71c64944b8d128d7f8c3363a781387041f7f07c23afe81918c86144ca2db59ef",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "b8799a9c52b763d4e55a938152d84f790153e34aceacac05bae9c5691fc1e3eb",
+  "lastmod": "2026-11-20T20:45:03+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-1000-mil-30-anos": {
-  "hash": "e767e7b864ecfb0f56cc0792433067fa9f7ee4d0c89d70b772a4285cd3934be6",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "d3ae12efdb6ef62f5f7f4c19b0b7000889f56876ccf7bea699a171cccadb8d1f",
+  "lastmod": "2026-11-20T20:45:03+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-1000-mil-35-anos": {
-  "hash": "f87ddfb124d7f01ed8ea4b4923910cb23340ea11d7c41e5e717a92611d4043ee",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "82d53882245f76b616ddae9583f4d513334bbcee9cec8af929315bb1b9b7d0c9",
+  "lastmod": "2026-11-20T20:45:03+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-150-mil-10-anos": {
-  "hash": "6d60e680baddf2488095d50ce45f6e53114209d13ff7a6a9e4f6ee1bf30cf91f",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "f660f6a8e260a98c060d20d09e0493ce7cc60b27f53f4b0739d0744dcd1dbccc",
+  "lastmod": "2026-11-20T20:44:56+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-150-mil-15-anos": {
-  "hash": "72fa8be59ca29642cd1d83d6988bca2d152e91bc0a1607236a79c28006f56f79",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "42e322581ee89c603edeb45feb9a2237817ea89317014a6a61ab7cad4be89c10",
+  "lastmod": "2026-11-20T20:44:56+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-150-mil-20-anos": {
-  "hash": "8316ca24e6c8b93dca2ae5e5660763cce9567167f30ecb912310af002da279c9",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "0ba5caf9b20802f3ad98d057b60fc53cfb41b0212d355fd067ecd139d617adca",
+  "lastmod": "2026-11-20T20:44:56+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-150-mil-25-anos": {
-  "hash": "2596d545d79f463c9a2a0c3155d70ec2a9b03c97258a14fa05f38c1ea9486445",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "b73589d6473b74a1a2ba31d0925d2bd501c35454346fd016917625c1ac632d17",
+  "lastmod": "2026-11-20T20:44:56+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-150-mil-30-anos": {
-  "hash": "a21d1cc4441d67a5c9531aeda5618a12702e261fd92e215a26b8e4b087375198",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "e216927140c10c0101a6e026b417a7394f962867cc15ebb1e72926da4e3fdb2d",
+  "lastmod": "2026-11-20T20:44:56+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-150-mil-35-anos": {
-  "hash": "fe3127a8e2541ff434e83f1323afdfa03dc1a98e8b9b993b7b43ff5c0e3cac67",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "bba13a9d6a9f471fbf4325093999906fc359f664748983ebd0055f761541a4b7",
+  "lastmod": "2026-11-20T20:44:56+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-200-mil-10-anos": {
-  "hash": "f99048458ab0ac695aea1373dcae7126c5bcf64293168a182c36451764c3e37a",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "8e76d196dfb52e48b83a5c7b3f3d1331abf174b41810df05fae3a4e6dbf5b7e4",
+  "lastmod": "2026-11-20T20:44:56+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-200-mil-15-anos": {
-  "hash": "6f2e02eb1a854e79795a71959c3a4bfdcecd0fba44cb49e4677e5921798267ae",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "9f3a9cca0fb4219571714ef7699dc3462b647c9b15aee5fe8df705d42f478f7d",
+  "lastmod": "2026-11-20T20:44:56+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-200-mil-20-anos": {
-  "hash": "d2efd796d2b4850e0538c1be52398cfbb7162b4a81e98961fa882ca6d8b19633",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "2ce35f92518c27694422e600cacc397546b6c78374b3a86589a47127f802c976",
+  "lastmod": "2026-11-20T20:44:57+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-200-mil-25-anos": {
-  "hash": "8101ce96ab69f23eb30990987b295c0cf6ea3d6003f68929d7fed8c7669690b2",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "e63ff1d1e80e3c922ec883ddd86464c57df1c4e7600c00937cb83c1dbf37b004",
+  "lastmod": "2026-11-20T20:44:57+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-200-mil-30-anos": {
-  "hash": "d47914c27dd394825daa4233fc2540baa56736c5f65d054ac023cd1370de0af1",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "5fac9c1368618b7b6678333f411639b0b4883b1cf828b2480b0fb98fded5c785",
+  "lastmod": "2026-11-20T20:44:57+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-200-mil-35-anos": {
-  "hash": "cc336ed20be938bdbb55182b0af0e5a8bd46f84a635f66b5d7f6cec380e333eb",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "c5462c9418929b03f12e2f76c6c37c3f5e1fc104a9fcd2d8c5fdf98414aa2078",
+  "lastmod": "2026-11-20T20:44:57+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-250-mil-10-anos": {
-  "hash": "841de674e1a5890fba2e6e074757a886b1673f4764bec1edf4cd24e2ded11b69",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "4466754e0da9fabba47154b818469bf06afc4d9b3f499436539de37fbda55572",
+  "lastmod": "2026-11-20T20:44:57+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-250-mil-15-anos": {
-  "hash": "a49f1d18599e7411d153755e26a409215bffda0ca2c12053324223443235edab",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "98df05564f5f3f0298d44c9dc8c3a3362c802b659fdb46a6c8a51bf8a08403c1",
+  "lastmod": "2026-11-20T20:44:57+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-250-mil-20-anos": {
-  "hash": "8a7dcb4740b77b616169dc88c70698eb3bd73a6331e39332057deea8525ddb38",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "7a697e11537e3a78bd449954b5eb6a0461fb78c9b70c3aa6801d2d21ffda53da",
+  "lastmod": "2026-11-20T20:44:57+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-250-mil-25-anos": {
-  "hash": "8ce99ce3207e7951e96509a856aa07086e7b833599221361bb92d633e7b1a9af",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "b3c057a6e588d34a867361062148582ce7f060c0d9313742a1ae95232b0e55bb",
+  "lastmod": "2026-11-20T20:44:57+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-250-mil-30-anos": {
-  "hash": "8cecde11b9f2b19937ed5fb84b2d5eefab2d6a09ef343e1c680fc0e2b8c701bf",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "b5cf1c4fc0922ee0d6f0a4d2081332ccdf3953e9e5792501d99d00d2a8df5576",
+  "lastmod": "2026-11-20T20:44:57+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-250-mil-35-anos": {
-  "hash": "badbe837bc76fb3d8bab1689c0a7d78aea2281128d277ec3e90231ca5f338198",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "66686e0a01408660df2a02aafcc3c5987d51e8e5b96199ada5e6e8e46d4dbe6f",
+  "lastmod": "2026-11-20T20:44:57+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-300-mil-10-anos": {
-  "hash": "ee711a0ae1d5d1102f7f9d6d8c035c5c61da3332f061a5891f7403b3d911835e",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "ce780ef9345a87b867c5e29522d6d5b8970214c2343abe5fc589978beee29627",
+  "lastmod": "2026-11-20T20:44:57+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-300-mil-15-anos": {
-  "hash": "1118a2639939cd456aad8d95f72878a8355c2283817f5b21c3abab2e40be15fb",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "58919c4475585e415e0950371144c2abcda2491b286c025b2ca6030023067f8d",
+  "lastmod": "2026-11-20T20:44:57+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-300-mil-20-anos": {
-  "hash": "b0430fc23816fe90109b97c8d5981c880dd8c26dd28c43ab5fa75694e8b26265",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "0525aa4fff044305d1ab2872e88db073e133ee505c07eda3705312170489672d",
+  "lastmod": "2026-11-20T20:44:57+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-300-mil-25-anos": {
-  "hash": "63bcfe0e97d6d7180bb85e1dc74272738f20ca448545a1f998180c1c7b24b229",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "2de78ab5a99df2106cad08f149747db586e3fd4358d9b26d7e535440fedb6755",
+  "lastmod": "2026-11-20T20:44:58+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-300-mil-30-anos": {
-  "hash": "e02899f1522dd3c47f3c77526073158f54add2cbcc5d64ed7c245e460cdc4c85",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "2f44da8772c6aa80fd55b1ec633a7bbf7dfa1215a6de80ed54acd1d08e4b4458",
+  "lastmod": "2026-11-20T20:44:58+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-300-mil-35-anos": {
-  "hash": "ec53f61919a47f2bd8ee2cf22372787072565704ad943b7992709ec470d314e3",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "feab17ae6132aa7a913409992f98b0ab6772bc4bc5638af876894854626868ee",
+  "lastmod": "2026-11-20T20:44:58+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-350-mil-10-anos": {
-  "hash": "08624ce4706d6d7265434809bc1b2ea8314901948a8bc33a2d871f606cef06c9",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "438f32e41b75f5ae57ada401a3dccb7682f008b4855a049e6f2cefdb51f123ab",
+  "lastmod": "2026-11-20T20:44:58+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-350-mil-15-anos": {
-  "hash": "f57325072118837abebfb2afdde10aab5a50240885f91ebcf3ef62324c0354eb",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "6a850a96d222f0568d1caeff709bd88fb47730431fe14b7ab409f959913f0319",
+  "lastmod": "2026-11-20T20:44:58+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-350-mil-20-anos": {
-  "hash": "8af2e58cec29c2ccc39b5205cb42f1667c5c874f23ed54b265f05e28d2ac5a45",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "4211c1c40e077fed0fc64a5050bdf663d669be07ea4aefb6adb779163fa2d267",
+  "lastmod": "2026-11-20T20:44:58+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-350-mil-25-anos": {
-  "hash": "0b8246cc8ba6a9f2eb1ea468ebf03ead9f61cef3b22d84587f91f0ec95aba1cd",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "ea06980740c03571290b7c2c408b9d0097c5cbb69c123a1d34075a1cf34ab169",
+  "lastmod": "2026-11-20T20:44:58+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-350-mil-30-anos": {
-  "hash": "47222de59d7cf84cd4e0a0da586751c3033e0e3c16c87b154edf3617729e98cc",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "e4c0290fdf27314edd75e60ee3444c64404c179558623513fef2cf86b665e34e",
+  "lastmod": "2026-11-20T20:44:58+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-350-mil-35-anos": {
-  "hash": "61f65bf4a9825eb977d7fc8a3332bc2af29a2a15e8283e2c5fc4bf177a53167a",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "44314f6777f71fdca17b2035ead55e425736aa6596642b50e91fb5793b91536e",
+  "lastmod": "2026-11-20T20:44:58+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-400-mil-10-anos": {
-  "hash": "be374aff30fc195a7429353a0f75bef0dc9ccc852f8f9dc7b1d8406ccdff68c9",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "892310f4f25bcb489e0a330f1a2751fb786173fae1f4fa67f379edc03cfe3e6e",
+  "lastmod": "2026-11-20T20:44:58+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-400-mil-15-anos": {
-  "hash": "db8fa86838c4a3d9c0af1bd530213dc3b2c4a2f5c2c8dda9aa560ca3e313c941",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "8663bb63eea4d866fe0cf237597022e4333e388f31cc808b85b7d5f8a783cd10",
+  "lastmod": "2026-11-20T20:44:58+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-400-mil-20-anos": {
-  "hash": "f2943d4af1cc10470e2f99f1510e0fd0c926697ae48c1a1157a70c9a679b89c8",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "1a7651a01d013cc77405b77c51e64dd1379af4e1e71f3d354f49d14b0abf12d8",
+  "lastmod": "2026-11-20T20:44:58+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-400-mil-25-anos": {
-  "hash": "ed5d677b94c86dca19d5e538e02fd22424cf28fd535efce98e9ee48f56540e6a",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "f8d06897db1bd71690e8dd69cd80d9c1d8ad6e095dbbac621d10637c490161b4",
+  "lastmod": "2026-11-20T20:44:58+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-400-mil-30-anos": {
-  "hash": "7f2bf749bd5ac2868e9e02c55258c406692745de5562fc0628e79601df475484",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "16b7078c96010a81109fbb1ff5bf2a5db91b1ff00a7565e5bb68615ba94b8811",
+  "lastmod": "2026-11-20T20:44:58+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-400-mil-35-anos": {
-  "hash": "3281ab463fad3bf9a5ee77935e1253575b76c5c799241152a4ee34394bea2d40",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "8cb1cf5dac694947eb6f5b86275f42d522b0e11c31f2239c750d9ed0a1176ba9",
+  "lastmod": "2026-11-20T20:44:59+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-450-mil-10-anos": {
-  "hash": "4331a02055c92fb46ee0e57851c3e4be6cc9cdbdc55e81c0c55b046b02583f7a",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "6134f1fca04e5968edaf9295a3cb970d3047ce8fe4b63dc0665a00911eb2547f",
+  "lastmod": "2026-11-20T20:44:59+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-450-mil-15-anos": {
-  "hash": "6ea6da642b7b901ecb6b9089d7ba278223659eab94c8f5edad69f851b7f645cb",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "0b965e3f5e14c91e1b81faf298d47f88ee0e45dda1fa8f04fbbe014bc9d5762c",
+  "lastmod": "2026-11-20T20:44:59+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-450-mil-20-anos": {
-  "hash": "9de6ec399a84ac3bebc65307be289811eb565639af10a161a86739bc8a7851ce",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "40e66bdb1091cba3e999b5dd4819d4b18816faedb81d352086227ab6d8db6e6e",
+  "lastmod": "2026-11-20T20:44:59+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-450-mil-25-anos": {
-  "hash": "86b50c2a89df655e7640b877c2b86a911340c0ed55d6a18694ae10f00d97c2b3",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "69374b85d04cadea2e62c5fb8f9265a7290759851424f88a9a2c07e91c5d859b",
+  "lastmod": "2026-11-20T20:44:59+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-450-mil-30-anos": {
-  "hash": "f3d94d8599476a127122dd32d051c31dce1c47c0e902b3f5f13bd58f44c4ebcb",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "bf7999ccb262f2686f1fbb9e161f624553e8749fc7c6c19aac736cfe41573c68",
+  "lastmod": "2026-11-20T20:44:59+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-450-mil-35-anos": {
-  "hash": "fca9b0cd00dd2017aa2f8deff8daf30c07194156d467bcdb519b08cfad87d820",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "1a0b6661879a33465834f3ab9ea9fec280a83abde85760c6a1fb8461a3ebc4ce",
+  "lastmod": "2026-11-20T20:44:59+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-500-mil-10-anos": {
-  "hash": "559ebc39523ee559b35846f9b1c70d73e4051186fce2204fd27d69e2e671d3d7",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "1df2ad4d151f0dc5f057db2ede0cde828e4a4f3775f0d797c4e9e17257d97761",
+  "lastmod": "2026-11-20T20:44:59+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-500-mil-15-anos": {
-  "hash": "daa86e7813e8d84bc6611765a525c6ef83e1a3ceec91e01ce871192ae0b915d1",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "8fae6839023dd1788aadc772fd822a5964ba03ae0e9c59a6b706e31afc580c9e",
+  "lastmod": "2026-11-20T20:44:59+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-500-mil-20-anos": {
-  "hash": "f8b51fd8b1a72fd7cb2d114d1e3ab0aeaf091afbd93197cce0d6b68da1ff1d6b",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "55cd59d99ee0c071c2cdc0d7b0983d650b2fc544110b9fcc3f9101a3900cc7c1",
+  "lastmod": "2026-11-20T20:44:59+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-500-mil-25-anos": {
-  "hash": "80af8aefe26c6b76a88a7ea894770c811295d5953f4c97a480f4aaacdcc8b22b",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "f8f74665311fef6a735c6038cfbcf9de88408404a6ae14f004cd6502282afd81",
+  "lastmod": "2026-11-20T20:44:59+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-500-mil-30-anos": {
-  "hash": "66cd0af064600471db710c23d68834e97696e210c12bc3fc7457e90f8122e4e8",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "3afd7784aa8a89d975f434b94971dfd45b74c5c2f6a4198742d35602e3ff7d4c",
+  "lastmod": "2026-11-20T20:44:59+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-500-mil-35-anos": {
-  "hash": "6a5e7ca53a3ad4fc693b07675c40bb955169e5576bce69a41dffa8cd0ee1bfda",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "c41e5101682a716cf7805bea1de3dd5f151d1c95466dc7ea37adc76b3180a5ef",
+  "lastmod": "2026-11-20T20:44:59+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-550-mil-10-anos": {
-  "hash": "e568e6b128dafa883c25d1eb0da307b4654cc7935cf340d9150edd379908b76d",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "401b483647a620eb6c763289a2569b2713e6988b38cbadcc0cfed6dc6e762086",
+  "lastmod": "2026-11-20T20:44:59+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-550-mil-15-anos": {
-  "hash": "02e8ebeabd630f90ab16a519c177d8399a9dbfaf7c3ee26db1af01dcf2274806",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "99bc35e8adbc10516963813c32ccccbe3fcddfa6a551f444815860a21ff0e140",
+  "lastmod": "2026-11-20T20:44:59+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-550-mil-20-anos": {
-  "hash": "2dabc91c9ba7a144a5088db2acab8e94fb5cc811c7465aa9516929e8eaa6a153",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "723612e4f1790d7fd3d1796ccc39d63be890596c2119c34937e7ebd57b7eda21",
+  "lastmod": "2026-11-20T20:45:00+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-550-mil-25-anos": {
-  "hash": "fd60a5e6a7f0c720194ce3aac15e0c9f33c7ba03d1ec7694429729e05237ac5a",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "541920c70d8b8bf01b11d95afd603c1eb00d66816c80bdb4e48ebe9b38d48865",
+  "lastmod": "2026-11-20T20:45:00+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-550-mil-30-anos": {
-  "hash": "4a3fd1dce810302f44e8bfdaf0c1ba72704b33b2df67c612429ed694d1c23630",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "1beeb593f4e18c6caa612e370c617d60ee52a53d5c33a43a38b35c9a2859aedf",
+  "lastmod": "2026-11-20T20:45:00+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-550-mil-35-anos": {
-  "hash": "49387f0f6e1c6e70bfd4ea95dc01a65810c98093c58ed142d08f2993413da93b",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "ca878e52880d550a6ca019db63ebdc4091af4e5c576d6e4e2ba3be60a9359148",
+  "lastmod": "2026-11-20T20:45:00+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-600-mil-10-anos": {
-  "hash": "f8d190cfdf0384e00894363bb36ae3499a7d1aae6d8ebb9ffdc1ebe726c7fbe8",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "e3bb5b906deec20862c4adbd3aa945daccf6d3f6bccc078cceaa9acd0c3ae273",
+  "lastmod": "2026-11-20T20:45:00+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-600-mil-15-anos": {
-  "hash": "2d266fd3e764e056448b4d7850dc1857d4f303c1e509eb6558e9de8d670b38fb",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "e5f16b4a32570170b49a79971d3d6301b602cb4c90af24a99c471bc7bc4088f1",
+  "lastmod": "2026-11-20T20:45:00+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-600-mil-20-anos": {
-  "hash": "7c046722cf45df9142b8c587b449aa4a603cd1efa1b702fecf9046a56548e1a6",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "d7106863aa6db5b2b082d14c78bf727166b8d773e65eb8766d53b67c2a92b876",
+  "lastmod": "2026-11-20T20:45:00+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-600-mil-25-anos": {
-  "hash": "1176ea4b1cbaa5eae7d2a04d307bcaa99928533b905813bf658a151b69f0c00b",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "ddcc75aab741cf0b732804cfff9342c17c3e46d6d30864e050cc4a15657adb77",
+  "lastmod": "2026-11-20T20:45:00+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-600-mil-30-anos": {
-  "hash": "cba27733b5505c1211a3dde9637a20f69ea54ece97a6fa3a1fa7465cc695e2ba",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "00caf8f6bfb12fac7a2d1221cbc6004eb594e63afdd8ebe9ca0c274b084138ef",
+  "lastmod": "2026-11-20T20:45:00+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-600-mil-35-anos": {
-  "hash": "c9948d11e6a5789ceb71dd6e887fa8e29c37018e8cdda4ab68f70c30e5ee389d",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "41fb287420c9bd6afa27c8dfb9ba0cedc2e011b61e17a172b706e85f26c945bc",
+  "lastmod": "2026-11-20T20:45:00+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-650-mil-10-anos": {
-  "hash": "db80e44b3cbd8cda5ebed3c07652cade6c69c6c2cdb7e615205df4bf28a63f40",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "91dc40fbd71b8be9e0fd3cf23687078e7458c58dbb3764ba9d01e9dd68b76df5",
+  "lastmod": "2026-11-20T20:45:00+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-650-mil-15-anos": {
-  "hash": "79343428c12b6386a3572b582839aae53e5c94589482ffcc18726140315553f0",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "a0b16055bc9b3f5d1fc0f0d796aef51420f91bd1439985cd6b30b3c2a17c5179",
+  "lastmod": "2026-11-20T20:45:00+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-650-mil-20-anos": {
-  "hash": "dee404dff50301b1ef1edbe84120ea4245f99612a86e3c14e5c3ed8bf382e213",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "24f6cc12829394c4df3a4183f6088caeb57918ce641b77d6873fc2be2b340b38",
+  "lastmod": "2026-11-20T20:45:00+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-650-mil-25-anos": {
-  "hash": "2cecb6274eae4159140a32639ce81f901c395a44551fc7fa82deaa16ea573eb1",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "ded08b3128a6492934be87e5960f92f68ec85f1b755d2b9274a6619acf0018e5",
+  "lastmod": "2026-11-20T20:45:00+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-650-mil-30-anos": {
-  "hash": "88209817d331155b19ae24c586298156efbe3cfd9f9c8933fe699538f1508322",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "e14f6e53a0b4f19fba47fd4bab960e2bf44e6649775307d7dfb2ed18d2a6d4d8",
+  "lastmod": "2026-11-20T20:45:00+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-650-mil-35-anos": {
-  "hash": "b8944e6407511f5953a9e93009c28e9ed28e884ca18060b3eda0f00e8ae31b6d",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "b61d14e1c3b1d869301fab49d4814fb08c1932b86f5b3799a8abd88a39ecf1ea",
+  "lastmod": "2026-11-20T20:45:01+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-700-mil-10-anos": {
-  "hash": "e36f507a14e44148a174ad4fb6bbb3d77bbd38943b09ff8f0b3465be3d793ea5",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "b6c3e8799129ff6a8d1c08a3db5af140c99bc1e9bb660463e873d5c40245a788",
+  "lastmod": "2026-11-20T20:45:01+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-700-mil-15-anos": {
-  "hash": "22437387913c4fd4128284796db40149cf085da1ff1d978490432c13b8f2fc14",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "41660cf5582c8777b125a2c4706e6b881db3bea6fd10d8207903df559aa4cf76",
+  "lastmod": "2026-11-20T20:45:01+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-700-mil-20-anos": {
-  "hash": "c87cdbe5a80e504236a60b4d65ac865f2460cfcf61f3b29079c82094ce0fecb1",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "691e20e6438c480b1fe8452e9d8e9bae03811d057837b80584739f64ccae9093",
+  "lastmod": "2026-11-20T20:45:01+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-700-mil-25-anos": {
-  "hash": "15822e63e42590546dbbec806a88ba2ed8a7e433a60a0d1cc24dfd210601e445",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "c0fc8d8b150f507d009aefce42dbd8a144e14569c704ae47cb4b260f0ef992f7",
+  "lastmod": "2026-11-20T20:45:01+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-700-mil-30-anos": {
-  "hash": "5f6060470981e4231b643a807f68f992da4979c36dbd750a582fec8b0d5114ca",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "d746bb07e94e4abdc8f803d42694a6a8b17ed55bb4d896a990b4885370d83fbe",
+  "lastmod": "2026-11-20T20:45:01+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-700-mil-35-anos": {
-  "hash": "7c218ed8eab7311c2b3fde281d2e5485d2526f7fc1122bd2bf6b73f828c83498",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "d6f008b0632924445fb0c94d3eb8c4960e1d7e54b91b3a0d8aeb9571febf9755",
+  "lastmod": "2026-11-20T20:45:01+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-750-mil-10-anos": {
-  "hash": "93491905ece094f7e1d5dba6fb6da093dfbae1db281891954c5692b33c314346",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "329aa27ebe081fba4a4c33f8662fd5345614abad2d25cb8fa6875287f8dd6aad",
+  "lastmod": "2026-11-20T20:45:01+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-750-mil-15-anos": {
-  "hash": "7c082f435f058e454b7628ef4ed2ed8699ce24538c8af8ccac66ef00b940dfae",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "c19787380ccf0551bcdb18f0ea90dd8a0b35b3aedaf59598627a2531b0f9c90f",
+  "lastmod": "2026-11-20T20:45:01+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-750-mil-20-anos": {
-  "hash": "0762b13b072bbf375eefad6f600750c46a88f5fd0517629c11b1992ef116fd4b",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "ce69b911792c12a9f0e2b2dd3b11d61ac9c45f8d99011659ca1e53dc4029eb6b",
+  "lastmod": "2026-11-20T20:45:01+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-750-mil-25-anos": {
-  "hash": "e1911f86b432d97ecde9dc1cc2b589ddd81fb76931e42112b27084eb356381cb",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "ba8c227a8114620c45a719f2956fb0dea5402a9ec280f5cdeddd2e1574161b12",
+  "lastmod": "2026-11-20T20:45:01+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-750-mil-30-anos": {
-  "hash": "94a46820a190eaee74262054005b904085d1fb47dde4c0a63dbe9e64b4366160",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "0f9a51de8c6db146d84785649cbc71c6b2f96144165053b83a0a5c18ffbb9cc7",
+  "lastmod": "2026-11-20T20:45:01+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-750-mil-35-anos": {
-  "hash": "cccc36cc7fa411f51c6fd97bd67c5aa05f582ccaf3b015aa2fd2c782dabdc13d",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "512c01bd9aedf71885aa76bf1ed249d50d9370d6b47c100a0c5b17ee1ce317d6",
+  "lastmod": "2026-11-20T20:45:01+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-800-mil-10-anos": {
-  "hash": "01f5dade813b6aec68c730f8747f47af4af4f220615ce06f9ec29f7bac22369e",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "5a51166023f99a0138ea25193052c9f23c30b0ebab5123a4a6339de25f28f08a",
+  "lastmod": "2026-11-20T20:45:01+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-800-mil-15-anos": {
-  "hash": "c744da9f6a3622b20608e137b97a36bc0fc47104575f71fe626696c2a10ab38b",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "5893bde4b10de16bb8ce6faaca859d603f0571cb07785b41aa8a112b4ee7f77b",
+  "lastmod": "2026-11-20T20:45:01+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-800-mil-20-anos": {
-  "hash": "6ea5ebbf5da7c66696bbedadf548b2653bdaf6d73f549da661e79498c11ab88c",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "6778e6e0b683e4be64a3896ae5e8c783a7568c4f3be84782a062c65b3122462e",
+  "lastmod": "2026-11-20T20:45:02+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-800-mil-25-anos": {
-  "hash": "0d02e48cd60097f10b2f5e3e57e0da31ad8e73b9b501d795883b0ab71b3128f0",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "d4b63d19b22f3a43bd06d0007ab5eaa085b1ed5f9e38caa56163c680b68abe29",
+  "lastmod": "2026-11-20T20:45:02+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-800-mil-30-anos": {
-  "hash": "ffbda757f546df9802e715276574626d663758f663fd0552cc13405da1a1bf95",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "bfb9b3f8aa058c47333b6a32ae5f8bce940e6beb28da0486a8f1a54f9cb0b750",
+  "lastmod": "2026-11-20T20:45:02+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-800-mil-35-anos": {
-  "hash": "91f4705c178b192edd0beccbc62b129e18f0ac65239824ccf2f289ce036bb432",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "4f743637fd281be4d9ef4cfabba5068492d0b790ab3c3603a81b69d3983b6d59",
+  "lastmod": "2026-11-20T20:45:02+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-850-mil-10-anos": {
-  "hash": "4e555d93fac132aa0dee0c8b7b13e3d76ee14543731dabf96d692c31e6044e4e",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "0a51a57cc9ac8b933c869e7e730925119619078c6664d3c67eca4e05095ea79b",
+  "lastmod": "2026-11-20T20:45:02+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-850-mil-15-anos": {
-  "hash": "e9694433b4194ef2f5f5ffb6585b63624c29aea7cb55307c1eb955e9dc3dbc68",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "5a6042bf96bba84e6369731c849dbc5a1b07c71aa1e0b528e79c2b469fdffa14",
+  "lastmod": "2026-11-20T20:45:02+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-850-mil-20-anos": {
-  "hash": "088318960e5bf3f7279291522f144e759898960f1aa15154fe3de233e850d03c",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "c18ccbce50445948a23476cdf1a2ff98dcb1554f636aa3e912ef6a0e3678ef0b",
+  "lastmod": "2026-11-20T20:45:02+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-850-mil-25-anos": {
-  "hash": "fe0384b0429adc0b35fbe57e475ee2c03610aecf6d25983933b7714bcfed8638",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "78ead03e141e3b7dc4de0e2e39d4c308aaddb66bdebfcf2dcd5780d47ad0c198",
+  "lastmod": "2026-11-20T20:45:02+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-850-mil-30-anos": {
-  "hash": "3668c1cc49c8b37c41bdcb9c15d6bb70205a049b115cf781894f3dbce0a06ef5",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "f1d24ced431b397265616a72d60e29e9563043a313d939636e713421f5bbe137",
+  "lastmod": "2026-11-20T20:45:02+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-850-mil-35-anos": {
-  "hash": "e896743a5a868a078521da4ede5d42113bcad814642490c223cd0a1c8370e910",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "b5e3605b5f8f18c669ffdf665ac9c09559183659b1e8bf1f144e5785db7ea354",
+  "lastmod": "2026-11-20T20:45:02+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-900-mil-10-anos": {
-  "hash": "c507db58002ddfc21e13a6d99781b47a6129d7818bc72467e2a6b219b0606ba0",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "2cc5e29b72195a10b8274ef3fc687c717a3420b82e46c7109624c9cb407935dd",
+  "lastmod": "2026-11-20T20:45:02+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-900-mil-15-anos": {
-  "hash": "9e4c0e12628118a8d6d93051e21e926768e4b45e4a55376443f0136b0bcb088f",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "682fbf42175723284a6a6431bc0724adb5adaa87fa18c84bbf4d03a2e4474096",
+  "lastmod": "2026-11-20T20:45:02+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-900-mil-20-anos": {
-  "hash": "2bf3c7920fe9e38f6e3c55751fa8b8ab197dd3a9e83a412e2eeb7ddc575bfe01",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "17aceed9c6e56353ca3fe1414d7d41dda486379073a13595803b2b39363043ce",
+  "lastmod": "2026-11-20T20:45:02+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-900-mil-25-anos": {
-  "hash": "5992eab72de9b770236a8a1eac46489bdea789e8ae329b6f5838a9e24690c88f",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "755580d5e8bb33ab1abc56f0a331cffab83b394e57ea3384e3d841449846d8bc",
+  "lastmod": "2026-11-20T20:45:02+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-900-mil-30-anos": {
-  "hash": "45f5c82e2f43851b085e2da3dd8afde648dfa52b52cb933782f5ef51b3d3dee6",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "abcf7ca44b0748597052a3ff0714167b50df7626081a0768c0dd2dc39b293264",
+  "lastmod": "2026-11-20T20:45:02+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-900-mil-35-anos": {
-  "hash": "1ea2ef3804690e43d40de39bd6c0b8346cd909c875e6afc5d9920972ecbd66bf",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "cb389ee818432805b850cd2919361029329a1a47fc648c6992c587244ebb4681",
+  "lastmod": "2026-11-20T20:45:03+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-950-mil-10-anos": {
-  "hash": "3adc8e7b8f4d5fcdb736a9474fdd0d0ac694f52bda6f90f5f2963cbda214aa05",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "d7d4ba9b9348718ffbdd23b7f0a28bf458b4c59ac1096d892e8e1e011da0fa60",
+  "lastmod": "2026-11-20T20:45:03+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-950-mil-15-anos": {
-  "hash": "0d7a0bfe22b4994830ac1925dbd5d16ad21d35a70a8f8f5a020a93d522abc5cd",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "1917150e4a59ea733694dc4c3f061b198e7f5e41f6551fecfdac2f2e4ace4cf1",
+  "lastmod": "2026-11-20T20:45:03+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-950-mil-20-anos": {
-  "hash": "91a8c9b5b5a769de739ba75f8394294c5cce3dc436eb44a6cc712cd51903a1c5",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "621f5e0fff6fd80ba926234c43a418e8b3050273f5060f3cf84eb32060f40ea6",
+  "lastmod": "2026-11-20T20:45:03+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-950-mil-25-anos": {
-  "hash": "13941804a36e05571391b6fdf3b7c1c77204085e5b71daa14c3e358afece89f8",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "67c44b980d194e6af80ef6db0ea9cf678bc40d47d3cb787adcbc54a019f2c8fb",
+  "lastmod": "2026-11-20T20:45:03+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-950-mil-30-anos": {
-  "hash": "3685adaf0078a4540d4e5ec775f4cd3fd4cb10528424abee88a8731ddeb241a8",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "69451da59f029f4ef021bea2611c2264f677ebcffd91d4a2e44393c8a06f4c57",
+  "lastmod": "2026-11-20T20:45:03+00:00"
  },
  "url:https://simulador.datalabglobal.com/financiamento-imobiliario-950-mil-35-anos": {
-  "hash": "52a42ec04ee7188e326938487182bd804592c85fb6dc9b4c1f2660c96daba5ef",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "fbc53d30b97923db3c588ed3ffda2d3d4f0ad2d8a065a5bab7108fb283d75590",
+  "lastmod": "2026-11-20T20:45:03+00:00"
  },
  "url:https://simulador.datalabglobal.com/imprensa": {
-  "hash": "235c7dd098648ac461aca6638ea4a236b2f94311069ee8b2a8352b4a39095ff0",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "d0168fd85c54852d39ca2be8ce617743ba55214bb90c45ffd068f40aa7c3d271",
+  "lastmod": "2026-11-20T20:45:04+00:00"
  },
  "url:https://simulador.datalabglobal.com/incorporar": {
   "hash": "a1452bed04f8af058428183c85790f2bff68a38b2693487e99d793f426c38433",
@@ -608,56 +608,56 @@
   "lastmod": "2026-11-20T16:49:01+00:00"
  },
  "url:https://simulador.datalabglobal.com/renda-para-financiar-imovel": {
-  "hash": "a943461827cfd7187440f677104cb8229a1d3f05fd40fd8c2346d49d3ea9ef31",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "bf97c6d0b16986912e1d79eeb8d291355c1871f5f43e3d4c5d304effeaca53e0",
+  "lastmod": "2026-11-20T20:45:06+00:00"
  },
  "url:https://simulador.datalabglobal.com/renda-para-financiar-imovel-1000-mil": {
-  "hash": "4f4edb0a11bf8b6b9ff6359a79c4c87bf710f5915a1d390c825ae27f652cbe8c",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "0271cfc5ebe07caa6c0499852fa49e38176307ca8d4e6cc341990ecb03809b89",
+  "lastmod": "2026-11-20T20:45:06+00:00"
  },
  "url:https://simulador.datalabglobal.com/renda-para-financiar-imovel-150-mil": {
-  "hash": "788f1029926ab0e4352449bacfa604409beb7af0f7b49873de819280a3b17b40",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "d5284c3e02fb6158ea98dc7ab1cec3ecab8783296f5efbaa90a589d3ab74d4f5",
+  "lastmod": "2026-11-20T20:45:05+00:00"
  },
  "url:https://simulador.datalabglobal.com/renda-para-financiar-imovel-200-mil": {
-  "hash": "d19fce839f297f56b5b6a313be655ef6670fdc142b2bc7705aa86c6fd85dd269",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "aed879474e059773c247d34e72bad48727c2c2e840a913b3a6458eb03fb62fff",
+  "lastmod": "2026-11-20T20:45:05+00:00"
  },
  "url:https://simulador.datalabglobal.com/renda-para-financiar-imovel-250-mil": {
-  "hash": "ee31da9aefc07c839a77561ef5eb4b5d7d37169cb7728184687a6e50b2fac665",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "21938ae281220fe1113bfaf16d88889abcbc04ffe29d2411a7f5356bca54b8a3",
+  "lastmod": "2026-11-20T20:45:05+00:00"
  },
  "url:https://simulador.datalabglobal.com/renda-para-financiar-imovel-300-mil": {
-  "hash": "7aa5d6b358d4d1b4ea15326b6f5cff7d3b46ed277872b630b32bf53efc53394c",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "9193f0be7ff7ce5d0e3a486b29d17b5b4de3e27ac0cf2229c788b35a34a2b35b",
+  "lastmod": "2026-11-20T20:45:05+00:00"
  },
  "url:https://simulador.datalabglobal.com/renda-para-financiar-imovel-350-mil": {
-  "hash": "a96bd8676050906fc5b6bec09229e810b24d34cb446f2aa599618d95cf957630",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "5fc5401bf89647b0babb47880f4b6a190a0c90bf9e33d2ab52bae843fd6269a2",
+  "lastmod": "2026-11-20T20:45:05+00:00"
  },
  "url:https://simulador.datalabglobal.com/renda-para-financiar-imovel-400-mil": {
-  "hash": "c2b4e2383edd881709756abc642581f9a935bd877cbc5f4e56a31e8bf574b197",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "50d15d38fc4d605937a1ff3a2f30299ab23791a6f37b339cb3f1cd717e4ed334",
+  "lastmod": "2026-11-20T20:45:05+00:00"
  },
  "url:https://simulador.datalabglobal.com/renda-para-financiar-imovel-500-mil": {
-  "hash": "7da6cd61d08c8b99ba474143286e1efac4a3c2bac375f00d06bb086733b58805",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "1adcebeb93e4ab7facc4e8866da6641b61cd6496a5c2cd1c634a76250ad55f54",
+  "lastmod": "2026-11-20T20:45:05+00:00"
  },
  "url:https://simulador.datalabglobal.com/renda-para-financiar-imovel-600-mil": {
-  "hash": "a091f09d32ca59ccd5a92b481497ab7d27181d4dd4b3f5a5219b3f9abfeac29b",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "d7d8fbcce278e7475f26c03577ef1c7ee03026175d98ec910920442b5f7ba171",
+  "lastmod": "2026-11-20T20:45:05+00:00"
  },
  "url:https://simulador.datalabglobal.com/renda-para-financiar-imovel-700-mil": {
-  "hash": "b5b04361789f365cea5efafe369988f096aada4df7868d77a5e964efa1e44c05",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "f8856d3a912a1d6eaa95d522dfde8c76e0c13d9749befca90cdaf5c08f540746",
+  "lastmod": "2026-11-20T20:45:05+00:00"
  },
  "url:https://simulador.datalabglobal.com/renda-para-financiar-imovel-800-mil": {
-  "hash": "a0bada80029f1a042f250475b3275ae69231d32d8b16344307b238c8933023a1",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "cd4097092b99ed0e7206d308fbbe5df5fff19b8c06ef6bdeec114049308184f9",
+  "lastmod": "2026-11-20T20:45:06+00:00"
  },
  "url:https://simulador.datalabglobal.com/renda-para-financiar-imovel-900-mil": {
-  "hash": "8f53d86bc3ea5fb54784a7a2ceeaaebde4f009f13f212e8d998720a41933fb32",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "b73ae58d68914353e9b49e1b022e8fdd154e46b3aab106ba919af378b7c390af",
+  "lastmod": "2026-11-20T20:45:06+00:00"
  },
  "url:https://simulador.datalabglobal.com/sobre": {
   "hash": "a8a95fe2af365c221ad34d9144df115bf82ef1a9bac35b346710808a2ae35dbb",
@@ -668,55 +668,55 @@
   "lastmod": "2026-11-20T16:49:01+00:00"
  },
  "url:https://simulador.datalabglobal.com/taxas-financiamento-imobiliario-abril-2026": {
-  "hash": "5fa674a9a80c2a496a6f90292b599ae29c3f4c8653c7d652672178240bbd9282",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "3dd83f98da2faf985967c672718fcd619f08deb92530db9f5577e5dcd81459c2",
+  "lastmod": "2026-11-20T20:45:04+00:00"
  },
  "url:https://simulador.datalabglobal.com/taxas-financiamento-imobiliario-agosto-2026": {
-  "hash": "f789e089696e9d5d5612857f860338208af8ffb9fd6de847e19a382535c35124",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "ed61708ef3fce77fefda503033116fede05384c564073545b7ba48816ed07b31",
+  "lastmod": "2026-11-20T20:45:05+00:00"
  },
  "url:https://simulador.datalabglobal.com/taxas-financiamento-imobiliario-dezembro-2025": {
-  "hash": "8f99742fcb1a51bcc25c13b551a33118673479b1a1a31156deb1e5e0c5ed8bee",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "c10fb3e5257324c2b1932dc534ab4dc807edc5c8767fdf9efce829f7712c9457",
+  "lastmod": "2026-11-20T20:45:04+00:00"
  },
  "url:https://simulador.datalabglobal.com/taxas-financiamento-imobiliario-fevereiro-2026": {
-  "hash": "907507a52c7859da0792934eff3905b4fca002d3ea5ed101f62cc4204ee1900b",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "f2ca6aaba0001389c48b97041f0f879a58be263bdd8a831d267d09addec11f92",
+  "lastmod": "2026-11-20T20:45:04+00:00"
  },
  "url:https://simulador.datalabglobal.com/taxas-financiamento-imobiliario-janeiro-2026": {
-  "hash": "4f1f9bc85bca0b1da2ecbf163463eafdd721cc0aa0309ddf907bb9b905afbb9c",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "31043511a6684a6804269ccd6eb0a260c9ae48d190232fe3b61bc2ead86ceacb",
+  "lastmod": "2026-11-20T20:45:04+00:00"
  },
  "url:https://simulador.datalabglobal.com/taxas-financiamento-imobiliario-julho-2026": {
-  "hash": "1de310f898e4df581b5f4f3dbfcd55dd8c1205b76297ed705caa0ea44e23ec32",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "60b72035a06508a068d198985180196d148d899038c52c9ea06c1c483f2b732a",
+  "lastmod": "2026-11-20T20:45:04+00:00"
  },
  "url:https://simulador.datalabglobal.com/taxas-financiamento-imobiliario-junho-2026": {
-  "hash": "6aed2a537188509da0b8734c88d3d01644ce2614c85c1c005f8cfe2de791b3ca",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "b2481dd039d62dd591055ae35b0605873bdc4869b569e90dc856f06bd6e6ed1d",
+  "lastmod": "2026-11-20T20:45:04+00:00"
  },
  "url:https://simulador.datalabglobal.com/taxas-financiamento-imobiliario-maio-2026": {
-  "hash": "9f8bacba94438a8fab9d10a797c74624e92a399b3322e87ecb30e6ba65775d6c",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "4020b714ec496261cfca68d55ef87df6c9b6aaf0541ed7b4f4b402caf82d2560",
+  "lastmod": "2026-11-20T20:45:04+00:00"
  },
  "url:https://simulador.datalabglobal.com/taxas-financiamento-imobiliario-marco-2026": {
-  "hash": "bf8eddede4ee1996f88025040ea426976293abb2fa3cbda9f5beca732dbd9eef",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "2de02d355263db3422ae48e924572a901b1464092fd5fc1d302bd1087d78e194",
+  "lastmod": "2026-11-20T20:45:04+00:00"
  },
  "url:https://simulador.datalabglobal.com/taxas-financiamento-imobiliario-novembro-2025": {
-  "hash": "80ca48f2e53283b8167ae37f36a5deb676b4cba6dc7d5226038d29e4a4d7b259",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "de4e1c8fedb6da31b4057d6260bf7530eaa955c0c69c7e182a9d4a60919d2142",
+  "lastmod": "2026-11-20T20:45:04+00:00"
  },
  "url:https://simulador.datalabglobal.com/taxas-financiamento-imobiliario-outubro-2025": {
   "hash": "ec6e93ac3bcc9db464f398991c58481ca0e602cd33399bf8d02752967b8e5e67",
   "lastmod": "2026-11-17T19:24:32+00:00"
  },
  "url:https://simulador.datalabglobal.com/taxas-financiamento-imobiliario-outubro-2026": {
-  "hash": "64e8b4d522e8e04fe574da597184f55b6b1caddf13a56e41c14df3fac524a52a",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "da3ba83acafafac68c6840d788d281d95873752c9184b1c8f9e5c0d95be5e91a",
+  "lastmod": "2026-11-20T20:45:05+00:00"
  },
  "url:https://simulador.datalabglobal.com/taxas-financiamento-imobiliario-setembro-2026": {
-  "hash": "34460dbeb1176052b41d6335d60052d635daabf933d8aa500f03c1ddaaae5c94",
-  "lastmod": "2026-11-20T16:49:01+00:00"
+  "hash": "c9e5fb8292fb888219b4e8f831693b2c50e922bd9c8e28498e9760589b5c5e97",
+  "lastmod": "2026-11-20T20:45:05+00:00"
  }
 }

@@ -181,7 +181,7 @@ def test_cet_do_calculo_js_bate_com_o_python():
     code = fn + f"\nconst c={json.dumps(casos)};console.log(JSON.stringify(c.map(x=>calcularCET(x[0],x[1],x[2],x[3],x[4]))));"
     res = json.loads(subprocess.run(["node", "-e", code], capture_output=True, text=True, check=True).stdout)
     for c, r in zip(casos, res):
-        assert round(r, 2) == gerador.calcular_cet_real(c[0], c[1], c[2] * 12 * 100, c[3], c[4])
+        assert round(r, 2) == gerador.calcular_cet_real(c[0], c[1], ((1 + c[2]) ** 12 - 1) * 100, c[3], c[4])  # taxa mensal -> anual efetiva (a conta usa (1+aa)^(1/12)-1)
 
 
 @pytest.mark.skipif(not gerada, reason="paginas_seo/ não gerada")

@@ -35,7 +35,7 @@ select,input{width:100%;padding:9px 10px;border-radius:8px;border:1px solid #334
 <script>
 // <calc>
 function calcularFinanciamento(valorFinanciado, meses, taxaAnualPct) {
-  var i = (taxaAnualPct / 100) / 12;
+  var i = Math.pow(1 + taxaAnualPct / 100, 1 / 12) - 1;
   var amort = valorFinanciado / meses;
   var p1 = amort + valorFinanciado * i;
   var pU = amort * (1 + i);

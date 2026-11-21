@@ -103,7 +103,7 @@
                 if (vFinanciadoB <= 0) continue;
 
                 const ehAtual = (b.chave === BANCO_ATUAL_CHAVE);
-                const taxaMensalB = (b.taxa / 100) / 12;
+                const taxaMensalB = Math.pow(1 + b.taxa / 100, 1 / 12) - 1;
                 const cetB = ehAtual ? cetAtualLive : calcularCET(vFinanciadoB, prazoB, taxaMensalB, vImovelLive, 'SAC');
 
                 // Reconstrói a URL da página equivalente pelo MESMO padrão de
@@ -205,7 +205,7 @@
 
             const taxaAnualRaw = document.getElementById('input_taxa').value.toString().replace(',', '.');
             const taxaAnual = parseFloat(taxaAnualRaw) || 0;
-            const taxa = (taxaAnual / 100) / 12;
+            const taxa = Math.pow(1 + taxaAnual / 100, 1 / 12) - 1;
 
             let prazoOrig = parseInt(document.getElementById('input_prazo').value) || 0;
             if (prazoOrig > REGRA_PRAZO_MAX) {

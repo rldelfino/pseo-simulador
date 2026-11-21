@@ -412,6 +412,16 @@ def obter_data_ultima_atualizacao():
         return date.today().isoformat()
 
 
+def taxa_mensal_equivalente(taxa_anual_pct):
+    """Taxa mensal efetiva equivalente a uma taxa anual efetiva (em %): (1 + aa)^(1/12) - 1.
+
+    Correção de 20/nov/2026 (conferência de números): o site dividia a taxa anual por 12 (taxa nominal). Mas a taxa do
+    Banco Central (série 903201) é efetiva, anualizada por juros compostos: a própria API traz TaxaJurosAoMes
+    (ex.: Caixa 0,95% a.m.) e TaxaJurosAoAno (11,97% a.a.), e (1,0095)^12 - 1 = 11,97%. Dividir por 12 dava 0,9975% a.m.
+    e inflava a parcela em cerca de 5% e os juros totais em cerca de 7%."""
+    return (1 + taxa_anual_pct / 100) ** (1 / 12) - 1
+
+
 def calcular_cet_real(valor_financiado, prazo_meses, taxa_anual, valor_imovel, sistema='SAC'):
     """Calcula o CET (Custo Efetivo Total) de verdade, via TIR (Taxa Interna
     de Retorno) do fluxo de caixa completo do financiamento — não apenas
@@ -434,7 +444,7 @@ def calcular_cet_real(valor_financiado, prazo_meses, taxa_anual, valor_imovel, s
     if valor_financiado <= 0 or prazo_meses <= 0:
         return 0.0
 
-    taxa_mensal = (taxa_anual / 100) / 12
+    taxa_mensal = taxa_mensal_equivalente(taxa_anual)
     TAXA_MIP_MENSAL = 0.00030    # ~0,030% do saldo devedor/mês
     TAXA_DFI_MENSAL = 0.000129   # ~0,0129% do valor do imóvel/mês
     TAXA_ADMIN_MENSAL = 25.00    # R$ 25,00/mês (valor típico de mercado)
@@ -483,7 +493,7 @@ def calcular_sac_price(valor_financiado, prazo_meses, taxa_anual, valor_imovel=N
     texto template), que é exatamente o que a política de conteúdo
     programático do Google pede pra diferenciar página de verdade de
     template raso."""
-    taxa_mensal = (taxa_anual / 100) / 12
+    taxa_mensal = taxa_mensal_equivalente(taxa_anual)
 
     saldo = valor_financiado
     juros_total_sac = 0.0
@@ -1403,7 +1413,7 @@ def gerar_paginas_pseo():
                         <div class="bg-slate-800/60 p-5 rounded-2xl border border-white/10 shadow-md shadow-black/20 hover:border-emerald-500/30 transition-colors">
                             <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 flex items-center">
                                 {icone('trending-up', 'mr-1.5 text-slate-400')} Taxa Estimada
-                                {tooltip('Taxa de juros anual estimada, aplicada mensalmente sobre o saldo devedor. É a "taxa de vitrine" — sua taxa final aprovada depende da sua análise de crédito.')}
+                                {tooltip('Taxa de juros anual estimada (efetiva), convertida em taxa mensal equivalente e aplicada sobre o saldo devedor. É a "taxa de vitrine" — sua taxa final aprovada depende da sua análise de crédito.')}
                             </label>
                             <div class="flex items-center"><input type="number" id="input_taxa" aria-label="Taxa de juros ao ano" step="0.01" class="w-full bg-transparent font-medium text-white text-lg outline-none" value="{taxa}"><span class="text-xs text-slate-400 ml-2">% a.a.</span></div>
                         </div>
@@ -2260,7 +2270,7 @@ def projecao_anual(financiado, prazo, taxa_aa):
     """Marcos anuais (1, 2, 3, 5, 10, 15... e o último ano) do financiamento
     em SAC e em PRICE: parcela, saldo devedor e juros acumulados. São números
     próprios de cada página (valor x prazo x taxa), não texto de template."""
-    i = (taxa_aa / 100) / 12
+    i = taxa_mensal_equivalente(taxa_aa)
     amort = financiado / prazo
     if i > 0:
         pmt = financiado * (i * (1 + i) ** prazo) / ((1 + i) ** prazo - 1)
@@ -3883,7 +3893,7 @@ def gerar_indice_comparacao(pasta_saida, dominio, data_ultima_atualizacao, taxas
 
 _JS_CALCULO_EMBED = """// <calc>
 function calcularFinanciamento(valorFinanciado, meses, taxaAnualPct) {
-  var i = (taxaAnualPct / 100) / 12;
+  var i = Math.pow(1 + taxaAnualPct / 100, 1 / 12) - 1;
   var amort = valorFinanciado / meses;
   var p1 = amort + valorFinanciado * i;
   var pU = amort * (1 + i);
@@ -4969,7 +4979,7 @@ def gerar_calculo_js():
                 if (vFinanciadoB <= 0) continue;
 
                 const ehAtual = (b.chave === BANCO_ATUAL_CHAVE);
-                const taxaMensalB = (b.taxa / 100) / 12;
+                const taxaMensalB = Math.pow(1 + b.taxa / 100, 1 / 12) - 1;
                 const cetB = ehAtual ? cetAtualLive : calcularCET(vFinanciadoB, prazoB, taxaMensalB, vImovelLive, 'SAC');
 
                 // Reconstrói a URL da página equivalente pelo MESMO padrão de
@@ -5071,7 +5081,7 @@ def gerar_calculo_js():
 
             const taxaAnualRaw = document.getElementById('input_taxa').value.toString().replace(',', '.');
             const taxaAnual = parseFloat(taxaAnualRaw) || 0;
-            const taxa = (taxaAnual / 100) / 12;
+            const taxa = Math.pow(1 + taxaAnual / 100, 1 / 12) - 1;
 
             let prazoOrig = parseInt(document.getElementById('input_prazo').value) || 0;
             if (prazoOrig > REGRA_PRAZO_MAX) {
