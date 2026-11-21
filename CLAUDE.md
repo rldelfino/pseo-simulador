@@ -12,6 +12,7 @@ Idioma: português do Brasil. Estilo: curto, sem jargão, números reais, dizer 
 
 ## Comandos
 - Gerar: `python gerador.py` (lê `dados.csv`, `historico_taxas.csv`; escreve `paginas_seo/`, copia `src/home.css`, `src/home.js`, `src/calculo_home.js`, `src/menu.js`). Tailwind das demais páginas: `npm run build:css`.
+- Redirecionamentos: `python conferir_redirects.py` (limites do Cloudflare, loops, destinos, cobertura).
 - Taxas: `python etl_taxas.py`, `python historico_taxas.py`; robô em `.github/workflows/atualiza_taxas.yml` (dias 5 e 20).
 - Conferência dos números contra o BCB ao vivo: `python conferir_numeros.py` (escreve `CONFERENCIA-NUMEROS.md`).
 - Testes: `python -m pytest -q`. Navegador (fora do CI, precisa do Playwright com Chromium e WebKit): `python testar_navegador.py` (home de ponta a ponta, 4 perfis, com os cabeçalhos do `_headers` via `servidor_local.py`) e `python testar_aleatorio.py [semente]` (sessões aleatórias contra `calculo_home.py`).
@@ -22,6 +23,6 @@ Idioma: português do Brasil. Estilo: curto, sem jargão, números reais, dizer 
 
 ## Estado (20/11/2026)
 - PR da correção da taxa mensal e PR do template novo da home abertos (não mesclados).
-- `AVALIACAO-SUBPAGINAS.md`: recomendação de enxugar o sitemap de 167 para ~60 URLs (1 indexada, 24 rastreadas e recusadas, 141 não rastreadas; 14 cliques em 3 meses, todos da grade `simulador-*` hoje `noindex`). Nada deletado. `proposta-redirects-subpaginas.txt` é só proposta.
+- **Enxugamento aplicado (20/11/2026)**: o sitemap caiu de 167 para 61 URLs. A grade `simulador-<banco>-<valor>-<prazo>` (1.680 páginas) não é mais gerada (`GERAR_GRADE_SIMULADOR = False`); comparação sem marca ficou com 10 páginas (`VALORES_COMPARACAO` x `ANOS_COMPARACAO`), renda com 4 (`VALORES_RENDA`) e taxas mês a mês só nos 12 meses recentes. `limpar_paginas_obsoletas()` apaga do disco o que o gerador não escreve mais; as URLs removidas têm 301 em `paginas_seo/_redirects` (conferir com `python conferir_redirects.py`). Os hubs linkam a home preenchida (`/?v=&e=&p=&b=&s=`). Detalhes e dados: `AVALIACAO-SUBPAGINAS.md`. Reavaliar indexação em 4 a 6 semanas.
 - Arquivo do Yandex Webmaster: `paginas_seo/yandex_90c15c3be650b0ed.html` (não é apagado pelo gerador). NÃO verificado: o Cloudflare Pages pode responder 308 de `.html` para a URL sem extensão; conferir no Yandex depois do deploy.
 - NÃO verificado: se o formulário do parceiro aceita pré-preenchimento (abre limpo); iPhone físico; taxas de BRB e Poupex (o BCB não cobre; vêm de blog/estático); texto jurídico da seção de amortização.

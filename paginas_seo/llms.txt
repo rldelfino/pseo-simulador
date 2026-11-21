@@ -3,10 +3,10 @@
 > Hub financeiro com simuladores de financiamento imobiliário para 11 instituições brasileiras (Caixa, Banco do Brasil, Santander, BRB, Poupex, Itaú, Bradesco, Banco Inter, Sicredi, Sicoob, Banrisul). Calcula parcelas nos sistemas SAC e PRICE, e simula a economia de juros ao antecipar amortizações.
 
 Dados atualizados em: 2026-11-20
-Total de páginas de simulação: 0
+Total de páginas no sitemap: 61
 
 ## Páginas
-- [Home / lista de bancos](https://simulador.datalabglobal.com/)
+- [Home: simulador de financiamento imobiliário com taxa média de cada banco](https://simulador.datalabglobal.com/)
 - [Comparativo de taxas entre os 11 bancos](https://simulador.datalabglobal.com/comparador-bancos)
 - [Financiamento imobiliário: parcela por valor e prazo](https://simulador.datalabglobal.com/financiamento-imobiliario)
 - [Dados abertos: taxas de financiamento por banco, série mensal em CSV e JSON](https://simulador.datalabglobal.com/dados-abertos) (cópia no Kaggle: https://www.kaggle.com/datasets/rodolfodelfino/taxas-financiamento-imobilirio-por-banco-bacen)
@@ -20,4 +20,4 @@ Total de páginas de simulação: 0
 - [Sitemap completo](https://simulador.datalabglobal.com/sitemap.xml)
 
 ## Sobre os dados
-Taxas de juros, LTV (percentual mínimo de entrada) e prazo máximo são específicos de cada instituição financeira e atualizados mensalmente. Cada página de simulador (padrão de URL: /simulador-{banco}-{valor}-mil-{prazo}-meses, sem extensão) traz cálculo de parcelas, custo total e comparativo real entre os sistemas SAC e PRICE para o cenário daquele banco/valor/prazo específico.
+Taxas de juros, LTV (percentual mínimo de entrada) e prazo máximo são específicos de cada instituição financeira e atualizados mensalmente. A home calcula parcela, custo total, CET e economia pagando a mais (SAC e PRICE) para qualquer banco, valor, entrada e prazo; cada banco tem uma página própria (/banco-{banco}) com taxa, entrada mínima e prazo máximo.

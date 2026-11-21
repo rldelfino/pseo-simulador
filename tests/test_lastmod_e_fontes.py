@@ -31,7 +31,7 @@ def test_sitemap_tem_lastmod_iso_com_hora_e_sem_changefreq_priority():
         xml = f.read()
     assert "<changefreq>" not in xml and "<priority>" not in xml  # o Bing ignora; o Google também
     lms = re.findall(r"<lastmod>([^<]+)</lastmod>", xml)
-    assert len(lms) == xml.count("<loc>") > 100
+    assert len(lms) == xml.count("<loc>") > 50
     assert all(re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+00:00", x) for x in lms)
     assert len(set(lms)) > 1, "todas as URLs com a mesma data = lastmod falso"
 
@@ -138,7 +138,7 @@ def test_comparador_cita_o_mes_da_taxa_usa_virgula_e_nao_diz_mesma_condicao():
 def test_comparador_e_comparacoes_sem_trofeu_numeracao_ou_destaque():
     nomes = ["comparador-bancos.html"] + sorted(n for n in os.listdir(PASTA)
                                                  if n.startswith("financiamento-imobiliario-") and n.endswith("-anos.html"))
-    assert len(nomes) >= 20
+    assert len(nomes) >= 10
     for nome in nomes:
         with open(os.path.join(PASTA, nome), encoding="utf-8") as f:
             h = f.read()

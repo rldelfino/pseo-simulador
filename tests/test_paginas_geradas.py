@@ -242,22 +242,23 @@ def test_headers_tem_hsts_e_libera_beacon_do_cloudflare_analytics():
     assert "https://cloudflareinsights.com" in conteudo.split("connect-src", 1)[1].split(";", 1)[0]
 
 
-def test_home_e_hubs_nao_despejam_links_para_a_grade_valor_prazo():
-    """Achado real (13/nov/2026): a home linkava ~1.680 páginas valor x prazo (noindex, fora do sitemap) e cada hub
-    ~140. O Google rastreou, viu uma grade combinatória e não indexou nem a home. Trava o teto de links para a grade
-    em home e hubs (o resto da grade continua existindo e acessível pelos botões de cada simulação)."""
+def test_home_e_hubs_nao_linkam_a_grade_que_saiu_e_os_hubs_levam_a_home_preenchida():
+    """A grade `simulador-*` saiu (enxugamento de 20/nov/2026). Home e hubs não podem linkar para ela; os hubs trazem de 1 a 12 links
+    para a home já preenchida (`/?v=&e=&p=&b=&s=`), no lugar dos antigos links para a grade."""
     import re
 
-    def links_grade(nome):
+    def links(nome):
         with open(os.path.join(PASTA_SAIDA, nome), encoding="utf-8") as f:
             html = f.read()
-        return html, [h for h in re.findall(r'<a [^>]*href="([^"#]+)"', html) if h.startswith("simulador-")]
+        return html, re.findall(r'<a [^>]*href="([^"#]+)', html)
 
-    html_home, grade_home = links_grade("index.html")
-    assert len(grade_home) <= 120, f"home com {len(grade_home)} links para a grade valor x prazo"
+    html_home, hrefs_home = links("index.html")
+    assert not [h for h in hrefs_home if h.startswith(("simulador-", "/simulador-"))]
     assert len(html_home) < 120_000, f"home com {len(html_home) // 1024} KB"
     hubs = [n for n in os.listdir(PASTA_SAIDA) if n.startswith("banco-") and n.endswith(".html")]
     assert len(hubs) >= 10
     for nome in hubs:
-        _, grade_hub = links_grade(nome)
-        assert 1 <= len(grade_hub) <= 12, f"{nome}: {len(grade_hub)} links para a grade"
+        _, hrefs = links(nome)
+        assert not [h for h in hrefs if h.startswith(("simulador-", "/simulador-"))], nome
+        para_home = [h for h in hrefs if h.startswith("/?v=")]
+        assert 1 <= len(para_home) <= 12, f"{nome}: {len(para_home)} links para a home preenchida"

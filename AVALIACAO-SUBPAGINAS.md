@@ -1,5 +1,7 @@
 # Avaliação das subpáginas do simulador imobiliário
 
+**Status: recomendação aprovada pelo dono e aplicada em 20/11/2026 (PR do enxugamento).** O texto abaixo é a avaliação original, feita antes de apagar qualquer coisa. O que mudou depois: o mapa de 301 foi para `paginas_seo/_redirects` (138 regras: 119 estáticas e 19 com curinga) e `proposta-redirects-subpaginas.txt` foi removido; `conferir_redirects.py` e `tests/test_redirects.py` conferem limites, destinos, loops e cobertura das 1.799 páginas removidas.
+
 Feita em 20/11/2026, **sem apagar nem redirecionar nada**. Dados do Search Console (propriedade de domínio `sc-domain:datalabglobal.com`, atualização do relatório de indexação em 15/11/2026; desempenho dos últimos 3 meses, filtrado por `simulador.datalabglobal.com`) e medições nos arquivos gerados em `paginas_seo/`.
 
 ## Conclusão em três linhas
@@ -83,7 +85,7 @@ Isso **não garante** indexação: o domínio é novo (setembro) e tem pouca aut
 
 ### Mapa de redirecionamentos 301 (proposto, não aplicado)
 
-Arquivo completo: [`proposta-redirects-subpaginas.txt`](proposta-redirects-subpaginas.txt) (119 regras estáticas + 11 com curinga). Resumo:
+Aplicado em [`paginas_seo/_redirects`](paginas_seo/_redirects) (119 regras estáticas + 19 com curinga, contando as 8 dos bancos de home equity que já existiam). Resumo:
 
 | Origem | Destino |
 |---|---|
@@ -92,7 +94,7 @@ Arquivo completo: [`proposta-redirects-subpaginas.txt`](proposta-redirects-subpa
 | `/renda-para-financiar-imovel-V-mil` (8 não mantidas) | a mantida mais próxima (200/300/500/800 mil) |
 | `/taxas-financiamento-imobiliario-<mês>-<ano>` (13 antigas, `noindex`) | `/taxas-financiamento-imobiliario` |
 
-Cloudflare Pages: o `_redirects` atual tem 20 regras dinâmicas; com as 11 novas fica em 31 (limite 100). As estáticas somam 119 (limite 2.000). Regras novas vão **antes** das genéricas e as antigas de 420→360 continuam valendo. Já existem 301 para os 4 bancos de home equity removidos (`/simulador-c6-bank-*` etc.).
+Cloudflare Pages: limites de 2.000 regras estáticas e 100 com curinga; ficamos em 119 e 19. As antigas de 420→360 meses foram absorvidas pela regra `/simulador-<banco>-*` (um salto só, direto ao hub). Já existem 301 para os 4 bancos de home equity removidos (`/simulador-c6-bank-*` etc.).
 
 ## O que muda no SEO se aprovar
 
