@@ -59,17 +59,11 @@ def test_posicao_no_mercado_nao_cita_concorrente():
 
 
 @pytest.mark.skipif(not gerada, reason="paginas_seo/ não gerada")
-def test_paginas_de_simulacao_tem_blocos_proprios():
-    html = _ler("simulador-itau-500-mil-360-meses.html")
-    assert "Como a dívida evolui ano a ano" in html
-    assert "Taxa do Itaú nos últimos meses" in html
-    assert "Valores e prazos vizinhos no Itaú" in html
-    assert "posição entre" in html
-    assert 'href="metodologia"' in html and f'href="{SLUG_INDICE_MENSAL}"' in html
-    # duas páginas do mesmo banco não repetem a tabela anual
-    outra = _ler("simulador-itau-300-mil-360-meses.html")
-    tab = lambda h: re.search(r"<tbody>(.*?)</tbody>", h[h.index("Como a dívida evolui"):], re.S).group(1)
-    assert tab(html) != tab(outra)
+def test_grade_banco_valor_prazo_nao_existe_mais():
+    """Enxugamento (20/nov/2026): a grade `simulador-<banco>-<valor>-<prazo>` (~1.680 páginas, noindex, 0 tráfego) saiu; as URLs têm 301."""
+    import glob
+    assert not glob.glob(os.path.join(PASTA, "simulador-*.html"))
+    assert not gerador.GERAR_GRADE_SIMULADOR
 
 
 @pytest.mark.skipif(not gerada, reason="paginas_seo/ não gerada")
@@ -79,11 +73,14 @@ def test_paginas_mensais_existem_com_indexacao_certa():
     assert len(meses) >= 12
     sitemap = _ler("sitemap.xml")
     for k, mes in enumerate(meses):
-        html = _ler(slug_mes(mes) + ".html")
         recente = mes in meses[-MESES_INDEXAVEIS_MENSAL:]
-        assert ('name="robots" content="noindex,follow"' not in html) == recente, mes
+        # os meses antigos saíram (301 para o índice); só os MESES_INDEXAVEIS_MENSAL mais recentes existem, todos indexáveis
+        assert os.path.exists(os.path.join(PASTA, slug_mes(mes) + ".html")) == recente, mes
         assert (f"/{slug_mes(mes)}</loc>" in sitemap) == recente, mes
-        assert "Taxa de financiamento imobiliário em" in html and "<table" in html
+        if recente:
+            html = _ler(slug_mes(mes) + ".html")
+            assert 'name="robots" content="noindex' not in html
+            assert "Taxa de financiamento imobiliário em" in html and "<table" in html
     assert f"/{SLUG_INDICE_MENSAL}</loc>" in sitemap
 
 
@@ -128,7 +125,7 @@ def test_renda_minima_cai_com_mais_entrada_e_prazo_maior():
 @pytest.mark.skipif(not gerada, reason="paginas_seo/ não gerada")
 def test_paginas_de_renda_existem_no_sitemap_e_com_faq_igual_ao_json_ld():
     sitemap = _ler("sitemap.xml")
-    for v in VALORES_INDEXAVEIS:
+    for v in gerador.VALORES_RENDA:
         slug = gerador.slug_renda(v)
         html = _ler(slug + ".html")
         assert f"/{slug}</loc>" in sitemap and 'content="noindex' not in html

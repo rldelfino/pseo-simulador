@@ -60,7 +60,7 @@ def test_prazos_indexaveis_sao_360_e_420():
 def test_paginas_de_comparacao_existem_e_estao_no_sitemap():
     sitemap = open(os.path.join(PASTA_SAIDA, "sitemap.xml"), encoding="utf-8").read()
     esperadas = [(v, a) for v in VALORES_COMPARACAO for a in ANOS_COMPARACAO if pagina_comparacao_existe(v, a)]
-    assert len(esperadas) > 100
+    assert len(esperadas) == 10  # enxugamento de 20/nov/2026: 5 valores x 2 prazos
     for v, a in esperadas:
         slug = slug_comparacao(v, a)
         assert os.path.exists(os.path.join(PASTA_SAIDA, slug + ".html")), slug
@@ -98,7 +98,7 @@ def test_pagina_de_comparacao_tem_titulo_unico_e_numeros_proprios():
             d = re.search(r'name="description" content="(.*?)"', html).group(1)
             assert len(t) <= 60 and len(d) <= 160 and not d.endswith(("...", "…")), (t, d)
             titulos.add(t); descs.add(d)
-    assert len(titulos) == len(descs) and len(titulos) > 100
+    assert len(titulos) == len(descs) == 10
 
 
 # ---------------------------------------------------------------------------
@@ -220,6 +220,6 @@ def test_cada_guia_recebe_varios_links_contextuais_e_paginas_novas_sao_alcancave
     textos = {n: open(os.path.join(PASTA_SAIDA, n), encoding="utf-8").read() for n in os.listdir(PASTA_SAIDA) if n.endswith(".html")}
     for art in ARTIGOS_APRENDA:
         recebidos = sum(1 for n, t in textos.items() if n != art["slug"] + ".html" and f'href="{art["slug"]}"' in t)
-        assert recebidos >= 20, (art["slug"], recebidos)
+        assert recebidos >= 10, (art["slug"], recebidos)  # eram >= 20 com 108 páginas de comparação
     for destino in ("incorporar", "imprensa"):
         assert f'href="{destino}"' in textos["index.html"] or f'href="/{destino}"' in textos["index.html"], destino  # rodapé da home (a home nova usa links com barra)

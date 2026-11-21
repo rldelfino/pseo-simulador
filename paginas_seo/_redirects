@@ -25,30 +25,145 @@
 /banco-cash-me*           /comparador-bancos   301
 /banco-daycoval*          /comparador-bancos   301
 
-# Achado real (20/set/2026, Search Console — Insights dos últimos 28
-# dias + git log): as páginas que de fato receberam os cliques e o pico
-# de impressões de 30/08–03/09 eram páginas de 420 meses de bancos cujo
-# prazo máximo é 360 (Itaú, Bradesco, Inter, Sicredi, Sicoob, Banrisul).
-# O gerador foi corrigido (31/08, "correcao das regras de financiamento
-# por banco") pra nunca gerar 420 onde o banco não oferece — certo pela
-# precisão (conteúdo financeiro), mas as URLs antigas viraram 404 e o
-# Google perdeu, de uma vez, as páginas que já tinham histórico de
-# ranking. 301 pra página equivalente de 360 meses (mesmo banco, mesmo
-# valor de imóvel — o gerador já colapsa 420 em 360 nesses bancos)
-# devolve esse histórico pra uma página que existe e é correta, em vez
-# de deixar em 404 ou jogar num destino genérico.
-/simulador-itau-*-mil-420-meses         /simulador-itau-:splat-mil-360-meses         301
-/simulador-bradesco-*-mil-420-meses     /simulador-bradesco-:splat-mil-360-meses     301
-/simulador-banco-inter-*-mil-420-meses  /simulador-banco-inter-:splat-mil-360-meses  301
-/simulador-sicredi-*-mil-420-meses      /simulador-sicredi-:splat-mil-360-meses      301
-/simulador-sicoob-*-mil-420-meses       /simulador-sicoob-:splat-mil-360-meses       301
-/simulador-banrisul-*-mil-420-meses     /simulador-banrisul-:splat-mil-360-meses     301
+# Enxugamento das subpáginas (20/nov/2026, AVALIACAO-SUBPAGINAS.md): a grade banco x valor x prazo (~1.680 páginas, noindex, 0 tráfego atual) e as
+# comparações, rendas e meses antigos sem demanda saíram do site. Todas as origens têm 301 para a página equivalente que ficou, em um salto só.
+# Os redirecionamentos 420 -> 360 meses de bancos com prazo máximo de 360 ficaram dentro da regra /simulador-<banco>-* (vai direto ao hub do banco).
+# Limites do Cloudflare Pages: 2.000 regras estáticas + 100 com curinga. Aqui: 119 estáticas e 19 com curinga (8 de bancos removidos + 11 da grade).
 
-# Achado real (26/set/2026, Search Console "Não encontrado (404)"): as regras acima casam só a URL SEM extensão; a antiga
-# com ".html" (a que o Google guardou antes de 06/set) não casava e seguia em 404. Mesma troca 420 -> 360, versão .html.
-/simulador-itau-*-mil-420-meses.html         /simulador-itau-:splat-mil-360-meses         301
-/simulador-bradesco-*-mil-420-meses.html     /simulador-bradesco-:splat-mil-360-meses     301
-/simulador-banco-inter-*-mil-420-meses.html  /simulador-banco-inter-:splat-mil-360-meses  301
-/simulador-sicredi-*-mil-420-meses.html      /simulador-sicredi-:splat-mil-360-meses      301
-/simulador-sicoob-*-mil-420-meses.html       /simulador-sicoob-:splat-mil-360-meses       301
-/simulador-banrisul-*-mil-420-meses.html     /simulador-banrisul-:splat-mil-360-meses     301
+# 1) grade banco x valor x prazo (~1.680 arquivos, noindex): vão para o hub do banco. 11 regras dinâmicas.
+/simulador-caixa-*  /banco-caixa  301
+/simulador-banco-do-brasil-*  /banco-banco-do-brasil  301
+/simulador-santander-*  /banco-santander  301
+/simulador-brb-*  /banco-brb  301
+/simulador-poupex-*  /banco-poupex  301
+/simulador-itau-*  /banco-itau  301
+/simulador-bradesco-*  /banco-bradesco  301
+/simulador-banco-inter-*  /banco-banco-inter  301
+/simulador-sicredi-*  /banco-sicredi  301
+/simulador-sicoob-*  /banco-sicoob  301
+/simulador-banrisul-*  /banco-banrisul  301
+
+# 2) comparação sem marca: ficam 5 valores (200, 300, 400, 500, 700 mil) x 2 prazos (20 e 30 anos); o resto vai para a mais próxima (98 regras).
+/financiamento-imobiliario-1000-mil-10-anos  /financiamento-imobiliario-700-mil-20-anos  301
+/financiamento-imobiliario-1000-mil-15-anos  /financiamento-imobiliario-700-mil-20-anos  301
+/financiamento-imobiliario-1000-mil-20-anos  /financiamento-imobiliario-700-mil-20-anos  301
+/financiamento-imobiliario-1000-mil-25-anos  /financiamento-imobiliario-700-mil-20-anos  301
+/financiamento-imobiliario-1000-mil-30-anos  /financiamento-imobiliario-700-mil-30-anos  301
+/financiamento-imobiliario-1000-mil-35-anos  /financiamento-imobiliario-700-mil-30-anos  301
+/financiamento-imobiliario-150-mil-10-anos  /financiamento-imobiliario-200-mil-20-anos  301
+/financiamento-imobiliario-150-mil-15-anos  /financiamento-imobiliario-200-mil-20-anos  301
+/financiamento-imobiliario-150-mil-20-anos  /financiamento-imobiliario-200-mil-20-anos  301
+/financiamento-imobiliario-150-mil-25-anos  /financiamento-imobiliario-200-mil-20-anos  301
+/financiamento-imobiliario-150-mil-30-anos  /financiamento-imobiliario-200-mil-30-anos  301
+/financiamento-imobiliario-150-mil-35-anos  /financiamento-imobiliario-200-mil-30-anos  301
+/financiamento-imobiliario-200-mil-10-anos  /financiamento-imobiliario-200-mil-20-anos  301
+/financiamento-imobiliario-200-mil-15-anos  /financiamento-imobiliario-200-mil-20-anos  301
+/financiamento-imobiliario-200-mil-25-anos  /financiamento-imobiliario-200-mil-20-anos  301
+/financiamento-imobiliario-200-mil-35-anos  /financiamento-imobiliario-200-mil-30-anos  301
+/financiamento-imobiliario-250-mil-10-anos  /financiamento-imobiliario-200-mil-20-anos  301
+/financiamento-imobiliario-250-mil-15-anos  /financiamento-imobiliario-200-mil-20-anos  301
+/financiamento-imobiliario-250-mil-20-anos  /financiamento-imobiliario-200-mil-20-anos  301
+/financiamento-imobiliario-250-mil-25-anos  /financiamento-imobiliario-200-mil-20-anos  301
+/financiamento-imobiliario-250-mil-30-anos  /financiamento-imobiliario-200-mil-30-anos  301
+/financiamento-imobiliario-250-mil-35-anos  /financiamento-imobiliario-200-mil-30-anos  301
+/financiamento-imobiliario-300-mil-10-anos  /financiamento-imobiliario-300-mil-20-anos  301
+/financiamento-imobiliario-300-mil-15-anos  /financiamento-imobiliario-300-mil-20-anos  301
+/financiamento-imobiliario-300-mil-25-anos  /financiamento-imobiliario-300-mil-20-anos  301
+/financiamento-imobiliario-300-mil-35-anos  /financiamento-imobiliario-300-mil-30-anos  301
+/financiamento-imobiliario-350-mil-10-anos  /financiamento-imobiliario-300-mil-20-anos  301
+/financiamento-imobiliario-350-mil-15-anos  /financiamento-imobiliario-300-mil-20-anos  301
+/financiamento-imobiliario-350-mil-20-anos  /financiamento-imobiliario-300-mil-20-anos  301
+/financiamento-imobiliario-350-mil-25-anos  /financiamento-imobiliario-300-mil-20-anos  301
+/financiamento-imobiliario-350-mil-30-anos  /financiamento-imobiliario-300-mil-30-anos  301
+/financiamento-imobiliario-350-mil-35-anos  /financiamento-imobiliario-300-mil-30-anos  301
+/financiamento-imobiliario-400-mil-10-anos  /financiamento-imobiliario-400-mil-20-anos  301
+/financiamento-imobiliario-400-mil-15-anos  /financiamento-imobiliario-400-mil-20-anos  301
+/financiamento-imobiliario-400-mil-25-anos  /financiamento-imobiliario-400-mil-20-anos  301
+/financiamento-imobiliario-400-mil-35-anos  /financiamento-imobiliario-400-mil-30-anos  301
+/financiamento-imobiliario-450-mil-10-anos  /financiamento-imobiliario-400-mil-20-anos  301
+/financiamento-imobiliario-450-mil-15-anos  /financiamento-imobiliario-400-mil-20-anos  301
+/financiamento-imobiliario-450-mil-20-anos  /financiamento-imobiliario-400-mil-20-anos  301
+/financiamento-imobiliario-450-mil-25-anos  /financiamento-imobiliario-400-mil-20-anos  301
+/financiamento-imobiliario-450-mil-30-anos  /financiamento-imobiliario-400-mil-30-anos  301
+/financiamento-imobiliario-450-mil-35-anos  /financiamento-imobiliario-400-mil-30-anos  301
+/financiamento-imobiliario-500-mil-10-anos  /financiamento-imobiliario-500-mil-20-anos  301
+/financiamento-imobiliario-500-mil-15-anos  /financiamento-imobiliario-500-mil-20-anos  301
+/financiamento-imobiliario-500-mil-25-anos  /financiamento-imobiliario-500-mil-20-anos  301
+/financiamento-imobiliario-500-mil-35-anos  /financiamento-imobiliario-500-mil-30-anos  301
+/financiamento-imobiliario-550-mil-10-anos  /financiamento-imobiliario-500-mil-20-anos  301
+/financiamento-imobiliario-550-mil-15-anos  /financiamento-imobiliario-500-mil-20-anos  301
+/financiamento-imobiliario-550-mil-20-anos  /financiamento-imobiliario-500-mil-20-anos  301
+/financiamento-imobiliario-550-mil-25-anos  /financiamento-imobiliario-500-mil-20-anos  301
+/financiamento-imobiliario-550-mil-30-anos  /financiamento-imobiliario-500-mil-30-anos  301
+/financiamento-imobiliario-550-mil-35-anos  /financiamento-imobiliario-500-mil-30-anos  301
+/financiamento-imobiliario-600-mil-10-anos  /financiamento-imobiliario-500-mil-20-anos  301
+/financiamento-imobiliario-600-mil-15-anos  /financiamento-imobiliario-500-mil-20-anos  301
+/financiamento-imobiliario-600-mil-20-anos  /financiamento-imobiliario-500-mil-20-anos  301
+/financiamento-imobiliario-600-mil-25-anos  /financiamento-imobiliario-500-mil-20-anos  301
+/financiamento-imobiliario-600-mil-30-anos  /financiamento-imobiliario-500-mil-30-anos  301
+/financiamento-imobiliario-600-mil-35-anos  /financiamento-imobiliario-500-mil-30-anos  301
+/financiamento-imobiliario-650-mil-10-anos  /financiamento-imobiliario-700-mil-20-anos  301
+/financiamento-imobiliario-650-mil-15-anos  /financiamento-imobiliario-700-mil-20-anos  301
+/financiamento-imobiliario-650-mil-20-anos  /financiamento-imobiliario-700-mil-20-anos  301
+/financiamento-imobiliario-650-mil-25-anos  /financiamento-imobiliario-700-mil-20-anos  301
+/financiamento-imobiliario-650-mil-30-anos  /financiamento-imobiliario-700-mil-30-anos  301
+/financiamento-imobiliario-650-mil-35-anos  /financiamento-imobiliario-700-mil-30-anos  301
+/financiamento-imobiliario-700-mil-10-anos  /financiamento-imobiliario-700-mil-20-anos  301
+/financiamento-imobiliario-700-mil-15-anos  /financiamento-imobiliario-700-mil-20-anos  301
+/financiamento-imobiliario-700-mil-25-anos  /financiamento-imobiliario-700-mil-20-anos  301
+/financiamento-imobiliario-700-mil-35-anos  /financiamento-imobiliario-700-mil-30-anos  301
+/financiamento-imobiliario-750-mil-10-anos  /financiamento-imobiliario-700-mil-20-anos  301
+/financiamento-imobiliario-750-mil-15-anos  /financiamento-imobiliario-700-mil-20-anos  301
+/financiamento-imobiliario-750-mil-20-anos  /financiamento-imobiliario-700-mil-20-anos  301
+/financiamento-imobiliario-750-mil-25-anos  /financiamento-imobiliario-700-mil-20-anos  301
+/financiamento-imobiliario-750-mil-30-anos  /financiamento-imobiliario-700-mil-30-anos  301
+/financiamento-imobiliario-750-mil-35-anos  /financiamento-imobiliario-700-mil-30-anos  301
+/financiamento-imobiliario-800-mil-10-anos  /financiamento-imobiliario-700-mil-20-anos  301
+/financiamento-imobiliario-800-mil-15-anos  /financiamento-imobiliario-700-mil-20-anos  301
+/financiamento-imobiliario-800-mil-20-anos  /financiamento-imobiliario-700-mil-20-anos  301
+/financiamento-imobiliario-800-mil-25-anos  /financiamento-imobiliario-700-mil-20-anos  301
+/financiamento-imobiliario-800-mil-30-anos  /financiamento-imobiliario-700-mil-30-anos  301
+/financiamento-imobiliario-800-mil-35-anos  /financiamento-imobiliario-700-mil-30-anos  301
+/financiamento-imobiliario-850-mil-10-anos  /financiamento-imobiliario-700-mil-20-anos  301
+/financiamento-imobiliario-850-mil-15-anos  /financiamento-imobiliario-700-mil-20-anos  301
+/financiamento-imobiliario-850-mil-20-anos  /financiamento-imobiliario-700-mil-20-anos  301
+/financiamento-imobiliario-850-mil-25-anos  /financiamento-imobiliario-700-mil-20-anos  301
+/financiamento-imobiliario-850-mil-30-anos  /financiamento-imobiliario-700-mil-30-anos  301
+/financiamento-imobiliario-850-mil-35-anos  /financiamento-imobiliario-700-mil-30-anos  301
+/financiamento-imobiliario-900-mil-10-anos  /financiamento-imobiliario-700-mil-20-anos  301
+/financiamento-imobiliario-900-mil-15-anos  /financiamento-imobiliario-700-mil-20-anos  301
+/financiamento-imobiliario-900-mil-20-anos  /financiamento-imobiliario-700-mil-20-anos  301
+/financiamento-imobiliario-900-mil-25-anos  /financiamento-imobiliario-700-mil-20-anos  301
+/financiamento-imobiliario-900-mil-30-anos  /financiamento-imobiliario-700-mil-30-anos  301
+/financiamento-imobiliario-900-mil-35-anos  /financiamento-imobiliario-700-mil-30-anos  301
+/financiamento-imobiliario-950-mil-10-anos  /financiamento-imobiliario-700-mil-20-anos  301
+/financiamento-imobiliario-950-mil-15-anos  /financiamento-imobiliario-700-mil-20-anos  301
+/financiamento-imobiliario-950-mil-20-anos  /financiamento-imobiliario-700-mil-20-anos  301
+/financiamento-imobiliario-950-mil-25-anos  /financiamento-imobiliario-700-mil-20-anos  301
+/financiamento-imobiliario-950-mil-30-anos  /financiamento-imobiliario-700-mil-30-anos  301
+/financiamento-imobiliario-950-mil-35-anos  /financiamento-imobiliario-700-mil-30-anos  301
+
+# 3) renda para financiar: ficam 200, 300, 500 e 800 mil (8 regras).
+/renda-para-financiar-imovel-1000-mil  /renda-para-financiar-imovel-800-mil  301
+/renda-para-financiar-imovel-150-mil  /renda-para-financiar-imovel-200-mil  301
+/renda-para-financiar-imovel-250-mil  /renda-para-financiar-imovel-200-mil  301
+/renda-para-financiar-imovel-350-mil  /renda-para-financiar-imovel-300-mil  301
+/renda-para-financiar-imovel-400-mil  /renda-para-financiar-imovel-300-mil  301
+/renda-para-financiar-imovel-600-mil  /renda-para-financiar-imovel-500-mil  301
+/renda-para-financiar-imovel-700-mil  /renda-para-financiar-imovel-800-mil  301
+/renda-para-financiar-imovel-900-mil  /renda-para-financiar-imovel-800-mil  301
+
+# 4) taxas mês a mês: os meses antigos já estão em noindex; vão para o índice (13 regras).
+/taxas-financiamento-imobiliario-abril-2025  /taxas-financiamento-imobiliario  301
+/taxas-financiamento-imobiliario-agosto-2025  /taxas-financiamento-imobiliario  301
+/taxas-financiamento-imobiliario-dezembro-2024  /taxas-financiamento-imobiliario  301
+/taxas-financiamento-imobiliario-fevereiro-2025  /taxas-financiamento-imobiliario  301
+/taxas-financiamento-imobiliario-janeiro-2025  /taxas-financiamento-imobiliario  301
+/taxas-financiamento-imobiliario-julho-2025  /taxas-financiamento-imobiliario  301
+/taxas-financiamento-imobiliario-junho-2025  /taxas-financiamento-imobiliario  301
+/taxas-financiamento-imobiliario-maio-2025  /taxas-financiamento-imobiliario  301
+/taxas-financiamento-imobiliario-marco-2025  /taxas-financiamento-imobiliario  301
+/taxas-financiamento-imobiliario-novembro-2024  /taxas-financiamento-imobiliario  301
+/taxas-financiamento-imobiliario-outubro-2024  /taxas-financiamento-imobiliario  301
+/taxas-financiamento-imobiliario-outubro-2025  /taxas-financiamento-imobiliario  301
+/taxas-financiamento-imobiliario-setembro-2025  /taxas-financiamento-imobiliario  301

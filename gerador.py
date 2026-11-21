@@ -149,8 +149,13 @@ def html_fontes_guia(slug, fontes=None):
             f'<ul class="list-disc pl-6 space-y-1 text-sm">{lis}</ul></div>')
 
 # Grade das páginas de comparação sem marca de banco.
-VALORES_COMPARACAO = tuple(range(150_000, 1_000_001, 50_000))
-ANOS_COMPARACAO = (10, 15, 20, 25, 30, 35)
+# Enxugamento (20/nov/2026, AVALIACAO-SUBPAGINAS.md): de 108 páginas de comparação (18 valores x 6 prazos, 0 rastreadas, repetição de 0,45)
+# ficam 10: 5 valores x 2 prazos. O resto vai por 301 para a mais próxima (ver paginas_seo/_redirects).
+VALORES_COMPARACAO = (200_000, 300_000, 400_000, 500_000, 700_000)
+ANOS_COMPARACAO = (20, 30)
+# Renda para financiar: 4 valores (eram 12) e a grade banco x valor x prazo (~1.680 páginas noindex) deixa de ser gerada.
+VALORES_RENDA = (200_000, 300_000, 500_000, 800_000)
+GERAR_GRADE_SIMULADOR = False
 MIN_BANCOS_COMPARACAO = 3  # não gera a página se menos bancos oferecem aquele prazo
 
 # Cache-busting de styles.css, calculo.js e medicao.js: o Cloudflare guarda esses arquivos na borda/navegador por
@@ -869,6 +874,15 @@ def pagina_comparacao_existe(valor_imovel, anos):
     )
 
 
+def url_home_simulacao(item):
+    """Link do hub para a home já preenchida (valor, entrada mínima do banco, prazo, banco, SAC). Substitui o link para a página
+    da grade banco x valor x prazo, que deixou de existir (enxugamento de 20/nov/2026)."""
+    from urllib.parse import quote
+    valor = int(round(float(item['linha_original']['valor_imovel'])))
+    entrada = -(-int(valor * (1 - item['regra']['ltv'])) // 1000) * 1000
+    return f"/?v={valor}&amp;e={entrada}&amp;p={item['prazo_correto'] // 12}&amp;b={quote(item['banco'])}&amp;s=sac#simulador"
+
+
 def slug_hub_banco(banco):
     """Slug da página-hub do banco (ex: 'C6 Bank' -> 'banco-c6-bank'). Mesma
     convenção de normalização (lower + espaço->hífen) já usada em outros
@@ -1002,7 +1016,7 @@ def gerar_paginas_pseo():
             "Calcular taxas de juros", "Simulador imobiliário", "Comparador de empréstimo",
         ]
 
-        for p in todas_as_paginas:
+        for p in (todas_as_paginas if GERAR_GRADE_SIMULADOR else []):
             linha = p["linha_original"]
             banco = p['banco']
             banco_exib = p['banco_exib']
@@ -1760,7 +1774,7 @@ def gerar_paginas_pseo():
     # pro hub do seu banco (ver link real no cabeçalho, acima).
     urls_hub = gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, dominio, taxas_atuais_por_banco)
     url_comparador = gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas_atuais_por_banco)
-    urls_comparacao = gerar_paginas_comparacao(pasta_saida, dominio, data_ultima_atualizacao, taxas_atuais_por_banco, lookup_paginas)
+    urls_comparacao = gerar_paginas_comparacao(pasta_saida, dominio, data_ultima_atualizacao, taxas_atuais_por_banco, lookup_paginas if GERAR_GRADE_SIMULADOR else {})
     urls_comparacao += gerar_dados_abertos(pasta_saida, dominio, data_ultima_atualizacao)
     gerar_embed(pasta_saida, dominio, data_ultima_atualizacao, taxas_atuais_por_banco)
     urls_comparacao += gerar_pagina_incorporar(pasta_saida, dominio, data_ultima_atualizacao)
@@ -1780,10 +1794,13 @@ def gerar_paginas_pseo():
         for art in ARTIGOS_APRENDA
     ]
     url_aprenda_hub = gerar_hub_aprenda(ARTIGOS_APRENDA, pasta_saida, dominio)
-    gerar_sitemap(
-        urls_sitemap + urls_hub + [url_comparador, url_sobre, url_aprenda_hub] + urls_comparacao + urls_aprenda,
-        pasta_saida, dominio, data_ultima_atualizacao,
-    )
+    todas_as_urls = urls_sitemap + urls_hub + [url_comparador, url_sobre, url_aprenda_hub] + urls_comparacao + urls_aprenda
+    limpar_paginas_obsoletas(pasta_saida, dominio, todas_as_urls)
+    gerar_sitemap(todas_as_urls, pasta_saida, dominio, data_ultima_atualizacao)
+    # o manifesto de lastmod perde as URLs que saíram do sitemap (Home e arquivos fixos entram pelo gerar_sitemap)
+    vivas = {"url:" + u for u in todas_as_urls} | {"url:" + dominio + "/"}
+    for chave in [k for k in _MANIFESTO_LASTMOD if k.startswith("url:") and k not in vivas]:
+        del _MANIFESTO_LASTMOD[chave]
     lastmod.salvar(_MANIFESTO_LASTMOD)
     gerar_robots_txt(pasta_saida, dominio)
     with open(os.path.join(pasta_saida, "calculo.js"), "w", encoding="utf-8") as f:
@@ -1804,8 +1821,8 @@ def gerar_paginas_pseo():
     # _redirects/404.html — esta função nunca sobrescreve nem apaga
     # esses 3 arquivos, só o favicon.svg (puro código, sem dependência
     # nova, seguro rodar sempre).
-    gerar_llms_txt(pasta_saida, dominio, len(urls_sitemap), data_ultima_atualizacao)
-    print(f"✅ {len(urls_sitemap)} páginas geradas em '{pasta_saida}/'.")
+    gerar_llms_txt(pasta_saida, dominio, len(todas_as_urls) + 1, data_ultima_atualizacao)
+    print(f"✅ {len(todas_as_urls) + 1} URLs no sitemap (home incluída).")
     print(f"✅ {len(urls_hub)} páginas-hub por banco + 1 página comparativa geradas.")
 
 
@@ -1828,6 +1845,26 @@ def html_requisitos_aprovacao(banco_exib=None, entrada_min_pct=None):
     return (f'<section id="antes-de-pedir" class="mt-10"><h2 class="text-xl font-serif text-white mb-3">Antes de pedir a proposta: o que costuma pesar na aprovação</h2>'
             f'<ul class="space-y-2 text-sm text-slate-300 font-light leading-relaxed list-disc pl-5">{lis}</ul>'
             f'<p class="mt-3 text-xs text-slate-400">O pedido de proposta é analisado por um correspondente bancário parceiro e a aprovação depende da análise de crédito de cada instituição. Nenhuma simulação garante aprovação.</p></section>')
+
+
+def html_requisitos_banco(banco_exib, entrada_min_pct, taxa_aa, prazo_max):
+    """Versão do bloco "Antes de pedir a proposta" para o hub de um banco (20/nov/2026): números do próprio banco (entrada mínima,
+    1ª parcela e renda para R$ 500 mil) no lugar do texto genérico que se repetia em todos os hubs (similaridade 0,55). Documentos e
+    histórico de crédito ficam no guia, sem repetir em 11 páginas."""
+    valor = 500_000
+    prazo = min(360, prazo_max)
+    entrada = valor * entrada_min_pct / 100
+    r = calcular_sac_price(valor - entrada, prazo, taxa_aa, valor)
+    itens = [
+        ("Entrada", f"O {banco_exib} exige entrada mínima de {entrada_min_pct}%: para um imóvel de {formatar_reais(valor)}, são {formatar_reais(entrada)} de entrada e {formatar_reais(valor - entrada)} financiados."),
+        ("Renda", f"Com a taxa de {str(round(taxa_aa, 2)).replace('.', ',')}% ao ano, em {prazo // 12} anos, a 1ª parcela (SAC) desse financiamento é de {formatar_reais(r['p1_sac'])} e pede renda de cerca de {formatar_reais(r['renda_sugerida'])} por mês, se a parcela ficar em até 30% da renda bruta."),
+        ("Prazo", f"O {banco_exib} financia em até {prazo_max} meses ({prazo_max // 12} anos). Prazo maior reduz a parcela e aumenta o total de juros."),
+        ("Documentos e histórico de crédito", 'Veja o que costuma ser pedido no guia <a href="aprenda-passo-a-passo-financiar-imovel-documentos" class="text-emerald-400 underline">passo a passo e documentos</a> e consulte de graça o seu extrato de dívidas no <a href="https://www.bcb.gov.br/meubc/registrato" target="_blank" rel="noopener" class="text-emerald-400 underline">Registrato</a>.'),
+    ]
+    lis = "".join(f'<li><strong class="text-white">{t}.</strong> {d}</li>' for t, d in itens)
+    return (f'<section id="antes-de-pedir" class="mt-10"><h2 class="text-xl font-serif text-white mb-3">Antes de pedir a proposta no {banco_exib}</h2>'
+            f'<ul class="space-y-2 text-sm text-slate-300 font-light leading-relaxed list-disc pl-5">{lis}</ul>'
+            f'<p class="mt-3 text-xs text-slate-400">A aprovação depende da análise de crédito de cada instituição. Nenhuma simulação garante aprovação.</p></section>')
 
 
 def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, dominio, taxas_atuais=None):
@@ -1914,7 +1951,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
             itens = por_prazo[prazo_grupo]
             anos_grupo = prazo_grupo // 12
             links_grid = "".join(f'''
-                <a href="{item['slug']}" class="group flex items-center justify-between p-3 bg-white/5 rounded-lg border border-white/10 hover:border-emerald-500/50 hover:bg-white/10 transition-all">
+                <a href="{url_home_simulacao(item)}" class="group flex items-center justify-between p-3 bg-white/5 rounded-lg border border-white/10 hover:border-emerald-500/50 hover:bg-white/10 transition-all">
                     <span class="text-xs text-slate-300 group-hover:text-white">{formatar_reais(float(item['linha_original']['valor_imovel']))[3:]}</span>
                     <svg class="w-3 h-3 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                 </a>''' for item in itens)
@@ -1981,7 +2018,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
                            f"Entrada mínima de {entrada_min_pct}% e prazo de até {prazo_max} meses.")
         faixa_html += html_serie_banco(_historico_hubs, banco, banco_exib, taxa_atual_banco)
         faixa_html += html_comparacao_mercado(banco, banco_exib, taxa_atual_banco, entrada_min_pct, prazo_max, _historico_hubs)
-        faixa_html += html_requisitos_aprovacao(banco_exib, entrada_min_pct)
+        faixa_html += html_requisitos_banco(banco_exib, entrada_min_pct, taxa_atual_banco, prazo_max)
         faixa_html += html_mais_sobre_banco(banco_exib, _historico_hubs)
         faixa_html += html_como_citar(f"Taxa do {banco_exib} para financiamento imobiliário", url_canonica, date.fromisoformat(data_ultima_atualizacao).strftime('%d/%m/%Y'))
         html_hub = f'''<!DOCTYPE html>
@@ -2047,9 +2084,9 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
 
         <div class="mt-16 pt-8 border-t border-white/5">
             <h2 class="text-sm font-serif text-slate-400 mb-2 flex items-center justify-center">
-                {icone('link', 'mr-2 text-emerald-500/50')} Simulações do {banco_exib} para os valores mais buscados
+                {icone('link', 'mr-2 text-emerald-500/50')} Simule o {banco_exib} para os valores mais buscados
             </h2>
-            <p class="text-slate-400 text-xs text-center max-w-xl mx-auto">Escolha um valor abaixo pra abrir o simulador completo, com cálculo de parcelas, CET e amortização. Em qualquer uma delas você muda o valor, o prazo e a entrada.</p>
+            <p class="text-slate-400 text-xs text-center max-w-xl mx-auto">Escolha um valor para abrir o simulador já preenchido com a taxa, a entrada mínima e o prazo do {banco_exib}. Lá você troca valor, entrada, prazo e sistema (SAC ou Price).</p>
             {blocos_prazo_html}
         </div>
 
@@ -2462,7 +2499,7 @@ def html_vizinhas(grupo_banco, pagina, banco_exib):
                 itens.append(alt)
     if not itens:
         return ""
-    link_renda = slug_renda(valor) if int(round(valor)) in VALORES_INDEXAVEIS else SLUG_INDICE_RENDA
+    link_renda = slug_renda(valor) if int(round(valor)) in VALORES_RENDA else SLUG_INDICE_RENDA
     links = "".join(
         f'<a href="{p["slug"]}" class="block p-3 bg-white/5 rounded-xl border border-white/10 hover:border-emerald-500/50 text-sm text-slate-300">'
         f'{banco_exib}: {p["texto"]}</a>' for p in itens)
@@ -2495,6 +2532,8 @@ def gerar_paginas_mensais(pasta_saida, dominio, data_ultima_atualizacao, histori
     data_br = date.fromisoformat(data_ultima_atualizacao).strftime('%d/%m/%Y')
     urls = []
     for k, mes in enumerate(meses):
+        if mes not in recentes:  # meses antigos saíram (301 para o índice); os dados seguem em /dados-abertos
+            continue
         taxas = por_mes[mes]
         anterior = por_mes[meses[k - 1]] if k > 0 else {}
         ano_antes = f"{int(mes[:4]) - 1}{mes[4:]}"
@@ -2560,7 +2599,7 @@ def gerar_paginas_mensais(pasta_saida, dominio, data_ultima_atualizacao, histori
             "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": f"{dominio}/dados/taxas-financiamento-imobiliario.csv"}],
         }, ensure_ascii=False)
         vizinhos = ""
-        if k > 0:
+        if k > 0 and meses[k - 1] in recentes:
             vizinhos += f'<a href="{slug_mes(meses[k - 1])}" class="underline hover:text-emerald-400">← {nome_mes(meses[k - 1])}</a>'
         if k + 1 < len(meses):
             vizinhos += f' &nbsp;·&nbsp; <a href="{slug_mes(meses[k + 1])}" class="underline hover:text-emerald-400">{nome_mes(meses[k + 1])} →</a>'
@@ -2607,7 +2646,7 @@ def gerar_paginas_mensais(pasta_saida, dominio, data_ultima_atualizacao, histori
     itens = "".join(
         f'<li><a href="{slug_mes(m)}" class="text-emerald-400 underline hover:text-emerald-300">Taxa de financiamento imobiliário em {nome_mes(m)}</a>'
         f' <span class="text-slate-500 text-xs">(média {_pct2(sum(por_mes[m].values()) / len(por_mes[m]))}% a.a.)</span></li>'
-        for m in reversed(meses))
+        for m in reversed(meses) if m in recentes)
     url_ind = f"{dominio}/{SLUG_INDICE_MENSAL}"
     titulo_ind = "Taxas de financiamento imobiliário mês a mês | Datalab Global"
     desc_ind = (f"Histórico mensal das taxas do financiamento imobiliário por banco, de {nome_mes(meses[0])} a {nome_mes(meses[-1])}, "
@@ -2728,7 +2767,7 @@ def gerar_paginas_renda(pasta_saida, dominio, data_ultima_atualizacao, taxas_atu
     costumam exigir, por prazo e entrada (busca real: 'renda para financiar
     imóvel de 300 mil'). Números próprios por valor. Retorna as URLs."""
     urls = []
-    valores = list(VALORES_INDEXAVEIS)
+    valores = list(VALORES_RENDA)
     for k, valor in enumerate(valores):
         vc, vf = formatar_valor_curto(valor), formatar_reais(valor)
         tab = {(a, e): renda_minima(valor, e, a, taxas_atuais) for a in ANOS_RENDA for e in ENTRADAS_RENDA}
@@ -2821,6 +2860,19 @@ def gerar_paginas_renda(pasta_saida, dominio, data_ultima_atualizacao, taxas_atu
         f'<li><a href="{slug_renda(v)}" class="text-emerald-400 underline hover:text-emerald-300">Renda para financiar {formatar_valor_curto(v)}</a>'
         f' <span class="text-slate-500 text-xs">(a partir de {formatar_reais(renda_minima(v, 0.50, 35, taxas_atuais)["renda_sac"] if renda_minima(v, 0.50, 35, taxas_atuais) else renda_minima(v, 0.50, 30, taxas_atuais)["renda_sac"])} por mês)</span></li>'
         for v in valores)
+    linhas_tab = ""
+    for v in valores:
+        cel = ""
+        for e in ENTRADAS_RENDA:
+            r_ = renda_minima(v, e, 30, taxas_atuais)
+            cel += '<td class="px-3 py-2 text-right text-slate-300">' + (formatar_reais(r_["renda_sac"]) if r_ else "-") + "</td>"
+        linhas_tab += '<tr class="border-t border-white/5"><th scope="row" class="px-3 py-2 text-left font-medium text-white"><a href="' + slug_renda(v) + '" class="text-emerald-400 underline">' + formatar_valor_curto(v) + "</a></th>" + cel + "</tr>"
+    cab_tab = "".join('<th scope="col" class="px-3 py-2 text-right font-medium">' + str(round(e * 100)) + "% de entrada</th>" for e in ENTRADAS_RENDA)
+    tabela_renda_indice = (
+        '<h2 class="text-xl font-serif text-white mb-3">Renda mínima em 30 anos, por valor e entrada</h2>'
+        '<div class="overflow-x-auto"><table class="w-full text-sm"><caption class="text-left text-xs text-slate-400 pb-2">Renda familiar bruta mensal necessária para a 1ª parcela (SAC) caber em 30% da renda, na taxa mediana dos bancos.</caption>'
+        '<thead class="text-xs text-slate-400"><tr><th scope="col" class="px-3 py-2 text-left font-medium">Imóvel</th>' + cab_tab + "</tr></thead><tbody>" + linhas_tab + "</tbody></table></div>"
+        '<p class="text-slate-400 text-xs mt-3 mb-8">Quanto maior a entrada, menor a parcela e menor a renda exigida. Os bancos costumam limitar a primeira parcela a cerca de 30% da renda bruta familiar: é uma regra de mercado, não uma lei, e cada banco faz a própria análise de crédito. Clique no valor para ver por prazo e entrada.</p>')
     url_ind = f"{dominio}/{SLUG_INDICE_RENDA}"
     schema_bc = json.dumps({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
         {"@type": "ListItem", "position": 1, "name": "Datalab Global", "item": f"{dominio}/"},
@@ -2828,13 +2880,14 @@ def gerar_paginas_renda(pasta_saida, dominio, data_ultima_atualizacao, taxas_atu
     html = f'''<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-{render_head_boilerplate("Renda para financiar imóvel: quanto precisa ganhar | Datalab Global", "Renda mínima para financiar imóveis de R$ 150 mil a R$ 1 milhão, por prazo e entrada, com a taxa mediana dos bancos.", url_ind, dominio, [schema_bc])}
+{render_head_boilerplate("Renda para financiar imóvel: quanto precisa ganhar | Datalab Global", "Renda mínima para financiar imóveis de R$ 200 mil a R$ 800 mil, por prazo e entrada, com a taxa mediana dos bancos e limite de 30% da renda.", url_ind, dominio, [schema_bc])}
 </head>
 <body class="antialiased min-h-screen flex flex-col">
     {_nav_comparacao()}
     <main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 relative z-10 w-full flex-grow">
         <h1 class="text-3xl md:text-5xl font-serif text-white mb-4 leading-tight">Renda para financiar um imóvel</h1>
         <p class="text-slate-300 text-base font-light leading-relaxed mb-8">Escolha o valor do imóvel e veja a renda familiar mínima por prazo e entrada, calculada com o limite de 30% da renda e a taxa mediana do mercado.</p>
+        {tabela_renda_indice}
         <ul class="space-y-3 text-sm">{itens}</ul>
         <p class="text-slate-400 text-sm mt-10"><a href="financiamento-imobiliario" class="text-emerald-400 underline">Parcela por valor e prazo</a> · <a href="metodologia" class="text-emerald-400 underline">Metodologia</a></p>
     </main>
@@ -3803,7 +3856,7 @@ def gerar_indice_comparacao(pasta_saida, dominio, data_ultima_atualizacao, taxas
     titulo_pagina = "Financiamento imobiliário: parcela por valor e prazo | Datalab Global"
     meta_description = (
         f"Tabela de financiamento imobiliário de {formatar_valor_curto(VALORES_COMPARACAO[0])} a "
-        f"{formatar_valor_curto(VALORES_COMPARACAO[-1])} em 10 a 35 anos: parcela inicial e CET comparados em até {len(BANCOS)} bancos."
+        f"{formatar_valor_curto(VALORES_COMPARACAO[-1])} em {ANOS_COMPARACAO[0]} e {ANOS_COMPARACAO[-1]} anos: parcela inicial e CET comparados em até {len(BANCOS)} bancos."
     )
     anos_validos = [a for a in ANOS_COMPARACAO if len(bancos_com_prazo(a * 12)) >= MIN_BANCOS_COMPARACAO]
     cab = "".join(f'<th scope="col" class="px-3 py-2 text-right font-medium">{a} anos</th>' for a in anos_validos)
@@ -4302,6 +4355,21 @@ def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
         shutil.copyfile(os.path.join(aqui, "src", origem), os.path.join(pasta_saida, destino))
 
 
+def _schema_breadcrumb_simples(dominio, nome, url):
+    """BreadcrumbList de 2 níveis (Datalab Global > página), usado em /sobre."""
+    return json.dumps({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Datalab Global", "item": f"{dominio}/"},
+        {"@type": "ListItem", "position": 2, "name": nome, "item": url}]}, ensure_ascii=False)
+
+
+def _schema_breadcrumb_aprenda(dominio, titulo, url):
+    """BreadcrumbList dos guias: Datalab Global > Aprenda > guia (revisão de SEO de 20/nov/2026: os guias não tinham)."""
+    return json.dumps({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Datalab Global", "item": f"{dominio}/"},
+        {"@type": "ListItem", "position": 2, "name": "Aprenda", "item": f"{dominio}/aprenda"},
+        {"@type": "ListItem", "position": 3, "name": titulo, "item": url}]}, ensure_ascii=False)
+
+
 def gerar_pagina_sobre(pasta_saida, dominio):
     """Página institucional "Sobre" — achado real (12/set/2026, pesquisa
     de práticas atuais do Google pedida pelo usuário): conteúdo
@@ -4367,7 +4435,7 @@ def gerar_pagina_sobre(pasta_saida, dominio):
     html = f'''<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-{render_head_boilerplate(titulo_pagina, meta_description, url_canonica, dominio, [schema_sobre])}
+{render_head_boilerplate(titulo_pagina, meta_description, url_canonica, dominio, [schema_sobre, _schema_breadcrumb_simples(dominio, 'Sobre', url_canonica)])}
 </head>
 <body class="antialiased min-h-screen flex flex-col">
     <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
@@ -4458,7 +4526,7 @@ def gerar_pagina_aprenda(art, pasta_saida, dominio, data_atualizacao):
     html = f'''<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-{render_head_boilerplate(art['titulo_pagina'], art['meta_description'], url_canonica, dominio, [schema_article])}
+{render_head_boilerplate(art['titulo_pagina'], art['meta_description'], url_canonica, dominio, [schema_article, _schema_breadcrumb_aprenda(dominio, art['titulo_h1'], url_canonica)])}
 </head>
 <body class="antialiased min-h-screen flex flex-col">
     <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
@@ -5081,6 +5149,28 @@ def _arquivo_da_url(url, pasta_saida, dominio):
     return os.path.join(pasta_saida, (caminho or "index") + ".html")
 
 
+_PADROES_OBSOLETOS = (
+    re.compile(r"^simulador-.+\.html$"),                                 # grade banco x valor x prazo
+    re.compile(r"^financiamento-imobiliario-\d+-mil-\d+-anos\.html$"),   # comparação sem marca
+    re.compile(r"^renda-para-financiar-imovel-\d+-mil\.html$"),           # renda por valor
+    re.compile(r"^taxas-financiamento-imobiliario-[a-z]+-\d{4}\.html$"),  # meses antigos de taxas
+)
+
+
+def limpar_paginas_obsoletas(pasta_saida, dominio, urls_vivas):
+    """Apaga de paginas_seo/ as páginas geradas por padrão que a geração atual não escreveu mais (enxugamento de 20/nov/2026).
+    Só toca nos quatro padrões acima, e só se a URL não estiver no sitemap desta geração; o que sai ganha 301 em _redirects."""
+    vivas = {u[len(dominio) + 1:] + ".html" for u in urls_vivas if u.startswith(dominio + "/")}
+    apagadas = 0
+    for nome in os.listdir(pasta_saida):
+        if nome in vivas or not any(pad.match(nome) for pad in _PADROES_OBSOLETOS):
+            continue
+        os.remove(os.path.join(pasta_saida, nome))
+        apagadas += 1
+    if apagadas:
+        print(f"🧹 {apagadas} página(s) obsoleta(s) removida(s) de '{pasta_saida}/' (têm 301 em _redirects).")
+
+
 def gerar_sitemap(urls, pasta_saida, dominio, data_ultima_atualizacao):
     """Sitemap com `lastmod` REAL por URL (ISO 8601 com hora, UTC): a data só avança quando o HTML da página muda
     (ver lastmod.py). `changefreq` e `priority` não entram: o Bing diz que ignora (blog do Bing, jul/2025) e o
@@ -5139,10 +5229,10 @@ def gerar_llms_txt(pasta_saida, dominio, total_paginas, data_ultima_atualizacao)
 > Hub financeiro com simuladores de financiamento imobiliário para {len(BANCOS)} instituições brasileiras ({lista_bancos}). Calcula parcelas nos sistemas SAC e PRICE, e simula a economia de juros ao antecipar amortizações.
 
 Dados atualizados em: {data_ultima_atualizacao}
-Total de páginas de simulação: {total_paginas}
+Total de páginas no sitemap: {total_paginas}
 
 ## Páginas
-- [Home / lista de bancos]({dominio}/)
+- [Home: simulador de financiamento imobiliário com taxa média de cada banco]({dominio}/)
 - [Comparativo de taxas entre os {len(BANCOS)} bancos]({dominio}/comparador-bancos)
 - [Financiamento imobiliário: parcela por valor e prazo]({dominio}/financiamento-imobiliario)
 - [Dados abertos: taxas de financiamento por banco, série mensal em CSV e JSON]({dominio}/dados-abertos) (cópia no Kaggle: {URL_KAGGLE})
@@ -5156,7 +5246,7 @@ Total de páginas de simulação: {total_paginas}
 - [Sitemap completo]({dominio}/sitemap.xml)
 
 ## Sobre os dados
-Taxas de juros, LTV (percentual mínimo de entrada) e prazo máximo são específicos de cada instituição financeira e atualizados mensalmente. Cada página de simulador (padrão de URL: /simulador-{{banco}}-{{valor}}-mil-{{prazo}}-meses, sem extensão) traz cálculo de parcelas, custo total e comparativo real entre os sistemas SAC e PRICE para o cenário daquele banco/valor/prazo específico.
+Taxas de juros, LTV (percentual mínimo de entrada) e prazo máximo são específicos de cada instituição financeira e atualizados mensalmente. A home calcula parcela, custo total, CET e economia pagando a mais (SAC e PRICE) para qualquer banco, valor, entrada e prazo; cada banco tem uma página própria (/banco-{{banco}}) com taxa, entrada mínima e prazo máximo.
 """
     with open(os.path.join(pasta_saida, 'llms.txt'), "w", encoding="utf-8") as f:
         f.write(conteudo)

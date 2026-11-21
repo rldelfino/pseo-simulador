@@ -4,7 +4,7 @@ Site estático (HTML gerado por Python) com simuladores de financiamento imobili
 comparativos de taxas entre bancos e dados abertos. No ar em
 **https://simulador.datalabglobal.com**, publicado pelo Cloudflare Pages.
 
-- **Simulador por banco e prazo:** parcela, SAC x Price, CET e simulação de amortização.
+- **Simulador na home:** parcela, SAC x Price, CET, taxa de uma proposta e simulação de amortização, com a taxa média de cada banco.
 - **Comparação sem marca de banco:** [financiamento imobiliário por valor e prazo](https://simulador.datalabglobal.com/financiamento-imobiliario).
 - **Taxas por banco, mês a mês:** [comparador de bancos](https://simulador.datalabglobal.com/comparador-bancos).
 - **Dados abertos:** [/dados-abertos](https://simulador.datalabglobal.com/dados-abertos).
