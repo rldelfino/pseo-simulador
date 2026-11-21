@@ -29,6 +29,7 @@ import random
 from datetime import date, datetime
 
 from bancos import BANCOS, obter_regra, nome_exibicao, corrigir_concordancia, eh_feminino
+import gerador_home
 from icones import icone, tooltip
 import lastmod
 
@@ -368,10 +369,11 @@ def render_head_boilerplate(titulo_pagina, meta_description, url_canonica, domin
         # página mora em subpasta), então o relativo resolve certo pra
         # raiz a partir de qualquer URL — manter a mesma convenção em
         # vez de introduzir um caminho absoluto isolado.
-        '    <link rel="icon" href="favicon.ico?v=20261012" sizes="any">',
-        '    <link rel="icon" href="favicon-32.png?v=20261012" type="image/png" sizes="32x32">',
-        '    <link rel="icon" href="favicon-192.png?v=20261012" type="image/png" sizes="192x192">',
-        '    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261012">',
+        '    <link rel="icon" href="favicon.svg" type="image/svg+xml">',
+        '    <link rel="icon" href="favicon.ico?v=20261120" sizes="any">',
+        '    <link rel="icon" href="favicon-32.png?v=20261120" type="image/png" sizes="32x32">',
+        '    <link rel="icon" href="favicon-192.png?v=20261120" type="image/png" sizes="192x192">',
+        '    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261120">',
         f'    <link rel="alternate" type="application/atom+xml" title="{TITULO_FEED}" href="/{URL_FEED}">',
         *tags_medicao(),
     ]
@@ -1701,7 +1703,7 @@ def gerar_paginas_pseo():
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}. <a href="https://www.datalabglobal.com/privacidade/" class="underline hover:text-emerald-500">Privacidade</a> · <a href="https://www.datalabglobal.com/termos/" class="underline hover:text-emerald-500">Termos</a> · <a href="incorporar" class="underline hover:text-emerald-500">Simulador para o seu site</a> · <a href="imprensa" class="underline hover:text-emerald-500">Imprensa</a></p>
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
-                <a href="https://emprestimo.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
+                <a href="https://emprestimo.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Empréstimo com crédito do cartão</a>
                 <a href="https://homeequity.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Home Equity</a>
                 <a href="https://autoequity.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Auto Equity</a>
                 <a href="https://condominio.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Empréstimo para Condomínios</a>
@@ -2108,7 +2110,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}. <a href="https://www.datalabglobal.com/privacidade/" class="underline hover:text-emerald-500">Privacidade</a> · <a href="https://www.datalabglobal.com/termos/" class="underline hover:text-emerald-500">Termos</a> · <a href="incorporar" class="underline hover:text-emerald-500">Simulador para o seu site</a> · <a href="imprensa" class="underline hover:text-emerald-500">Imprensa</a></p>
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
-                <a href="https://emprestimo.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
+                <a href="https://emprestimo.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Empréstimo com crédito do cartão</a>
                 <a href="https://homeequity.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Home Equity</a>
                 <a href="https://autoequity.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Auto Equity</a>
                 <a href="https://condominio.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Empréstimo para Condomínios</a>
@@ -3430,7 +3432,7 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}. <a href="https://www.datalabglobal.com/privacidade/" class="underline hover:text-emerald-500">Privacidade</a> · <a href="https://www.datalabglobal.com/termos/" class="underline hover:text-emerald-500">Termos</a> · <a href="incorporar" class="underline hover:text-emerald-500">Simulador para o seu site</a> · <a href="imprensa" class="underline hover:text-emerald-500">Imprensa</a></p>
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
-                <a href="https://emprestimo.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
+                <a href="https://emprestimo.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Empréstimo com crédito do cartão</a>
                 <a href="https://homeequity.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Home Equity</a>
                 <a href="https://autoequity.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Auto Equity</a>
                 <a href="https://condominio.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Empréstimo para Condomínios</a>
@@ -3581,7 +3583,7 @@ def _footer_comparacao():
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}. <a href="https://www.datalabglobal.com/privacidade/" class="underline hover:text-emerald-500">Privacidade</a> · <a href="https://www.datalabglobal.com/termos/" class="underline hover:text-emerald-500">Termos</a> · <a href="incorporar" class="underline hover:text-emerald-500">Simulador para o seu site</a> · <a href="imprensa" class="underline hover:text-emerald-500">Imprensa</a></p>
             <div class="flex flex-wrap items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
-                <a href="https://emprestimo.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
+                <a href="https://emprestimo.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Empréstimo com crédito do cartão</a>
                 <a href="https://homeequity.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Home Equity</a>
                 <a href="https://autoequity.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Auto Equity</a>
                 <a href="https://condominio.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Empréstimo para Condomínios</a>
@@ -3912,8 +3914,8 @@ _TEMPLATE_EMBED = """<!DOCTYPE html>
 <meta name="description" content="Simulador de financiamento imobiliário incorporável: parcela SAC e Price com a taxa média de cada banco.">
 <meta name="robots" content="noindex,follow">
 <link rel="canonical" href="__DOMINIO__/incorporar">
-<link rel="icon" href="/favicon.ico?v=20261012" sizes="any">
-<link rel="icon" href="/favicon-32.png?v=20261012" type="image/png" sizes="32x32">
+<link rel="icon" href="/favicon.ico?v=20261120" sizes="any">
+<link rel="icon" href="/favicon-32.png?v=20261120" type="image/png" sizes="32x32">
 <style>
 *{box-sizing:border-box}body{margin:0;padding:14px;font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#0b1220;color:#e2e8f0}
 h1{font-size:16px;margin:0 0 10px;font-weight:700}label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#94a3b8;margin:10px 0 4px}
@@ -4255,203 +4257,49 @@ def gerar_analise_do_mes(pasta_saida, dominio, data_ultima_atualizacao):
 
 
 def gerar_index_home(pasta_saida, links_por_banco, data_ultima_atualizacao):
-    # Achado real (27/set/2026, revisão de SEO/desempenho): cada um dos ~1.680 links da home levava um <svg> de seta
-    # próprio — a home tinha 1,1 MB de HTML. A seta vira um caractere (›) e as ~10 classes repetidas em cada link viram
-    # uma classe só (.lk), definida uma vez: mesmo visual, uma fração do peso.
-    blocos_html = """<style>
-        .lk{display:flex;align-items:center;justify-content:space-between;padding:.75rem;border-radius:.5rem;border:1px solid transparent;transition:background-color .15s,border-color .15s}
-        .lk:hover{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.1)}
-        .lk span:first-child{font-size:.75rem;line-height:1rem;font-weight:300;color:#cbd5e1}
-        .lk:hover span:first-child{color:#fff}
-        .lk span:last-child{color:#10b981;font-size:.875rem;line-height:1}
-        </style>"""
-    for banco, links in links_por_banco.items():
-        regra = obter_regra(banco)
-        banco_exib = nome_exibicao(banco)
-        url_logo = f"https://www.google.com/s2/favicons?domain={regra['dominio_favicon']}&sz=128"
-        ancora_id = banco.lower().replace(" ", "-")
-        links_html = "".join(
-            f'<li><a href="{item["slug"]}" class="lk"><span>{item["texto"]}</span><span aria-hidden="true">›</span></a></li>'
-            for item in links_destaque(links)
-        )
-
-        blocos_html += f'''
-        <div id="{ancora_id}" class="bg-slate-900/40 backdrop-blur-md rounded-2xl shadow-2xl border border-white/5 overflow-hidden transition-all duration-300 hover:border-emerald-500/30 hover:shadow-[0_0_30px_rgba(16,185,129,0.1)] scroll-mt-24">
-            <a href="{slug_hub_banco(banco)}" class="group/h2 border-b border-white/5 px-6 py-5 flex items-center gap-4 bg-black/40 hover:bg-black/60 transition-colors">
-                {favicon_com_fallback(url_logo, banco_exib)}
-                <h2 class="text-xl font-serif text-white tracking-wide group-hover/h2:text-emerald-400 transition-colors">{banco_exib}</h2>
-                <span class="ml-auto text-[10px] text-slate-400 group-hover/h2:text-emerald-400 uppercase tracking-widest transition-colors">Ver taxas →</span>
-            </a>
-            <div class="p-4">
-                <ul class="space-y-1">
-                    {links_html}
-                </ul>
-            </div>
-        </div>
-        '''
-
-    url_home = f"{DOMINIO}/"
-    descricao_home = f"Simule seu financiamento imobiliário em meses ou anos, compare parcela e CET entre {len(BANCOS)} bancos e veja quanto economiza antecipando parcelas."
-
-    schema_website = f'''{{
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Datalab Global",
-      "url": "{url_home}",
-      "publisher": {{"@type": "Organization", "@id": "https://www.datalabglobal.com/#organization", "name": "Datalab Global", "url": "https://www.datalabglobal.com/"}},
-      "dateModified": "{data_ultima_atualizacao}"
-    }}'''
-
-    # Schema "Logo" (achado real, 06/set/2026: sem isso, junto do favicon
-    # que não existia, o Google mostrava o domínio cru + ícone genérico
-    # em vez do nome/ícone da marca — ver print do usuário comparando com
-    # o resultado de outro site). Formato exato recomendado pela
-    # documentação do Google (developers.google.com/search/docs/appearance/
-    # structured-data/logo): Organization com "logo" apontando pra uma
-    # imagem RASTER real (não SVG) de pelo menos 112x112px — por isso
-    # aponta pro logo-schema.png (512x512) gerado por
-    # rasterizar_favicon_png, não pro favicon.svg.
-    # Achado real (12/set/2026, pedido do usuário depois de pesquisa sobre
-    # E-E-A-T/YMYL — conteúdo financeiro é avaliado pelo Google com padrão
-    # mais alto de confiança do que conteúdo comum): "founder" e
-    # "contactPoint" são sinais legíveis por máquina de que existe gente
-    # real, com contato real, por trás do site — não só um domínio
-    # anônimo gerando página automática. Rodolfo Delfino é o fundador
-    # real da Datalab Global (confirmado pelo próprio usuário); e-mail é
-    # o contato real usado pelo domínio (Google Workspace configurado em
-    # datalabglobal.com). Ver também gerar_pagina_sobre(), que reforça o
-    # mesmo Person como schema próprio na página /sobre.
-    schema_organization = f'''{{
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "@id": "https://www.datalabglobal.com/#organization",
-      "name": "Datalab Global",
-      "url": "https://www.datalabglobal.com/",
-      "logo": "{DOMINIO}/logo-schema.png",
-      "sameAs": ["https://huggingface.co/datalabglobal"],
-      "founder": {{"@type": "Person", "name": "Rodolfo Delfino", "sameAs": ["https://github.com/rldelfino", "https://www.kaggle.com/rodolfodelfino", "https://www.linkedin.com/in/rodolfo-leal-delfino"]}},
-      "contactPoint": {{"@type": "ContactPoint", "email": "contato@datalabglobal.com", "contactType": "customer service"}}
-    }}'''
-
-    titulo_home = "Simulador de Financiamento Imobiliário: Parcela e CET 2026 | Datalab Global"
-    # og:title/twitter:title deliberadamente mais curto que o <title> —
-    # comportamento original de antes do render_head_boilerplate existir,
-    # preservado explicitamente aqui (achado da auditoria: a extração
-    # tinha igualado os dois sem querer, mudando o texto que aparece ao
-    # compartilhar a home no Facebook/LinkedIn/Twitter).
-    titulo_home_social = "Simulador de Financiamento e Amortização | Datalab Global"
-
-    # Achado real (13/set/2026, auditoria de SEO): a home era a única
-    # página de alto valor sem FAQPage (individual, hub e agora
-    # comparador-bancos já tinham) — corrigida aqui com perguntas
-    # genéricas sobre o produto como um todo, não sobre um banco
-    # específico (essas já são respondidas nas páginas de banco).
-    faq_home_q1 = "Como funciona o simulador de financiamento imobiliário da Datalab?"
-    faq_home_a1 = "Você escolhe o banco, vê a taxa real dele e simula a parcela pro valor, prazo e entrada que quiser — incluindo quanto você economiza fazendo amortizações extras. Os dados de taxa vêm direto do Banco Central e são atualizados periodicamente."
-    faq_home_q2 = "As taxas mostradas são reais ou só uma estimativa de marketing?"
-    faq_home_a2 = "São a taxa padrão estimada de cada banco pra essa modalidade, com base em dados públicos — não é uma taxa promocional de vitrine. Sua taxa final aprovada depende do seu relacionamento com o banco e da análise de crédito."
-    faq_home_q3 = "O simulador cobra alguma coisa pra usar?"
-    faq_home_a3 = "Não, simular é 100% gratuito. A Datalab é remunerada pelo correspondente bancário quando você pede uma análise por aqui — isso não muda o valor da sua parcela nem qual banco você escolhe."
-
-    schema_faq_home = f'''{{
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {{ "@type": "Question", "name": "{faq_home_q1}", "acceptedAnswer": {{ "@type": "Answer", "text": "{faq_home_a1}" }} }},
-        {{ "@type": "Question", "name": "{faq_home_q2}", "acceptedAnswer": {{ "@type": "Answer", "text": "{faq_home_a2}" }} }},
-        {{ "@type": "Question", "name": "{faq_home_q3}", "acceptedAnswer": {{ "@type": "Answer", "text": "{faq_home_a3}" }} }}
-      ]
-    }}'''
-
-    html_home = f'''<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-{render_head_boilerplate(titulo_home, descricao_home, url_home, DOMINIO, [schema_website, schema_organization, schema_faq_home], titulo_social=titulo_home_social)}
-</head>
-<body class="antialiased min-h-screen flex flex-col">
-    <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-20 items-center">
-                <a href="/" class="flex items-center">
-                    <img src="logo-full.png" alt="Datalab Global" width="122" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
-                </a>
-                <a href="/aprenda" aria-label="Aprenda" class="inline-flex items-center gap-1.5 -my-2.5 p-2.5 text-xs text-slate-400 hover:text-emerald-400 transition-colors">{icone('book-open')} <span class="hidden sm:inline">Aprenda</span></a>
-            </div>
-        </div>
-    </nav>
-    <div class="py-24 md:py-32 text-center px-4 relative overflow-hidden flex-grow">
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-emerald-500/10 rounded-full blur-[100px] -z-10 pointer-events-none"></div>
-        <h1 class="text-4xl md:text-6xl font-serif text-white mb-6 leading-tight max-w-4xl mx-auto">
-            Simulador de Financiamento Imobiliário
-        </h1>
-        <p class="text-slate-400 text-lg md:text-xl font-light tracking-wide max-w-2xl mx-auto">
-            Selecione a instituição financeira abaixo e descubra quanto você economiza ao fazer amortizações — em qualquer prazo, de meses a anos.
-        </p>
-        <a href="comparador-bancos" class="inline-flex items-center gap-2 mt-6 text-emerald-400 hover:text-emerald-300 text-sm font-medium underline underline-offset-4">
-            Ou veja o comparativo de taxas entre os {len(BANCOS)} bancos {icone('arrow-right', 'text-xs')}
-        </a>
-        <a href="financiamento-imobiliario" class="inline-flex items-center gap-2 mt-3 ml-0 sm:ml-6 text-emerald-400 hover:text-emerald-300 text-sm font-medium underline underline-offset-4">
-            Ou consulte a parcela por valor e prazo {icone('arrow-right', 'text-xs')}
-        </a>
-    </div>
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-32 relative z-10 w-full">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {blocos_html}
-        </div>
-
-        <div class="mt-16 mb-8">
-            <h2 class="text-2xl font-serif text-white mb-6 text-center">Perguntas Frequentes</h2>
-            <div class="space-y-3 max-w-3xl mx-auto">
-                <details class="group bg-white/5 border border-white/10 rounded-xl overflow-hidden open:border-emerald-500/30 transition-colors">
-                    <summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4">
-                        <h3 class="text-emerald-400 font-bold text-sm">{faq_home_q1}</h3>
-                        <span class="faq-toggle-icon shrink-0 text-slate-400 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
-                    </summary>
-                    <p class="text-slate-300 text-sm font-light leading-relaxed px-5 pb-5">{faq_home_a1}</p>
-                </details>
-                <details class="group bg-white/5 border border-white/10 rounded-xl overflow-hidden open:border-emerald-500/30 transition-colors">
-                    <summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4">
-                        <h3 class="text-emerald-400 font-bold text-sm">{faq_home_q2}</h3>
-                        <span class="faq-toggle-icon shrink-0 text-slate-400 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
-                    </summary>
-                    <p class="text-slate-300 text-sm font-light leading-relaxed px-5 pb-5">{faq_home_a2}</p>
-                </details>
-                <details class="group bg-white/5 border border-white/10 rounded-xl overflow-hidden open:border-emerald-500/30 transition-colors">
-                    <summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4">
-                        <h3 class="text-emerald-400 font-bold text-sm">{faq_home_q3}</h3>
-                        <span class="faq-toggle-icon shrink-0 text-slate-400 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
-                    </summary>
-                    <p class="text-slate-300 text-sm font-light leading-relaxed px-5 pb-5">{faq_home_a3}</p>
-                </details>
-            </div>
-        </div>
-    </main>
-    <footer class="border-t border-white/5 py-8">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}. <a href="https://www.datalabglobal.com/privacidade/" class="underline hover:text-emerald-500">Privacidade</a> · <a href="https://www.datalabglobal.com/termos/" class="underline hover:text-emerald-500">Termos</a> · <a href="incorporar" class="underline hover:text-emerald-500">Simulador para o seu site</a> · <a href="imprensa" class="underline hover:text-emerald-500">Imprensa</a></p>
-            <div class="flex items-center justify-center gap-4">
-                <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
-                <a href="https://emprestimo.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
-                <a href="https://homeequity.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Home Equity</a>
-                <a href="https://autoequity.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Auto Equity</a>
-                <a href="https://condominio.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Empréstimo para Condomínios</a>
-                <a href="https://veiculos.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Financiamento de veículos</a>
-                <a href="https://dados.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Lente B2B: dados de empresas</a>
-                <a href="/aprenda" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
-                <a href="/sobre" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
-                <a href="/metodologia" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Metodologia</a>
-                <a href="/taxas-financiamento-imobiliario" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Taxas mês a mês</a>
-                <a href="/renda-para-financiar-imovel" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Renda para financiar</a>
-                <a href="{LINK_WHATSAPP_SUPORTE}" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
-                    {icone('whatsapp', 'mr-1')} Falar com o suporte
-                </a>
-            </div>
-        </div>
-    </footer>
-</body>
-</html>'''
-    with open(os.path.join(pasta_saida, 'index.html'), "w", encoding="utf-8") as f:
+    """Home nova (20/nov/2026): simulador no estilo dos irmãos 006/007/008 (tema escuro, vidro, cartões por campo, painel de resultado,
+    faixa de três números, "já tem uma proposta?", pagar a mais, tela de confirmação antes do parceiro). O HTML vem de gerador_home.py
+    (layout em layout_home.py); CSS e JS são escritos à mão em src/ e copiados para a saída. A home tem CSP própria (ver _headers):
+    sem style nem script inline, fontes servidas pelo próprio site. As demais páginas continuam no Tailwind."""
+    import shutil
+    taxas = taxas_atuais_de(links_por_banco)
+    historico = carregar_historico()
+    meses_bcb = [r["inicio_periodo"] for r in historico if _banco_tem_taxa_bacen(r["banco"])]
+    ref_curto = (MESES_PT_ABREV[int(max(meses_bcb)[5:7]) - 1] + "/" + max(meses_bcb)[:4]) if meses_bcb else "mês anterior"
+    bancos = [{"k": chave, "n": nome_exibicao(chave), "t": taxas.get(chave, dados["taxa_padrao"]), "l": dados["ltv"], "p": dados["prazo_max"],
+               "f": "bcb" if _banco_tem_taxa_bacen(chave) else "est", "h": slug_hub_banco(chave)}
+              for chave, dados in BANCOS.items()]
+    por_slug = {a["slug"]: a for a in ARTIGOS_APRENDA}
+    guias = [{"slug": sl, "titulo": por_slug[sl]["titulo_h1"], "resumo": por_slug[sl]["resumo_card"]}
+             for sl in ("aprenda-sac-x-price", "aprenda-cet-iof-financiamento-imobiliario", "aprenda-amortizacao-extraordinaria",
+                        "aprenda-fgts-financiamento-imobiliario", "aprenda-portabilidade-financiamento-imobiliario", "aprenda-financiamento-x-consorcio-imobiliario")
+             if sl in por_slug]
+    hub = "https://www.datalabglobal.com"
+    ctx = {
+        "dominio": DOMINIO, "versao": VERSAO_BUILD, "icones_v": "20261120", "titulo_feed": TITULO_FEED,
+        "bancos": bancos, "ref_curto": ref_curto, "hoje": date.today(),
+        "atualizado_br": date.fromisoformat(data_ultima_atualizacao).strftime("%d/%m/%Y"), "atualizado_iso": data_ultima_atualizacao,
+        "fonte_taxas": texto_fonte_taxa() + ".", "razao": "Satori Soluções Comerciais LTDA", "cnpj": "63.998.502/0001-73", "email": "contato@datalabglobal.com",
+        "parceiro": LINK_FINANCIA_TUDO, "url_privacidade": hub + "/privacidade/", "guias": guias,
+        "medicao": [linha.strip() + chr(10) for linha in tags_medicao()],
+        "nav": [("/comparador-bancos", "Comparador de bancos"), ("/financiamento-imobiliario", "Parcela por valor e prazo"),
+                ("/taxas-financiamento-imobiliario", "Taxas mês a mês"), ("/aprenda", "Aprenda")],
+        "foot_entenda": [("/aprenda", "Aprenda"), ("/aprenda-sac-x-price", "SAC x Price"), ("/metodologia", "Metodologia"),
+                         ("/taxas-financiamento-imobiliario", "Taxas mês a mês"), ("/renda-para-financiar-imovel", "Renda para financiar"), ("/analise-do-mes", "Análise do mês")],
+        "foot_dados": [("/comparador-bancos", "Comparador de bancos"), ("/financiamento-imobiliario", "Parcela por valor e prazo"), ("/dados-abertos", "Dados abertos"),
+                       ("/incorporar", "Simulador para o seu site"), ("/imprensa", "Imprensa"), ("/feed.xml", "Feed das taxas")],
+        "foot_legal": [("/sobre", "Sobre"), (hub + "/privacidade/", "Privacidade"), (hub + "/termos/", "Termos"), (LINK_WHATSAPP_SUPORTE, "Falar com o suporte")],
+        "foot_outros": [("https://emprestimo.datalabglobal.com/", "Empréstimo com crédito do cartão"), ("https://homeequity.datalabglobal.com/", "Home Equity"),
+                        ("https://autoequity.datalabglobal.com/", "Crédito com veículo em garantia (Auto Equity)"), ("https://veiculos.datalabglobal.com/", "Financiamento de veículos"),
+                        ("https://condominio.datalabglobal.com/", "Empréstimo para condomínios"), ("https://dados.datalabglobal.com/", "Lente B2B: dados de empresas"),
+                        (hub + "/", "Datalab Global")],
+    }
+    html_home, _ = gerador_home.montar_home(ctx)
+    with open(os.path.join(pasta_saida, "index.html"), "w", encoding="utf-8") as f:
         f.write(corrigir_concordancia(html_home))
+    aqui = os.path.dirname(os.path.abspath(__file__))
+    for origem, destino in (("home.css", "home.css"), ("home.js", "home.js"), ("calculo_home.js", "calculo_home.js"), ("menu.js", "menu.js")):
+        shutil.copyfile(os.path.join(aqui, "src", origem), os.path.join(pasta_saida, destino))
 
 
 def gerar_pagina_sobre(pasta_saida, dominio):
@@ -4538,7 +4386,7 @@ def gerar_pagina_sobre(pasta_saida, dominio):
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}. <a href="https://www.datalabglobal.com/privacidade/" class="underline hover:text-emerald-500">Privacidade</a> · <a href="https://www.datalabglobal.com/termos/" class="underline hover:text-emerald-500">Termos</a> · <a href="incorporar" class="underline hover:text-emerald-500">Simulador para o seu site</a> · <a href="imprensa" class="underline hover:text-emerald-500">Imprensa</a></p>
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
-                <a href="https://emprestimo.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
+                <a href="https://emprestimo.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Empréstimo com crédito do cartão</a>
                 <a href="https://homeequity.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Home Equity</a>
                 <a href="https://autoequity.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Auto Equity</a>
                 <a href="https://condominio.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Empréstimo para Condomínios</a>
@@ -4629,7 +4477,7 @@ def gerar_pagina_aprenda(art, pasta_saida, dominio, data_atualizacao):
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}. <a href="https://www.datalabglobal.com/privacidade/" class="underline hover:text-emerald-500">Privacidade</a> · <a href="https://www.datalabglobal.com/termos/" class="underline hover:text-emerald-500">Termos</a> · <a href="incorporar" class="underline hover:text-emerald-500">Simulador para o seu site</a> · <a href="imprensa" class="underline hover:text-emerald-500">Imprensa</a></p>
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
-                <a href="https://emprestimo.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
+                <a href="https://emprestimo.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Empréstimo com crédito do cartão</a>
                 <a href="https://homeequity.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Home Equity</a>
                 <a href="https://autoequity.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Auto Equity</a>
                 <a href="https://condominio.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Empréstimo para Condomínios</a>
@@ -4701,7 +4549,7 @@ def gerar_hub_aprenda(artigos, pasta_saida, dominio):
             <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de {EMPRESA_RODAPE}. <a href="https://www.datalabglobal.com/privacidade/" class="underline hover:text-emerald-500">Privacidade</a> · <a href="https://www.datalabglobal.com/termos/" class="underline hover:text-emerald-500">Termos</a> · <a href="incorporar" class="underline hover:text-emerald-500">Simulador para o seu site</a> · <a href="imprensa" class="underline hover:text-emerald-500">Imprensa</a></p>
             <div class="flex items-center justify-center gap-4">
                 <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
-                <a href="https://emprestimo.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
+                <a href="https://emprestimo.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Empréstimo com crédito do cartão</a>
                 <a href="https://homeequity.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Home Equity</a>
                 <a href="https://autoequity.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Auto Equity</a>
                 <a href="https://condominio.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Empréstimo para Condomínios</a>

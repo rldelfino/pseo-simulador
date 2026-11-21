@@ -1,357 +1,291 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador de Financiamento Imobiliário: Parcela e CET 2026</title>
-    <meta name="description" content="Simule seu financiamento imobiliário em meses ou anos, compare parcela e CET entre 11 bancos e veja quanto economiza antecipando parcelas.">
-    <link rel="canonical" href="https://simulador.datalabglobal.com/" />
-    <link rel="icon" href="favicon.ico?v=20261012" sizes="any">
-    <link rel="icon" href="favicon-32.png?v=20261012" type="image/png" sizes="32x32">
-    <link rel="icon" href="favicon-192.png?v=20261012" type="image/png" sizes="192x192">
-    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261012">
-    <link rel="alternate" type="application/atom+xml" title="Taxas de financiamento imobiliário por banco | Datalab Global" href="/feed.xml">
-    <script defer src="https://cloud.umami.is/script.js" data-website-id="ba3c0b88-59e8-47dd-866d-0b05e5e7dae9" data-domains="simulador.datalabglobal.com" data-do-not-track="true"></script>
-    <script defer src="/medicao.js?v=20261120174406"></script>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="pt_BR">
-    <meta property="og:site_name" content="Datalab Global">
-    <meta property="og:title" content="Simulador de Financiamento e Amortização | Datalab Global">
-    <meta property="og:description" content="Simule seu financiamento imobiliário em meses ou anos, compare parcela e CET entre 11 bancos e veja quanto economiza antecipando parcelas.">
-    <meta property="og:url" content="https://simulador.datalabglobal.com/">
-    <meta property="og:image" content="https://simulador.datalabglobal.com/og-image.png">
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Simulador de Financiamento e Amortização | Datalab Global">
-    <meta name="twitter:description" content="Simule seu financiamento imobiliário em meses ou anos, compare parcela e CET entre 11 bancos e veja quanto economiza antecipando parcelas.">
-    <meta name="twitter:image" content="https://simulador.datalabglobal.com/og-image.png">
-
-    <link rel="stylesheet" href="styles.css?v=20261120174406">
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap"></noscript>
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Datalab Global",
-      "url": "https://simulador.datalabglobal.com/",
-      "publisher": {"@type": "Organization", "@id": "https://www.datalabglobal.com/#organization", "name": "Datalab Global", "url": "https://www.datalabglobal.com/"},
-      "dateModified": "2026-11-20"
-    }
-    </script>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "@id": "https://www.datalabglobal.com/#organization",
-      "name": "Datalab Global",
-      "url": "https://www.datalabglobal.com/",
-      "logo": "https://simulador.datalabglobal.com/logo-schema.png",
-      "sameAs": ["https://huggingface.co/datalabglobal"],
-      "founder": {"@type": "Person", "name": "Rodolfo Delfino", "sameAs": ["https://github.com/rldelfino", "https://www.kaggle.com/rodolfodelfino", "https://www.linkedin.com/in/rodolfo-leal-delfino"]},
-      "contactPoint": {"@type": "ContactPoint", "email": "contato@datalabglobal.com", "contactType": "customer service"}
-    }
-    </script>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        { "@type": "Question", "name": "Como funciona o simulador de financiamento imobiliário da Datalab?", "acceptedAnswer": { "@type": "Answer", "text": "Você escolhe o banco, vê a taxa real dele e simula a parcela pro valor, prazo e entrada que quiser — incluindo quanto você economiza fazendo amortizações extras. Os dados de taxa vêm direto do Banco Central e são atualizados periodicamente." } },
-        { "@type": "Question", "name": "As taxas mostradas são reais ou só uma estimativa de marketing?", "acceptedAnswer": { "@type": "Answer", "text": "São a taxa padrão estimada de cada banco pra essa modalidade, com base em dados públicos — não é uma taxa promocional de vitrine. Sua taxa final aprovada depende do seu relacionamento com o banco e da análise de crédito." } },
-        { "@type": "Question", "name": "O simulador cobra alguma coisa pra usar?", "acceptedAnswer": { "@type": "Answer", "text": "Não, simular é 100% gratuito. A Datalab é remunerada pelo correspondente bancário quando você pede uma análise por aqui — isso não muda o valor da sua parcela nem qual banco você escolhe." } }
-      ]
-    }
-    </script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulador de Financiamento Imobiliário: Parcela e CET 2026</title>
+<meta name="description" content="Simule o financiamento imobiliário: parcela SAC e Price, CET e economia pagando a mais, com a taxa média de cada banco (Banco Central). Grátis.">
+<link rel="canonical" href="https://simulador.datalabglobal.com/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico?v=20261120" sizes="any">
+<link rel="icon" href="/favicon-32.png?v=20261120" type="image/png" sizes="32x32">
+<link rel="icon" href="/favicon-192.png?v=20261120" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=20261120">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Datalab Global">
+<meta property="og:title" content="Simulador de Financiamento Imobiliário: Parcela e CET 2026">
+<meta property="og:description" content="Simule o financiamento imobiliário: parcela SAC e Price, CET e economia pagando a mais, com a taxa média de cada banco (Banco Central). Grátis.">
+<meta property="og:url" content="https://simulador.datalabglobal.com/">
+<meta property="og:image" content="https://simulador.datalabglobal.com/og-image.png?v=20261121121920">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Simulador de Financiamento Imobiliário: Parcela e CET 2026">
+<meta name="twitter:description" content="Simule o financiamento imobiliário: parcela SAC e Price, CET e economia pagando a mais, com a taxa média de cada banco (Banco Central). Grátis.">
+<meta name="twitter:image" content="https://simulador.datalabglobal.com/og-image.png?v=20261121121920">
+<meta name="theme-color" content="#020617">
+<link rel="preload" href="/fonts/playfair-display-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/home.css?v=20261121121920">
+<link rel="alternate" type="application/atom+xml" title="Taxas de financiamento imobiliário por banco | Datalab Global" href="/feed.xml">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "name": "Datalab Global", "url": "https://simulador.datalabglobal.com/", "publisher": {"@type": "Organization", "@id": "https://www.datalabglobal.com/#organization", "name": "Datalab Global", "url": "https://www.datalabglobal.com/"}, "dateModified": "2026-11-20"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "@id": "https://www.datalabglobal.com/#organization", "name": "Datalab Global", "url": "https://www.datalabglobal.com/", "logo": "https://simulador.datalabglobal.com/logo-schema.png", "sameAs": ["https://huggingface.co/datalabglobal"], "founder": {"@type": "Person", "name": "Rodolfo Delfino", "sameAs": ["https://github.com/rldelfino", "https://www.kaggle.com/rodolfodelfino", "https://www.linkedin.com/in/rodolfo-leal-delfino"]}, "contactPoint": {"@type": "ContactPoint", "email": "contato@datalabglobal.com", "contactType": "customer service"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Simulador de financiamento imobiliário", "url": "https://simulador.datalabglobal.com/", "applicationCategory": "FinanceApplication", "operatingSystem": "Web", "inLanguage": "pt-BR", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "BRL"}, "publisher": {"@type": "Organization", "@id": "https://www.datalabglobal.com/#organization", "name": "Datalab Global"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Como funciona o simulador de financiamento imobiliário da Datalab?", "acceptedAnswer": {"@type": "Answer", "text": "Você informa o valor do imóvel, a entrada e o prazo, escolhe um banco e vê a parcela, o custo total e o CET com a taxa média dele. Também dá para simular quanto você economiza pagando a mais ou usar a taxa de uma proposta que você já recebeu. As taxas vêm do Banco Central e são atualizadas todo mês."}}, {"@type": "Question", "name": "As taxas mostradas são reais ou só uma estimativa de marketing?", "acceptedAnswer": {"@type": "Answer", "text": "São a taxa média efetivamente contratada por cada banco no mês, divulgada pelo Banco Central, e não uma taxa promocional de vitrine. BRB e Poupex não constam nessa série; para eles usamos uma estimativa de mercado, identificada como tal. A sua taxa final depende da análise de crédito e do imóvel."}}, {"@type": "Question", "name": "O simulador cobra alguma coisa?", "acceptedAnswer": {"@type": "Answer", "text": "Não. Simular é gratuito e não pede cadastro. Só se você decidir pedir uma proposta é que informa dados pessoais, em um formulário de um parceiro de crédito. A simulação não é oferta nem compromisso."}}, {"@type": "Question", "name": "Por que a parcela do banco pode ser diferente da que aparece aqui?", "acceptedAnswer": {"@type": "Answer", "text": "A conta usa a taxa média do banco, sem TR, e estima o CET com seguros e tarifa de mercado. O banco define a taxa para o seu perfil, o seguro pela sua idade e o valor pela avaliação do imóvel. Use a simulação para comparar e entender a ordem de grandeza, e confirme as condições na proposta."}}]}</script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="ba3c0b88-59e8-47dd-866d-0b05e5e7dae9" data-domains="simulador.datalabglobal.com" data-do-not-track="true"></script>
+<script defer src="/medicao.js?v=20261121121920"></script>
 </head>
-<body class="antialiased min-h-screen flex flex-col">
-    <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-20 items-center">
-                <a href="/" class="flex items-center">
-                    <img src="logo-full.png" alt="Datalab Global" width="122" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
-                </a>
-                <a href="/aprenda" aria-label="Aprenda" class="inline-flex items-center gap-1.5 -my-2.5 p-2.5 text-xs text-slate-400 hover:text-emerald-400 transition-colors"><svg class="inline-block align-[-0.125em]" style="width:1em;height:1em" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 5h7a3 3 0 0 1 3 3v12a2.5 2.5 0 0 0-2.5-2.5H2z"></path><path d="M22 5h-7a3 3 0 0 0-3 3v12a2.5 2.5 0 0 1 2.5-2.5H22z"></path></svg> <span class="hidden sm:inline">Aprenda</span></a>
-            </div>
-        </div>
-    </nav>
-    <div class="py-24 md:py-32 text-center px-4 relative overflow-hidden flex-grow">
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-emerald-500/10 rounded-full blur-[100px] -z-10 pointer-events-none"></div>
-        <h1 class="text-4xl md:text-6xl font-serif text-white mb-6 leading-tight max-w-4xl mx-auto">
-            Simulador de Financiamento Imobiliário
-        </h1>
-        <p class="text-slate-400 text-lg md:text-xl font-light tracking-wide max-w-2xl mx-auto">
-            Selecione a instituição financeira abaixo e descubra quanto você economiza ao fazer amortizações — em qualquer prazo, de meses a anos.
-        </p>
-        <a href="comparador-bancos" class="inline-flex items-center gap-2 mt-6 text-emerald-400 hover:text-emerald-300 text-sm font-medium underline underline-offset-4">
-            Ou veja o comparativo de taxas entre os 11 bancos <svg class="inline-block align-[-0.125em] text-xs" style="width:1em;height:1em" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </a>
-        <a href="financiamento-imobiliario" class="inline-flex items-center gap-2 mt-3 ml-0 sm:ml-6 text-emerald-400 hover:text-emerald-300 text-sm font-medium underline underline-offset-4">
-            Ou consulte a parcela por valor e prazo <svg class="inline-block align-[-0.125em] text-xs" style="width:1em;height:1em" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </a>
-    </div>
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-32 relative z-10 w-full">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <style>
-        .lk{display:flex;align-items:center;justify-content:space-between;padding:.75rem;border-radius:.5rem;border:1px solid transparent;transition:background-color .15s,border-color .15s}
-        .lk:hover{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.1)}
-        .lk span:first-child{font-size:.75rem;line-height:1rem;font-weight:300;color:#cbd5e1}
-        .lk:hover span:first-child{color:#fff}
-        .lk span:last-child{color:#10b981;font-size:.875rem;line-height:1}
-        </style>
-        <div id="caixa" class="bg-slate-900/40 backdrop-blur-md rounded-2xl shadow-2xl border border-white/5 overflow-hidden transition-all duration-300 hover:border-emerald-500/30 hover:shadow-[0_0_30px_rgba(16,185,129,0.1)] scroll-mt-24">
-            <a href="banco-caixa" class="group/h2 border-b border-white/5 px-6 py-5 flex items-center gap-4 bg-black/40 hover:bg-black/60 transition-colors">
-                <span class="relative inline-flex items-center justify-center w-7 h-7 shrink-0">
-        <img src="https://www.google.com/s2/favicons?domain=caixa.gov.br&sz=128" alt="Logo Caixa" width="28" height="28" loading="lazy"
-             class="favicon-img w-7 h-7 rounded object-contain"
-             onerror="this.classList.add('favicon-erro')">
-        <span class="favicon-fallback w-7 h-7 rounded bg-white/10 text-emerald-400 items-center justify-center absolute inset-0"><svg class="inline-block align-[-0.125em]" style="width:1em;height:1em" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"></path><path d="M5 21V10"></path><path d="M19 21V10"></path><path d="M9 21V10"></path><path d="M15 21V10"></path><path d="M3 10l9-6 9 6"></path></svg></span>
-    </span>
-                <h2 class="text-xl font-serif text-white tracking-wide group-hover/h2:text-emerald-400 transition-colors">Caixa</h2>
-                <span class="ml-auto text-[10px] text-slate-400 group-hover/h2:text-emerald-400 uppercase tracking-widest transition-colors">Ver taxas →</span>
-            </a>
-            <div class="p-4">
-                <ul class="space-y-1">
-                    <li><a href="simulador-caixa-200-mil-360-meses" class="lk"><span>R$ 200.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-caixa-200-mil-420-meses" class="lk"><span>R$ 200.000,00 em 420 meses (35 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-caixa-300-mil-360-meses" class="lk"><span>R$ 300.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-caixa-300-mil-420-meses" class="lk"><span>R$ 300.000,00 em 420 meses (35 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-caixa-500-mil-360-meses" class="lk"><span>R$ 500.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-caixa-500-mil-420-meses" class="lk"><span>R$ 500.000,00 em 420 meses (35 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-caixa-800-mil-360-meses" class="lk"><span>R$ 800.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-caixa-800-mil-420-meses" class="lk"><span>R$ 800.000,00 em 420 meses (35 anos)</span><span aria-hidden="true">›</span></a></li>
-                </ul>
-            </div>
-        </div>
-        
-        <div id="banco-do-brasil" class="bg-slate-900/40 backdrop-blur-md rounded-2xl shadow-2xl border border-white/5 overflow-hidden transition-all duration-300 hover:border-emerald-500/30 hover:shadow-[0_0_30px_rgba(16,185,129,0.1)] scroll-mt-24">
-            <a href="banco-banco-do-brasil" class="group/h2 border-b border-white/5 px-6 py-5 flex items-center gap-4 bg-black/40 hover:bg-black/60 transition-colors">
-                <span class="relative inline-flex items-center justify-center w-7 h-7 shrink-0">
-        <img src="https://www.google.com/s2/favicons?domain=bb.com.br&sz=128" alt="Logo Banco do Brasil" width="28" height="28" loading="lazy"
-             class="favicon-img w-7 h-7 rounded object-contain"
-             onerror="this.classList.add('favicon-erro')">
-        <span class="favicon-fallback w-7 h-7 rounded bg-white/10 text-emerald-400 items-center justify-center absolute inset-0"><svg class="inline-block align-[-0.125em]" style="width:1em;height:1em" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"></path><path d="M5 21V10"></path><path d="M19 21V10"></path><path d="M9 21V10"></path><path d="M15 21V10"></path><path d="M3 10l9-6 9 6"></path></svg></span>
-    </span>
-                <h2 class="text-xl font-serif text-white tracking-wide group-hover/h2:text-emerald-400 transition-colors">Banco do Brasil</h2>
-                <span class="ml-auto text-[10px] text-slate-400 group-hover/h2:text-emerald-400 uppercase tracking-widest transition-colors">Ver taxas →</span>
-            </a>
-            <div class="p-4">
-                <ul class="space-y-1">
-                    <li><a href="simulador-banco-do-brasil-200-mil-360-meses" class="lk"><span>R$ 200.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-banco-do-brasil-200-mil-420-meses" class="lk"><span>R$ 200.000,00 em 420 meses (35 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-banco-do-brasil-300-mil-360-meses" class="lk"><span>R$ 300.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-banco-do-brasil-300-mil-420-meses" class="lk"><span>R$ 300.000,00 em 420 meses (35 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-banco-do-brasil-500-mil-360-meses" class="lk"><span>R$ 500.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-banco-do-brasil-500-mil-420-meses" class="lk"><span>R$ 500.000,00 em 420 meses (35 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-banco-do-brasil-800-mil-360-meses" class="lk"><span>R$ 800.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-banco-do-brasil-800-mil-420-meses" class="lk"><span>R$ 800.000,00 em 420 meses (35 anos)</span><span aria-hidden="true">›</span></a></li>
-                </ul>
-            </div>
-        </div>
-        
-        <div id="santander" class="bg-slate-900/40 backdrop-blur-md rounded-2xl shadow-2xl border border-white/5 overflow-hidden transition-all duration-300 hover:border-emerald-500/30 hover:shadow-[0_0_30px_rgba(16,185,129,0.1)] scroll-mt-24">
-            <a href="banco-santander" class="group/h2 border-b border-white/5 px-6 py-5 flex items-center gap-4 bg-black/40 hover:bg-black/60 transition-colors">
-                <span class="relative inline-flex items-center justify-center w-7 h-7 shrink-0">
-        <img src="https://www.google.com/s2/favicons?domain=santander.com.br&sz=128" alt="Logo Santander" width="28" height="28" loading="lazy"
-             class="favicon-img w-7 h-7 rounded object-contain"
-             onerror="this.classList.add('favicon-erro')">
-        <span class="favicon-fallback w-7 h-7 rounded bg-white/10 text-emerald-400 items-center justify-center absolute inset-0"><svg class="inline-block align-[-0.125em]" style="width:1em;height:1em" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"></path><path d="M5 21V10"></path><path d="M19 21V10"></path><path d="M9 21V10"></path><path d="M15 21V10"></path><path d="M3 10l9-6 9 6"></path></svg></span>
-    </span>
-                <h2 class="text-xl font-serif text-white tracking-wide group-hover/h2:text-emerald-400 transition-colors">Santander</h2>
-                <span class="ml-auto text-[10px] text-slate-400 group-hover/h2:text-emerald-400 uppercase tracking-widest transition-colors">Ver taxas →</span>
-            </a>
-            <div class="p-4">
-                <ul class="space-y-1">
-                    <li><a href="simulador-santander-200-mil-360-meses" class="lk"><span>R$ 200.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-santander-200-mil-420-meses" class="lk"><span>R$ 200.000,00 em 420 meses (35 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-santander-300-mil-360-meses" class="lk"><span>R$ 300.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-santander-300-mil-420-meses" class="lk"><span>R$ 300.000,00 em 420 meses (35 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-santander-500-mil-360-meses" class="lk"><span>R$ 500.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-santander-500-mil-420-meses" class="lk"><span>R$ 500.000,00 em 420 meses (35 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-santander-800-mil-360-meses" class="lk"><span>R$ 800.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-santander-800-mil-420-meses" class="lk"><span>R$ 800.000,00 em 420 meses (35 anos)</span><span aria-hidden="true">›</span></a></li>
-                </ul>
-            </div>
-        </div>
-        
-        <div id="brb" class="bg-slate-900/40 backdrop-blur-md rounded-2xl shadow-2xl border border-white/5 overflow-hidden transition-all duration-300 hover:border-emerald-500/30 hover:shadow-[0_0_30px_rgba(16,185,129,0.1)] scroll-mt-24">
-            <a href="banco-brb" class="group/h2 border-b border-white/5 px-6 py-5 flex items-center gap-4 bg-black/40 hover:bg-black/60 transition-colors">
-                <span class="relative inline-flex items-center justify-center w-7 h-7 shrink-0">
-        <img src="https://www.google.com/s2/favicons?domain=brb.com.br&sz=128" alt="Logo BRB" width="28" height="28" loading="lazy"
-             class="favicon-img w-7 h-7 rounded object-contain"
-             onerror="this.classList.add('favicon-erro')">
-        <span class="favicon-fallback w-7 h-7 rounded bg-white/10 text-emerald-400 items-center justify-center absolute inset-0"><svg class="inline-block align-[-0.125em]" style="width:1em;height:1em" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"></path><path d="M5 21V10"></path><path d="M19 21V10"></path><path d="M9 21V10"></path><path d="M15 21V10"></path><path d="M3 10l9-6 9 6"></path></svg></span>
-    </span>
-                <h2 class="text-xl font-serif text-white tracking-wide group-hover/h2:text-emerald-400 transition-colors">BRB</h2>
-                <span class="ml-auto text-[10px] text-slate-400 group-hover/h2:text-emerald-400 uppercase tracking-widest transition-colors">Ver taxas →</span>
-            </a>
-            <div class="p-4">
-                <ul class="space-y-1">
-                    <li><a href="simulador-brb-200-mil-360-meses" class="lk"><span>R$ 200.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-brb-200-mil-420-meses" class="lk"><span>R$ 200.000,00 em 420 meses (35 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-brb-300-mil-360-meses" class="lk"><span>R$ 300.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-brb-300-mil-420-meses" class="lk"><span>R$ 300.000,00 em 420 meses (35 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-brb-500-mil-360-meses" class="lk"><span>R$ 500.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-brb-500-mil-420-meses" class="lk"><span>R$ 500.000,00 em 420 meses (35 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-brb-800-mil-360-meses" class="lk"><span>R$ 800.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-brb-800-mil-420-meses" class="lk"><span>R$ 800.000,00 em 420 meses (35 anos)</span><span aria-hidden="true">›</span></a></li>
-                </ul>
-            </div>
-        </div>
-        
-        <div id="poupex" class="bg-slate-900/40 backdrop-blur-md rounded-2xl shadow-2xl border border-white/5 overflow-hidden transition-all duration-300 hover:border-emerald-500/30 hover:shadow-[0_0_30px_rgba(16,185,129,0.1)] scroll-mt-24">
-            <a href="banco-poupex" class="group/h2 border-b border-white/5 px-6 py-5 flex items-center gap-4 bg-black/40 hover:bg-black/60 transition-colors">
-                <span class="relative inline-flex items-center justify-center w-7 h-7 shrink-0">
-        <img src="https://www.google.com/s2/favicons?domain=www.poupex.com.br&sz=128" alt="Logo Poupex" width="28" height="28" loading="lazy"
-             class="favicon-img w-7 h-7 rounded object-contain"
-             onerror="this.classList.add('favicon-erro')">
-        <span class="favicon-fallback w-7 h-7 rounded bg-white/10 text-emerald-400 items-center justify-center absolute inset-0"><svg class="inline-block align-[-0.125em]" style="width:1em;height:1em" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"></path><path d="M5 21V10"></path><path d="M19 21V10"></path><path d="M9 21V10"></path><path d="M15 21V10"></path><path d="M3 10l9-6 9 6"></path></svg></span>
-    </span>
-                <h2 class="text-xl font-serif text-white tracking-wide group-hover/h2:text-emerald-400 transition-colors">Poupex</h2>
-                <span class="ml-auto text-[10px] text-slate-400 group-hover/h2:text-emerald-400 uppercase tracking-widest transition-colors">Ver taxas →</span>
-            </a>
-            <div class="p-4">
-                <ul class="space-y-1">
-                    <li><a href="simulador-poupex-200-mil-360-meses" class="lk"><span>R$ 200.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-poupex-200-mil-420-meses" class="lk"><span>R$ 200.000,00 em 420 meses (35 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-poupex-300-mil-360-meses" class="lk"><span>R$ 300.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-poupex-300-mil-420-meses" class="lk"><span>R$ 300.000,00 em 420 meses (35 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-poupex-500-mil-360-meses" class="lk"><span>R$ 500.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-poupex-500-mil-420-meses" class="lk"><span>R$ 500.000,00 em 420 meses (35 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-poupex-800-mil-360-meses" class="lk"><span>R$ 800.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-poupex-800-mil-420-meses" class="lk"><span>R$ 800.000,00 em 420 meses (35 anos)</span><span aria-hidden="true">›</span></a></li>
-                </ul>
-            </div>
-        </div>
-        
-        <div id="itau" class="bg-slate-900/40 backdrop-blur-md rounded-2xl shadow-2xl border border-white/5 overflow-hidden transition-all duration-300 hover:border-emerald-500/30 hover:shadow-[0_0_30px_rgba(16,185,129,0.1)] scroll-mt-24">
-            <a href="banco-itau" class="group/h2 border-b border-white/5 px-6 py-5 flex items-center gap-4 bg-black/40 hover:bg-black/60 transition-colors">
-                <span class="relative inline-flex items-center justify-center w-7 h-7 shrink-0">
-        <img src="https://www.google.com/s2/favicons?domain=itau.com.br&sz=128" alt="Logo Itaú" width="28" height="28" loading="lazy"
-             class="favicon-img w-7 h-7 rounded object-contain"
-             onerror="this.classList.add('favicon-erro')">
-        <span class="favicon-fallback w-7 h-7 rounded bg-white/10 text-emerald-400 items-center justify-center absolute inset-0"><svg class="inline-block align-[-0.125em]" style="width:1em;height:1em" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"></path><path d="M5 21V10"></path><path d="M19 21V10"></path><path d="M9 21V10"></path><path d="M15 21V10"></path><path d="M3 10l9-6 9 6"></path></svg></span>
-    </span>
-                <h2 class="text-xl font-serif text-white tracking-wide group-hover/h2:text-emerald-400 transition-colors">Itaú</h2>
-                <span class="ml-auto text-[10px] text-slate-400 group-hover/h2:text-emerald-400 uppercase tracking-widest transition-colors">Ver taxas →</span>
-            </a>
-            <div class="p-4">
-                <ul class="space-y-1">
-                    <li><a href="simulador-itau-200-mil-360-meses" class="lk"><span>R$ 200.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-itau-300-mil-360-meses" class="lk"><span>R$ 300.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-itau-500-mil-360-meses" class="lk"><span>R$ 500.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-itau-800-mil-360-meses" class="lk"><span>R$ 800.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li>
-                </ul>
-            </div>
-        </div>
-        
-        <div id="bradesco" class="bg-slate-900/40 backdrop-blur-md rounded-2xl shadow-2xl border border-white/5 overflow-hidden transition-all duration-300 hover:border-emerald-500/30 hover:shadow-[0_0_30px_rgba(16,185,129,0.1)] scroll-mt-24">
-            <a href="banco-bradesco" class="group/h2 border-b border-white/5 px-6 py-5 flex items-center gap-4 bg-black/40 hover:bg-black/60 transition-colors">
-                <span class="relative inline-flex items-center justify-center w-7 h-7 shrink-0">
-        <img src="https://www.google.com/s2/favicons?domain=bradesco.com.br&sz=128" alt="Logo Bradesco" width="28" height="28" loading="lazy"
-             class="favicon-img w-7 h-7 rounded object-contain"
-             onerror="this.classList.add('favicon-erro')">
-        <span class="favicon-fallback w-7 h-7 rounded bg-white/10 text-emerald-400 items-center justify-center absolute inset-0"><svg class="inline-block align-[-0.125em]" style="width:1em;height:1em" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"></path><path d="M5 21V10"></path><path d="M19 21V10"></path><path d="M9 21V10"></path><path d="M15 21V10"></path><path d="M3 10l9-6 9 6"></path></svg></span>
-    </span>
-                <h2 class="text-xl font-serif text-white tracking-wide group-hover/h2:text-emerald-400 transition-colors">Bradesco</h2>
-                <span class="ml-auto text-[10px] text-slate-400 group-hover/h2:text-emerald-400 uppercase tracking-widest transition-colors">Ver taxas →</span>
-            </a>
-            <div class="p-4">
-                <ul class="space-y-1">
-                    <li><a href="simulador-bradesco-200-mil-360-meses" class="lk"><span>R$ 200.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-bradesco-300-mil-360-meses" class="lk"><span>R$ 300.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-bradesco-500-mil-360-meses" class="lk"><span>R$ 500.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-bradesco-800-mil-360-meses" class="lk"><span>R$ 800.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li>
-                </ul>
-            </div>
-        </div>
-        
-        <div id="banco-inter" class="bg-slate-900/40 backdrop-blur-md rounded-2xl shadow-2xl border border-white/5 overflow-hidden transition-all duration-300 hover:border-emerald-500/30 hover:shadow-[0_0_30px_rgba(16,185,129,0.1)] scroll-mt-24">
-            <a href="banco-banco-inter" class="group/h2 border-b border-white/5 px-6 py-5 flex items-center gap-4 bg-black/40 hover:bg-black/60 transition-colors">
-                <span class="relative inline-flex items-center justify-center w-7 h-7 shrink-0">
-        <img src="https://www.google.com/s2/favicons?domain=bancointer.com.br&sz=128" alt="Logo Banco Inter" width="28" height="28" loading="lazy"
-             class="favicon-img w-7 h-7 rounded object-contain"
-             onerror="this.classList.add('favicon-erro')">
-        <span class="favicon-fallback w-7 h-7 rounded bg-white/10 text-emerald-400 items-center justify-center absolute inset-0"><svg class="inline-block align-[-0.125em]" style="width:1em;height:1em" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"></path><path d="M5 21V10"></path><path d="M19 21V10"></path><path d="M9 21V10"></path><path d="M15 21V10"></path><path d="M3 10l9-6 9 6"></path></svg></span>
-    </span>
-                <h2 class="text-xl font-serif text-white tracking-wide group-hover/h2:text-emerald-400 transition-colors">Banco Inter</h2>
-                <span class="ml-auto text-[10px] text-slate-400 group-hover/h2:text-emerald-400 uppercase tracking-widest transition-colors">Ver taxas →</span>
-            </a>
-            <div class="p-4">
-                <ul class="space-y-1">
-                    <li><a href="simulador-banco-inter-200-mil-360-meses" class="lk"><span>R$ 200.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-banco-inter-300-mil-360-meses" class="lk"><span>R$ 300.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-banco-inter-500-mil-360-meses" class="lk"><span>R$ 500.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-banco-inter-800-mil-360-meses" class="lk"><span>R$ 800.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li>
-                </ul>
-            </div>
-        </div>
-        
-        <div id="sicredi" class="bg-slate-900/40 backdrop-blur-md rounded-2xl shadow-2xl border border-white/5 overflow-hidden transition-all duration-300 hover:border-emerald-500/30 hover:shadow-[0_0_30px_rgba(16,185,129,0.1)] scroll-mt-24">
-            <a href="banco-sicredi" class="group/h2 border-b border-white/5 px-6 py-5 flex items-center gap-4 bg-black/40 hover:bg-black/60 transition-colors">
-                <span class="relative inline-flex items-center justify-center w-7 h-7 shrink-0">
-        <img src="https://www.google.com/s2/favicons?domain=sicredi.com.br&sz=128" alt="Logo Sicredi" width="28" height="28" loading="lazy"
-             class="favicon-img w-7 h-7 rounded object-contain"
-             onerror="this.classList.add('favicon-erro')">
-        <span class="favicon-fallback w-7 h-7 rounded bg-white/10 text-emerald-400 items-center justify-center absolute inset-0"><svg class="inline-block align-[-0.125em]" style="width:1em;height:1em" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"></path><path d="M5 21V10"></path><path d="M19 21V10"></path><path d="M9 21V10"></path><path d="M15 21V10"></path><path d="M3 10l9-6 9 6"></path></svg></span>
-    </span>
-                <h2 class="text-xl font-serif text-white tracking-wide group-hover/h2:text-emerald-400 transition-colors">Sicredi</h2>
-                <span class="ml-auto text-[10px] text-slate-400 group-hover/h2:text-emerald-400 uppercase tracking-widest transition-colors">Ver taxas →</span>
-            </a>
-            <div class="p-4">
-                <ul class="space-y-1">
-                    <li><a href="simulador-sicredi-200-mil-360-meses" class="lk"><span>R$ 200.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-sicredi-300-mil-360-meses" class="lk"><span>R$ 300.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-sicredi-500-mil-360-meses" class="lk"><span>R$ 500.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-sicredi-800-mil-360-meses" class="lk"><span>R$ 800.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li>
-                </ul>
-            </div>
-        </div>
-        
-        <div id="sicoob" class="bg-slate-900/40 backdrop-blur-md rounded-2xl shadow-2xl border border-white/5 overflow-hidden transition-all duration-300 hover:border-emerald-500/30 hover:shadow-[0_0_30px_rgba(16,185,129,0.1)] scroll-mt-24">
-            <a href="banco-sicoob" class="group/h2 border-b border-white/5 px-6 py-5 flex items-center gap-4 bg-black/40 hover:bg-black/60 transition-colors">
-                <span class="relative inline-flex items-center justify-center w-7 h-7 shrink-0">
-        <img src="https://www.google.com/s2/favicons?domain=sicoob.com.br&sz=128" alt="Logo Sicoob" width="28" height="28" loading="lazy"
-             class="favicon-img w-7 h-7 rounded object-contain"
-             onerror="this.classList.add('favicon-erro')">
-        <span class="favicon-fallback w-7 h-7 rounded bg-white/10 text-emerald-400 items-center justify-center absolute inset-0"><svg class="inline-block align-[-0.125em]" style="width:1em;height:1em" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"></path><path d="M5 21V10"></path><path d="M19 21V10"></path><path d="M9 21V10"></path><path d="M15 21V10"></path><path d="M3 10l9-6 9 6"></path></svg></span>
-    </span>
-                <h2 class="text-xl font-serif text-white tracking-wide group-hover/h2:text-emerald-400 transition-colors">Sicoob</h2>
-                <span class="ml-auto text-[10px] text-slate-400 group-hover/h2:text-emerald-400 uppercase tracking-widest transition-colors">Ver taxas →</span>
-            </a>
-            <div class="p-4">
-                <ul class="space-y-1">
-                    <li><a href="simulador-sicoob-200-mil-360-meses" class="lk"><span>R$ 200.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-sicoob-300-mil-360-meses" class="lk"><span>R$ 300.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-sicoob-500-mil-360-meses" class="lk"><span>R$ 500.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-sicoob-800-mil-360-meses" class="lk"><span>R$ 800.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li>
-                </ul>
-            </div>
-        </div>
-        
-        <div id="banrisul" class="bg-slate-900/40 backdrop-blur-md rounded-2xl shadow-2xl border border-white/5 overflow-hidden transition-all duration-300 hover:border-emerald-500/30 hover:shadow-[0_0_30px_rgba(16,185,129,0.1)] scroll-mt-24">
-            <a href="banco-banrisul" class="group/h2 border-b border-white/5 px-6 py-5 flex items-center gap-4 bg-black/40 hover:bg-black/60 transition-colors">
-                <span class="relative inline-flex items-center justify-center w-7 h-7 shrink-0">
-        <img src="https://www.google.com/s2/favicons?domain=banrisul.com.br&sz=128" alt="Logo Banrisul" width="28" height="28" loading="lazy"
-             class="favicon-img w-7 h-7 rounded object-contain"
-             onerror="this.classList.add('favicon-erro')">
-        <span class="favicon-fallback w-7 h-7 rounded bg-white/10 text-emerald-400 items-center justify-center absolute inset-0"><svg class="inline-block align-[-0.125em]" style="width:1em;height:1em" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"></path><path d="M5 21V10"></path><path d="M19 21V10"></path><path d="M9 21V10"></path><path d="M15 21V10"></path><path d="M3 10l9-6 9 6"></path></svg></span>
-    </span>
-                <h2 class="text-xl font-serif text-white tracking-wide group-hover/h2:text-emerald-400 transition-colors">Banrisul</h2>
-                <span class="ml-auto text-[10px] text-slate-400 group-hover/h2:text-emerald-400 uppercase tracking-widest transition-colors">Ver taxas →</span>
-            </a>
-            <div class="p-4">
-                <ul class="space-y-1">
-                    <li><a href="simulador-banrisul-200-mil-360-meses" class="lk"><span>R$ 200.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-banrisul-300-mil-360-meses" class="lk"><span>R$ 300.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-banrisul-500-mil-360-meses" class="lk"><span>R$ 500.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li><li><a href="simulador-banrisul-800-mil-360-meses" class="lk"><span>R$ 800.000,00 em 360 meses (30 anos)</span><span aria-hidden="true">›</span></a></li>
-                </ul>
-            </div>
-        </div>
-        
-        </div>
+<body>
+<a href="#conteudo" class="skip">Ir para o conteúdo</a>
+<header class="top">
+  <div class="wrap">
+    <a href="/" class="brand" aria-label="Datalab Global, financiamento imobiliário, página inicial"><span class="tile"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="34" height="34" role="img" aria-label="Datalab Global"><polygon points="11.22,21.00 32.00,33.00 32.00,57.00 11.22,45.00" fill="#10b981" stroke="#04251c" stroke-width="1.1" stroke-linejoin="round"/><polygon points="52.78,21.00 52.78,45.00 32.00,57.00 32.00,33.00" fill="#047857" stroke="#04251c" stroke-width="1.1" stroke-linejoin="round"/><polygon points="32.00,9.00 52.78,21.00 32.00,33.00 11.22,21.00" fill="#6ee7b7" stroke="#04251c" stroke-width="1.1" stroke-linejoin="round"/><polygon points="14.62,43.76 18.22,45.84 18.22,38.84 14.62,36.76" fill="#ecfdf5" stroke="#ecfdf5" stroke-width="0.9" stroke-linejoin="round"/><polygon points="20.82,47.34 24.42,49.42 24.42,37.42 20.82,35.34" fill="#ecfdf5" stroke="#ecfdf5" stroke-width="0.9" stroke-linejoin="round"/><polygon points="27.02,50.92 30.62,53.00 30.62,36.00 27.02,33.92" fill="#ecfdf5" stroke="#ecfdf5" stroke-width="0.9" stroke-linejoin="round"/><polyline points="11.22,21.00 32.00,9.00 52.78,21.00" fill="none" stroke="#d1fae5" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/></svg></span><span class="wm"><b>Datalab</b><i>GLOBAL</i></span><span class="prod">Financiamento imobiliário</span></a>
+    <nav class="m" aria-label="Principal"><a href="/comparador-bancos">Comparador de bancos</a><a href="/financiamento-imobiliario">Parcela por valor e prazo</a><a href="/taxas-financiamento-imobiliario">Taxas mês a mês</a><a href="/aprenda">Aprenda</a></nav>
+    <div class="free"><span class="dot"></span>Simulação gratuita</div>
+    <details class="menu">
+      <summary>Menu</summary>
+      <nav aria-label="Menu"><a href="/#simulador">Simular</a><a href="/comparador-bancos">Comparador de bancos</a><a href="/financiamento-imobiliario">Parcela por valor e prazo</a><a href="/taxas-financiamento-imobiliario">Taxas mês a mês</a><a href="/aprenda">Aprenda</a></nav>
+    </details>
+  </div>
+</header>
 
-        <div class="mt-16 mb-8">
-            <h2 class="text-2xl font-serif text-white mb-6 text-center">Perguntas Frequentes</h2>
-            <div class="space-y-3 max-w-3xl mx-auto">
-                <details class="group bg-white/5 border border-white/10 rounded-xl overflow-hidden open:border-emerald-500/30 transition-colors">
-                    <summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4">
-                        <h3 class="text-emerald-400 font-bold text-sm">Como funciona o simulador de financiamento imobiliário da Datalab?</h3>
-                        <span class="faq-toggle-icon shrink-0 text-slate-400 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
-                    </summary>
-                    <p class="text-slate-300 text-sm font-light leading-relaxed px-5 pb-5">Você escolhe o banco, vê a taxa real dele e simula a parcela pro valor, prazo e entrada que quiser — incluindo quanto você economiza fazendo amortizações extras. Os dados de taxa vêm direto do Banco Central e são atualizados periodicamente.</p>
-                </details>
-                <details class="group bg-white/5 border border-white/10 rounded-xl overflow-hidden open:border-emerald-500/30 transition-colors">
-                    <summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4">
-                        <h3 class="text-emerald-400 font-bold text-sm">As taxas mostradas são reais ou só uma estimativa de marketing?</h3>
-                        <span class="faq-toggle-icon shrink-0 text-slate-400 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
-                    </summary>
-                    <p class="text-slate-300 text-sm font-light leading-relaxed px-5 pb-5">São a taxa padrão estimada de cada banco pra essa modalidade, com base em dados públicos — não é uma taxa promocional de vitrine. Sua taxa final aprovada depende do seu relacionamento com o banco e da análise de crédito.</p>
-                </details>
-                <details class="group bg-white/5 border border-white/10 rounded-xl overflow-hidden open:border-emerald-500/30 transition-colors">
-                    <summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4">
-                        <h3 class="text-emerald-400 font-bold text-sm">O simulador cobra alguma coisa pra usar?</h3>
-                        <span class="faq-toggle-icon shrink-0 text-slate-400 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
-                    </summary>
-                    <p class="text-slate-300 text-sm font-light leading-relaxed px-5 pb-5">Não, simular é 100% gratuito. A Datalab é remunerada pelo correspondente bancário quando você pede uma análise por aqui — isso não muda o valor da sua parcela nem qual banco você escolhe.</p>
-                </details>
-            </div>
+<main id="conteudo" class="wrap">
+  <section class="hero">
+    <h1>Simulador de financiamento <em>imobiliário</em></h1>
+    <p>Veja a parcela, o custo total e o CET com a taxa média de cada banco, e quanto você economiza pagando a mais.</p>
+    <div class="fine">Grátis · sem cadastro · estimativa, não proposta</div>
+  </section>
+
+  <div class="grid" id="simulador">
+    <section class="panel" aria-labelledby="t-cenario">
+      <h2 id="t-cenario">Seu financiamento</h2>
+      <div class="f">
+        <label for="btn-banco" id="lb-banco">Banco <span id="banco-fonte">mediana dos bancos, BCB out/2026</span></label>
+        <div class="inp combo sel" id="combo-banco">
+          <button type="button" class="cbtn" id="btn-banco" aria-haspopup="listbox" aria-expanded="false" aria-controls="lista-banco" aria-labelledby="lb-banco btn-banco"><span id="banco-nome">Média dos bancos</span><svg viewBox="0 0 12 8" width="12" height="8" aria-hidden="true"><path d="M1 1.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <ul class="opts" id="lista-banco" role="listbox" aria-labelledby="lb-banco" hidden></ul>
         </div>
-    </main>
-    <footer class="border-t border-white/5 py-8">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="text-slate-600 text-xs mb-4">Datalab Global © Todos os direitos reservados. Marca de Satori Soluções Comerciais LTDA · CNPJ 63.998.502/0001-73. <a href="https://www.datalabglobal.com/privacidade/" class="underline hover:text-emerald-500">Privacidade</a> · <a href="https://www.datalabglobal.com/termos/" class="underline hover:text-emerald-500">Termos</a> · <a href="incorporar" class="underline hover:text-emerald-500">Simulador para o seu site</a> · <a href="imprensa" class="underline hover:text-emerald-500">Imprensa</a></p>
-            <div class="flex items-center justify-center gap-4">
-                <a href="https://www.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Outros produtos Datalab</a>
-                <a href="https://emprestimo.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Pix no cartão</a>
-                <a href="https://homeequity.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Home Equity</a>
-                <a href="https://autoequity.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Auto Equity</a>
-                <a href="https://condominio.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Empréstimo para Condomínios</a>
-                <a href="https://veiculos.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Financiamento de veículos</a>
-                <a href="https://dados.datalabglobal.com/" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Lente B2B: dados de empresas</a>
-                <a href="/aprenda" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Aprenda</a>
-                <a href="/sobre" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Sobre</a>
-                <a href="/metodologia" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Metodologia</a>
-                <a href="/taxas-financiamento-imobiliario" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Taxas mês a mês</a>
-                <a href="/renda-para-financiar-imovel" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">Renda para financiar</a>
-                <a href="https://wa.me/5527995051571?text=Ol%C3%A1%2C%20preciso%20de%20ajuda%20com%20o%20simulador" target="_blank" rel="noopener" class="inline-flex items-center justify-center text-slate-400 hover:text-emerald-500 text-[10px] tracking-widest uppercase transition-colors">
-                    <svg class="inline-block align-[-0.125em] mr-1" style="width:1em;height:1em" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15l-1.4 5 5.1-1.4A10 10 0 1 0 12 2zm5.6 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-1.7-.1-.4-.1-.9-.3-1.6-.6-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9 0-1.4.7-2 1-2.3.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.4.2.5.7 1.7.8 1.8.1.2.1.3 0 .5-.1.2-.1.3-.3.5l-.4.5c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.6-.1.2-.2.7-.8.9-1.1.2-.3.4-.2.6-.1.2.1 1.5.7 1.7.8.2.1.4.2.5.3.1.2.1.9-.1 1.5z"></path></svg> Falar com o suporte
-                </a>
-            </div>
+        <div class="hint" id="banco-hint">Taxa de 12,22% ao ano (0,97% ao mês). Entrada mínima de 20% e prazo de até 35 anos.</div>
+      </div>
+      <div class="f">
+        <label for="campo-imovel">Valor do imóvel <span>aproximado</span></label>
+        <div class="inp"><span class="pre">R$</span><input id="campo-imovel" type="text" inputmode="numeric" autocomplete="off" value="500.000" class="num"></div>
+        <input id="range-imovel" type="range" aria-label="Valor do imóvel, controle deslizante" min="100000" max="3000000" step="10000" value="500000">
+        <div class="slabel"><span>R$ 100 mil</span><span>R$ 3 milhões</span></div>
+      </div>
+      <div class="f">
+        <label for="campo-entrada">Entrada <span id="entrada-pct">20% do imóvel</span></label>
+        <div class="inp"><span class="pre">R$</span><input id="campo-entrada" type="text" inputmode="numeric" autocomplete="off" value="100.000" class="num"></div>
+        <input id="range-entrada" type="range" aria-label="Entrada, controle deslizante" min="100000" max="450000" step="5000" value="100000">
+        <div class="slabel"><span id="min-entrada">R$ 100 mil</span><span id="max-entrada">R$ 450 mil</span></div>
+        <div class="hint warn" id="msg-ajuste" hidden></div>
+      </div>
+      <div class="f">
+        <label for="campo-prazo">Prazo <span id="prazo-faixa">de 5 a 35 anos</span></label>
+        <div class="inp combo" id="combo-prazo">
+          <input id="campo-prazo" type="text" inputmode="numeric" autocomplete="off" value="30" class="num" role="combobox" aria-autocomplete="none" aria-expanded="false" aria-controls="lista-prazo" aria-describedby="msg-prazo" aria-label="Prazo em anos: escolha na lista ou digite">
+          <em>anos</em>
+          <button type="button" class="caret" id="btn-prazo" aria-label="Abrir a lista de prazos" aria-haspopup="listbox" aria-controls="lista-prazo"><svg viewBox="0 0 12 8" width="12" height="8" aria-hidden="true"><path d="M1 1.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <ul class="opts" id="lista-prazo" role="listbox" aria-label="Prazos disponíveis" hidden></ul>
         </div>
-    </footer>
+        <input id="range-prazo" type="range" aria-label="Prazo em anos, controle deslizante" min="5" max="35" step="1" value="30">
+        <div class="slabel"><span>5 anos</span><span id="max-prazo">35 anos</span></div>
+        <div class="hint warn" id="msg-prazo" hidden></div>
+      </div>
+      <details class="outra" id="det-taxa">
+        <summary>Já tem uma proposta? Use a taxa dela</summary>
+        <div class="oi">
+          <label for="campo-taxa-prop">Taxa da proposta <span>% ao ano</span></label>
+          <div class="inp"><input id="campo-taxa-prop" type="text" inputmode="decimal" autocomplete="off" placeholder="ex.: 10,99" class="num" aria-describedby="msg-taxa-prop"><em>% a.a.</em></div>
+          <label class="ck" for="ck-taxa-nominal"><input type="checkbox" id="ck-taxa-nominal"> É a taxa nominal (juros do mês = taxa ÷ 12)</label>
+          <div class="hint" id="msg-taxa-prop">Deixe em branco para usar a taxa média do banco. Se a proposta mostra “taxa nominal” e “taxa efetiva”, use a efetiva ou marque a caixa acima ao digitar a nominal. A conta não inclui a TR.</div>
+        </div>
+      </details>
+    </section>
+
+    <section class="panel resp" id="resultado" aria-labelledby="t-resultado" aria-live="polite">
+      <h2 class="kicker kres" id="t-resultado">Resultado da simulação</h2>
+      <div class="res">
+        <div>
+          <div class="kicker" id="r-kicker">1ª parcela estimada</div>
+          <div class="big num"><span id="r-parcela">R$ 4.973</span> <small>/mês</small></div>
+          <div class="dim" id="r-sub">em 360 meses · taxa 12,22% a.a.</div>
+          <div class="dim ult" id="r-ultima" >A parcela cai todo mês, até R$ 1.122 na última.</div>
+          <hr class="sep">
+          <div class="dim lab">Total estimado ao final</div>
+          <div class="mid num" id="r-total">R$ 1.097.011</div>
+          <div class="dim">CET estimado: <b class="num" id="r-cet">13,02%</b> ao ano · <a href="/metodologia">como calculamos</a></div>
+        </div>
+        <div class="ctx sis">
+          <div class="t" id="lb-sistema">Tipo de parcela</div>
+          <div class="seg s2" role="radiogroup" aria-labelledby="lb-sistema">
+            <input type="radio" name="sistema" id="sis-sac" value="sac" checked><label for="sis-sac">SAC <small>parcela cai</small></label>
+            <input type="radio" name="sistema" id="sis-price" value="price" ><label for="sis-price">Price <small>parcela fixa</small></label>
+          </div>
+          <div class="hint" id="hint-sistema">Cai todo mês e paga menos juros no total.</div>
+        </div>
+      </div>
+      <div class="callout"><p id="r-resumo">Você financia R$ 400.000 e paga R$ 1.097.011 no total: R$ 697.011 a mais em juros.</p></div>
+      <div class="rosca">
+        <svg viewBox="0 0 120 120" width="120" height="120" role="img" id="rosca-svg" aria-label="Do total pago, 64% é juros">
+          <circle cx="60" cy="60" r="46" fill="none" stroke="#e3a96b" stroke-width="14"/>
+          <circle id="rosca-cred" cx="60" cy="60" r="46" fill="none" stroke="#10b981" stroke-width="14" stroke-dasharray="105.4 289.03" transform="rotate(-90 60 60)"/>
+          <text x="60" y="61" text-anchor="middle" class="rc-n" id="rosca-pct">64%</text>
+          <text x="60" y="77" text-anchor="middle" class="rc-t">em juros</text>
+        </svg>
+        <div class="rc-l">
+          <div class="kicker">Para onde vai o total</div>
+          <div class="lg"><span><s></s>Financiado</span><b class="num" id="rosca-cred-v">R$ 400.000</b></div>
+          <div class="lg"><span><s class="jr"></s>Juros</span><b class="num" id="rosca-juros-v">R$ 697.011</b></div>
+        </div>
+      </div>
+      <div class="rodape-res">
+        <div class="cta">
+          <div><strong>Faça sua proposta</strong><span class="s">Com um parceiro de crédito · sem compromisso</span></div>
+          <button type="button" class="btn" id="btn-cta">Consultar opções →</button>
+        </div>
+        <div class="fine2">Estimativa: a taxa final e a aprovação dependem da análise de crédito e do imóvel.</div>
+        <div class="copiar"><button type="button" id="btn-copiar">Copiar o link desta simulação</button><span id="msg-copiado" role="status"></span></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="uso" aria-label="Quanto do valor do imóvel é financiado">
+    <div class="uso-t"><span class="t">Valor do imóvel</span><b class="v num" id="c-imovel">R$ 500.000</b></div>
+    <div class="uso-b"><svg class="bar" id="bar-ltv" width="100%" height="12" role="img" aria-label="Quanto do valor do imóvel é financiado">
+            <rect width="100%" height="12" rx="6" fill="rgba(255,255,255,.1)"/><rect id="bar-fill" width="80.0%" height="12" rx="6" fill="#10b981"/><rect id="bar-mark" x="80.0%" y="-3" width="2" height="18" fill="#e2e8f0"/>
+          </svg></div>
+    <div class="uso-l">
+      <div class="lg"><span><s></s>Financiado</span><b class="num" id="c-fin">R$ 400.000 · 80%</b></div>
+      <div class="lg"><span><s class="lim"></s><span id="c-limite-rot">Limite do banco (80%)</span></span><b class="num" id="c-limite">R$ 400.000</b></div>
+    </div>
+  </div>
+
+  <div class="kpis" aria-label="Três números para ler o custo">
+    <div class="kp"><span class="t">Quita por volta de</span><b class="num" id="k-quita">jan/2057</b><small id="k-quita-s">360 parcelas, se contratar este mês</small></div>
+    <div class="kp"><span class="t">Cada R$ 1 financiado custa</span><b class="num" id="k-juro1">R$ 1,74</b><small>de juros até o fim</small></div>
+    <div class="kp"><span class="t">Renda para a parcela</span><b class="num" id="k-renda">R$ 16.600</b><small>por mês, parcela de até 30% da renda</small></div>
+  </div>
+  <p class="hint kpn" id="k-nota">Taxas: média contratada em out/2026 (Banco Central), atualizadas em 20/11/2026. Estimativa, não é oferta. Renda: a 1ª parcela dividida por 30%, conta nossa, não é análise de crédito.</p>
+
+  <section class="blk" id="bancos" aria-labelledby="t-bancos">
+    <div class="kicker">Comparação</div>
+    <h2 id="t-bancos">O mesmo financiamento em cada banco</h2>
+    <p class="lead">Mesmo imóvel, mesmo prazo e a taxa média de cada banco, do menor para o maior CET. A entrada e o prazo são ajustados ao limite de cada banco. Toque no nome para ver as condições dele.</p>
+    <div class="panel bks">
+      <ol class="bk-lista" id="bk-lista"><li class="bk"><a class="bk-n" href="/banco-banrisul">Banrisul</a><span class="bk-t num">10,49% a.a.</span><span class="bk-p num"><b>R$ 4.172</b><small>1ª parcela</small></span><span class="bk-c num"><b>11,32%</b><small>CET a.a.</small></span><span class="bk-aj">entrada ou prazo ajustados ao limite do banco</span></li><li class="bk"><a class="bk-n" href="/banco-poupex">Poupex</a><span class="bk-t num">10,80% a.a.</span><span class="bk-p num"><b>R$ 4.544</b><small>1ª parcela</small></span><span class="bk-c num"><b>11,60%</b><small>CET a.a.</small></span></li><li class="bk"><a class="bk-n" href="/banco-sicoob">Sicoob</a><span class="bk-t num">10,93% a.a.</span><span class="bk-p num"><b>R$ 4.584</b><small>1ª parcela</small></span><span class="bk-c num"><b>11,73%</b><small>CET a.a.</small></span></li><li class="bk"><a class="bk-n" href="/banco-brb">BRB</a><span class="bk-t num">11,36% a.a.</span><span class="bk-p num"><b>R$ 4.714</b><small>1ª parcela</small></span><span class="bk-c num"><b>12,16%</b><small>CET a.a.</small></span></li><li class="bk"><a class="bk-n" href="/banco-caixa">Caixa</a><span class="bk-t num">11,97% a.a.</span><span class="bk-p num"><b>R$ 4.898</b><small>1ª parcela</small></span><span class="bk-c num"><b>12,77%</b><small>CET a.a.</small></span></li><li class="bk"><a class="bk-n" href="/banco-itau">Itaú</a><span class="bk-t num">12,22% a.a.</span><span class="bk-p num"><b>R$ 4.973</b><small>1ª parcela</small></span><span class="bk-c num"><b>13,02%</b><small>CET a.a.</small></span></li><li class="bk"><a class="bk-n" href="/banco-sicredi">Sicredi</a><span class="bk-t num">12,23% a.a.</span><span class="bk-p num"><b>R$ 4.976</b><small>1ª parcela</small></span><span class="bk-c num"><b>13,03%</b><small>CET a.a.</small></span></li><li class="bk"><a class="bk-n" href="/banco-bradesco">Bradesco</a><span class="bk-t num">12,27% a.a.</span><span class="bk-p num"><b>R$ 4.988</b><small>1ª parcela</small></span><span class="bk-c num"><b>13,07%</b><small>CET a.a.</small></span></li><li class="bk"><a class="bk-n" href="/banco-santander">Santander</a><span class="bk-t num">12,32% a.a.</span><span class="bk-p num"><b>R$ 5.003</b><small>1ª parcela</small></span><span class="bk-c num"><b>13,12%</b><small>CET a.a.</small></span></li><li class="bk"><a class="bk-n" href="/banco-banco-inter">Banco Inter</a><span class="bk-t num">12,97% a.a.</span><span class="bk-p num"><b>R$ 5.197</b><small>1ª parcela</small></span><span class="bk-c num"><b>13,77%</b><small>CET a.a.</small></span></li><li class="bk"><a class="bk-n" href="/banco-banco-do-brasil">Banco do Brasil</a><span class="bk-t num">14,42% a.a.</span><span class="bk-p num"><b>R$ 5.627</b><small>1ª parcela</small></span><span class="bk-c num"><b>15,22%</b><small>CET a.a.</small></span></li></ol>
+    </div>
+    <div class="note"><b>Sobre estes números.</b> <span id="bk-nota">Taxas: média contratada em out/2026 (Banco Central); BRB e Poupex são estimativas de mercado. CET com seguros e tarifa estimados, só para comparar.</span> Veja também o <a href="/comparador-bancos">comparador de bancos</a> e a <a href="/financiamento-imobiliario">parcela por valor e prazo</a>.</div>
+  </section>
+
+  <section class="blk amsec" id="amortizacao" aria-labelledby="t-amort">
+    <div class="kicker">Pagar antes</div>
+    <h2 id="t-amort">Pagar antes pode poupar milhares de reais</h2>
+    <p class="lead amlead">No começo do contrato, boa parte da parcela é juros. Quando você paga um valor a mais, a dívida em que os juros incidem diminui: você termina antes e paga menos. Veja quanto isso vale no seu cenário.</p>
+    <div class="split amwhy">
+      <div class="split-t">
+        <h3 class="sub"><span class="n" aria-hidden="true">1</span>Os juros vêm primeiro</h3>
+        <div class="giga num"><span id="amort-pct">77%</span><small>da parcela do 1º ano é juros</small></div>
+        <p class="lead" id="amort-resumo">No primeiro ano, R$ 45.631 dos R$ 58.964 que você paga são juros (77%). No SAC a amortização é a mesma todo mês: a parcela cai porque os juros caem.</p>
+      </div>
+      <div class="panel graf">
+        <div class="leg"><span><s class="jr"></s>Juros do ano</span><span><s></s>Amortização do ano</span><span><s class="ln"></s>Saldo devedor</span></div>
+        <svg id="amort-graf" viewBox="0 0 640 220" preserveAspectRatio="none" role="img" aria-label="Gráfico: juros e amortização de cada ano e saldo devedor"></svg>
+        <div class="eixo"><span>Ano 1</span><span id="amort-ano-fim">Ano 30</span></div>
+      </div>
+    </div>
+
+    <details class="amort amsim" id="det-amsim">
+      <summary>Simular: pagar a mais todo mês ou amortizar de uma vez</summary>
+      <div class="panel amx">
+        <h3 class="sub"><span class="n" aria-hidden="true">2</span>Quanto você poupa pagando a mais</h3>
+        <p class="amsub">Escolha o valor e o momento. Quanto mais cedo, maior a economia.</p>
+        <div class="amin">
+          <div class="f">
+            <label for="campo-extra">Pagar a mais todo mês <span>além da parcela</span></label>
+            <div class="inp"><span class="pre">R$</span><input id="campo-extra" type="text" inputmode="numeric" autocomplete="off" value="500" class="num"><em>/mês</em></div>
+          </div>
+          <div class="f">
+            <label for="campo-unico">Amortização única <span>um valor de uma vez</span></label>
+            <div class="inp"><span class="pre">R$</span><input id="campo-unico" type="text" inputmode="numeric" autocomplete="off" value="20.000" class="num"></div>
+          </div>
+          <div class="f">
+            <label for="range-quando">Quando fazer a única <span id="quando-rot">daqui a 1 ano</span></label>
+            <input id="range-quando" type="range" min="0" max="29" step="1" value="1" aria-describedby="quando-rot">
+          </div>
+        </div>
+        <div class="amcards" id="am-cartoes"></div>
+        <p class="qtxt" id="am-texto"></p>
+      </div>
+      <div class="amdicas">
+        <div class="amd"><h4>Prazo ou parcela?</h4><p>Reduzir o prazo costuma poupar mais juros: as últimas parcelas somem. Reduzir a parcela dá folga no orçamento do mês. Escolha pelo que você precisa agora.</p></div>
+        <div class="amd"><h4>Veja o que o contrato diz</h4><p>Pergunte ao banco como pedir a amortização, se há valor mínimo ou tarifa e se o abatimento reduz o prazo ou a parcela. O Código de Defesa do Consumidor (art. 52, § 2º) prevê a liquidação antecipada com redução proporcional dos juros. Leia mais no <a href="/aprenda-amortizacao-extraordinaria">guia de amortização</a>.</p></div>
+        <div class="amd"><h4>Compare com outro uso do dinheiro</h4><p>Amortizar equivale a render a taxa da dívida: <b id="am-taxa-aa">12,22%</b> ao ano nesta simulação. Compare com o que o mesmo dinheiro renderia, já descontados impostos, e mantenha uma reserva de emergência. Não é recomendação de investimento.</p></div>
+      </div>
+    </details>
+
+    <details class="amort" id="det-amort">
+      <summary>Ver a amortização ano a ano</summary>
+      <div class="tw"><table id="tab-amort">
+        <caption id="amort-cap">Parcela que cai: juros, amortização e saldo devedor no fim de cada ano</caption>
+        <thead><tr><th scope="col">Ano</th><th scope="col">Juros</th><th scope="col">Amortização</th><th scope="col">Saldo devedor</th></tr></thead>
+        <tbody id="amort-corpo"><tr><th scope="row">1</th><td>R$ 45.631</td><td>R$ 13.333</td><td>R$ 386.667</td></tr><tr><th scope="row">2</th><td>R$ 44.086</td><td>R$ 13.333</td><td>R$ 373.333</td></tr><tr><th scope="row">3</th><td>R$ 42.541</td><td>R$ 13.333</td><td>R$ 360.000</td></tr><tr><th scope="row">4</th><td>R$ 40.997</td><td>R$ 13.333</td><td>R$ 346.667</td></tr><tr><th scope="row">5</th><td>R$ 39.452</td><td>R$ 13.333</td><td>R$ 333.333</td></tr><tr><th scope="row">6</th><td>R$ 37.908</td><td>R$ 13.333</td><td>R$ 320.000</td></tr><tr><th scope="row">7</th><td>R$ 36.363</td><td>R$ 13.333</td><td>R$ 306.667</td></tr><tr><th scope="row">8</th><td>R$ 34.818</td><td>R$ 13.333</td><td>R$ 293.333</td></tr><tr><th scope="row">9</th><td>R$ 33.274</td><td>R$ 13.333</td><td>R$ 280.000</td></tr><tr><th scope="row">10</th><td>R$ 31.729</td><td>R$ 13.333</td><td>R$ 266.667</td></tr><tr><th scope="row">11</th><td>R$ 30.184</td><td>R$ 13.333</td><td>R$ 253.333</td></tr><tr><th scope="row">12</th><td>R$ 28.640</td><td>R$ 13.333</td><td>R$ 240.000</td></tr><tr><th scope="row">13</th><td>R$ 27.095</td><td>R$ 13.333</td><td>R$ 226.667</td></tr><tr><th scope="row">14</th><td>R$ 25.551</td><td>R$ 13.333</td><td>R$ 213.333</td></tr><tr><th scope="row">15</th><td>R$ 24.006</td><td>R$ 13.333</td><td>R$ 200.000</td></tr><tr><th scope="row">16</th><td>R$ 22.461</td><td>R$ 13.333</td><td>R$ 186.667</td></tr><tr><th scope="row">17</th><td>R$ 20.917</td><td>R$ 13.333</td><td>R$ 173.333</td></tr><tr><th scope="row">18</th><td>R$ 19.372</td><td>R$ 13.333</td><td>R$ 160.000</td></tr><tr><th scope="row">19</th><td>R$ 17.828</td><td>R$ 13.333</td><td>R$ 146.667</td></tr><tr><th scope="row">20</th><td>R$ 16.283</td><td>R$ 13.333</td><td>R$ 133.333</td></tr><tr><th scope="row">21</th><td>R$ 14.738</td><td>R$ 13.333</td><td>R$ 120.000</td></tr><tr><th scope="row">22</th><td>R$ 13.194</td><td>R$ 13.333</td><td>R$ 106.667</td></tr><tr><th scope="row">23</th><td>R$ 11.649</td><td>R$ 13.333</td><td>R$ 93.333</td></tr><tr><th scope="row">24</th><td>R$ 10.104</td><td>R$ 13.333</td><td>R$ 80.000</td></tr><tr><th scope="row">25</th><td>R$ 8.560</td><td>R$ 13.333</td><td>R$ 66.667</td></tr><tr><th scope="row">26</th><td>R$ 7.015</td><td>R$ 13.333</td><td>R$ 53.333</td></tr><tr><th scope="row">27</th><td>R$ 5.471</td><td>R$ 13.333</td><td>R$ 40.000</td></tr><tr><th scope="row">28</th><td>R$ 3.926</td><td>R$ 13.333</td><td>R$ 26.667</td></tr><tr><th scope="row">29</th><td>R$ 2.381</td><td>R$ 13.333</td><td>R$ 13.333</td></tr><tr><th scope="row">30</th><td>R$ 837</td><td>R$ 13.333</td><td>R$ 0</td></tr></tbody>
+        <tfoot id="amort-rodape"><tr><th scope="row">Total</th><td>R$ 697.011</td><td>R$ 400.000</td><td></td></tr></tfoot>
+      </table></div>
+      <div class="hint" id="amort-nota">Conta com a taxa de 12,22% ao ano (efetiva), amortização constante (SAC), sem TR, seguros, tarifas nem IOF.</div>
+    </details>
+  </section>
+
+  <section class="blk" aria-labelledby="t-guias">
+    <div class="kicker">Guias</div>
+    <h2 id="t-guias">Entenda antes de decidir</h2>
+    <div class="cols3"><a class="card" href="/aprenda-sac-x-price"><h4>SAC x Price no financiamento imobiliário: qual tabela escolher</h4>Parcela que começa alta e cai com o tempo, ou parcela fixa do início ao fim? As duas opções que todo financiamento imobiliário oferece.<span class="go">Ler o guia →</span></a><a class="card" href="/aprenda-cet-iof-financiamento-imobiliario"><h4>CET e IOF no financiamento imobiliário: o que entra na conta</h4>O custo real por trás da taxa anunciada: juros, seguros obrigatórios e taxa de administração, tudo somado num só número.<span class="go">Ler o guia →</span></a><a class="card" href="/aprenda-amortizacao-extraordinaria"><h4>Amortização extraordinária: como reduzir prazo ou parcela do financiamento imobiliário</h4>Um pagamento fora do cronograma que ataca o saldo devedor direto — e pode cortar anos inteiros de financiamento.<span class="go">Ler o guia →</span></a><a class="card" href="/aprenda-fgts-financiamento-imobiliario"><h4>FGTS no financiamento imobiliário: como usar pra entrada ou amortização</h4>O saldo que a maioria dos trabalhadores CLT já tem guardado — e pode usar pra pagar menos juros no financiamento.<span class="go">Ler o guia →</span></a><a class="card" href="/aprenda-portabilidade-financiamento-imobiliario"><h4>Portabilidade do financiamento imobiliário: como trocar de banco sem refinanciar do zero</h4>Levar o saldo devedor para outro banco que ofereça condições melhores: o que a regra permite, quanto pode economizar e o que perguntar antes.<span class="go">Ler o guia →</span></a><a class="card" href="/aprenda-financiamento-x-consorcio-imobiliario"><h4>Financiamento x Consórcio imobiliário: qual a diferença</h4>Um te dá o imóvel agora com juros; o outro é mais barato, mas sem data certa. Veja qual combina com seu momento.<span class="go">Ler o guia →</span></a></div>
+  </section>
+
+  <section class="blk split faqs" aria-labelledby="t-faq">
+    <div class="split-t">
+      <div class="kicker">Dúvidas</div>
+      <h2 id="t-faq">Perguntas frequentes</h2>
+    </div>
+    <div class="faq"><details><summary>Como funciona o simulador de financiamento imobiliário da Datalab?</summary><p>Você informa o valor do imóvel, a entrada e o prazo, escolhe um banco e vê a parcela, o custo total e o CET com a taxa média dele. Também dá para simular quanto você economiza pagando a mais ou usar a taxa de uma proposta que você já recebeu. As taxas vêm do Banco Central e são atualizadas todo mês.</p></details><details><summary>As taxas mostradas são reais ou só uma estimativa de marketing?</summary><p>São a taxa média efetivamente contratada por cada banco no mês, divulgada pelo Banco Central, e não uma taxa promocional de vitrine. BRB e Poupex não constam nessa série; para eles usamos uma estimativa de mercado, identificada como tal. A sua taxa final depende da análise de crédito e do imóvel.</p></details><details><summary>O simulador cobra alguma coisa?</summary><p>Não. Simular é gratuito e não pede cadastro. Só se você decidir pedir uma proposta é que informa dados pessoais, em um formulário de um parceiro de crédito. A simulação não é oferta nem compromisso.</p></details><details><summary>Por que a parcela do banco pode ser diferente da que aparece aqui?</summary><p>A conta usa a taxa média do banco, sem TR, e estima o CET com seguros e tarifa de mercado. O banco define a taxa para o seu perfil, o seguro pela sua idade e o valor pela avaliação do imóvel. Use a simulação para comparar e entender a ordem de grandeza, e confirme as condições na proposta.</p></details></div>
+  </section>
+
+  <dialog id="dlg-confirma" aria-labelledby="dlg-titulo">
+    <h3 id="dlg-titulo">Antes de continuar</h3>
+    <p>Você vai preencher um formulário de um <b>parceiro de crédito</b>, que analisa o seu pedido. A página dele mostra o nome da empresa.</p>
+    <ul>
+      <li>Valor do imóvel, entrada e prazo aproximados, e o banco que você prefere.</li>
+      <li>Dados pessoais e de renda, e documentos do imóvel mais adiante.</li>
+      <li>O parceiro pode consultar bureaus de crédito, conforme o aviso dele.</li>
+      <li>Simular aqui não é aprovação, e a taxa final depende da análise.</li>
+      <li>Você não é obrigado a contratar.</li>
+    </ul>
+    <p class="dim">Veja a <a href="https://www.datalabglobal.com/privacidade/">política de privacidade</a> e <a href="/metodologia">como calculamos</a>.</p>
+    <div class="row"><a class="btn" id="a-parceiro" href="https://proposta.api.br/f/ae4809fa-f818-4813-a93d-f0f6cb2f235c" target="_blank" rel="noopener sponsored">Continuar para o parceiro →</a><button type="button" class="ghost" id="btn-voltar">Voltar e ajustar</button></div>
+  </dialog>
+</main>
+
+<footer class="rod">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <a href="/" class="brand" aria-label="Datalab Global, financiamento imobiliário"><span class="tile"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="34" height="34" role="img" aria-label="Datalab Global"><polygon points="11.22,21.00 32.00,33.00 32.00,57.00 11.22,45.00" fill="#10b981" stroke="#04251c" stroke-width="1.1" stroke-linejoin="round"/><polygon points="52.78,21.00 52.78,45.00 32.00,57.00 32.00,33.00" fill="#047857" stroke="#04251c" stroke-width="1.1" stroke-linejoin="round"/><polygon points="32.00,9.00 52.78,21.00 32.00,33.00 11.22,21.00" fill="#6ee7b7" stroke="#04251c" stroke-width="1.1" stroke-linejoin="round"/><polygon points="14.62,43.76 18.22,45.84 18.22,38.84 14.62,36.76" fill="#ecfdf5" stroke="#ecfdf5" stroke-width="0.9" stroke-linejoin="round"/><polygon points="20.82,47.34 24.42,49.42 24.42,37.42 20.82,35.34" fill="#ecfdf5" stroke="#ecfdf5" stroke-width="0.9" stroke-linejoin="round"/><polygon points="27.02,50.92 30.62,53.00 30.62,36.00 27.02,33.92" fill="#ecfdf5" stroke="#ecfdf5" stroke-width="0.9" stroke-linejoin="round"/><polyline points="11.22,21.00 32.00,9.00 52.78,21.00" fill="none" stroke="#d1fae5" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/></svg></span><span class="wm"><b>Datalab</b><i>GLOBAL</i></span></a>
+        <p>Simulador de financiamento imobiliário: parcela SAC e Price, CET e economia pagando a mais, com a taxa média de cada banco.</p>
+      </div>
+      <nav aria-label="Entenda"><h2>Entenda</h2><ul><li><a href="/aprenda">Aprenda</a></li><li><a href="/aprenda-sac-x-price">SAC x Price</a></li><li><a href="/metodologia">Metodologia</a></li><li><a href="/taxas-financiamento-imobiliario">Taxas mês a mês</a></li><li><a href="/renda-para-financiar-imovel">Renda para financiar</a></li><li><a href="/analise-do-mes">Análise do mês</a></li></ul></nav>
+      <nav aria-label="Dados"><h2>Dados</h2><ul><li><a href="/comparador-bancos">Comparador de bancos</a></li><li><a href="/financiamento-imobiliario">Parcela por valor e prazo</a></li><li><a href="/dados-abertos">Dados abertos</a></li><li><a href="/incorporar">Simulador para o seu site</a></li><li><a href="/imprensa">Imprensa</a></li><li><a href="/feed.xml">Feed das taxas</a></li></ul></nav>
+      <nav aria-label="Legal"><h2>Legal</h2><ul><li><a href="/sobre">Sobre</a></li><li><a href="https://www.datalabglobal.com/privacidade/">Privacidade</a></li><li><a href="https://www.datalabglobal.com/termos/">Termos</a></li><li><a href="https://wa.me/5527995051571?text=Ol%C3%A1%2C%20preciso%20de%20ajuda%20com%20o%20simulador">Falar com o suporte</a></li></ul></nav>
+      <nav aria-label="Outros simuladores da Datalab Global"><h2>Outros simuladores</h2><ul><li><a href="https://emprestimo.datalabglobal.com/">Empréstimo com crédito do cartão</a></li><li><a href="https://homeequity.datalabglobal.com/">Home Equity</a></li><li><a href="https://autoequity.datalabglobal.com/">Crédito com veículo em garantia (Auto Equity)</a></li><li><a href="https://veiculos.datalabglobal.com/">Financiamento de veículos</a></li><li><a href="https://condominio.datalabglobal.com/">Empréstimo para condomínios</a></li><li><a href="https://dados.datalabglobal.com/">Lente B2B: dados de empresas</a></li><li><a href="https://www.datalabglobal.com/">Datalab Global</a></li></ul></nav>
+    </div>
+    <div class="base">
+      <p>Taxas atualizadas em 20/11/2026. Fonte: Banco Central do Brasil (BACEN), exceto BRB e Poupex, com taxa estimada de referências públicas de mercado.</p>
+      <p>Datalab Global é marca de Satori Soluções Comerciais LTDA, CNPJ 63.998.502/0001-73. Contato: <a href="mailto:contato@datalabglobal.com">contato@datalabglobal.com</a>.</p>
+      <p>A simulação é uma estimativa, não é proposta de crédito. O crédito depende de análise e aprovação, sem garantia de aprovação.</p>
+    </div>
+  </div>
+</footer>
+<script type="application/json" id="dados-home">{"bancos":[{"k":"Caixa","n":"Caixa","t":11.97,"l":0.8,"p":420,"f":"bcb","h":"banco-caixa"},{"k":"Banco do Brasil","n":"Banco do Brasil","t":14.42,"l":0.8,"p":420,"f":"bcb","h":"banco-banco-do-brasil"},{"k":"Santander","n":"Santander","t":12.32,"l":0.8,"p":420,"f":"bcb","h":"banco-santander"},{"k":"BRB","n":"BRB","t":11.36,"l":0.8,"p":420,"f":"est","h":"banco-brb"},{"k":"Poupex","n":"Poupex","t":10.8,"l":0.9,"p":420,"f":"est","h":"banco-poupex"},{"k":"Itau","n":"Itaú","t":12.22,"l":0.8,"p":360,"f":"bcb","h":"banco-itau"},{"k":"Bradesco","n":"Bradesco","t":12.27,"l":0.8,"p":360,"f":"bcb","h":"banco-bradesco"},{"k":"Banco Inter","n":"Banco Inter","t":12.97,"l":0.8,"p":360,"f":"bcb","h":"banco-banco-inter"},{"k":"Sicredi","n":"Sicredi","t":12.23,"l":0.8,"p":360,"f":"bcb","h":"banco-sicredi"},{"k":"Sicoob","n":"Sicoob","t":10.93,"l":0.8,"p":360,"f":"bcb","h":"banco-sicoob"},{"k":"Banrisul","n":"Banrisul","t":10.49,"l":0.75,"p":360,"f":"bcb","h":"banco-banrisul"}],"mercado":{"t":12.22,"l":0.8,"p":420},"ref":"out/2026","atualizado":"20/11/2026","padrao":{"banco":"mercado","imovel":500000,"entrada":100000,"anos":30,"sistema":"sac"}}</script>
+<script src="/calculo_home.js?v=20261121121920"></script>
+<script src="/home.js?v=20261121121920"></script>
+<script src="/menu.js?v=20261121121920"></script>
 </body>
 </html>

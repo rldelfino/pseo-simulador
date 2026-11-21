@@ -35,6 +35,10 @@ os cobre nesta modalidade.
 
 O workflow `.github/workflows/atualiza_taxas.yml` roda tudo isso no dia 5 de cada mês.
 
+## Home (simulador)
+
+A página inicial é um simulador completo (banco, valor, entrada, prazo, SAC/Price, taxa de uma proposta, pagar a mais, tabela do mesmo financiamento em cada banco). Código: `layout_home.py`, `gerador_home.py`, `calculo_home.py` (referência), `src/home.js`, `src/calculo_home.js`, `src/home.css`. Testes de navegador: `python testar_navegador.py` e `python testar_aleatorio.py`.
+
 ## Rodar localmente
 
 ```bash
