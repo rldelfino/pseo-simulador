@@ -198,3 +198,40 @@ def test_arquivo_de_verificacao_do_yandex():
 def test_yandex_nao_esta_no_gitignore():
     r = subprocess.run(["git", "check-ignore", "-q", "paginas_seo/yandex_90c15c3be650b0ed.html"], cwd=RAIZ)
     assert r.returncode == 1  # 1 = não ignorado
+
+
+# ---------------- marca padrão (21/11/2026) ----------------
+
+HUB = "https://www.datalabglobal.com/"
+
+
+@pytest.mark.skipif(not gerada, reason="paginas_seo/ não gerada")
+@pytest.mark.parametrize("nome", ["index.html", "banco-caixa.html", "comparador-bancos.html", "aprenda-sac-x-price.html", "sobre.html", "metodologia.html"])
+def test_marca_leva_ao_site_principal_e_imovel_leva_a_home_do_simulador(nome):
+    with open(os.path.join(PASTA, nome), encoding="utf-8") as f:
+        h = f.read()
+    m = re.search(r'<a href="https://www\.datalabglobal\.com/"[^>]*aria-label="Datalab Global, site principal"[^>]*>', h)
+    assert m, "logo sem link para o site principal em " + nome
+    p = re.search(r'<a href="/"[^>]*aria-label="Simulador de financiamento imobiliário, página inicial"[^>]*>Imóvel</a>', h)
+    assert p, "rótulo Imóvel sem link para a home em " + nome
+    # nenhum link do logo para a home do simulador
+    assert not re.search(r'<a href="/"[^>]*>\s*<img src="logo-full.png"', h)
+
+
+def test_logo_e_exatamente_o_do_006():
+    import logo
+    caminho = os.path.join(os.path.dirname(RAIZ), "006-pseo-simulador-homeequity", "layout.py")
+    if not os.path.exists(caminho):
+        pytest.skip("projeto 006 fora da pasta")
+    with open(caminho, encoding="utf-8") as f:
+        origem = re.search(r'^LOGO = """(.*?)"""', f.read(), re.S | re.M).group(1)
+    assert logo.LOGO == origem
+
+
+@pytest.mark.skipif(not gerada, reason="paginas_seo/ não gerada")
+def test_home_usa_a_marca_padrao_com_wordmark_do_006():
+    h = _home()
+    assert h.count('<span class="wm"><b>Datalab</b><i>GLOBAL</i></span>') == 2  # cabeçalho e rodapé
+    assert h.count('<span class="tile"><svg viewBox="0 0 44 44"') == 2
+    assert 'class="prod"' in h
+    assert ".prod{display:none}" not in open(os.path.join(PASTA, "home.css"), encoding="utf-8").read()  # visível no celular

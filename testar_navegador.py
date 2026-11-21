@@ -93,6 +93,8 @@ def rodar(nav, nome_nav, base, perfil):
     P = D["padrao"]
 
     confere(tag + "status 200", resp.status == 200)
+    confere(tag + "home: logo leva ao site principal e Imóvel à home do simulador", pg.locator("header .brand").first.get_attribute("href") == "https://www.datalabglobal.com/" and pg.locator("header a.prod").first.get_attribute("href") == "/")
+    confere(tag + "home: rótulo Imóvel visível no cabeçalho", pg.locator("header a.prod").first.is_visible())
     csp = cab.get("content-security-policy", "")
     confere(tag + "CSP estrita (sem unsafe-inline, uma política só)", bool(csp) and "unsafe-inline" not in csp and "script-src 'self' https://cloud.umami.is" in csp, csp[:120])
     confere(tag + "cabeçalhos de segurança", all(k in cab for k in ("x-frame-options", "x-content-type-options", "strict-transport-security", "referrer-policy")) and cab.get("x-frame-options") == "DENY" and cab.get("x-content-type-options") == "nosniff", {k: cab.get(k) for k in ("x-frame-options", "x-content-type-options", "strict-transport-security")})
@@ -109,6 +111,13 @@ def rodar(nav, nome_nav, base, perfil):
 
     # hub do banco -> home já preenchida (links que substituíram os da grade `simulador-*`, enxugamento de 20/11/2026)
     ph = ctx.new_page()
+    ph.goto(base + "/banco-itau")
+    confere(tag + "hub: logo leva ao site principal", ph.locator("a[aria-label='Datalab Global, site principal']").first.get_attribute("href") == "https://www.datalabglobal.com/")
+    imovel = ph.locator("a[aria-label^='Simulador de financiamento imobiliário']").first
+    confere(tag + "hub: rótulo Imóvel visível (também no celular)", imovel.is_visible() and imovel.inner_text().strip() == "Imóvel")
+    imovel.click()
+    ph.wait_for_selector("#bk-lista li")
+    confere(tag + "hub: Imóvel leva à home do simulador", ph.url.rstrip("/") == base.rstrip("/"), ph.url)
     ph.goto(base + "/banco-itau")
     href = ph.locator("a[href^='/?v=']").first.get_attribute("href")
     confere(tag + "hub do Itaú tem links para a home preenchida", ph.locator("a[href^='/?v=']").count() >= 4 and "b=Itau" in href, href)

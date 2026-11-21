@@ -162,6 +162,16 @@ MIN_BANCOS_COMPARACAO = 3  # não gera a página se menos bancos oferecem aquele
 # horas (max-age de 4 h revalidando) e o HTML novo pode chegar com CSS/JS antigo. Um carimbo na URL (?v=AAAAMMDDHHMMSS)
 # faz toda geração apontar para arquivos novos. Igual ao projeto irmão (veículos). O carimbo NÃO conta como mudança
 # de conteúdo para o lastmod do sitemap (ver gerar_sitemap).
+# Cabeçalho das páginas em Tailwind (21/nov/2026): a marca padrão dos simuladores (logo-full.png, gerado por gerar_icones.py a partir de logo.py) leva ao
+# site principal; o rótulo "Imóvel" leva à home do simulador (visível também no celular).
+MARCA_TAILWIND = (
+    '<div class="flex items-center min-w-0">'
+    '<a href="https://www.datalabglobal.com/" aria-label="Datalab Global, site principal" class="flex items-center">'
+    '<img src="logo-full.png" alt="Datalab Global" width="122" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300"></a>'
+    '<a href="/" aria-label="Simulador de financiamento imobiliário, página inicial" class="inline-flex items-center min-h-[44px] ml-3 pl-3 border-l border-white/10 text-sm text-slate-400 hover:text-emerald-400 transition-colors">Imóvel</a>'
+    '</div>'
+)
+
 VERSAO_BUILD = datetime.now().strftime('%Y%m%d%H%M%S')
 
 _URL_GOOGLE_FONTS = (
@@ -1340,9 +1350,7 @@ def gerar_paginas_pseo():
     <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
-                <a href="/" class="flex items-center">
-                    <img src="logo-full.png" alt="Datalab Global" width="122" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
-                </a>
+                {MARCA_TAILWIND}
                 <div class="flex items-center gap-1">
                     <a href="/aprenda" aria-label="Aprenda" class="inline-flex items-center gap-1.5 -my-2.5 p-2.5 text-xs text-slate-400 hover:text-emerald-400 transition-colors">{icone('book-open')} <span class="hidden sm:inline">Aprenda</span></a>
                     <div class="hidden md:flex items-center">
@@ -2030,9 +2038,7 @@ def gerar_hub_bancos(pasta_saida, links_por_banco, data_ultima_atualizacao, domi
     <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
-                <a href="/" class="flex items-center">
-                    <img src="logo-full.png" alt="Datalab Global" width="122" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
-                </a>
+                {MARCA_TAILWIND}
                 <div class="flex items-center gap-1">
                     <a href="/aprenda" aria-label="Aprenda" class="inline-flex items-center gap-1.5 -my-2.5 p-2.5 text-xs text-slate-400 hover:text-emerald-400 transition-colors">{icone('book-open')} <span class="hidden sm:inline">Aprenda</span></a>
                     <div class="hidden md:flex items-center">
@@ -3378,9 +3384,7 @@ def gerar_comparador_bancos(pasta_saida, data_ultima_atualizacao, dominio, taxas
     <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
-                <a href="/" class="flex items-center">
-                    <img src="logo-full.png" alt="Datalab Global" width="122" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
-                </a>
+                {MARCA_TAILWIND}
                 <div class="flex items-center gap-1">
                     <a href="/aprenda" aria-label="Aprenda" class="inline-flex items-center gap-1.5 -my-2.5 p-2.5 text-xs text-slate-400 hover:text-emerald-400 transition-colors">{icone('book-open')} <span class="hidden sm:inline">Aprenda</span></a>
                     <div class="hidden md:flex items-center">
@@ -3592,9 +3596,7 @@ def _nav_comparacao():
     return f'''<nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
-                <a href="/" class="flex items-center">
-                    <img src="logo-full.png" alt="Datalab Global" width="122" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
-                </a>
+                {MARCA_TAILWIND}
                 <div class="flex items-center gap-1">
                     <a href="/aprenda" aria-label="Aprenda" class="inline-flex items-center gap-1.5 -my-2.5 p-2.5 text-xs text-slate-400 hover:text-emerald-400 transition-colors">{icone('book-open')} <span class="hidden sm:inline">Aprenda</span></a>
                     <div class="hidden md:flex items-center">
@@ -4441,9 +4443,7 @@ def gerar_pagina_sobre(pasta_saida, dominio):
     <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
-                <a href="/" class="flex items-center">
-                    <img src="logo-full.png" alt="Datalab Global" width="122" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
-                </a>
+                {MARCA_TAILWIND}
                 <a href="/aprenda" aria-label="Aprenda" class="inline-flex items-center gap-1.5 -my-2.5 p-2.5 text-xs text-slate-400 hover:text-emerald-400 transition-colors">{icone('book-open')} <span class="hidden sm:inline">Aprenda</span></a>
             </div>
         </div>
@@ -4532,9 +4532,7 @@ def gerar_pagina_aprenda(art, pasta_saida, dominio, data_atualizacao):
     <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
-                <a href="/" class="flex items-center">
-                    <img src="logo-full.png" alt="Datalab Global" width="122" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
-                </a>
+                {MARCA_TAILWIND}
                 <a href="/aprenda" aria-label="Aprenda" class="inline-flex items-center gap-1.5 -my-2.5 p-2.5 text-xs text-slate-400 hover:text-emerald-400 transition-colors">{icone('book-open')} <span class="hidden sm:inline">Aprenda</span></a>
             </div>
         </div>
@@ -4604,9 +4602,7 @@ def gerar_hub_aprenda(artigos, pasta_saida, dominio):
     <nav class="border-b border-white/5 sticky top-0 z-50 backdrop-blur-2xl bg-slate-950/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
-                <a href="/" class="flex items-center">
-                    <img src="logo-full.png" alt="Datalab Global" width="122" height="48" class="h-12 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform duration-300">
-                </a>
+                {MARCA_TAILWIND}
                 <a href="/aprenda" aria-label="Aprenda" class="inline-flex items-center gap-1.5 -my-2.5 p-2.5 text-xs text-slate-400 hover:text-emerald-400 transition-colors">{icone('book-open')} <span class="hidden sm:inline">Aprenda</span></a>
             </div>
         </div>
