@@ -26,7 +26,8 @@ pytestmark = pytest.mark.skipif(not os.path.isdir(PASTA_SAIDA), reason="paginas_
 
 
 def _arquivos_html():
-    return sorted(f for f in os.listdir(PASTA_SAIDA) if f.endswith(".html"))
+    # arquivos de verificação de propriedade (yandex_<código>.html) não são páginas do site
+    return sorted(f for f in os.listdir(PASTA_SAIDA) if f.endswith(".html") and not f.startswith("yandex_"))
 
 
 def _slugs_validos():
@@ -72,7 +73,7 @@ def test_todo_link_interno_resolve_para_pagina_existente():
     externo (http/https), ou um dos arquivos estáticos conhecidos."""
     slugs_validos = _slugs_validos()
     arquivos_estaticos = {"styles.css", "logo-full.png", "sitemap.xml", "robots.txt", "llms.txt", "feed.xml", "/", "404.html",
-                          "favicon-32.png", "favicon-192.png", "favicon.ico", "apple-touch-icon.png", "og-image.png", "logo-schema.png"}
+                          "favicon-32.png", "favicon-192.png", "favicon.ico", "favicon.svg", "home.css", "home.js", "calculo_home.js", "menu.js", "#simulador", "apple-touch-icon.png", "og-image.png", "logo-schema.png"}
     faltando = []
     for nome_arquivo in _arquivos_html():
         with open(os.path.join(PASTA_SAIDA, nome_arquivo), encoding="utf-8") as f:
@@ -83,6 +84,10 @@ def test_todo_link_interno_resolve_para_pagina_existente():
             conteudo = re.sub(r'<script\b[^>]*>.*?</script>', '', f.read(), flags=re.DOTALL)
         for href in re.findall(r'href="([^"]+)"', conteudo):
             if href.startswith(("http://", "https://", "#", "mailto:")):
+                continue
+            if href == "/#simulador":  # âncora do simulador da home
+                continue
+            if href.startswith("/fonts/") and os.path.isfile(os.path.join(PASTA_SAIDA, href.lstrip("/"))):  # fontes da home
                 continue
             href = href.split("?", 1)[0]  # 12/10: icones versionados (favicon.ico?v=...) para furar o cache de favicon do navegador
             href_normalizado = href.lstrip("/")  # "/comparador-bancos" == "comparador-bancos"
