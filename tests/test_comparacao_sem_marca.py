@@ -222,4 +222,4 @@ def test_cada_guia_recebe_varios_links_contextuais_e_paginas_novas_sao_alcancave
         recebidos = sum(1 for n, t in textos.items() if n != art["slug"] + ".html" and f'href="{art["slug"]}"' in t)
         assert recebidos >= 20, (art["slug"], recebidos)
     for destino in ("incorporar", "imprensa"):
-        assert f'href="{destino}"' in textos["index.html"], destino  # rodapé da home
+        assert f'href="{destino}"' in textos["index.html"] or f'href="/{destino}"' in textos["index.html"], destino  # rodapé da home (a home nova usa links com barra)
