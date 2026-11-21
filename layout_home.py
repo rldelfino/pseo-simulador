@@ -4,14 +4,15 @@
 Sem atributo style nem script inline (a CSP da home não permite). Os desenhos são SVG com atributos; a lógica fica em src/home.js
 e a conta em src/calculo_home.js. Python 3.10: sem f-string aninhado (este arquivo nem usa f-string).
 """
-from logo import svg_marca
-
-LOGO = '<span class="tile">' + svg_marca(34, True) + "</span>"
+from logo import LOGO
 
 CABECALHO = """<a href="#conteudo" class="skip">Ir para o conteúdo</a>
 <header class="top">
   <div class="wrap">
-    <a href="/" class="brand" aria-label="Datalab Global, financiamento imobiliário, página inicial">@@LOGO@@<span class="wm"><b>Datalab</b><i>GLOBAL</i></span><span class="prod">Financiamento imobiliário</span></a>
+    <div class="marca">
+      <a href="https://www.datalabglobal.com/" class="brand" aria-label="Datalab Global, site principal">@@LOGO@@<span class="wm"><b>Datalab</b><i>GLOBAL</i></span></a>
+      <a href="/" class="prod" aria-label="Simulador de financiamento imobiliário, página inicial">Imóvel</a>
+    </div>
     <nav class="m" aria-label="Principal">@@NAV@@</nav>
     <div class="free"><span class="dot"></span>Simulação gratuita</div>
     <details class="menu">
@@ -26,7 +27,10 @@ RODAPE = """<footer class="rod">
   <div class="wrap">
     <div class="cols">
       <div>
-        <a href="/" class="brand" aria-label="Datalab Global, financiamento imobiliário">@@LOGO@@<span class="wm"><b>Datalab</b><i>GLOBAL</i></span></a>
+        <div class="marca">
+          <a href="https://www.datalabglobal.com/" class="brand" aria-label="Datalab Global, site principal">@@LOGO@@<span class="wm"><b>Datalab</b><i>GLOBAL</i></span></a>
+          <a href="/" class="prod" aria-label="Simulador de financiamento imobiliário, página inicial">Imóvel</a>
+        </div>
         <p>Simulador de financiamento imobiliário: parcela SAC e Price, CET e economia pagando a mais, com a taxa média de cada banco.</p>
       </div>
       <nav aria-label="Entenda"><h2>Entenda</h2><ul>@@FOOT_ENTENDA@@</ul></nav>
