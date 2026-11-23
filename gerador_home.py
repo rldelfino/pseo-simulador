@@ -163,7 +163,7 @@ def _lis(itens):
 
 
 def _cartoes(guias):
-    return "".join('<a class="card" href="/%s"><h4>%s</h4>%s<span class="go">Ler o guia →</span></a>' % (g["slug"], _esc(g["titulo"]), _esc(g["resumo"])) for g in guias)
+    return "".join('<a class="card" href="/%s"><h3>%s</h3>%s<span class="go">Ler o guia →</span></a>' % (g["slug"], _esc(g["titulo"]), _esc(g["resumo"])) for g in guias)
 
 
 def _faq_html():

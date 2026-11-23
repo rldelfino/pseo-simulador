@@ -96,7 +96,7 @@ def rodar(nav, nome_nav, base, perfil):
     confere(tag + "home: logo leva ao site principal e Imóvel à home do simulador", pg.locator("header .brand").first.get_attribute("href") == "https://www.datalabglobal.com/" and pg.locator("header a.prod").first.get_attribute("href") == "/")
     confere(tag + "home: rótulo Imóvel visível no cabeçalho", pg.locator("header a.prod").first.is_visible())
     csp = cab.get("content-security-policy", "")
-    confere(tag + "CSP estrita (sem unsafe-inline, uma política só)", bool(csp) and "unsafe-inline" not in csp and "script-src 'self' https://cloud.umami.is" in csp, csp[:120])
+    confere(tag + "CSP estrita (sem unsafe-inline, uma política só)", bool(csp) and "unsafe-inline" not in csp and "script-src 'self' https://static.cloudflareinsights.com https://cloud.umami.is" in csp, csp[:120])
     confere(tag + "cabeçalhos de segurança", all(k in cab for k in ("x-frame-options", "x-content-type-options", "strict-transport-security", "referrer-policy")) and cab.get("x-frame-options") == "DENY" and cab.get("x-content-type-options") == "nosniff", {k: cab.get(k) for k in ("x-frame-options", "x-content-type-options", "strict-transport-security")})
     confere(tag + "sem rolagem lateral ao abrir", pg.evaluate("document.documentElement.scrollWidth") <= pg.evaluate("window.innerWidth"))
 
