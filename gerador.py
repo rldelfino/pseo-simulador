@@ -1811,6 +1811,7 @@ def gerar_paginas_pseo():
         del _MANIFESTO_LASTMOD[chave]
     lastmod.salvar(_MANIFESTO_LASTMOD)
     gerar_robots_txt(pasta_saida, dominio)
+    gerar_security_txt(pasta_saida, dominio)
     with open(os.path.join(pasta_saida, "calculo.js"), "w", encoding="utf-8") as f:
         f.write(gerar_calculo_js())
     # Logo oficial (21/set/2026): logo-full.png, favicon*.png/.ico, apple-touch-icon.png, logo-schema.png e og-image.png sao
@@ -5188,6 +5189,14 @@ def gerar_sitemap(urls, pasta_saida, dominio, data_ultima_atualizacao):
     xml_content += '</urlset>'
     with open(os.path.join(pasta_saida, 'sitemap.xml'), "w", encoding="utf-8") as f:
         f.write(xml_content)
+
+
+def gerar_security_txt(pasta_saida, dominio):
+    """security.txt (RFC 9116): contato para quem achar uma falha; igual ao dos simuladores 005 a 008."""
+    os.makedirs(os.path.join(pasta_saida, ".well-known"), exist_ok=True)
+    with open(os.path.join(pasta_saida, ".well-known", "security.txt"), "w", encoding="utf-8", newline="\n") as f:
+        f.write("Contact: mailto:contato@datalabglobal.com\nExpires: " + date.today().replace(year=date.today().year + 1).isoformat()
+                + "T00:00:00.000Z\nPreferred-Languages: pt, en\nCanonical: " + dominio + "/.well-known/security.txt\n")
 
 
 def gerar_robots_txt(pasta_saida, dominio):
