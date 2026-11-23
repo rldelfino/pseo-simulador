@@ -176,7 +176,7 @@ def test_csp_da_home_e_estrita_e_sem_unsafe_inline():
     regras = servidor_local.ler_regras()
     cab = servidor_local.cabecalhos_para("/", regras)
     csp = cab["Content-Security-Policy"]
-    assert "unsafe-inline" not in csp and "script-src 'self' https://cloud.umami.is" in csp and "style-src 'self'" in csp
+    assert "unsafe-inline" not in csp and "script-src 'self' https://static.cloudflareinsights.com https://cloud.umami.is" in csp and "style-src 'self'" in csp
     assert "," not in csp.split("default-src")[0]  # só uma política: o "!" tirou a herdada de /*
     for nome in ("X-Frame-Options", "X-Content-Type-Options", "Strict-Transport-Security", "Referrer-Policy"):
         assert nome in cab, nome
