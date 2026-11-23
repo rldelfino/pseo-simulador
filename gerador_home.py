@@ -220,7 +220,7 @@ def montar_home(ctx):
     rodape = L.RODAPE
     corpo = '<body>\n' + topo + '\n<main id="conteudo" class="wrap">\n' + main + '</main>\n\n' + rodape
     dados = '<script type="application/json" id="dados-home">' + json.dumps(dados_json(ctx), ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/") + "</script>\n"
-    scripts = dados + '<script src="/calculo_home.js?v=%s"></script>\n<script src="/home.js?v=%s"></script>\n<script src="/menu.js?v=%s"></script>\n</body>\n</html>\n' % (ver, ver, ver)
+    scripts = dados + '<script defer src="/calculo_home.js?v=%s"></script>\n<script defer src="/home.js?v=%s"></script>\n<script defer src="/menu.js?v=%s"></script>\n</body>\n</html>\n' % (ver, ver, ver)
     pagina = cabeca + corpo + scripts
     # os marcadores mais longos primeiro (D_IMOVEL_RS antes de D_IMOVEL, V_ENTRADA_MIN antes de V_ENTRADA...)
     for chave in sorted(marcadores, key=len, reverse=True):
