@@ -6,7 +6,7 @@
     return s ? s.id : 'corpo';
   }
   document.addEventListener('click', function (e) {
-    var a = e.target.closest && e.target.closest('a[href*="financiatudo"]');
+    var a = e.target.closest && e.target.closest('a[href*="financiatudo"], a[href*="proposta.api.br"]');
     if (a && window.umami) umami.track('cta-financiatudo', { pagina: location.pathname, bloco: bloco(a) });
   }, true);
   var usou = false;
